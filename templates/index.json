@@ -349,11 +349,21 @@
         "padding-block-start": 0,
         "padding-block-end": 0
       }
+    },
+    "vehicle_finder": {
+      "type": "vehicle-selector",
+      "settings": {
+        "section_width": "page-width",
+        "color_scheme": "scheme-1",
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
     }
   },
   "order": [
     "hero_main",
     "trust_badges",
+    "vehicle_finder",
     "shop_by_category",
     "featured_products",
     "shop_by_vehicle",
