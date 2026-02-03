@@ -69,6 +69,11 @@
     align-items: center;
   }
   
+  /* Hide filtered products */
+  .product-grid__item.filter-hidden {
+    display: none !important;
+  }
+  
   @media (max-width: 749px) {
     .category-nav {
       overflow-x: auto;
@@ -159,18 +164,22 @@
 </nav>
 
 <script>
-(function() {
+document.addEventListener('DOMContentLoaded', function() {
   const categoryButtons = document.querySelectorAll('.category-filter-btn');
   const vehicleButtons = document.querySelectorAll('.vehicle-filter-btn');
-  const productItems = document.querySelectorAll('.product-grid__item, [data-product-id]');
   
   // Category keywords for matching
   const categoryKeywords = {
-    'bull-guards': ['bull guard', 'grille guard', 'brush guard', 'front guard', 'bumper guard'],
-    'side-steps': ['side step', 'nerf bar', 'running board', 'step bar', 'side bar'],
-    'tonneau': ['tonneau', 'bed cover', 'truck cover', 'tri-fold', 'trifold'],
-    'chase-racks': ['chase rack', 'sport bar', 'roll bar', 'headache rack', 'cab rack']
+    'bull-guards': ['bull guard', 'grille guard', 'brush guard', 'front guard', 'bumper guard', 'bull-guard', 'grille-guard'],
+    'side-steps': ['side step', 'nerf bar', 'running board', 'step bar', 'side bar', 'side-step', 'nerf-bar'],
+    'tonneau': ['tonneau', 'bed cover', 'truck cover', 'tri-fold', 'trifold', 'bed-cover'],
+    'chase-racks': ['chase rack', 'sport bar', 'roll bar', 'headache rack', 'cab rack', 'chase-rack', 'sport-bar']
   };
+  
+  // Get all product items (query fresh each time)
+  function getProductItems() {
+    return document.querySelectorAll('.product-grid__item, .product-grid li, [data-product-id]');
+  }
   
   // Get filters from URL
   function getFiltersFromURL() {
@@ -215,12 +224,17 @@
   
   // Apply all filters
   function applyFilters() {
+    const productItems = getProductItems();
+    
     const selectedCategories = Array.from(document.querySelectorAll('.category-filter-btn.category-nav__link--active'))
       .map(btn => btn.dataset.category);
     const selectedMakes = Array.from(document.querySelectorAll('.vehicle-filter-btn.category-nav__link--active'))
       .map(btn => btn.dataset.make);
     
     saveFiltersToURL(selectedCategories, selectedMakes);
+    
+    console.log('Filtering products:', productItems.length, 'items');
+    console.log('Categories:', selectedCategories, 'Makes:', selectedMakes);
     
     // Filter products
     productItems.forEach(item => {
@@ -231,7 +245,13 @@
       const categoryMatch = matchesCategory(fullText, selectedCategories);
       const makeMatch = matchesMake(fullText, selectedMakes);
       
-      item.style.display = (categoryMatch && makeMatch) ? '' : 'none';
+      if (categoryMatch && makeMatch) {
+        item.classList.remove('filter-hidden');
+        item.style.display = '';
+      } else {
+        item.classList.add('filter-hidden');
+        item.style.display = 'none';
+      }
     });
   }
   
@@ -290,7 +310,21 @@
     });
   });
   
-  // Initialize
-  initFilters();
-})();
+  // Initialize after a small delay to ensure products are loaded
+  setTimeout(initFilters, 100);
+  
+  // Also watch for dynamically loaded products
+  const observer = new MutationObserver(function(mutations) {
+    const hasActiveFilters = document.querySelector('.category-filter-btn.category-nav__link--active:not([data-category="all"])') ||
+                             document.querySelector('.vehicle-filter-btn.category-nav__link--active');
+    if (hasActiveFilters) {
+      applyFilters();
+    }
+  });
+  
+  const productGrid = document.querySelector('.product-grid');
+  if (productGrid) {
+    observer.observe(productGrid, { childList: true, subtree: true });
+  }
+});
 </script>
