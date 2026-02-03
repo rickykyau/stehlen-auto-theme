@@ -33,7 +33,7 @@
             "corner_radius": 0,
             "padding-block-start": 0,
             "padding-block-end": 0,
-            "padding-inline-start": 60,
+            "padding-inline-start": 0,
             "padding-inline-end": 0
           },
           "blocks": {}
@@ -59,7 +59,7 @@
             "corner_radius": 0,
             "padding-block-start": 0,
             "padding-block-end": 16,
-            "padding-inline-start": 60,
+            "padding-inline-start": 0,
             "padding-inline-end": 0
           },
           "blocks": {}
@@ -75,9 +75,7 @@
             "width": "fit-content",
             "custom_width": 100,
             "width_mobile": "fit-content",
-            "custom_width_mobile": 100,
-            "padding-inline-start": 60,
-            "padding-inline-end": 0
+            "custom_width_mobile": 100
           },
           "blocks": {}
         }
@@ -116,9 +114,17 @@
         "blurred_reflection": false,
         "reflection_opacity": 75,
         "padding-block-start": 60,
-        "padding-block-end": 60,
-        "padding-inline-start": 80,
-        "padding-inline-end": 40
+        "padding-block-end": 60
+      }
+    },
+    "trust_badges": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "<div class=\"trust-badges\">\n  <div class=\"trust-badge\">\n    <span class=\"trust-icon\">🛡️</span>\n    <span class=\"trust-text\">Lifetime Warranty</span>\n  </div>\n  <div class=\"trust-badge\">\n    <span class=\"trust-icon\">🚚</span>\n    <span class=\"trust-text\">Free Shipping $150+</span>\n  </div>\n  <div class=\"trust-badge\">\n    <span class=\"trust-icon\">↩️</span>\n    <span class=\"trust-text\">Easy Returns</span>\n  </div>\n  <div class=\"trust-badge\">\n    <span class=\"trust-icon\">✓</span>\n    <span class=\"trust-text\">Guaranteed Fitment</span>\n  </div>\n</div>\n<style>\n.trust-badges {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  gap: 48px;\n  padding: 24px 20px;\n  background: #f8f9fa;\n  flex-wrap: wrap;\n}\n.trust-badge {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  font-size: 15px;\n  font-weight: 500;\n  color: #333;\n}\n.trust-icon {\n  font-size: 20px;\n}\n@media (max-width: 749px) {\n  .trust-badges {\n    gap: 20px;\n  }\n  .trust-badge {\n    font-size: 13px;\n  }\n}\n</style>",
+        "section_width": "full-width",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 0,
+        "padding-block-end": 0
       }
     },
     "featured_products": {
@@ -317,6 +323,7 @@
   },
   "order": [
     "hero_main",
+    "trust_badges",
     "featured_products"
   ]
 }

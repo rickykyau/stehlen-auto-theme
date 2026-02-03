@@ -1,1 +1,20 @@
-.hero .hero__content-wrapper { padding-inline-start: 60px !important; }
+/* Custom Hero Styling - Stehlen Auto */
+
+/* Add padding to hero content area */
+.hero .hero__content-wrapper {
+  padding-inline-start: 60px !important;
+  padding-inline-end: 40px !important;
+}
+
+/* Ensure hero content has proper spacing on mobile */
+@media screen and (max-width: 749px) {
+  .hero .hero__content-wrapper {
+    padding-inline-start: 24px !important;
+    padding-inline-end: 24px !important;
+  }
+}
+
+/* Style the Shop Now button */
+.hero .button {
+  margin-top: 8px;
+}
