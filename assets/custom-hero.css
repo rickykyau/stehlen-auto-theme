@@ -1,20 +1,211 @@
-/* Custom Hero Styling - Stehlen Auto */
+/* Custom Styling - Stehlen Auto Theme */
 
-/* Add padding to hero content area */
+/* ===== HERO SECTION ===== */
 .hero .hero__content-wrapper {
-  padding-inline-start: 60px !important;
-  padding-inline-end: 40px !important;
+  padding-inline-start: clamp(24px, 5vw, 80px) !important;
+  padding-inline-end: clamp(24px, 5vw, 40px) !important;
 }
 
-/* Ensure hero content has proper spacing on mobile */
+.hero .hero__content {
+  max-width: 600px;
+}
+
+.hero .button,
+.hero [class*="button"] {
+  margin-top: 8px;
+}
+
 @media screen and (max-width: 749px) {
   .hero .hero__content-wrapper {
-    padding-inline-start: 24px !important;
-    padding-inline-end: 24px !important;
+    padding-inline-start: 20px !important;
+    padding-inline-end: 20px !important;
+    padding-block-end: 40px !important;
+  }
+  
+  .hero .hero__content {
+    max-width: 100%;
   }
 }
 
-/* Style the Shop Now button */
-.hero .button {
-  margin-top: 8px;
+/* ===== TRUST BADGES ===== */
+.trust-badges {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 48px;
+  padding: 24px 20px;
+  background: #f8f9fa;
+  flex-wrap: wrap;
+}
+
+.trust-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #333;
+}
+
+.trust-icon {
+  font-size: 20px;
+}
+
+@media (max-width: 749px) {
+  .trust-badges {
+    gap: 16px;
+    padding: 20px 16px;
+  }
+  .trust-badge {
+    font-size: 13px;
+    flex: 0 0 calc(50% - 8px);
+    justify-content: center;
+  }
+}
+
+/* ===== SHOP BY CATEGORY ===== */
+.category-section {
+  padding: 0 20px;
+}
+
+.category-title,
+.vehicle-title {
+  text-align: center;
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 32px;
+  color: #1a1a1a;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.category-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 20px;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #1a1a1a;
+  transition: all 0.2s ease;
+}
+
+.category-card:hover {
+  border-color: #2563eb;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+
+.category-icon {
+  font-size: 2.5rem;
+  margin-bottom: 16px;
+}
+
+.category-card h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.category-cta {
+  font-size: 0.875rem;
+  color: #2563eb;
+  font-weight: 500;
+}
+
+@media (max-width: 749px) {
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  
+  .category-card {
+    padding: 20px 12px;
+  }
+  
+  .category-icon {
+    font-size: 2rem;
+    margin-bottom: 12px;
+  }
+  
+  .category-card h3 {
+    font-size: 0.875rem;
+  }
+}
+
+/* ===== SHOP BY VEHICLE ===== */
+.vehicle-section {
+  padding: 0 20px;
+}
+
+.vehicle-grid {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.vehicle-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 32px;
+  background: #1a1a1a;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.vehicle-card:hover {
+  background: #2563eb;
+  transform: translateY(-2px);
+}
+
+.vehicle-name {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+@media (max-width: 749px) {
+  .vehicle-grid {
+    gap: 10px;
+  }
+  
+  .vehicle-card {
+    padding: 12px 20px;
+    flex: 0 0 calc(50% - 5px);
+  }
+  
+  .vehicle-name {
+    font-size: 0.875rem;
+  }
+}
+
+/* ===== GENERAL POLISH ===== */
+.button,
+a,
+.product-card {
+  transition: all 0.2s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-2px);
+}
+
+.section {
+  scroll-margin-top: 100px;
+}
+
+/* Better section spacing */
+.section--page-width {
+  padding-left: 20px;
+  padding-right: 20px;
 }

@@ -120,11 +120,21 @@
     "trust_badges": {
       "type": "custom-liquid",
       "settings": {
-        "custom_liquid": "<div class=\"trust-badges\">\n  <div class=\"trust-badge\">\n    <span class=\"trust-icon\">🛡️</span>\n    <span class=\"trust-text\">Lifetime Warranty</span>\n  </div>\n  <div class=\"trust-badge\">\n    <span class=\"trust-icon\">🚚</span>\n    <span class=\"trust-text\">Free Shipping $150+</span>\n  </div>\n  <div class=\"trust-badge\">\n    <span class=\"trust-icon\">↩️</span>\n    <span class=\"trust-text\">Easy Returns</span>\n  </div>\n  <div class=\"trust-badge\">\n    <span class=\"trust-icon\">✓</span>\n    <span class=\"trust-text\">Guaranteed Fitment</span>\n  </div>\n</div>\n<style>\n.trust-badges {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  gap: 48px;\n  padding: 24px 20px;\n  background: #f8f9fa;\n  flex-wrap: wrap;\n}\n.trust-badge {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  font-size: 15px;\n  font-weight: 500;\n  color: #333;\n}\n.trust-icon {\n  font-size: 20px;\n}\n@media (max-width: 749px) {\n  .trust-badges {\n    gap: 20px;\n  }\n  .trust-badge {\n    font-size: 13px;\n  }\n}\n</style>",
+        "custom_liquid": "<div class=\"trust-badges\">\n  <div class=\"trust-badge\">\n    <span class=\"trust-icon\">🛡️</span>\n    <span class=\"trust-text\">Lifetime Warranty</span>\n  </div>\n  <div class=\"trust-badge\">\n    <span class=\"trust-icon\">🚚</span>\n    <span class=\"trust-text\">Free Shipping $150+</span>\n  </div>\n  <div class=\"trust-badge\">\n    <span class=\"trust-icon\">↩️</span>\n    <span class=\"trust-text\">Easy Returns</span>\n  </div>\n  <div class=\"trust-badge\">\n    <span class=\"trust-icon\">✓</span>\n    <span class=\"trust-text\">Guaranteed Fitment</span>\n  </div>\n</div>",
         "section_width": "full-width",
         "color_scheme": "scheme-1",
         "padding-block-start": 0,
         "padding-block-end": 0
+      }
+    },
+    "shop_by_category": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "<div class=\"category-section\">\n  <h2 class=\"category-title\">Shop by Category</h2>\n  <div class=\"category-grid\">\n    <a href=\"/collections/bull-guards-grille-guards\" class=\"category-card\">\n      <div class=\"category-icon\">🛡️</div>\n      <h3>Bull Guards & Grille Guards</h3>\n      <span class=\"category-cta\">Shop Now →</span>\n    </a>\n    <a href=\"/collections/side-steps-nerf-bars\" class=\"category-card\">\n      <div class=\"category-icon\">🚶</div>\n      <h3>Side Steps & Nerf Bars</h3>\n      <span class=\"category-cta\">Shop Now →</span>\n    </a>\n    <a href=\"/collections/tonneau-covers\" class=\"category-card\">\n      <div class=\"category-icon\">📦</div>\n      <h3>Tonneau Covers</h3>\n      <span class=\"category-cta\">Shop Now →</span>\n    </a>\n    <a href=\"/collections/chase-racks-sport-bars\" class=\"category-card\">\n      <div class=\"category-icon\">🏁</div>\n      <h3>Chase Racks & Sport Bars</h3>\n      <span class=\"category-cta\">Shop Now →</span>\n    </a>\n  </div>\n</div>",
+        "section_width": "page-width",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 48,
+        "padding-block-end": 48
       }
     },
     "featured_products": {
@@ -319,11 +329,23 @@
         "padding-block-start": 48,
         "padding-block-end": 48
       }
+    },
+    "shop_by_vehicle": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "<div class=\"vehicle-section\">\n  <h2 class=\"vehicle-title\">Shop by Vehicle</h2>\n  <div class=\"vehicle-grid\">\n    <a href=\"/collections/ford-parts\" class=\"vehicle-card\">\n      <span class=\"vehicle-name\">Ford</span>\n    </a>\n    <a href=\"/collections/chevy-parts\" class=\"vehicle-card\">\n      <span class=\"vehicle-name\">Chevrolet</span>\n    </a>\n    <a href=\"/collections/gmc-parts\" class=\"vehicle-card\">\n      <span class=\"vehicle-name\">GMC</span>\n    </a>\n    <a href=\"/collections/dodge-parts\" class=\"vehicle-card\">\n      <span class=\"vehicle-name\">Dodge / Ram</span>\n    </a>\n    <a href=\"/collections/toyota-parts\" class=\"vehicle-card\">\n      <span class=\"vehicle-name\">Toyota</span>\n    </a>\n  </div>\n</div>",
+        "section_width": "page-width",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 24,
+        "padding-block-end": 48
+      }
     }
   },
   "order": [
     "hero_main",
     "trust_badges",
-    "featured_products"
+    "shop_by_category",
+    "featured_products",
+    "shop_by_vehicle"
   ]
 }
