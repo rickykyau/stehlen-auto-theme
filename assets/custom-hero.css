@@ -528,6 +528,46 @@ img {
   }
 }
 
+/* ===== MOBILE FILTER DRAWER FIX ===== */
+@media (max-width: 749px) {
+  /* Fix filter drawer height - auto-size to content */
+  .facets--drawer,
+  .dialog-drawer--right.facets {
+    height: auto !important;
+    max-height: 85vh !important;
+    min-height: auto !important;
+  }
+  
+  /* Remove excess padding in filter drawer */
+  .facets__form-wrapper,
+  .facets__form {
+    height: auto !important;
+    flex: none !important;
+  }
+  
+  /* Compact the filter actions (See X items button) */
+  .facets-actions {
+    padding: 16px !important;
+    margin-top: auto;
+    background: var(--color-background);
+    border-top: 1px solid var(--color-border);
+    position: sticky;
+    bottom: 0;
+  }
+  
+  /* Fix the filter content scrolling */
+  .facets__filters-wrapper {
+    max-height: 50vh;
+    overflow-y: auto;
+    padding-bottom: 16px;
+  }
+  
+  /* Make drawer backdrop click-to-close more obvious */
+  .dialog-drawer::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+  }
+}
+
 /* ===== UTILITY CLASSES ===== */
 .text-center {
   text-align: center;
