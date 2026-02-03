@@ -339,6 +339,16 @@
         "padding-block-start": 24,
         "padding-block-end": 48
       }
+    },
+    "cta_section": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "<div class=\"cta-section\">\n  <div class=\"cta-content\">\n    <h2>Need Help Finding the Right Part?</h2>\n    <p>Our fitment experts are here to help. Contact us for personalized recommendations.</p>\n    <div class=\"cta-buttons\">\n      <a href=\"/pages/contact\" class=\"cta-button primary\">Contact Us</a>\n      <a href=\"/collections/all\" class=\"cta-button secondary\">Browse All Products</a>\n    </div>\n  </div>\n</div>",
+        "section_width": "full-width",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
     }
   },
   "order": [
@@ -346,6 +356,7 @@
     "trust_badges",
     "shop_by_category",
     "featured_products",
-    "shop_by_vehicle"
+    "shop_by_vehicle",
+    "cta_section"
   ]
 }
