@@ -46,6 +46,12 @@
   .category-nav__icon {
     width: 20px;
     height: 20px;
+    color: #2B4570;
+    flex-shrink: 0;
+  }
+  
+  .category-nav__link--active .category-nav__icon {
+    color: #fff;
   }
   
   .category-nav__title {
@@ -87,22 +93,43 @@
   
   <a href="/collections/bull-guards-grille-guards" 
      class="category-nav__link{% if collection.handle == 'bull-guards-grille-guards' %} category-nav__link--active{% endif %}">
-    ⚙️ Bull Guards
+    <svg class="category-nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 2L4 6v6c0 5.5 3.5 10 8 12 4.5-2 8-6.5 8-12V6l-8-4z"/>
+      <path d="M8 11h8M8 14h8M8 8h8"/>
+    </svg>
+    Bull Guards
   </a>
   
   <a href="/collections/side-steps-nerf-bars" 
      class="category-nav__link{% if collection.handle == 'side-steps-nerf-bars' %} category-nav__link--active{% endif %}">
-    🪜 Side Steps
+    <svg class="category-nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <rect x="2" y="18" width="20" height="4" rx="1"/>
+      <rect x="5" y="14" width="14" height="3" rx="1"/>
+      <path d="M6 14V10M18 14V10"/>
+    </svg>
+    Side Steps
   </a>
   
   <a href="/collections/tonneau-covers" 
      class="category-nav__link{% if collection.handle == 'tonneau-covers' %} category-nav__link--active{% endif %}">
-    🛻 Tonneau Covers
+    <svg class="category-nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M3 14h18v6H3z"/>
+      <path d="M5 14V8h14v6"/>
+      <path d="M7 11h10M7 8l5-3 5 3"/>
+    </svg>
+    Tonneau Covers
   </a>
   
   <a href="/collections/chase-racks-sport-bars" 
      class="category-nav__link{% if collection.handle == 'chase-racks-sport-bars' %} category-nav__link--active{% endif %}">
-    🔧 Chase Racks
+    <svg class="category-nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M4 18h16"/>
+      <path d="M6 18V8h12v10"/>
+      <path d="M6 8l6-4 6 4"/>
+      <circle cx="8" cy="5" r="1.5" fill="currentColor"/>
+      <circle cx="16" cy="5" r="1.5" fill="currentColor"/>
+    </svg>
+    Chase Racks
   </a>
 </nav>
 
