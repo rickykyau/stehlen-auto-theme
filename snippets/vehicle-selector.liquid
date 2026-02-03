@@ -319,6 +319,7 @@
     } else {
       makeSelect.disabled = true;
     }
+    updateCurrentVehicleDisplay();
   });
 
   makeSelect.addEventListener('change', function() {
@@ -336,11 +337,46 @@
     } else {
       modelSelect.disabled = true;
     }
+    updateCurrentVehicleDisplay();
   });
 
   modelSelect.addEventListener('change', function() {
     findBtn.disabled = !this.value;
+    updateCurrentVehicleDisplay();
   });
+  
+  // Update the display when any selection changes
+  function updateCurrentVehicleDisplay() {
+    const year = yearSelect.value;
+    const make = makeSelect.value;
+    const model = modelSelect.value;
+    
+    if (year && make && model) {
+      currentVehicle.innerHTML = `Currently viewing parts for: <strong>${year} ${make} ${model}</strong>`;
+      currentVehicle.style.display = 'block';
+      toggleCurrent.textContent = `(${year} ${make} ${model})`;
+    } else if (year && make) {
+      currentVehicle.innerHTML = `Select model to continue...`;
+      currentVehicle.style.display = 'block';
+      toggleCurrent.textContent = `(${year} ${make}...)`;
+    } else if (year) {
+      currentVehicle.innerHTML = `Select make and model to continue...`;
+      currentVehicle.style.display = 'block';
+      toggleCurrent.textContent = '';
+    } else {
+      // Check for saved vehicle
+      const saved = localStorage.getItem('selectedVehicle');
+      if (saved) {
+        const v = JSON.parse(saved);
+        currentVehicle.innerHTML = `Currently viewing parts for: <strong>${v.year} ${v.make} ${v.model}</strong>`;
+        currentVehicle.style.display = 'block';
+        toggleCurrent.textContent = `(${v.year} ${v.make} ${v.model})`;
+      } else {
+        currentVehicle.style.display = 'none';
+        toggleCurrent.textContent = '';
+      }
+    }
+  }
 
   form.addEventListener('submit', function(e) {
     e.preventDefault();
