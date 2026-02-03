@@ -1,0 +1,338 @@
+{%- comment -%}
+  Vehicle Fitment Selector
+  Customers select Year → Make → Model to find compatible products
+{%- endcomment -%}
+
+<style>
+  .vehicle-selector {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    padding: 24px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+  }
+  
+  .vehicle-selector__title {
+    color: #fff;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  
+  .vehicle-selector__form {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-end;
+  }
+  
+  .vehicle-selector__group {
+    flex: 1;
+    min-width: 140px;
+    max-width: 200px;
+  }
+  
+  .vehicle-selector__label {
+    display: block;
+    color: #ccc;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  
+  .vehicle-selector__select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #444;
+    border-radius: 8px;
+    background: #333;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  
+  .vehicle-selector__select:hover,
+  .vehicle-selector__select:focus {
+    border-color: #2563eb;
+    outline: none;
+  }
+  
+  .vehicle-selector__select:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .vehicle-selector__button {
+    padding: 12px 32px;
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  .vehicle-selector__button:hover {
+    background: #1d4ed8;
+  }
+  
+  .vehicle-selector__button:disabled {
+    background: #666;
+    cursor: not-allowed;
+  }
+  
+  .vehicle-selector__clear {
+    padding: 12px 20px;
+    background: transparent;
+    color: #ccc;
+    border: 1px solid #666;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .vehicle-selector__clear:hover {
+    background: #444;
+    color: #fff;
+  }
+  
+  .vehicle-selector__current {
+    text-align: center;
+    margin-top: 12px;
+    color: #10b981;
+    font-size: 0.875rem;
+  }
+  
+  @media (max-width: 749px) {
+    .vehicle-selector__form {
+      flex-direction: column;
+    }
+    
+    .vehicle-selector__group {
+      max-width: 100%;
+    }
+    
+    .vehicle-selector__button {
+      width: 100%;
+    }
+  }
+</style>
+
+<div class="vehicle-selector" id="vehicle-selector">
+  <h2 class="vehicle-selector__title">🚗 Find Parts For Your Vehicle</h2>
+  
+  <form class="vehicle-selector__form" id="vehicle-form">
+    <div class="vehicle-selector__group">
+      <label class="vehicle-selector__label" for="select-year">Year</label>
+      <select class="vehicle-selector__select" id="select-year" name="year">
+        <option value="">Select Year</option>
+      </select>
+    </div>
+    
+    <div class="vehicle-selector__group">
+      <label class="vehicle-selector__label" for="select-make">Make</label>
+      <select class="vehicle-selector__select" id="select-make" name="make" disabled>
+        <option value="">Select Make</option>
+      </select>
+    </div>
+    
+    <div class="vehicle-selector__group">
+      <label class="vehicle-selector__label" for="select-model">Model</label>
+      <select class="vehicle-selector__select" id="select-model" name="model" disabled>
+        <option value="">Select Model</option>
+      </select>
+    </div>
+    
+    <button type="submit" class="vehicle-selector__button" id="find-parts-btn" disabled>
+      Find Parts
+    </button>
+    
+    <button type="button" class="vehicle-selector__clear" id="clear-vehicle" style="display: none;">
+      Clear
+    </button>
+  </form>
+  
+  <div class="vehicle-selector__current" id="current-vehicle" style="display: none;"></div>
+</div>
+
+<script>
+(function() {
+  // Vehicle fitment database
+  // Structure: { make: { model: [years] } }
+  const vehicleData = {
+    'Ford': {
+      'F-150': [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
+      'F-250': [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
+      'F-350': [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
+      'Ranger': [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2019, 2020, 2021, 2022, 2023, 2024],
+      'Bronco': [2021, 2022, 2023, 2024]
+    },
+    'Chevy': {
+      'Silverado 1500': [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
+      'Silverado 2500': [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
+      'Colorado': [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
+    },
+    'GMC': {
+      'Sierra 1500': [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
+      'Sierra 2500': [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
+      'Canyon': [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
+    },
+    'Dodge': {
+      'Ram 1500': [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
+      'Ram 2500': [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
+      'Charger': [2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
+    },
+    'Toyota': {
+      'Tundra': [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
+      'Tacoma': [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
+      '4Runner': [2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
+    }
+  };
+
+  const yearSelect = document.getElementById('select-year');
+  const makeSelect = document.getElementById('select-make');
+  const modelSelect = document.getElementById('select-model');
+  const findBtn = document.getElementById('find-parts-btn');
+  const clearBtn = document.getElementById('clear-vehicle');
+  const currentVehicle = document.getElementById('current-vehicle');
+  const form = document.getElementById('vehicle-form');
+
+  // Get all unique years
+  function getAllYears() {
+    const years = new Set();
+    Object.values(vehicleData).forEach(makes => {
+      Object.values(makes).forEach(yearList => {
+        yearList.forEach(y => years.add(y));
+      });
+    });
+    return Array.from(years).sort((a, b) => b - a); // Descending
+  }
+
+  // Get makes available for a year
+  function getMakesForYear(year) {
+    const makes = [];
+    Object.entries(vehicleData).forEach(([make, models]) => {
+      const hasYear = Object.values(models).some(years => years.includes(parseInt(year)));
+      if (hasYear) makes.push(make);
+    });
+    return makes.sort();
+  }
+
+  // Get models for year + make
+  function getModelsForYearMake(year, make) {
+    const models = [];
+    if (vehicleData[make]) {
+      Object.entries(vehicleData[make]).forEach(([model, years]) => {
+        if (years.includes(parseInt(year))) {
+          models.push(model);
+        }
+      });
+    }
+    return models.sort();
+  }
+
+  // Populate year dropdown
+  function initYears() {
+    const years = getAllYears();
+    yearSelect.innerHTML = '<option value="">Select Year</option>';
+    years.forEach(year => {
+      yearSelect.innerHTML += `<option value="${year}">${year}</option>`;
+    });
+  }
+
+  // Year change handler
+  yearSelect.addEventListener('change', function() {
+    const year = this.value;
+    makeSelect.innerHTML = '<option value="">Select Make</option>';
+    modelSelect.innerHTML = '<option value="">Select Model</option>';
+    modelSelect.disabled = true;
+    findBtn.disabled = true;
+
+    if (year) {
+      const makes = getMakesForYear(year);
+      makes.forEach(make => {
+        makeSelect.innerHTML += `<option value="${make}">${make}</option>`;
+      });
+      makeSelect.disabled = false;
+    } else {
+      makeSelect.disabled = true;
+    }
+  });
+
+  // Make change handler
+  makeSelect.addEventListener('change', function() {
+    const year = yearSelect.value;
+    const make = this.value;
+    modelSelect.innerHTML = '<option value="">Select Model</option>';
+    findBtn.disabled = true;
+
+    if (make) {
+      const models = getModelsForYearMake(year, make);
+      models.forEach(model => {
+        modelSelect.innerHTML += `<option value="${model}">${model}</option>`;
+      });
+      modelSelect.disabled = false;
+    } else {
+      modelSelect.disabled = true;
+    }
+  });
+
+  // Model change handler
+  modelSelect.addEventListener('change', function() {
+    findBtn.disabled = !this.value;
+  });
+
+  // Form submit
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const year = yearSelect.value;
+    const make = makeSelect.value;
+    const model = modelSelect.value;
+
+    if (year && make && model) {
+      // Save to localStorage
+      localStorage.setItem('selectedVehicle', JSON.stringify({ year, make, model }));
+      
+      // Build search query - search for year + make + model
+      const searchTerms = `${year} ${make} ${model}`;
+      
+      // Redirect to search results
+      window.location.href = `/search?q=${encodeURIComponent(searchTerms)}&type=product`;
+    }
+  });
+
+  // Clear button
+  clearBtn.addEventListener('click', function() {
+    localStorage.removeItem('selectedVehicle');
+    yearSelect.value = '';
+    makeSelect.innerHTML = '<option value="">Select Make</option>';
+    makeSelect.disabled = true;
+    modelSelect.innerHTML = '<option value="">Select Model</option>';
+    modelSelect.disabled = true;
+    findBtn.disabled = true;
+    clearBtn.style.display = 'none';
+    currentVehicle.style.display = 'none';
+  });
+
+  // Check for saved vehicle
+  function checkSavedVehicle() {
+    const saved = localStorage.getItem('selectedVehicle');
+    if (saved) {
+      const { year, make, model } = JSON.parse(saved);
+      currentVehicle.innerHTML = `Currently viewing parts for: <strong>${year} ${make} ${model}</strong>`;
+      currentVehicle.style.display = 'block';
+      clearBtn.style.display = 'inline-block';
+    }
+  }
+
+  // Initialize
+  initYears();
+  checkSavedVehicle();
+})();
+</script>
