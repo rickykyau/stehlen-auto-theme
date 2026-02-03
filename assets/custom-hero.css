@@ -699,6 +699,18 @@ img {
   display: none !important;
 }
 
+/* Hide mobile filter button (we have top filters) */
+.facets-mobile-toggle,
+.mobile-facets__toggle,
+[class*="facets"] button[class*="toggle"],
+button[aria-controls*="filter"],
+.filter-toggle,
+[class*="filter-button"],
+.facets-actions,
+.facets__actions {
+  display: none !important;
+}
+
 /* ===== PRODUCT GRID - FULL WIDTH (no sidebar) ===== */
 @media screen and (min-width: 750px) {
   .collection-wrapper.grid {
