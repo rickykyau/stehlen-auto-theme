@@ -1,6 +1,7 @@
 {%- comment -%}
   Category Navigation Bar
   Shows product category links for easy filtering
+  Both category and vehicle filters work as multi-select checkboxes
 {%- endcomment -%}
 
 <style>
@@ -26,27 +27,24 @@
     font-weight: 500;
     font-size: 14px;
     transition: all 0.2s ease;
-  }
-  
-  .category-nav__link:hover {
-    border-color: var(--color-primary);
-    background: rgba(37, 99, 235, 0.05);
-    cursor: pointer;
-  }
-  
-  button.category-nav__link {
     cursor: pointer;
     font-family: inherit;
   }
   
+  .category-nav__link:hover {
+    border-color: #2B4570;
+    background: rgba(43, 69, 112, 0.05);
+  }
+  
   .category-nav__link--active {
-    background: var(--color-primary);
-    border-color: var(--color-primary);
+    background: #2B4570;
+    border-color: #2B4570;
     color: #fff;
   }
   
   .category-nav__link--active:hover {
-    background: var(--color-primary);
+    background: #1e3250;
+    border-color: #1e3250;
   }
   
   .category-nav__icon {
@@ -67,6 +65,8 @@
     letter-spacing: 0.5px;
     color: var(--color-foreground);
     margin-right: 12px;
+    display: flex;
+    align-items: center;
   }
   
   @media (max-width: 749px) {
@@ -92,42 +92,37 @@
 <nav class="category-nav" aria-label="Product Categories">
   <span class="category-nav__title">Shop by:</span>
   
-  <a href="/collections/all" 
-     class="category-nav__link{% if collection.handle == 'all' %} category-nav__link--active{% endif %}">
+  <button type="button" class="category-nav__link category-filter-btn" data-category="all">
     All Products
-  </a>
+  </button>
   
-  <a href="/collections/bull-guards-grille-guards" 
-     class="category-nav__link{% if collection.handle == 'bull-guards-grille-guards' %} category-nav__link--active{% endif %}">
+  <button type="button" class="category-nav__link category-filter-btn" data-category="bull-guards">
     <svg class="category-nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M12 2L4 6v6c0 5.5 3.5 10 8 12 4.5-2 8-6.5 8-12V6l-8-4z"/>
       <path d="M8 11h8M8 14h8M8 8h8"/>
     </svg>
     Bull Guards
-  </a>
+  </button>
   
-  <a href="/collections/side-steps-nerf-bars" 
-     class="category-nav__link{% if collection.handle == 'side-steps-nerf-bars' %} category-nav__link--active{% endif %}">
+  <button type="button" class="category-nav__link category-filter-btn" data-category="side-steps">
     <svg class="category-nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <rect x="2" y="18" width="20" height="4" rx="1"/>
       <rect x="5" y="14" width="14" height="3" rx="1"/>
       <path d="M6 14V10M18 14V10"/>
     </svg>
     Side Steps
-  </a>
+  </button>
   
-  <a href="/collections/tonneau-covers" 
-     class="category-nav__link{% if collection.handle == 'tonneau-covers' %} category-nav__link--active{% endif %}">
+  <button type="button" class="category-nav__link category-filter-btn" data-category="tonneau">
     <svg class="category-nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M3 14h18v6H3z"/>
       <path d="M5 14V8h14v6"/>
       <path d="M7 11h10M7 8l5-3 5 3"/>
     </svg>
     Tonneau Covers
-  </a>
+  </button>
   
-  <a href="/collections/chase-racks-sport-bars" 
-     class="category-nav__link{% if collection.handle == 'chase-racks-sport-bars' %} category-nav__link--active{% endif %}">
+  <button type="button" class="category-nav__link category-filter-btn" data-category="chase-racks">
     <svg class="category-nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M4 18h16"/>
       <path d="M6 18V8h12v10"/>
@@ -136,10 +131,10 @@
       <circle cx="16" cy="5" r="1.5" fill="currentColor"/>
     </svg>
     Chase Racks
-  </a>
+  </button>
 </nav>
 
-<nav class="category-nav vehicle-filter-nav" aria-label="Shop by Vehicle" style="margin-top: -8px;">
+<nav class="category-nav" aria-label="Shop by Vehicle" style="margin-top: -8px;">
   <span class="category-nav__title">Vehicle:</span>
   
   <button type="button" class="category-nav__link vehicle-filter-btn" data-make="Ford">
@@ -165,68 +160,128 @@
 
 <script>
 (function() {
+  const categoryButtons = document.querySelectorAll('.category-filter-btn');
   const vehicleButtons = document.querySelectorAll('.vehicle-filter-btn');
   const productItems = document.querySelectorAll('.product-grid__item, [data-product-id]');
   
-  // Load saved filters from URL
+  // Category keywords for matching
+  const categoryKeywords = {
+    'bull-guards': ['bull guard', 'grille guard', 'brush guard', 'front guard', 'bumper guard'],
+    'side-steps': ['side step', 'nerf bar', 'running board', 'step bar', 'side bar'],
+    'tonneau': ['tonneau', 'bed cover', 'truck cover', 'tri-fold', 'trifold'],
+    'chase-racks': ['chase rack', 'sport bar', 'roll bar', 'headache rack', 'cab rack']
+  };
+  
+  // Get filters from URL
   function getFiltersFromURL() {
     const params = new URLSearchParams(window.location.search);
-    const makes = params.get('makes');
-    return makes ? makes.split(',') : [];
+    return {
+      categories: params.get('categories') ? params.get('categories').split(',') : [],
+      makes: params.get('makes') ? params.get('makes').split(',') : []
+    };
   }
   
   // Save filters to URL
-  function saveFiltersToURL(selectedMakes) {
+  function saveFiltersToURL(categories, makes) {
     const url = new URL(window.location.href);
-    if (selectedMakes.length > 0) {
-      url.searchParams.set('makes', selectedMakes.join(','));
+    if (categories.length > 0 && !categories.includes('all')) {
+      url.searchParams.set('categories', categories.join(','));
+    } else {
+      url.searchParams.delete('categories');
+    }
+    if (makes.length > 0) {
+      url.searchParams.set('makes', makes.join(','));
     } else {
       url.searchParams.delete('makes');
     }
     window.history.replaceState({}, '', url);
   }
   
-  // Apply filters to products
-  function applyFilters() {
-    const selectedMakes = Array.from(document.querySelectorAll('.vehicle-filter-btn.category-nav__link--active'))
-      .map(btn => btn.dataset.make.toLowerCase());
+  // Check if product matches category
+  function matchesCategory(productText, categories) {
+    if (categories.length === 0 || categories.includes('all')) return true;
     
-    saveFiltersToURL(selectedMakes);
-    
-    // If no filters selected, show all
-    if (selectedMakes.length === 0) {
-      productItems.forEach(item => {
-        item.style.display = '';
-      });
-      return;
-    }
-    
-    // Filter products by make (check product title/tags for make name)
-    productItems.forEach(item => {
-      const productCard = item.querySelector('.product-card, [class*="product"]');
-      const productText = item.textContent.toLowerCase();
-      const productTags = item.dataset.tags ? item.dataset.tags.toLowerCase() : '';
-      
-      const matches = selectedMakes.some(make => 
-        productText.includes(make) || productTags.includes(make)
-      );
-      
-      item.style.display = matches ? '' : 'none';
+    return categories.some(cat => {
+      const keywords = categoryKeywords[cat] || [cat];
+      return keywords.some(keyword => productText.includes(keyword.toLowerCase()));
     });
   }
   
-  // Initialize from URL
+  // Check if product matches make
+  function matchesMake(productText, makes) {
+    if (makes.length === 0) return true;
+    return makes.some(make => productText.includes(make.toLowerCase()));
+  }
+  
+  // Apply all filters
+  function applyFilters() {
+    const selectedCategories = Array.from(document.querySelectorAll('.category-filter-btn.category-nav__link--active'))
+      .map(btn => btn.dataset.category);
+    const selectedMakes = Array.from(document.querySelectorAll('.vehicle-filter-btn.category-nav__link--active'))
+      .map(btn => btn.dataset.make);
+    
+    saveFiltersToURL(selectedCategories, selectedMakes);
+    
+    // Filter products
+    productItems.forEach(item => {
+      const productText = item.textContent.toLowerCase();
+      const productTags = item.dataset.tags ? item.dataset.tags.toLowerCase() : '';
+      const fullText = productText + ' ' + productTags;
+      
+      const categoryMatch = matchesCategory(fullText, selectedCategories);
+      const makeMatch = matchesMake(fullText, selectedMakes);
+      
+      item.style.display = (categoryMatch && makeMatch) ? '' : 'none';
+    });
+  }
+  
+  // Initialize filters from URL
   function initFilters() {
-    const savedMakes = getFiltersFromURL();
-    savedMakes.forEach(make => {
+    const saved = getFiltersFromURL();
+    
+    saved.categories.forEach(cat => {
+      const btn = document.querySelector(`.category-filter-btn[data-category="${cat}"]`);
+      if (btn) btn.classList.add('category-nav__link--active');
+    });
+    
+    saved.makes.forEach(make => {
       const btn = document.querySelector(`.vehicle-filter-btn[data-make="${make}"]`) ||
                   document.querySelector(`.vehicle-filter-btn[data-make="${make.charAt(0).toUpperCase() + make.slice(1)}"]`);
       if (btn) btn.classList.add('category-nav__link--active');
     });
-    if (savedMakes.length > 0) applyFilters();
+    
+    if (saved.categories.length > 0 || saved.makes.length > 0) {
+      applyFilters();
+    }
   }
   
-  // Toggle button on click
+  // Category button click - toggle (except "All" clears others)
+  categoryButtons.forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      if (this.dataset.category === 'all') {
+        // "All" clears all category filters
+        categoryButtons.forEach(b => b.classList.remove('category-nav__link--active'));
+        this.classList.add('category-nav__link--active');
+      } else {
+        // Remove "All" if selecting specific category
+        const allBtn = document.querySelector('.category-filter-btn[data-category="all"]');
+        if (allBtn) allBtn.classList.remove('category-nav__link--active');
+        
+        // Toggle this category
+        this.classList.toggle('category-nav__link--active');
+        
+        // If nothing selected, activate "All"
+        const anyActive = document.querySelector('.category-filter-btn.category-nav__link--active');
+        if (!anyActive && allBtn) allBtn.classList.add('category-nav__link--active');
+      }
+      
+      applyFilters();
+    });
+  });
+  
+  // Vehicle button click - simple toggle
   vehicleButtons.forEach(btn => {
     btn.addEventListener('click', function(e) {
       e.preventDefault();
