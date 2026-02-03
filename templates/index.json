@@ -1,0 +1,199 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "blocks": {
+        "heading": {
+          "type": "text",
+          "settings": {
+            "text": "<h1>Built for Your Truck</h1>",
+            "alignment": "left",
+            "type_preset": "h1"
+          }
+        },
+        "subheading": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Premium accessories that fit right. Free shipping over $150.</p>",
+            "alignment": "left",
+            "type_preset": "rte"
+          }
+        },
+        "button": {
+          "type": "button",
+          "settings": {
+            "label": "Shop Now",
+            "link": "shopify://collections/all",
+            "style_class": "button-primary"
+          }
+        }
+      },
+      "block_order": ["heading", "subheading", "button"],
+      "settings": {
+        "media_type_1": "image",
+        "content_direction": "column",
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 16,
+        "section_width": "full-width",
+        "section_height": "large",
+        "color_scheme": "scheme-5",
+        "toggle_overlay": true,
+        "overlay_style": "gradient",
+        "padding-block-start": 40,
+        "padding-block-end": 40
+      }
+    },
+    "trust_badges": {
+      "type": "media-with-content",
+      "blocks": {
+        "badge1": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>🛡️ Lifetime Warranty</strong></p>",
+            "alignment": "center",
+            "type_preset": "rte"
+          }
+        },
+        "badge2": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>🚚 Free Shipping $150+</strong></p>",
+            "alignment": "center",
+            "type_preset": "rte"
+          }
+        },
+        "badge3": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>↩️ Easy Returns</strong></p>",
+            "alignment": "center",
+            "type_preset": "rte"
+          }
+        },
+        "badge4": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>✓ Guaranteed Fitment</strong></p>",
+            "alignment": "center",
+            "type_preset": "rte"
+          }
+        }
+      },
+      "block_order": ["badge1", "badge2", "badge3", "badge4"],
+      "settings": {
+        "content_direction": "row",
+        "horizontal_alignment": "space-between",
+        "section_width": "page-width",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 24,
+        "padding-block-end": 24
+      }
+    },
+    "collection_list": {
+      "type": "collection-list",
+      "blocks": {
+        "header_text": {
+          "type": "text",
+          "settings": {
+            "text": "<h2>Shop by Category</h2>",
+            "alignment": "center",
+            "type_preset": "h2"
+          }
+        },
+        "static-collection-card": {
+          "type": "_collection-card",
+          "static": true,
+          "settings": {}
+        }
+      },
+      "block_order": ["header_text", "static-collection-card"],
+      "settings": {
+        "layout_type": "grid",
+        "columns": 3,
+        "mobile_columns": "2",
+        "gap": 20,
+        "section_width": "page-width",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    },
+    "featured_products": {
+      "type": "product-list",
+      "blocks": {
+        "static-header": {
+          "type": "_product-list-content",
+          "static": true,
+          "settings": {
+            "content_direction": "row",
+            "horizontal_alignment": "space-between",
+            "vertical_alignment": "flex-end",
+            "gap": 12
+          },
+          "blocks": {
+            "header_text": {
+              "type": "_product-list-text",
+              "settings": {
+                "text": "<h2>Featured Products</h2>",
+                "type_preset": "h3",
+                "alignment": "left"
+              }
+            },
+            "view_all_btn": {
+              "type": "_product-list-button",
+              "settings": {
+                "label": "View All",
+                "style_class": "button-secondary"
+              }
+            }
+          },
+          "block_order": ["header_text", "view_all_btn"]
+        },
+        "static-product-card": {
+          "type": "_product-card",
+          "static": true,
+          "settings": {
+            "product_card_gap": 12
+          },
+          "blocks": {
+            "gallery": {
+              "type": "_product-card-gallery",
+              "settings": {
+                "image_ratio": "square"
+              }
+            },
+            "title": {
+              "type": "product-title",
+              "settings": {
+                "alignment": "left"
+              }
+            },
+            "price": {
+              "type": "price",
+              "settings": {
+                "alignment": "left",
+                "type_preset": "h5"
+              }
+            }
+          },
+          "block_order": ["gallery", "title", "price"]
+        }
+      },
+      "settings": {
+        "collection": "all",
+        "layout_type": "grid",
+        "max_products": 8,
+        "columns": 4,
+        "mobile_columns": "2",
+        "columns_gap": 20,
+        "rows_gap": 32,
+        "section_width": "page-width",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    }
+  },
+  "order": ["hero", "trust_badges", "collection_list", "featured_products"]
+}
