@@ -1,12 +1,3 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "main": {
@@ -109,7 +100,7 @@
                   "type": "text",
                   "name": "Product title",
                   "settings": {
-                    "text": "<h1>{{ closest.product.title }}</h1>",
+                    "text": "<h1>{{ closest.product.title }}<\/h1>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "left",
@@ -272,7 +263,7 @@
           "type": "text",
           "name": "t:names.header",
           "settings": {
-            "text": "<h3>You may also like </h3>",
+            "text": "<h3>You may also like <\/h3>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
@@ -413,7 +404,7 @@
     "product_trust_badges": {
       "type": "custom-liquid",
       "settings": {
-        "custom_liquid": "<div class=\"product-trust-badges\">\n  <div class=\"product-trust-badge\">\n    <span class=\"icon\">\ud83d\udee1\ufe0f</span>\n    <span>Lifetime Warranty</span>\n  </div>\n  <div class=\"product-trust-badge\">\n    <span class=\"icon\">\ud83d\ude9a</span>\n    <span>Free Shipping $150+</span>\n  </div>\n  <div class=\"product-trust-badge\">\n    <span class=\"icon\">\u21a9\ufe0f</span>\n    <span>Easy Returns</span>\n  </div>\n  <div class=\"product-trust-badge\">\n    <span class=\"icon\">\u2713</span>\n    <span>Guaranteed Fit</span>\n  </div>\n</div>",
+        "custom_liquid": "<div class=\"product-trust-badges\">\n  <div class=\"product-trust-badge\">\n    <span class=\"icon\">🛡️<\/span>\n    <span>Lifetime Warranty<\/span>\n  <\/div>\n  <div class=\"product-trust-badge\">\n    <span class=\"icon\">🚚<\/span>\n    <span>Free Shipping $150+<\/span>\n  <\/div>\n  <div class=\"product-trust-badge\">\n    <span class=\"icon\">↩️<\/span>\n    <span>Easy Returns<\/span>\n  <\/div>\n  <div class=\"product-trust-badge\">\n    <span class=\"icon\">✓<\/span>\n    <span>Guaranteed Fit<\/span>\n  <\/div>\n<\/div>",
         "section_width": "page-width",
         "color_scheme": "scheme-1",
         "padding-block-start": 0,
@@ -428,3 +419,4 @@
     "product_recommendations_qggXJq"
   ]
 }
+
