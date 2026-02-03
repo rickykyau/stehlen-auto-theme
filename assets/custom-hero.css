@@ -18,23 +18,40 @@
 }
 
 /* ===== GLOBAL COLOR OVERRIDES ===== */
-/* Override all bright blue buttons/inputs to industrial blue */
-.button,
-button[type="submit"],
+/* Override primary action buttons to industrial blue (but NOT header icons) */
+.button:not(.header__icon):not([class*="header"]):not(.icon-button),
+button[type="submit"]:not(.header__icon),
 input[type="submit"],
-.btn,
+.btn:not(.header__icon),
 .shopify-challenge__button,
 .customer button,
-form button:not(.link) {
+form:not(.header *) button:not(.link):not(.icon-button) {
   background-color: #2B4570 !important;
   border-color: #2B4570 !important;
 }
 
-.button:hover,
-button[type="submit"]:hover,
+.button:not(.header__icon):hover,
+button[type="submit"]:not(.header__icon):hover,
 input[type="submit"]:hover {
   background-color: #1e3250 !important;
   border-color: #1e3250 !important;
+}
+
+/* Reset header icons to default */
+.header button,
+.header__icon,
+.header a[class*="icon"],
+header button,
+[class*="header"] button:not([type="submit"]) {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  background: transparent !important;
+}
+
+.header button:hover,
+.header__icon:hover,
+header button:hover {
+  background-color: rgba(0,0,0,0.05) !important;
 }
 
 /* Search bar */
