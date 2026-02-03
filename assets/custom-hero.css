@@ -568,6 +568,49 @@ img {
   }
 }
 
+/* ===== COLLECTION PAGE GRID FIX ===== */
+/* Fix the massive whitespace issue - products should appear next to filters, not below */
+@media screen and (min-width: 750px) {
+  .collection-wrapper.grid {
+    display: grid !important;
+    grid-template-columns: 250px 1fr !important;
+    gap: 2rem !important;
+    align-items: start !important;
+  }
+  
+  /* Filters sidebar - stays in left column */
+  .collection-wrapper .facets-block-wrapper {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+  }
+  
+  /* Product grid - takes remaining space on the right */
+  .collection-wrapper .main-collection-grid {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+  }
+  
+  /* If no sidebar filters visible, products span full width */
+  .collection-wrapper:not(:has(.facets-block-wrapper:not(.hidden))) .main-collection-grid {
+    grid-column: 1 / -1 !important;
+  }
+}
+
+/* Mobile: stack filters above products */
+@media screen and (max-width: 749px) {
+  .collection-wrapper.grid {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+}
+
+/* Compact the top section of collection pages */
+.collection-hero,
+.collection-header {
+  padding-top: 1rem !important;
+  padding-bottom: 1rem !important;
+}
+
 /* ===== UTILITY CLASSES ===== */
 .text-center {
   text-align: center;
