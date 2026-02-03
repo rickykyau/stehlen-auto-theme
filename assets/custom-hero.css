@@ -4,11 +4,74 @@
 
 /* ===== VARIABLES ===== */
 :root {
-  --stehlen-blue: #2563eb;
-  --stehlen-blue-dark: #1d4ed8;
+  --stehlen-blue: #2B4570;
+  --stehlen-blue-dark: #1e3250;
   --stehlen-dark: #1a1a1a;
   --stehlen-gray: #f8f9fa;
   --stehlen-border: #e5e5e5;
+  
+  /* Override theme primary color */
+  --color-primary: #2B4570 !important;
+  --color-primary-rgb: 43, 69, 112 !important;
+  --color-button: #2B4570 !important;
+  --color-button-text: #fff !important;
+}
+
+/* ===== GLOBAL COLOR OVERRIDES ===== */
+/* Override all bright blue buttons/inputs to industrial blue */
+.button,
+button[type="submit"],
+input[type="submit"],
+.btn,
+.shopify-challenge__button,
+.customer button,
+form button:not(.link) {
+  background-color: #2B4570 !important;
+  border-color: #2B4570 !important;
+}
+
+.button:hover,
+button[type="submit"]:hover,
+input[type="submit"]:hover {
+  background-color: #1e3250 !important;
+  border-color: #1e3250 !important;
+}
+
+/* Search bar */
+.search-modal__input:focus,
+.field__input:focus,
+input:focus,
+select:focus {
+  border-color: #2B4570 !important;
+  box-shadow: 0 0 0 2px rgba(43, 69, 112, 0.2) !important;
+}
+
+/* Links */
+a:hover {
+  color: #2B4570;
+}
+
+/* Newsletter/Email signup */
+.newsletter button,
+.footer button,
+.email-signup button,
+[class*="newsletter"] button,
+[class*="email"] button[type="submit"] {
+  background-color: #2B4570 !important;
+  border-color: #2B4570 !important;
+}
+
+/* Product title links */
+.product-card__title a:hover,
+.product-grid__item a:hover {
+  color: #2B4570;
+}
+
+/* Active/Focus states */
+.active,
+.is-active,
+[aria-selected="true"] {
+  color: #2B4570;
 }
 
 /* ===== HERO SECTION ===== */
