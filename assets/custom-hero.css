@@ -745,6 +745,73 @@ img {
   font-weight: 600;
 }
 
+/* ===== SEARCH RESULTS PAGE ===== */
+/* Compact search results layout */
+.template-search .section,
+.search-results,
+[class*="search"] .section {
+  padding-top: 24px !important;
+  padding-bottom: 24px !important;
+}
+
+.template-search h1,
+.search-results h1 {
+  font-size: 1.5rem !important;
+  margin-bottom: 16px !important;
+}
+
+/* Search input styling */
+.template-search .field,
+.search-modal__input-wrapper {
+  max-width: 600px !important;
+}
+
+/* Search results grid - match collection page */
+.template-search .product-grid,
+.search-results .product-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 16px !important;
+}
+
+@media screen and (max-width: 1024px) {
+  .template-search .product-grid,
+  .search-results .product-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .template-search .product-grid,
+  .search-results .product-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* ===== REDUCE GLOBAL WHITESPACE ===== */
+/* Compact all section spacing */
+.section {
+  padding-top: 32px !important;
+  padding-bottom: 32px !important;
+}
+
+/* Reduce footer spacing */
+.footer,
+footer {
+  padding-top: 32px !important;
+  margin-top: 0 !important;
+}
+
+/* Compact main content */
+main {
+  min-height: auto !important;
+}
+
+/* Remove excess spacing between sections */
+.section + .section {
+  margin-top: 0 !important;
+}
+
 /* ===== UTILITY CLASSES ===== */
 .text-center {
   text-align: center;
