@@ -204,15 +204,46 @@ button[name="add"]:hover,
   border-color: #2B4570 !important;
 }
 
-/* Quantity selector buttons */
+/* Quantity selector - neutral style with border */
 .quantity button,
 .quantity__button,
-[class*="quantity"] button,
-.product-form-buttons button {
-  background-color: #2B4570 !important;
+[class*="quantity"] button:not([type="submit"]),
+.product-form-buttons button:not([type="submit"]):not([name="add"]) {
+  background-color: #fff !important;
+  background: #fff !important;
+  border: 1px solid #ccc !important;
+  box-shadow: none !important;
+  color: #333 !important;
+}
+
+.quantity button:hover,
+.quantity__button:hover,
+[class*="quantity"] button:hover {
+  background-color: #f5f5f5 !important;
   border-color: #2B4570 !important;
-  box-shadow: inset 0 0 0 2px #2B4570 !important;
-  color: #fff !important;
+}
+
+/* Quantity input */
+.quantity input,
+.quantity__input,
+[class*="quantity"] input {
+  background-color: #fff !important;
+  border: 1px solid #ccc !important;
+  color: #333 !important;
+}
+
+/* Quantity wrapper border */
+.quantity,
+[class*="quantity-selector"],
+.product-form__quantity {
+  border: 1px solid #ccc !important;
+  border-radius: 8px !important;
+  overflow: hidden;
+}
+
+.quantity button,
+.quantity input {
+  border: none !important;
 }
 
 /* Product title links */
