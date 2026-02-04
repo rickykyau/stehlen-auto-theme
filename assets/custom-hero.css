@@ -78,6 +78,45 @@ a:hover {
   border-color: #2B4570 !important;
 }
 
+/* Add to Cart button */
+.product-form__submit,
+.add-to-cart,
+[class*="add-to-cart"],
+button[name="add"],
+.shopify-payment-button button,
+.shopify-payment-button__button,
+[class*="product"] button[type="submit"],
+.product-form button,
+.cart__submit,
+.cart button[type="submit"] {
+  background-color: #2B4570 !important;
+  border-color: #2B4570 !important;
+  color: #fff !important;
+}
+
+.product-form__submit:hover,
+.add-to-cart:hover,
+button[name="add"]:hover {
+  background-color: #1e3250 !important;
+  border-color: #1e3250 !important;
+}
+
+/* Buy with Shop button - override the purple */
+.shopify-payment-button .shopify-payment-button__button--unbranded,
+[class*="shopify-payment"] button {
+  background-color: #2B4570 !important;
+  border-color: #2B4570 !important;
+}
+
+/* Quantity selector buttons */
+.quantity button,
+.quantity__button,
+[class*="quantity"] button {
+  background-color: #2B4570 !important;
+  border-color: #2B4570 !important;
+  color: #fff !important;
+}
+
 /* Product title links */
 .product-card__title a:hover,
 .product-grid__item a:hover {
