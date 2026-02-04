@@ -56,21 +56,33 @@ input[type="submit"]:hover {
   border-color: #1e3250 !important;
 }
 
-/* Reset header icons to default */
+/* Reset header icons to default - NO backgrounds */
 .header button,
 .header__icon,
 .header a[class*="icon"],
 header button,
-[class*="header"] button:not([type="submit"]) {
+[class*="header"] button:not([type="submit"]),
+.header .button,
+header .button,
+.header-row button,
+[class*="header-row"] button,
+button[class*="search"],
+button[aria-label*="Search"],
+button[aria-label*="Cart"],
+button[aria-label*="Account"],
+.icon-button {
   background-color: transparent !important;
   border-color: transparent !important;
   background: transparent !important;
+  box-shadow: none !important;
 }
 
 .header button:hover,
 .header__icon:hover,
-header button:hover {
+header button:hover,
+.icon-button:hover {
   background-color: rgba(0,0,0,0.05) !important;
+  box-shadow: none !important;
 }
 
 /* Search bar */
@@ -87,14 +99,28 @@ a:hover {
   color: #2B4570;
 }
 
-/* Newsletter/Email signup */
+/* Newsletter/Email signup - force industrial blue */
 .newsletter button,
-.footer button,
+.footer button:not(.icon-button),
 .email-signup button,
 [class*="newsletter"] button,
-[class*="email"] button[type="submit"] {
+[class*="email"] button[type="submit"],
+.footer form button,
+footer form button,
+form[action*="subscribe"] button,
+form[action*="newsletter"] button,
+.footer .button,
+footer .button,
+[class*="footer"] .button:not(.icon-button) {
   background-color: #2B4570 !important;
   border-color: #2B4570 !important;
+  box-shadow: none !important;
+}
+
+.footer button:hover,
+footer form button:hover {
+  background-color: #1e3250 !important;
+  border-color: #1e3250 !important;
 }
 
 /* Add to Cart button - force industrial blue */
