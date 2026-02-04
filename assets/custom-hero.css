@@ -973,3 +973,28 @@ main {
 .mb-0 { margin-bottom: 0; }
 .mt-4 { margin-top: 16px; }
 .mb-4 { margin-bottom: 16px; }
+/* ===== PRODUCT MEDIA FIX - Force transparent backgrounds ===== */
+.product-media,
+.product-media-container,
+.product-media-container *,
+.media-gallery,
+.media-gallery *,
+slideshow-component,
+slideshow-component *,
+.product-media__image,
+.card-gallery,
+.card-gallery *,
+img.product-media__image {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
+/* Ensure images are visible */
+.product-media img,
+.product-media-container img,
+.media-gallery img,
+slideshow-component img {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+}
