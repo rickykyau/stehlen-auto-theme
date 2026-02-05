@@ -405,9 +405,9 @@ main,
   margin-bottom: 0 !important;
 }
 
-/* Lower z-index on sticky filter bar so drawer can cover it */
-.filter-bar-wrapper {
-  z-index: 40 !important;
+/* Menu drawer - higher z-index to cover content */
+.header-drawer {
+  z-index: 999 !important;
 }
 
 /* ===== GLOBAL POLISH ===== */
