@@ -16,7 +16,7 @@
           "type": "filters",
           "static": true,
           "settings": {
-            "enable_filtering": true,
+            "enable_filtering": false,
             "filter_style": "drawer",
             "filter_width": "centered",
             "text_label_case": "default",
