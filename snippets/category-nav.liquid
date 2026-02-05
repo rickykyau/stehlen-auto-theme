@@ -2,173 +2,203 @@
   Category Navigation Bar
   Shows product category links for easy filtering
   Both category and vehicle filters work as multi-select checkboxes
+  Sticky when scrolling, compact single-line layout
 {%- endcomment -%}
 
 <style>
-  .category-nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    padding: 16px 0;
+  /* Sticky wrapper for filters */
+  .filter-bar-wrapper {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--color-background, #fff);
+    padding: 8px 0;
+    border-bottom: 1px solid var(--color-border, #e5e5e5);
     margin-bottom: 16px;
-    border-bottom: 1px solid var(--color-border);
   }
   
-  .category-nav__link {
-    display: inline-flex;
+  /* Each filter row */
+  .filter-row {
+    display: flex;
     align-items: center;
     gap: 8px;
-    padding: 10px 20px;
-    background: var(--color-background);
-    border: 2px solid var(--color-border);
-    border-radius: 8px;
+    padding: 6px 0;
+  }
+  
+  .filter-row__label {
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--color-foreground);
+    white-space: nowrap;
+    min-width: 70px;
+    flex-shrink: 0;
+  }
+  
+  .filter-row__scroll {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex: 1;
+    padding-right: 20px;
+  }
+  
+  .filter-row__scroll::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Fade hint for scroll */
+  .filter-row__scroll::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 30px;
+    background: linear-gradient(to right, transparent, var(--color-background, #fff));
+    pointer-events: none;
+  }
+  
+  .filter-row {
+    position: relative;
+  }
+  
+  /* Filter buttons */
+  .filter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: var(--color-background, #fff);
+    border: 1.5px solid var(--color-border, #ddd);
+    border-radius: 20px;
     color: var(--color-foreground);
     text-decoration: none;
     font-weight: 500;
-    font-size: 14px;
-    transition: all 0.2s ease;
+    font-size: 13px;
+    transition: all 0.15s ease;
     cursor: pointer;
     font-family: inherit;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
   
-  .category-nav__link:hover:not(:disabled) {
+  .filter-btn:hover:not(:disabled) {
     border-color: #2B4570;
     background: rgba(43, 69, 112, 0.05);
   }
   
-  .category-nav__link--active {
+  .filter-btn--active {
     background: #2B4570;
     border-color: #2B4570;
     color: #fff;
   }
   
-  .category-nav__link--active:hover {
+  .filter-btn--active:hover {
     background: #1e3250;
     border-color: #1e3250;
   }
   
-  .category-nav__link:disabled,
-  .category-nav__link--disabled {
+  .filter-btn:disabled,
+  .filter-btn--disabled {
     opacity: 0.4;
     cursor: not-allowed;
     pointer-events: none;
   }
   
-  .category-nav__icon {
-    width: 20px;
-    height: 20px;
+  .filter-btn__icon {
+    width: 16px;
+    height: 16px;
     color: #2B4570;
     flex-shrink: 0;
   }
   
-  .category-nav__link--active .category-nav__icon {
+  .filter-btn--active .filter-btn__icon {
     color: #fff;
   }
   
-  .category-nav__title {
-    font-weight: 600;
-    font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--color-foreground);
-    margin-right: 12px;
-    display: flex;
-    align-items: center;
-  }
-  
-  /* Hide filtered products - use visibility to preserve layout and lazy loading */
+  /* Hide filtered products */
   .product-grid__item.filter-hidden {
     display: none !important;
   }
   
+  /* Mobile: slightly smaller text */
   @media (max-width: 749px) {
-    .category-nav {
-      overflow-x: auto;
-      flex-wrap: nowrap;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      padding-bottom: 12px;
+    .filter-row__label {
+      font-size: 11px;
+      min-width: 60px;
     }
     
-    .category-nav::-webkit-scrollbar {
-      display: none;
-    }
-    
-    .category-nav__link {
-      white-space: nowrap;
-      flex-shrink: 0;
+    .filter-btn {
+      font-size: 12px;
+      padding: 5px 10px;
     }
   }
 </style>
 
-<nav class="category-nav" aria-label="Product Categories">
-  <span class="category-nav__title">Shop by:</span>
+<div class="filter-bar-wrapper">
+  <!-- Shop By row -->
+  <div class="filter-row">
+    <span class="filter-row__label">Shop by:</span>
+    <div class="filter-row__scroll">
+      <button type="button" class="filter-btn category-filter-btn" data-category="all">
+        All
+      </button>
+      
+      <button type="button" class="filter-btn category-filter-btn" data-category="bull-guards">
+        <svg class="filter-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2L4 6v6c0 5.5 3.5 10 8 12 4.5-2 8-6.5 8-12V6l-8-4z"/>
+          <path d="M8 11h8M8 14h8M8 8h8"/>
+        </svg>
+        Bull Guards
+      </button>
+      
+      <button type="button" class="filter-btn category-filter-btn" data-category="side-steps">
+        <svg class="filter-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="18" width="20" height="4" rx="1"/>
+          <rect x="5" y="14" width="14" height="3" rx="1"/>
+          <path d="M6 14V10M18 14V10"/>
+        </svg>
+        Side Steps
+      </button>
+      
+      <button type="button" class="filter-btn category-filter-btn" data-category="tonneau">
+        <svg class="filter-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 14h18v6H3z"/>
+          <path d="M5 14V8h14v6"/>
+          <path d="M7 11h10M7 8l5-3 5 3"/>
+        </svg>
+        Tonneau
+      </button>
+      
+      <button type="button" class="filter-btn category-filter-btn" data-category="chase-racks">
+        <svg class="filter-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 18h16"/>
+          <path d="M6 18V8h12v10"/>
+          <path d="M6 8l6-4 6 4"/>
+          <circle cx="8" cy="5" r="1.5" fill="currentColor"/>
+          <circle cx="16" cy="5" r="1.5" fill="currentColor"/>
+        </svg>
+        Chase Racks
+      </button>
+    </div>
+  </div>
   
-  <button type="button" class="category-nav__link category-filter-btn" data-category="all">
-    All Products
-  </button>
-  
-  <button type="button" class="category-nav__link category-filter-btn" data-category="bull-guards">
-    <svg class="category-nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M12 2L4 6v6c0 5.5 3.5 10 8 12 4.5-2 8-6.5 8-12V6l-8-4z"/>
-      <path d="M8 11h8M8 14h8M8 8h8"/>
-    </svg>
-    Bull Guards
-  </button>
-  
-  <button type="button" class="category-nav__link category-filter-btn" data-category="side-steps">
-    <svg class="category-nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <rect x="2" y="18" width="20" height="4" rx="1"/>
-      <rect x="5" y="14" width="14" height="3" rx="1"/>
-      <path d="M6 14V10M18 14V10"/>
-    </svg>
-    Side Steps
-  </button>
-  
-  <button type="button" class="category-nav__link category-filter-btn" data-category="tonneau">
-    <svg class="category-nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M3 14h18v6H3z"/>
-      <path d="M5 14V8h14v6"/>
-      <path d="M7 11h10M7 8l5-3 5 3"/>
-    </svg>
-    Tonneau Covers
-  </button>
-  
-  <button type="button" class="category-nav__link category-filter-btn" data-category="chase-racks">
-    <svg class="category-nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M4 18h16"/>
-      <path d="M6 18V8h12v10"/>
-      <path d="M6 8l6-4 6 4"/>
-      <circle cx="8" cy="5" r="1.5" fill="currentColor"/>
-      <circle cx="16" cy="5" r="1.5" fill="currentColor"/>
-    </svg>
-    Chase Racks
-  </button>
-</nav>
-
-<nav class="category-nav" aria-label="Shop by Vehicle" style="margin-top: -8px;">
-  <span class="category-nav__title">Vehicle:</span>
-  
-  <button type="button" class="category-nav__link vehicle-filter-btn" data-make="Ford">
-    Ford
-  </button>
-  
-  <button type="button" class="category-nav__link vehicle-filter-btn" data-make="Chevy">
-    Chevy
-  </button>
-  
-  <button type="button" class="category-nav__link vehicle-filter-btn" data-make="GMC">
-    GMC
-  </button>
-  
-  <button type="button" class="category-nav__link vehicle-filter-btn" data-make="Dodge">
-    Dodge
-  </button>
-  
-  <button type="button" class="category-nav__link vehicle-filter-btn" data-make="Toyota">
-    Toyota
-  </button>
-</nav>
+  <!-- Vehicle row -->
+  <div class="filter-row">
+    <span class="filter-row__label">Vehicle:</span>
+    <div class="filter-row__scroll">
+      <button type="button" class="filter-btn vehicle-filter-btn" data-make="Ford">Ford</button>
+      <button type="button" class="filter-btn vehicle-filter-btn" data-make="Chevy">Chevy</button>
+      <button type="button" class="filter-btn vehicle-filter-btn" data-make="GMC">GMC</button>
+      <button type="button" class="filter-btn vehicle-filter-btn" data-make="Dodge">Dodge</button>
+      <button type="button" class="filter-btn vehicle-filter-btn" data-make="Toyota">Toyota</button>
+    </div>
+  </div>
+</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -178,9 +208,9 @@ document.addEventListener('DOMContentLoaded', function() {
   // Category keywords for matching
   const categoryKeywords = {
     'bull-guards': ['bull guard', 'grille guard', 'brush guard', 'front guard', 'bumper guard', 'bull-guard', 'grille-guard'],
-    'side-steps': ['side step', 'nerf bar', 'running board', 'step bar', 'side bar', 'side-step', 'nerf-bar'],
-    'tonneau': ['tonneau', 'bed cover', 'truck cover', 'tri-fold', 'trifold', 'bed-cover'],
-    'chase-racks': ['chase rack', 'sport bar', 'roll bar', 'headache rack', 'cab rack', 'chase-rack', 'sport-bar']
+    'side-steps': ['side step', 'nerf bar', 'running board', 'side bar', 'step bar', 'side-step', 'nerf-bar'],
+    'tonneau': ['tonneau', 'bed cover', 'truck cover', 'tri-fold', 'trifold', 'roll-up', 'hard fold'],
+    'chase-racks': ['chase rack', 'sport bar', 'roll bar', 'headache rack', 'bed rack', 'chase-rack', 'sport-bar']
   };
   
   // Make keywords for matching
@@ -192,19 +222,16 @@ document.addEventListener('DOMContentLoaded', function() {
     'Toyota': ['toyota', 'tacoma', 'tundra', '4runner', 'sequoia']
   };
   
-  // Get all product items (query fresh each time)
   function getProductItems() {
     return document.querySelectorAll('.product-grid__item, .product-grid > li, [data-product-id]');
   }
   
-  // Get product text content
   function getProductText(item) {
     const text = item.textContent.toLowerCase();
     const tags = item.dataset.tags ? item.dataset.tags.toLowerCase() : '';
     return text + ' ' + tags;
   }
   
-  // Check if product matches category
   function matchesCategory(productText, categories) {
     if (categories.length === 0 || categories.includes('all')) return true;
     return categories.some(cat => {
@@ -213,7 +240,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
   
-  // Check if product matches make
   function matchesMake(productText, makes) {
     if (makes.length === 0) return true;
     return makes.some(make => {
@@ -222,13 +248,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
   
-  // Update vehicle button availability based on current category filter
   function updateVehicleButtonAvailability() {
     const productItems = getProductItems();
-    const selectedCategories = Array.from(document.querySelectorAll('.category-filter-btn.category-nav__link--active'))
+    const selectedCategories = Array.from(document.querySelectorAll('.category-filter-btn.filter-btn--active'))
       .map(btn => btn.dataset.category);
     
-    // For each vehicle, check if any products match
     vehicleButtons.forEach(btn => {
       const make = btn.dataset.make;
       let hasMatchingProducts = false;
@@ -240,27 +264,24 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       });
       
-      // Disable button if no matching products (unless it's already active)
-      if (!hasMatchingProducts && !btn.classList.contains('category-nav__link--active')) {
-        btn.classList.add('category-nav__link--disabled');
+      if (!hasMatchingProducts && !btn.classList.contains('filter-btn--active')) {
+        btn.classList.add('filter-btn--disabled');
         btn.disabled = true;
       } else {
-        btn.classList.remove('category-nav__link--disabled');
+        btn.classList.remove('filter-btn--disabled');
         btn.disabled = false;
       }
     });
   }
   
-  // Apply all filters
   function applyFilters() {
     const productItems = getProductItems();
     
-    const selectedCategories = Array.from(document.querySelectorAll('.category-filter-btn.category-nav__link--active'))
+    const selectedCategories = Array.from(document.querySelectorAll('.category-filter-btn.filter-btn--active'))
       .map(btn => btn.dataset.category);
-    const selectedMakes = Array.from(document.querySelectorAll('.vehicle-filter-btn.category-nav__link--active'))
+    const selectedMakes = Array.from(document.querySelectorAll('.vehicle-filter-btn.filter-btn--active'))
       .map(btn => btn.dataset.make);
     
-    // Save to URL
     const url = new URL(window.location.href);
     if (selectedCategories.length > 0 && !selectedCategories.includes('all')) {
       url.searchParams.set('categories', selectedCategories.join(','));
@@ -274,9 +295,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     window.history.replaceState({}, '', url);
     
-    console.log('Filtering:', productItems.length, 'products | Categories:', selectedCategories, '| Makes:', selectedMakes);
-    
-    // Filter products
     let visibleCount = 0;
     productItems.forEach(item => {
       const productText = getProductText(item);
@@ -288,7 +306,6 @@ document.addEventListener('DOMContentLoaded', function() {
         item.style.removeProperty('display');
         visibleCount++;
         
-        // Trigger lazy load for images
         const images = item.querySelectorAll('img[loading="lazy"], img[data-src]');
         images.forEach(img => {
           if (img.dataset.src && !img.src) {
@@ -300,13 +317,9 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
     
-    console.log('Visible products:', visibleCount);
-    
-    // Update vehicle button availability
     updateVehicleButtonAvailability();
   }
   
-  // Initialize filters from URL
   function initFilters() {
     const params = new URLSearchParams(window.location.search);
     const categories = params.get('categories') ? params.get('categories').split(',') : [];
@@ -314,16 +327,15 @@ document.addEventListener('DOMContentLoaded', function() {
     
     categories.forEach(cat => {
       const btn = document.querySelector(`.category-filter-btn[data-category="${cat}"]`);
-      if (btn) btn.classList.add('category-nav__link--active');
+      if (btn) btn.classList.add('filter-btn--active');
     });
     
     makes.forEach(make => {
       const btn = document.querySelector(`.vehicle-filter-btn[data-make="${make}"]`) ||
                   document.querySelector(`.vehicle-filter-btn[data-make="${make.charAt(0).toUpperCase() + make.slice(1)}"]`);
-      if (btn) btn.classList.add('category-nav__link--active');
+      if (btn) btn.classList.add('filter-btn--active');
     });
     
-    // Always update availability on init
     setTimeout(() => {
       updateVehicleButtonAvailability();
       if (categories.length > 0 || makes.length > 0) {
@@ -332,45 +344,41 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 200);
   }
   
-  // Category button click
   categoryButtons.forEach(btn => {
     btn.addEventListener('click', function(e) {
       e.preventDefault();
       
       if (this.dataset.category === 'all') {
-        categoryButtons.forEach(b => b.classList.remove('category-nav__link--active'));
-        this.classList.add('category-nav__link--active');
+        categoryButtons.forEach(b => b.classList.remove('filter-btn--active'));
+        this.classList.add('filter-btn--active');
       } else {
         const allBtn = document.querySelector('.category-filter-btn[data-category="all"]');
-        if (allBtn) allBtn.classList.remove('category-nav__link--active');
-        this.classList.toggle('category-nav__link--active');
+        if (allBtn) allBtn.classList.remove('filter-btn--active');
+        this.classList.toggle('filter-btn--active');
         
-        const anyActive = document.querySelector('.category-filter-btn.category-nav__link--active');
-        if (!anyActive && allBtn) allBtn.classList.add('category-nav__link--active');
+        const anyActive = document.querySelector('.category-filter-btn.filter-btn--active');
+        if (!anyActive && allBtn) allBtn.classList.add('filter-btn--active');
       }
       
       applyFilters();
     });
   });
   
-  // Vehicle button click
   vehicleButtons.forEach(btn => {
     btn.addEventListener('click', function(e) {
       e.preventDefault();
       if (!this.disabled) {
-        this.classList.toggle('category-nav__link--active');
+        this.classList.toggle('filter-btn--active');
         applyFilters();
       }
     });
   });
   
-  // Initialize
   initFilters();
   
-  // Watch for dynamically loaded products (infinite scroll)
   const observer = new MutationObserver(function() {
-    const hasActiveFilters = document.querySelector('.category-filter-btn.category-nav__link--active:not([data-category="all"])') ||
-                             document.querySelector('.vehicle-filter-btn.category-nav__link--active');
+    const hasActiveFilters = document.querySelector('.category-filter-btn.filter-btn--active:not([data-category="all"])') ||
+                             document.querySelector('.vehicle-filter-btn.filter-btn--active');
     if (hasActiveFilters) {
       setTimeout(applyFilters, 100);
     }
