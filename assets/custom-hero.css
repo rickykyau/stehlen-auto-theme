@@ -410,21 +410,35 @@ main,
 .drawer,
 .dialog-drawer,
 .menu-drawer,
+dialog[open],
 [class*="drawer"],
 [class*="menu-drawer"] {
   z-index: 9999 !important;
+  position: fixed !important;
 }
 
-/* Drawer backdrop */
+/* Drawer backdrop - full screen overlay */
 .drawer::backdrop,
 .dialog-drawer::backdrop,
+dialog::backdrop,
 [class*="drawer"]::backdrop {
   z-index: 9998 !important;
+  background: rgba(0,0,0,0.5) !important;
+  position: fixed !important;
+  inset: 0 !important;
+}
+
+/* When dialog is open, hide sticky elements */
+body:has(dialog[open]) .filter-bar-wrapper,
+body:has(dialog[open]) .sticky,
+body:has([class*="drawer"][open]) .filter-bar-wrapper {
+  position: relative !important;
+  z-index: 1 !important;
 }
 
 /* Lower z-index on sticky filter bar */
 .filter-bar-wrapper {
-  z-index: 50 !important;
+  z-index: 40 !important;
 }
 
 /* ===== GLOBAL POLISH ===== */
