@@ -405,6 +405,28 @@ main,
   margin-bottom: 0 !important;
 }
 
+/* ===== MENU DRAWER - Must cover everything ===== */
+.header-drawer,
+.drawer,
+.dialog-drawer,
+.menu-drawer,
+[class*="drawer"],
+[class*="menu-drawer"] {
+  z-index: 9999 !important;
+}
+
+/* Drawer backdrop */
+.drawer::backdrop,
+.dialog-drawer::backdrop,
+[class*="drawer"]::backdrop {
+  z-index: 9998 !important;
+}
+
+/* Lower z-index on sticky filter bar */
+.filter-bar-wrapper {
+  z-index: 50 !important;
+}
+
 /* ===== GLOBAL POLISH ===== */
 .footer { background: var(--stehlen-dark); color: #fff; }
 .footer a { color: #ccc; }
