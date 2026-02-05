@@ -363,23 +363,46 @@ quantity-component {
   }
 }
 
-/* Reduce space after header */
+/* Remove ALL space after header */
 .header + *,
 header + *,
-#header-group + * {
+#header-group + *,
+#header-group ~ * {
   margin-top: 0 !important;
   padding-top: 0 !important;
 }
 
 /* Compact announcement bar */
 .announcement-bar {
-  padding: 8px 16px !important;
+  padding: 6px 16px !important;
 }
 
-/* Reduce whitespace in collection page */
+/* Remove whitespace in collection page */
 .product-grid-container,
-.results-list {
+.results-list,
+main,
+#MainContent {
   padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* Vehicle selector - no top margin */
+.vehicle-selector,
+[class*="vehicle-selector"] {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Section spacing - remove top padding on first sections */
+.section:first-of-type,
+.section--page-width:first-of-type {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* Header group - compact */
+#header-group {
+  margin-bottom: 0 !important;
 }
 
 /* ===== GLOBAL POLISH ===== */
