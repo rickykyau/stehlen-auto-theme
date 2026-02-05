@@ -295,13 +295,19 @@ quantity-component {
   padding-bottom: 1rem !important;
 }
 
-/* Hide sidebar filters (we use top filters) */
-.collection-wrapper .facets-block-wrapper,
-.facets--vertical,
-.facets-wrapper,
-.facets-mobile-toggle,
-.mobile-facets__toggle {
+/* Hide ONLY the sidebar/vertical facets - keep filter button and grid controls */
+.facets--vertical:not(.facets--drawer),
+.facets-block-wrapper--vertical:not(.facets-block-wrapper--drawer) {
   display: none !important;
+}
+
+/* Make sure filter button and grid view controls are visible */
+.facets-controls-wrapper,
+.facets-mobile-wrapper,
+.column-options-wrapper,
+.column-options,
+.facets__controls {
+  display: flex !important;
 }
 
 /* Product grid - full width, 4 columns */
