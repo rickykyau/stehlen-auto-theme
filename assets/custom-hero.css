@@ -508,6 +508,32 @@ header + *,
 .announcement-bar {
   padding: 6px 16px !important;
   background: var(--stehlen-charcoal) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 36px !important;
+}
+
+/* Remove gap between header and hero */
+.section-header,
+.shopify-section-header,
+#shopify-section-header,
+#header-group {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.header {
+  margin-bottom: 0 !important;
+  padding-bottom: 4px !important;
+}
+
+/* Hero section flush to header */
+.hero,
+.shopify-section--hero,
+[class*="shopify-section"]:has(.hero) {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
 }
 
 /* Remove whitespace in collection page */
