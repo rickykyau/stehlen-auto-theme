@@ -83,6 +83,29 @@ header.header,
   color: var(--stehlen-orange) !important;
 }
 
+/* ===== HAMBURGER MENU ICON FIX ===== */
+.menu-drawer-container .header__icon--summary,
+.menu-drawer-container .header__icon--summary svg,
+.header__icon--menu,
+.header__icon--menu svg,
+.header__icon--summary,
+.header__icon--summary svg {
+  color: var(--stehlen-white) !important;
+  stroke: var(--stehlen-white) !important;
+  fill: none !important;
+}
+
+/* Menu drawer close button */
+.menu-drawer__close-button svg,
+.header-drawer .icon-close,
+.menu-drawer .icon-close,
+details-drawer .icon-close,
+.header-drawer summary + button svg,
+.menu-drawer-container button svg.icon-close {
+  color: #222 !important;
+  stroke: #222 !important;
+}
+
 /* ===== HEADER ICONS - MUST BE TRANSPARENT ===== */
 .header button,
 .header .button,
