@@ -448,6 +448,29 @@
     const saved = localStorage.getItem('selectedVehicle');
     if (saved) {
       const { year, make, model } = JSON.parse(saved);
+      
+      // Restore dropdowns so selection persists across pages
+      yearSelect.value = year;
+      
+      // Populate and set make
+      const makes = getMakesForYear(year);
+      makeSelect.innerHTML = '<option value="">Select Make</option>';
+      makes.forEach(m => {
+        makeSelect.innerHTML += `<option value="${m}">${m}</option>`;
+      });
+      makeSelect.disabled = false;
+      makeSelect.value = make;
+      
+      // Populate and set model
+      const models = getModelsForYearMake(year, make);
+      modelSelect.innerHTML = '<option value="">Select Model</option>';
+      models.forEach(m => {
+        modelSelect.innerHTML += `<option value="${m}">${m}</option>`;
+      });
+      modelSelect.disabled = false;
+      modelSelect.value = model;
+      
+      findBtn.disabled = false;
       currentVehicle.innerHTML = `Currently viewing parts for: <strong>${year} ${make} ${model}</strong>`;
       currentVehicle.style.display = 'block';
       clearBtn.style.display = 'inline-block';
