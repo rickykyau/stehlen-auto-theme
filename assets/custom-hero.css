@@ -716,9 +716,40 @@ main,
   color: #F39C12 !important;
 }
 
-/* Menu drawer - higher z-index to cover content */
+/* Menu drawer - visible and readable */
 .header-drawer {
   z-index: 999 !important;
+}
+
+.menu-drawer-container,
+.menu-drawer,
+.menu-drawer__navigation,
+.header-drawer dialog,
+.header-drawer .dialog-drawer {
+  background: #fff !important;
+  color: #222 !important;
+}
+
+.menu-drawer__menu-item,
+.menu-drawer__menu-item span,
+.menu-drawer__menu-item-text,
+.menu-drawer a,
+.menu-drawer__navigation a {
+  color: #222 !important;
+}
+
+.menu-drawer a:hover,
+.menu-drawer__menu-item:hover {
+  color: #F39C12 !important;
+}
+
+.menu-drawer .svg-wrapper,
+.menu-drawer__menu-item .svg-wrapper {
+  color: #222 !important;
+}
+
+.menu-drawer__close-button {
+  color: #222 !important;
 }
 
 /* ===== FOOTER - Charcoal ===== */
