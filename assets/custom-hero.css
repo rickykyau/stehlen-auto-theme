@@ -538,6 +538,30 @@ main,
   margin-bottom: 0 !important;
 }
 
+/* ===== POPUPS/DRAWERS/DIALOGS - Dark text on white backgrounds ===== */
+.popover,
+.dialog-modal,
+.dialog-drawer,
+.drawer,
+[class*="popover"],
+[class*="account"],
+.cart-drawer,
+.search-modal {
+  color: #222 !important;
+}
+
+.popover a,
+.dialog-modal a,
+[class*="popover"] a,
+[class*="account"] a {
+  color: #222 !important;
+}
+
+.popover a:hover,
+[class*="popover"] a:hover {
+  color: #F39C12 !important;
+}
+
 /* Menu drawer - higher z-index to cover content */
 .header-drawer {
   z-index: 999 !important;
