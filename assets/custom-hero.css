@@ -580,6 +580,15 @@ quantity-selector-component,
   border-radius: 12px !important;
   transition: var(--stehlen-transition) !important;
   overflow: hidden;
+  padding: 8px !important;
+}
+
+/* Card text content padding */
+.product-grid__item .card__content,
+.product-grid__item .card-information,
+.card-wrapper .card__content,
+.card-wrapper .card-information {
+  padding: 8px 4px !important;
 }
 
 .product-grid__item:hover,
