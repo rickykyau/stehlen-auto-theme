@@ -634,6 +634,13 @@ a.button[href*="account"],
   color: var(--stehlen-white) !important;
 }
 
+/* ===== HERO BANNER - Content Padding ===== */
+.hero__content-wrapper,
+.hero .group-block-content {
+  padding-left: clamp(24px, 5vw, 80px) !important;
+  padding-right: clamp(24px, 5vw, 80px) !important;
+}
+
 /* ===== GLOBAL POLISH ===== */
 a:focus,
 button:focus,
