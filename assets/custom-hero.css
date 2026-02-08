@@ -833,6 +833,8 @@ footer h2, footer h3, footer h4 {
   color: var(--stehlen-charcoal) !important;
   border-radius: 8px !important;
   font-weight: 700 !important;
+  outline: none !important;
+  box-shadow: none !important;
 }
 .account-actions__link.button-secondary:hover,
 .account-actions__list-item .button-secondary:hover {
