@@ -575,11 +575,23 @@ footer,
   color: var(--stehlen-white) !important;
 }
 
-.footer a { color: var(--stehlen-silver) !important; }
-.footer a:hover { color: var(--stehlen-orange) !important; }
+.footer a, footer a { color: var(--stehlen-silver) !important; }
+.footer a:hover, footer a:hover { color: var(--stehlen-orange) !important; }
 .footer h2, .footer h3, .footer h4,
 footer h2, footer h3, footer h4 {
   color: var(--stehlen-white) !important;
+}
+/* Footer body text, subtitles, copyright */
+.footer p, footer p,
+.footer span, footer span,
+.footer .rte, footer .rte,
+.footer__copyright, .footer-utilities,
+.footer-utilities a, .footer-utilities span,
+.section-footer p, .section-footer span,
+.email-signup p, .email-signup .rte,
+.email-signup span, .newsletter p,
+.newsletter span, .newsletter .rte {
+  color: var(--stehlen-silver) !important;
 }
 
 /* ===== CUSTOMER ACCOUNT / LOGIN & NAV BUTTONS ===== */
