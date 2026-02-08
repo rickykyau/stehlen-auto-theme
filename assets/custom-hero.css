@@ -59,6 +59,15 @@ header.header,
   padding-bottom: 8px !important;
 }
 
+/* Logo - black background to match dark header */
+.header__logo img,
+.header .logo img,
+.header-logo img {
+  background-color: #000 !important;
+  padding: 4px 8px !important;
+  border-radius: 4px !important;
+}
+
 /* Header text/links white on charcoal */
 .header a,
 .header .header__logo a,
