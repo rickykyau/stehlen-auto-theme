@@ -218,21 +218,36 @@ select:focus {
 /* ===== QUANTITY SELECTOR ===== */
 .quantity button,
 .quantity__button,
-quantity-component button {
+quantity-component button,
+quantity-selector-component button,
+.quantity-minus,
+.quantity-plus {
   background-color: #f5f5f5 !important;
+  background: #f5f5f5 !important;
   border: none !important;
+  color: #333 !important;
+  box-shadow: none !important;
+}
+
+.quantity-minus:hover,
+.quantity-plus:hover {
+  background-color: #e8e8e8 !important;
+  background: #e8e8e8 !important;
   color: #333 !important;
 }
 
 .quantity input,
-.quantity__input {
+.quantity__input,
+quantity-selector-component input {
   background-color: #fff !important;
   border: none !important;
   color: #333 !important;
 }
 
 .quantity,
-quantity-component {
+quantity-component,
+quantity-selector-component,
+.quantity-selector {
   border: 1px solid #ddd !important;
   border-radius: 8px !important;
   background: #fff !important;
@@ -767,7 +782,7 @@ a.button[href*="account"],
 #customer_login_guest button,
 .new-customer__button-cta,
 /* Generic buttons and links styled as buttons */
-.button:not(.button--secondary):not(.cta-button):not([name="add"]):not(.header-actions__action):not(.search-modal__button):not(.quantity__button) {
+.button:not(.button--secondary):not(.cta-button):not([name="add"]):not(.header-actions__action):not(.search-modal__button):not(.quantity__button):not(.quantity-minus):not(.quantity-plus):not(.button-unstyled) {
   background-color: var(--stehlen-orange) !important;
   border-color: var(--stehlen-orange) !important;
   color: var(--stehlen-white) !important;
@@ -779,7 +794,7 @@ a.button[href*="account"],
 
 .shopify-challenge__button:hover,
 .customer button[type="submit"]:hover,
-.button:not(.button--secondary):not(.cta-button):not([name="add"]):not(.header-actions__action):not(.search-modal__button):not(.quantity__button):hover {
+.button:not(.button--secondary):not(.cta-button):not([name="add"]):not(.header-actions__action):not(.search-modal__button):not(.quantity__button):not(.quantity-minus):not(.quantity-plus):not(.button-unstyled):hover {
   background-color: var(--stehlen-orange-dark) !important;
   border-color: var(--stehlen-orange-dark) !important;
   color: var(--stehlen-white) !important;
