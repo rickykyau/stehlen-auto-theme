@@ -582,7 +582,27 @@ footer h2, footer h3, footer h4 {
   color: var(--stehlen-white) !important;
 }
 
-/* ===== CUSTOMER ACCOUNT / LOGIN BUTTONS ===== */
+/* ===== CUSTOMER ACCOUNT / LOGIN & NAV BUTTONS ===== */
+/* Account drawer nav buttons (Orders, Profile) */
+.account-actions__link.button-secondary,
+.account-actions__list-item .button-secondary {
+  background: var(--stehlen-white) !important;
+  border: 2px solid var(--stehlen-orange) !important;
+  color: var(--stehlen-charcoal) !important;
+  border-radius: 8px !important;
+  font-weight: 700 !important;
+}
+.account-actions__link.button-secondary:hover,
+.account-actions__list-item .button-secondary:hover {
+  background: var(--stehlen-orange) !important;
+  color: var(--stehlen-white) !important;
+}
+.account-actions__icon {
+  color: var(--stehlen-orange) !important;
+}
+.account-actions__icon svg { color: inherit !important; }
+
+
 /* Primary action buttons on login/account pages */
 .shopify-challenge__button,
 .customer button[type="submit"],
