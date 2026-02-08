@@ -642,11 +642,19 @@ a.button[href*="account"],
 }
 
 /* ===== GLOBAL POLISH ===== */
-a:focus,
-button:focus,
-input:focus {
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
   outline: 2px solid var(--stehlen-orange);
   outline-offset: 2px;
+}
+
+/* No focus outline on vehicle selector toggle */
+.vehicle-selector-toggle:focus,
+.vehicle-selector-toggle:focus-visible,
+.vehicle-selector-wrapper:focus-within > .vehicle-selector-toggle {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 html { scroll-behavior: smooth; }
