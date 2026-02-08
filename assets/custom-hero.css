@@ -749,8 +749,8 @@ main,
 .menu-drawer__navigation,
 .header-drawer dialog,
 .header-drawer .dialog-drawer {
-  background: #fff !important;
-  color: #222 !important;
+  background: var(--stehlen-charcoal) !important;
+  color: #fff !important;
 }
 
 .menu-drawer__menu-item,
@@ -758,21 +758,21 @@ main,
 .menu-drawer__menu-item-text,
 .menu-drawer a,
 .menu-drawer__navigation a {
-  color: #222 !important;
+  color: #fff !important;
 }
 
 .menu-drawer a:hover,
 .menu-drawer__menu-item:hover {
-  color: #F39C12 !important;
+  color: var(--stehlen-orange) !important;
 }
 
 .menu-drawer .svg-wrapper,
 .menu-drawer__menu-item .svg-wrapper {
-  color: #222 !important;
+  color: #fff !important;
 }
 
 .menu-drawer__close-button {
-  color: #222 !important;
+  color: #fff !important;
 }
 
 /* ===== FOOTER - Charcoal ===== */
