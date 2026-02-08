@@ -1,14 +1,29 @@
 /* ============================================
    STEHLEN AUTO - Custom Theme Styling
+   Orange & Charcoal Design System
    ============================================ */
 
 /* ===== VARIABLES ===== */
 :root {
-  --stehlen-blue: #2B4570;
-  --stehlen-blue-dark: #1e3250;
-  --stehlen-dark: #1a1a1a;
-  --stehlen-gray: #f8f9fa;
-  --stehlen-border: #e5e5e5;
+  --stehlen-orange: #F39C12;
+  --stehlen-orange-dark: #E67E22;
+  --stehlen-charcoal: #1E2326;
+  --stehlen-gunmetal: #4A525A;
+  --stehlen-white: #FFFFFF;
+  --stehlen-light-gray: #F9FAFB;
+  --stehlen-silver: #C5C8CB;
+  --stehlen-border: #E5E7EB;
+  --stehlen-text: #222222;
+  --stehlen-text-secondary: #6B7280;
+  --stehlen-transition: 0.3s ease;
+}
+
+/* ===== TYPOGRAPHY OVERRIDES ===== */
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4 {
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  color: var(--stehlen-text);
 }
 
 /* ===== CRITICAL FIX: Product Images Must Be Visible ===== */
@@ -31,6 +46,34 @@ slideshow-component,
   z-index: 10 !important;
 }
 
+/* ===== HEADER - Charcoal Background ===== */
+.header,
+header.header,
+.section-header,
+#header-group .header,
+.shopify-section-header .header {
+  background-color: var(--stehlen-charcoal) !important;
+  background: var(--stehlen-charcoal) !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+
+/* Header text/links white on charcoal */
+.header a,
+.header .header__logo a,
+.header nav a,
+.header__menu a,
+.header__nav a {
+  color: var(--stehlen-white) !important;
+}
+
+.header nav a:hover,
+.header__menu a:hover,
+.header__nav a:hover {
+  color: var(--stehlen-orange) !important;
+}
+
 /* ===== HEADER ICONS - MUST BE TRANSPARENT ===== */
 .header button,
 .header .button,
@@ -51,10 +94,47 @@ button.search-modal__button {
   background: transparent !important;
   border-color: transparent !important;
   box-shadow: none !important;
+  color: var(--stehlen-white) !important;
 }
 
-/* ===== ACTION BUTTONS - Stehlen Blue ===== */
-/* Only target ACTUAL action buttons, not header/utility buttons */
+.header button:hover,
+.header .button:hover,
+.header__icon:hover,
+header button:hover {
+  color: var(--stehlen-orange) !important;
+}
+
+/* Header icon SVGs */
+.header svg,
+.header__icon svg,
+header svg {
+  color: var(--stehlen-white) !important;
+  stroke: var(--stehlen-white) !important;
+}
+
+.header button:hover svg,
+.header__icon:hover svg {
+  color: var(--stehlen-orange) !important;
+  stroke: var(--stehlen-orange) !important;
+}
+
+/* Bigger logo */
+.header__logo img,
+.header .logo img,
+.header-logo img {
+  max-height: 60px !important;
+  height: auto !important;
+}
+
+@media (max-width: 749px) {
+  .header__logo img,
+  .header .logo img,
+  .header-logo img {
+    max-height: 45px !important;
+  }
+}
+
+/* ===== ACTION BUTTONS - Orange ===== */
 button[name="add"],
 .product-form__submit,
 .shopify-payment-button__button--unbranded,
@@ -63,15 +143,43 @@ form[action*="contact"] button[type="submit"],
 form[action*="subscribe"] button[type="submit"],
 .newsletter button[type="submit"],
 .footer form button[type="submit"] {
-  background-color: #2B4570 !important;
-  border-color: #2B4570 !important;
-  color: #fff !important;
+  background-color: var(--stehlen-orange) !important;
+  border-color: var(--stehlen-orange) !important;
+  color: var(--stehlen-white) !important;
+  border-radius: 8px !important;
+  text-transform: uppercase !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  box-shadow: 0 2px 8px rgba(243, 156, 18, 0.3) !important;
+  transition: var(--stehlen-transition) !important;
 }
 
 button[name="add"]:hover,
-.product-form__submit:hover {
-  background-color: #1e3250 !important;
-  border-color: #1e3250 !important;
+.product-form__submit:hover,
+.shopify-payment-button__button--unbranded:hover,
+form[action*="cart"] button[type="submit"]:hover,
+form[action*="contact"] button[type="submit"]:hover {
+  background-color: var(--stehlen-orange-dark) !important;
+  border-color: var(--stehlen-orange-dark) !important;
+  box-shadow: 0 4px 12px rgba(243, 156, 18, 0.4) !important;
+}
+
+/* Secondary buttons */
+.button--secondary,
+.button-secondary {
+  background: transparent !important;
+  border: 2px solid var(--stehlen-orange) !important;
+  color: var(--stehlen-orange) !important;
+  border-radius: 8px !important;
+  text-transform: uppercase !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+}
+
+.button--secondary:hover,
+.button-secondary:hover {
+  background: var(--stehlen-orange) !important;
+  color: var(--stehlen-white) !important;
 }
 
 /* ===== FORM INPUTS - Clean white with border ===== */
@@ -86,14 +194,16 @@ select,
 .field__input {
   background-color: #fff !important;
   color: #333 !important;
-  border: 1px solid #ccc !important;
+  border: 1px solid var(--stehlen-silver) !important;
+  border-radius: 4px !important;
 }
 
 input:focus,
 textarea:focus,
 select:focus {
-  border-color: #2B4570 !important;
+  border-color: var(--stehlen-orange) !important;
   outline: none !important;
+  box-shadow: 0 0 0 2px rgba(243, 156, 18, 0.2) !important;
 }
 
 /* ===== QUANTITY SELECTOR ===== */
@@ -126,7 +236,7 @@ quantity-component {
   align-items: center;
   gap: 48px;
   padding: 24px 20px;
-  background: var(--stehlen-gray);
+  background: var(--stehlen-light-gray);
   flex-wrap: wrap;
 }
 
@@ -135,8 +245,8 @@ quantity-component {
   align-items: center;
   gap: 10px;
   font-size: 15px;
-  font-weight: 500;
-  color: #333;
+  font-weight: 600;
+  color: var(--stehlen-text);
 }
 
 @media (max-width: 749px) {
@@ -155,9 +265,11 @@ quantity-component {
 .vehicle-title {
   text-align: center;
   font-size: 1.75rem;
-  font-weight: 600;
+  font-weight: 700;
   margin-bottom: 32px;
-  color: var(--stehlen-dark);
+  color: var(--stehlen-text);
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
 }
 
 .category-grid {
@@ -171,23 +283,23 @@ quantity-component {
   flex-direction: column;
   align-items: center;
   padding: 32px 20px;
-  background: #fff;
-  border: 1px solid var(--stehlen-border);
+  background: var(--stehlen-gunmetal);
+  border: 2px solid transparent;
   border-radius: 12px;
   text-decoration: none;
-  color: var(--stehlen-dark);
-  transition: all 0.2s ease;
+  color: var(--stehlen-white);
+  transition: var(--stehlen-transition);
 }
 
 .category-card:hover {
-  border-color: var(--stehlen-blue);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  transform: translateY(-2px);
+  border-color: var(--stehlen-orange);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  transform: translateY(-4px);
 }
 
 .category-icon { font-size: 2.5rem; margin-bottom: 16px; }
-.category-card h3 { font-size: 1rem; font-weight: 600; text-align: center; margin-bottom: 12px; }
-.category-cta { font-size: 0.875rem; color: var(--stehlen-blue); font-weight: 500; }
+.category-card h3 { font-size: 1rem; font-weight: 700; text-align: center; margin-bottom: 12px; color: var(--stehlen-white); text-transform: uppercase; letter-spacing: 0.02em; }
+.category-cta { font-size: 0.875rem; color: var(--stehlen-orange); font-weight: 600; }
 
 @media (max-width: 749px) {
   .category-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
@@ -215,18 +327,21 @@ quantity-component {
   align-items: center;
   justify-content: center;
   padding: 16px 32px;
-  background: var(--stehlen-dark);
+  background: var(--stehlen-charcoal);
+  border: 2px solid transparent;
   border-radius: 8px;
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: var(--stehlen-transition);
 }
 
 .vehicle-card:hover {
-  background: var(--stehlen-blue);
+  background: var(--stehlen-orange);
+  border-color: var(--stehlen-orange);
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
 }
 
-.vehicle-name { color: #fff; font-size: 1rem; font-weight: 600; }
+.vehicle-name { color: #fff; font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
 
 @media (max-width: 749px) {
   .vehicle-grid { gap: 10px; }
@@ -236,14 +351,14 @@ quantity-component {
 
 /* ===== CTA SECTION ===== */
 .cta-section {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  background: linear-gradient(135deg, var(--stehlen-charcoal) 0%, var(--stehlen-gunmetal) 100%);
   padding: 64px 20px;
   text-align: center;
 }
 
 .cta-content { max-width: 600px; margin: 0 auto; }
-.cta-content h2 { color: #fff; font-size: 1.75rem; font-weight: 600; margin-bottom: 16px; }
-.cta-content p { color: #ccc; font-size: 1rem; margin-bottom: 32px; line-height: 1.6; }
+.cta-content h2 { color: #fff; font-size: 1.75rem; font-weight: 700; margin-bottom: 16px; text-transform: uppercase; }
+.cta-content p { color: var(--stehlen-silver); font-size: 1rem; margin-bottom: 32px; line-height: 1.6; }
 .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
 
 .cta-button {
@@ -251,15 +366,17 @@ quantity-component {
   padding: 14px 32px;
   border-radius: 8px;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: var(--stehlen-transition);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-.cta-button.primary { background: var(--stehlen-blue); color: #fff; }
-.cta-button.primary:hover { background: var(--stehlen-blue-dark); transform: translateY(-2px); }
+.cta-button.primary { background: var(--stehlen-orange); color: #fff; box-shadow: 0 2px 8px rgba(243, 156, 18, 0.3); }
+.cta-button.primary:hover { background: var(--stehlen-orange-dark); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(243, 156, 18, 0.4); }
 .cta-button.secondary { background: transparent; color: #fff; border: 2px solid #fff; }
-.cta-button.secondary:hover { background: #fff; color: var(--stehlen-dark); }
+.cta-button.secondary:hover { background: #fff; color: var(--stehlen-charcoal); }
 
 @media (max-width: 749px) {
   .cta-section { padding: 48px 20px; }
@@ -285,7 +402,19 @@ quantity-component {
   align-items: center;
   gap: 8px;
   font-size: 0.875rem;
-  color: #666;
+  color: var(--stehlen-text-secondary);
+}
+
+/* ===== BADGES ===== */
+.badge,
+.card__badge,
+.product-badge {
+  background: var(--stehlen-orange) !important;
+  color: var(--stehlen-white) !important;
+  border-radius: 6px !important;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 /* ===== COLLECTION PAGE ===== */
@@ -340,30 +469,24 @@ quantity-component {
   }
 }
 
-/* ===== HEADER - Compact & Bigger Logo ===== */
-.header {
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  padding-top: 8px !important;
-  padding-bottom: 8px !important;
+/* Product card styling */
+.product-grid__item,
+.card-wrapper,
+.product-card {
+  border: 2px solid var(--stehlen-border) !important;
+  border-radius: 12px !important;
+  transition: var(--stehlen-transition) !important;
+  overflow: hidden;
 }
 
-/* Bigger logo */
-.header__logo img,
-.header .logo img,
-.header-logo img {
-  max-height: 60px !important;
-  height: auto !important;
+.product-grid__item:hover,
+.card-wrapper:hover,
+.product-card:hover {
+  border-color: var(--stehlen-orange) !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1) !important;
 }
 
-@media (max-width: 749px) {
-  .header__logo img,
-  .header .logo img,
-  .header-logo img {
-    max-height: 45px !important;
-  }
-}
-
-/* Remove ALL space after header */
+/* ===== HEADER - Remove space after ===== */
 .header + *,
 header + *,
 #header-group + *,
@@ -375,6 +498,7 @@ header + *,
 /* Compact announcement bar */
 .announcement-bar {
   padding: 6px 16px !important;
+  background: var(--stehlen-charcoal) !important;
 }
 
 /* Remove whitespace in collection page */
@@ -410,25 +534,46 @@ main,
   z-index: 999 !important;
 }
 
-/* ===== GLOBAL POLISH ===== */
-.footer { background: var(--stehlen-dark); color: #fff; }
-.footer a { color: #ccc; }
-.footer a:hover { color: #fff; }
+/* ===== FOOTER - Charcoal ===== */
+.footer,
+footer,
+.section-footer {
+  background: var(--stehlen-charcoal) !important;
+  color: var(--stehlen-white) !important;
+}
 
+.footer a { color: var(--stehlen-silver) !important; }
+.footer a:hover { color: var(--stehlen-orange) !important; }
+.footer h2, .footer h3, .footer h4,
+footer h2, footer h3, footer h4 {
+  color: var(--stehlen-white) !important;
+}
+
+/* ===== GLOBAL POLISH ===== */
 a:focus,
 button:focus,
 input:focus {
-  outline: 2px solid var(--stehlen-blue);
+  outline: 2px solid var(--stehlen-orange);
   outline-offset: 2px;
 }
 
 html { scroll-behavior: smooth; }
 
-/* Image loading fallback - light gray, NOT blue */
+/* Image loading fallback - light gray, NOT colored */
 img { background: #f5f5f5; }
 
 /* Section spacing */
 .section {
   padding-top: 32px !important;
   padding-bottom: 32px !important;
+}
+
+/* Links */
+a {
+  color: var(--stehlen-orange);
+  transition: var(--stehlen-transition);
+}
+
+a:hover {
+  color: var(--stehlen-orange-dark);
 }
