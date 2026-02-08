@@ -818,6 +818,13 @@ footer h2, footer h3, footer h4 {
 }
 
 /* ===== CUSTOMER ACCOUNT / LOGIN & NAV BUTTONS ===== */
+/* Account drawer close button */
+.account-drawer__close-button,
+.account-drawer__close-button .svg-wrapper,
+.account-drawer__close-button svg {
+  color: #222 !important;
+}
+
 /* Account drawer nav buttons (Orders, Profile) */
 .account-actions__link.button-secondary,
 .account-actions__list-item .button-secondary {
