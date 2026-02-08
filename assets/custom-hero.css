@@ -504,14 +504,23 @@ header + *,
   padding-top: 0 !important;
 }
 
-/* Compact announcement bar */
+/* Compact announcement bar - vertically centered text */
 .announcement-bar {
-  padding: 6px 16px !important;
+  padding: 0 16px !important;
   background: var(--stehlen-charcoal) !important;
+}
+
+.announcement-bar__slides {
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+.announcement-bar__slide {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  min-height: 36px !important;
+  min-height: 32px !important;
+  white-space: nowrap !important;
 }
 
 /* Remove gap between header and hero */
@@ -531,9 +540,18 @@ header + *,
 /* Hero section flush to header */
 .hero,
 .shopify-section--hero,
-[class*="shopify-section"]:has(.hero) {
+[class*="shopify-section"]:has(.hero),
+#MainContent > :first-child,
+#MainContent > .shopify-section:first-child {
   margin-top: 0 !important;
   padding-top: 0 !important;
+}
+
+/* Header group - no bottom gap */
+.shopify-section-group-header-group,
+#shopify-section-group-header-group {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
 }
 
 /* Remove whitespace in collection page */
