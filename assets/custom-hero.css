@@ -523,6 +523,26 @@ header + *,
   white-space: nowrap !important;
 }
 
+/* Kill section spacing/padding on announcement bar and header */
+.section-header .announcement-bar.section,
+.announcement-bar.section,
+.announcement-bar.spacing-style {
+  --padding-block-start: 0px !important;
+  --padding-block-end: 0px !important;
+  padding-block: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.header.section,
+.header.spacing-style,
+.section-header .header {
+  --padding-block-start: 0px !important;
+  --padding-block-end: 0px !important;
+  padding-block-end: 0 !important;
+  padding-bottom: 0 !important;
+}
+
 /* Remove gap between header and hero */
 .section-header,
 .shopify-section-header,
