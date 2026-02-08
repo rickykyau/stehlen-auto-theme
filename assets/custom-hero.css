@@ -394,7 +394,63 @@ quantity-component {
   .cta-button { width: 100%; text-align: center; }
 }
 
-/* ===== PRODUCT PAGE ===== */
+/* ===== PRODUCT PAGE - Gallery ===== */
+/* Cap gallery height so thumbnails are visible without scrolling */
+.media-gallery .constrain-height,
+.media-gallery .product-media-container.constrain-height {
+  --constrained-height: 500px !important;
+  --constrained-min-height: 300px !important;
+  max-height: 500px !important;
+}
+
+@media (max-width: 749px) {
+  .media-gallery .constrain-height,
+  .media-gallery .product-media-container.constrain-height {
+    --constrained-height: 350px !important;
+    --constrained-min-height: 200px !important;
+    max-height: 350px !important;
+  }
+}
+
+/* Ensure carousel arrows are visible and clickable */
+.media-gallery slideshow-arrows {
+  display: flex !important;
+}
+
+.media-gallery .slideshow-control {
+  z-index: 20 !important;
+  opacity: 0.7 !important;
+  background: rgba(0,0,0,0.3) !important;
+  border-radius: 50% !important;
+  width: 40px !important;
+  height: 40px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.media-gallery .slideshow-control:hover {
+  opacity: 1 !important;
+  background: rgba(0,0,0,0.6) !important;
+}
+
+.media-gallery .slideshow-control svg {
+  color: #fff !important;
+  stroke: #fff !important;
+}
+
+/* Thumbnails - always visible below main image */
+.media-gallery .slideshow-controls__thumbnails-container {
+  margin-top: 8px !important;
+  display: flex !important;
+}
+
+.media-gallery .slideshow-controls__thumbnails {
+  display: flex !important;
+  gap: 8px !important;
+}
+
+/* Product info section */
 .product-information { padding-top: 24px; }
 
 .product-trust-badges {
