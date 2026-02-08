@@ -262,18 +262,19 @@ quantity-selector-component button,
 .quantity input,
 .quantity__input,
 quantity-selector-component input {
-  background-color: #fff !important;
+  background-color: transparent !important;
   border: none !important;
   color: #333 !important;
+  box-shadow: none !important;
 }
 
 .quantity,
 quantity-component,
 quantity-selector-component,
 .quantity-selector {
-  border: 1px solid #ddd !important;
+  border: none !important;
   border-radius: 8px !important;
-  background: #fff !important;
+  background: transparent !important;
 }
 
 /* ===== TRUST BADGES ===== */
