@@ -537,9 +537,28 @@ header + *,
 .header.section,
 .header.spacing-style,
 .section-header .header {
-  --padding-block-start: 0px !important;
   --padding-block-end: 0px !important;
   padding-block-end: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Header row bottom padding */
+.header__row {
+  --padding-block-end: 0px !important;
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.header__columns.spacing-style {
+  --padding-block-end: 4px !important;
+  padding-bottom: 4px !important;
+}
+
+/* Header section wrapper */
+#shopify-section-header,
+.shopify-section-header,
+[id*="header_section"] {
+  margin-bottom: 0 !important;
   padding-bottom: 0 !important;
 }
 
