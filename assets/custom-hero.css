@@ -582,6 +582,38 @@ footer h2, footer h3, footer h4 {
   color: var(--stehlen-white) !important;
 }
 
+/* ===== CUSTOMER ACCOUNT / LOGIN BUTTONS ===== */
+/* Primary action buttons on login/account pages */
+.shopify-challenge__button,
+.customer button[type="submit"],
+#customer_login button,
+#create_customer button,
+.reset__button,
+form[action*="account"] button[type="submit"],
+a.button[href*="account"],
+.login-page .button,
+.customer .button,
+#customer_login_guest button,
+.new-customer__button-cta,
+/* Generic buttons and links styled as buttons */
+.button:not(.button--secondary):not(.cta-button):not([name="add"]):not(.header-actions__action):not(.search-modal__button):not(.quantity__button) {
+  background-color: var(--stehlen-orange) !important;
+  border-color: var(--stehlen-orange) !important;
+  color: var(--stehlen-white) !important;
+  border-radius: 8px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+}
+
+.shopify-challenge__button:hover,
+.customer button[type="submit"]:hover,
+.button:not(.button--secondary):not(.cta-button):not([name="add"]):not(.header-actions__action):not(.search-modal__button):not(.quantity__button):hover {
+  background-color: var(--stehlen-orange-dark) !important;
+  border-color: var(--stehlen-orange-dark) !important;
+  color: var(--stehlen-white) !important;
+}
+
 /* ===== GLOBAL POLISH ===== */
 a:focus,
 button:focus,
