@@ -214,8 +214,8 @@
               "type": "button",
               "name": "t:names.button",
               "settings": {
-                "label": "View All",
-                "link": "shopify://collections/all",
+                "label": "",
+                "link": "",
                 "open_in_new_tab": false,
                 "style_class": "button-secondary",
                 "width": "fit-content",
