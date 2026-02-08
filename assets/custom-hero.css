@@ -261,11 +261,16 @@ quantity-selector-component button,
 
 .quantity input,
 .quantity__input,
-quantity-selector-component input {
+quantity-selector-component input,
+.quantity-selector input[type='number'],
+.product-form__quantity input {
   background-color: transparent !important;
   border: none !important;
   color: #333 !important;
   box-shadow: none !important;
+  outline: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: textfield !important;
 }
 
 .quantity,
