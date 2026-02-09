@@ -112,9 +112,12 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // Populate years
+  var yearHtml = '<option value="">— Select Year —</option>';
   getAllYears().forEach(function(y) {
-    yearSel.innerHTML += '<option value="'+y+'">'+y+'</option>';
+    yearHtml += '<option value="'+y+'">'+y+'</option>';
   });
+  yearSel.innerHTML = yearHtml;
+  console.log('[MVD] Populated ' + getAllYears().length + ' years');
 
   yearSel.addEventListener('change', function() {
     makeSel.innerHTML = '<option value="">— Select Make —</option>';

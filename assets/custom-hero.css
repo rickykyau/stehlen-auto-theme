@@ -397,6 +397,7 @@ header svg {
   position: relative !important;
   z-index: 10001 !important;
   box-shadow: 0 16px 48px rgba(0,0,0,0.3) !important;
+  overflow: visible !important;
 }
 
 .mvd-close {
@@ -429,7 +430,8 @@ header svg {
 .mvd-form-row {
   display: flex !important;
   gap: 12px !important;
-  align-items: stretch !important;
+  align-items: flex-end !important;
+  overflow: visible !important;
 }
 
 .mvd-select-group {
