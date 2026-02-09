@@ -28,15 +28,23 @@ h1, h2, h3, h4, h5, h6,
 
 /* ===== Product Page: Cap main image height on desktop ===== */
 @media (min-width: 750px) {
-  .product .media-gallery,
-  .product .product-media-container,
-  .product slideshow-component,
-  .product .media-gallery__viewer,
-  .product .media-gallery__viewer-item,
-  .product .media-gallery__viewer-item img {
-    max-height: 350px !important;
+  .product-media-container,
+  .product-media-gallery,
+  .media-gallery {
+    max-height: 55vh !important;
+  }
+  
+  .product-media-container slideshow-component,
+  .product-media-gallery slideshow-component {
+    max-height: 50vh !important;
+  }
+  
+  .product-media-container slideshow-component img,
+  .product-media-gallery img,
+  .media-gallery img,
+  .product-media__image {
+    max-height: 50vh !important;
     object-fit: contain !important;
-    width: auto !important;
   }
 }
 
