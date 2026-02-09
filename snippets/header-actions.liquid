@@ -23,7 +23,7 @@
   </div>
 
   <!-- Vehicle Selector Modal (full screen overlay) -->
-  <div class="mvd-overlay" id="mvd-overlay" style="display:none;">
+  <div class="mvd-overlay" id="mvd-overlay">
     <div class="mvd-modal" id="mvd-modal">
       <button type="button" class="mvd-close" id="mvd-close">&times;</button>
       <h2 class="mvd-title">Select Your Vehicle</h2>
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function() {
     stepModel.style.display = 'none';
     stepYear.style.display = 'block';
     renderButtons(yearOpts, getAllYears(), pickYear);
-    overlay.style.display = 'flex';
+    overlay.classList.add('mvd-open');
     document.body.style.overflow = 'hidden';
     // Show current vehicle if saved
     var saved = localStorage.getItem('selectedVehicle');
@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function closeModal() {
-    overlay.style.display = 'none';
+    overlay.classList.remove('mvd-open');
     document.body.style.overflow = '';
   }
 

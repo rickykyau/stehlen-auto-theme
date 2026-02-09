@@ -379,9 +379,13 @@ header svg {
   inset: 0 !important;
   background: rgba(0,0,0,0.7) !important;
   z-index: 10000 !important;
-  display: flex !important;
   align-items: center !important;
   justify-content: center !important;
+  display: none !important;
+}
+
+.mvd-overlay.mvd-open {
+  display: flex !important;
 }
 
 .mvd-modal {
