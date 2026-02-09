@@ -44,7 +44,7 @@
           <label class="mvd-label" for="mvd-model">Model</label>
           <select id="mvd-model" disabled><option value="">— Select Model —</option></select>
         </div>
-        <button type="button" class="mvd-go" id="mvd-go" disabled>GO</button>
+        <button type="button" class="mvd-go" id="mvd-go" disabled style="background:#999;color:#fff;padding:14px 32px;border:none;border-radius:8px;font-size:1rem;font-weight:800;text-transform:uppercase;min-width:80px;height:48px;cursor:not-allowed;">GO</button>
       </div>
       <div class="mvd-current" id="mvd-current" style="display:none;">
         <span id="mvd-current-text"></span>
@@ -212,7 +212,17 @@ var __stehlenVehicleData = (function() {
     } else { modelSel.disabled = true; }
   });
 
-  modelSel.addEventListener('change', function() { goBtn.disabled = !this.value; });
+  modelSel.addEventListener('change', function() {
+    goBtn.disabled = !this.value;
+    if (this.value) {
+      goBtn.style.background = '#F39C12';
+      goBtn.style.color = '#fff';
+      goBtn.style.cursor = 'pointer';
+    } else {
+      goBtn.style.background = '#999';
+      goBtn.style.cursor = 'not-allowed';
+    }
+  });
 
   goBtn.addEventListener('click', function() {
     var y=yearSel.value, m=makeSel.value, md=modelSel.value;
