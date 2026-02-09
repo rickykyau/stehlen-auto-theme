@@ -72,18 +72,84 @@
 </header-actions>
 
 <script>
+/* Vehicle data built dynamically from product titles */
+var __stehlenProducts = [
+  {%- for product in collections.all.products -%}
+    {{ product.title | json }}{%- unless forloop.last -%},{%- endunless -%}
+  {%- endfor -%}
+];
+
+/* Parse year ranges, makes, and models from product titles */
+var __stehlenVehicleData = (function() {
+  var makePatterns = {
+    'Ford': /\bFord\b/i,
+    'Chevy': /\bChev(y|rolet)?\b/i,
+    'GMC': /\bGMC\b/i,
+    'Dodge': /\bDodge\b/i,
+    'Ram': /\bRam\b/i,
+    'Toyota': /\bToyota\b/i,
+    'Nissan': /\bNissan\b/i,
+    'Jeep': /\bJeep\b/i
+  };
+  var modelPatterns = {
+    'Ford': { 'F-150': /\bF[- ]?150\b/i, 'F-250': /\bF[- ]?250\b/i, 'F-350': /\bF[- ]?350\b/i, 'Ranger': /\bRanger\b/i, 'Bronco': /\bBronco\b/i },
+    'Chevy': { 'Silverado 1500': /\bSilverado\s*1500\b/i, 'Silverado 2500': /\bSilverado\s*2500\b/i, 'Colorado': /\bColorado\b/i },
+    'GMC': { 'Sierra 1500': /\bSierra\s*1500\b/i, 'Sierra 2500': /\bSierra\s*2500\b/i, 'Canyon': /\bCanyon\b/i },
+    'Dodge': { 'Ram 1500': /\bRam\s*1500\b/i, 'Ram 2500': /\bRam\s*2500\b/i, 'Charger': /\bCharger\b/i },
+    'Ram': { 'Ram 1500': /\bRam\s*1500\b/i, 'Ram 2500': /\bRam\s*2500\b/i },
+    'Toyota': { 'Tundra': /\bTundra\b/i, 'Tacoma': /\bTacoma\b/i, '4Runner': /\b4[- ]?Runner\b/i },
+    'Nissan': { 'Titan': /\bTitan\b/i, 'Frontier': /\bFrontier\b/i },
+    'Jeep': { 'Wrangler': /\bWrangler\b/i, 'Gladiator': /\bGladiator\b/i }
+  };
+
+  var data = {};
+  __stehlenProducts.forEach(function(title) {
+    /* Extract year range: "2004-2008", "2015+", "2022+" */
+    var yrMatch = title.match(/(\d{4})\s*[-–]\s*(\d{4})/);
+    var yrPlusMatch = !yrMatch && title.match(/(\d{4})\+/);
+    var startYear, endYear;
+    if (yrMatch) { startYear = +yrMatch[1]; endYear = +yrMatch[2]; }
+    else if (yrPlusMatch) { startYear = +yrPlusMatch[1]; endYear = 2025; }
+    else { return; /* universal / no year = skip */ }
+
+    /* Find make */
+    var foundMake = null;
+    Object.keys(makePatterns).forEach(function(mk) { if (makePatterns[mk].test(title)) foundMake = mk; });
+    if (!foundMake) return;
+
+    /* Find model */
+    var foundModel = null;
+    if (modelPatterns[foundMake]) {
+      Object.keys(modelPatterns[foundMake]).forEach(function(md) {
+        if (modelPatterns[foundMake][md].test(title)) foundModel = md;
+      });
+    }
+    if (!foundModel) return;
+
+    /* Build year array */
+    if (!data[foundMake]) data[foundMake] = {};
+    if (!data[foundMake][foundModel]) data[foundMake][foundModel] = [];
+    for (var y = startYear; y <= endYear; y++) {
+      if (data[foundMake][foundModel].indexOf(y) === -1) data[foundMake][foundModel].push(y);
+    }
+  });
+
+  /* Sort years descending within each model */
+  Object.keys(data).forEach(function(mk) {
+    Object.keys(data[mk]).forEach(function(md) {
+      data[mk][md].sort(function(a,b) { return b - a; });
+    });
+  });
+
+  return data;
+})();
+
 (function initVehicleSelector() {
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initVehicleSelector);
     return;
   }
-  var vehicleData = {
-    'Ford': {'F-150':[2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025],'F-250':[2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025],'F-350':[2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025],'Ranger':[2004,2005,2006,2007,2008,2009,2010,2011,2019,2020,2021,2022,2023,2024,2025],'Bronco':[2021,2022,2023,2024,2025]},
-    'Chevy': {'Silverado 1500':[2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025],'Silverado 2500':[2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025],'Colorado':[2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025]},
-    'GMC': {'Sierra 1500':[2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025],'Sierra 2500':[2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025],'Canyon':[2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025]},
-    'Dodge': {'Ram 1500':[2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025],'Ram 2500':[2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025],'Charger':[2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024]},
-    'Toyota': {'Tundra':[2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025],'Tacoma':[2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025],'4Runner':[2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024]}
-  };
+  var vehicleData = __stehlenVehicleData;
 
   var overlay = document.getElementById('mvd-overlay');
   var openBtn = document.getElementById('my-vehicle-btn');
@@ -118,8 +184,14 @@
     return r.sort();
   }
 
-  // Years are hardcoded in HTML - no JS population needed
-  console.log('[MVD] Year options: ' + yearSel.options.length);
+  // Filter year options to only show years that have products
+  var validYears = getAllYears();
+  if (validYears.length > 0) {
+    var yearHtml = '<option value="">— Select Year —</option>';
+    validYears.forEach(function(y) { yearHtml += '<option value="'+y+'">'+y+'</option>'; });
+    yearSel.innerHTML = yearHtml;
+  }
+  console.log('[MVD] Vehicle data:', JSON.stringify(Object.keys(vehicleData)), 'Years:', validYears.length);
 
   yearSel.addEventListener('change', function() {
     makeSel.innerHTML = '<option value="">— Select Make —</option>';
