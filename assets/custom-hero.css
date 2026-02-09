@@ -188,6 +188,15 @@ header.header,
 /* Header text/links white on charcoal */
 .header a,
 .header .header__logo a,
+/* Hide nav menu - using search bar + vehicle selector + category nav instead */
+.header nav,
+.header__menu,
+.header__nav,
+.header navigation-component,
+.header header-navigation {
+  display: none !important;
+}
+
 .header nav a,
 .header__menu a,
 .header__nav a {
