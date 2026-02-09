@@ -765,19 +765,20 @@ header + *,
 .section-header .header,
 .header__row,
 .header__row.section {
-  --padding-block-start: 24px !important;
-  --padding-block-end: 10px !important;
-  --header-padding: 10px !important;
-  padding-top: 24px !important;
-  padding-bottom: 10px !important;
+  --padding-block-start: 0px !important;
+  --padding-block-end: 0px !important;
+  --header-padding: 0px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
   margin-bottom: 0 !important;
 }
 
 .header__columns,
 .header__columns.spacing-style {
-  --padding-block-start: 0px !important;
-  --padding-block-end: 0px !important;
-  padding: 0 !important;
+  --padding-block-start: 12px !important;
+  --padding-block-end: 12px !important;
+  padding-block-start: 12px !important;
+  padding-block-end: 12px !important;
 }
 
 /* Header section wrapper */
@@ -799,8 +800,7 @@ header + *,
 
 .header {
   margin-bottom: 0 !important;
-  padding-bottom: 10px !important;
-  padding-top: 24px !important;
+  padding: 0 !important;
 }
 
 /* Hero section flush to header */
