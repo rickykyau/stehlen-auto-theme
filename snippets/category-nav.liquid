@@ -246,8 +246,17 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
   
+  function isUniversalProduct(productText) {
+    return productText.includes('universal') || 
+           (!Object.values(makeKeywords).some(keywords => 
+             keywords.some(kw => productText.includes(kw.toLowerCase()))
+           ));
+  }
+  
   function matchesMake(productText, makes) {
     if (makes.length === 0) return true;
+    // Universal products always show regardless of vehicle filter
+    if (isUniversalProduct(productText)) return true;
     return makes.some(make => {
       const keywords = makeKeywords[make] || [make.toLowerCase()];
       return keywords.some(keyword => productText.includes(keyword.toLowerCase()));
