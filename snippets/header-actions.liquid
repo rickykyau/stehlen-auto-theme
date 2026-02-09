@@ -63,7 +63,7 @@
         <label class="mvd-label" for="mvd-model">Model</label>
         <select id="mvd-model" disabled><option value="">— Select Model —</option></select>
       </div>
-      <button type="button" id="mvd-go" disabled style="background:#999;color:#fff;padding:14px 32px;border:none;border-radius:8px;font-size:1rem;font-weight:800;text-transform:uppercase;min-width:80px;height:48px;cursor:not-allowed;flex-shrink:0;align-self:flex-end;">GO</button>
+      <button type="button" id="mvd-go" data-disabled="true" style="background:#999 !important;color:#fff !important;padding:14px 32px !important;border:none !important;border-radius:8px !important;font-size:1rem !important;font-weight:800 !important;text-transform:uppercase !important;min-width:80px !important;height:48px !important;cursor:not-allowed;flex-shrink:0;align-self:flex-end;opacity:1 !important;">GO</button>
     </div>
     <div class="mvd-current" id="mvd-current" style="display:none;">
       <span id="mvd-current-text"></span>
@@ -197,7 +197,7 @@ var __stehlenVehicleData = (function() {
   yearSel.addEventListener('change', function() {
     makeSel.innerHTML = '<option value="">— Select Make —</option>';
     modelSel.innerHTML = '<option value="">— Select Model —</option>';
-    modelSel.disabled = true; goBtn.disabled = true;
+    modelSel.disabled = true; goBtn.dataset.disabled = "true"; goBtn.style.background = "#999"; goBtn.style.cursor = "not-allowed";
     if (this.value) {
       getMakes(this.value).forEach(function(m) { makeSel.innerHTML += '<option value="'+m+'">'+m+'</option>'; });
       makeSel.disabled = false;
@@ -206,7 +206,7 @@ var __stehlenVehicleData = (function() {
 
   makeSel.addEventListener('change', function() {
     modelSel.innerHTML = '<option value="">— Select Model —</option>';
-    goBtn.disabled = true;
+    goBtn.dataset.disabled = "true"; goBtn.style.background = "#999"; goBtn.style.cursor = "not-allowed";
     if (this.value) {
       getModels(yearSel.value, this.value).forEach(function(m) { modelSel.innerHTML += '<option value="'+m+'">'+m+'</option>'; });
       modelSel.disabled = false;
@@ -214,12 +214,12 @@ var __stehlenVehicleData = (function() {
   });
 
   modelSel.addEventListener('change', function() {
-    goBtn.disabled = !this.value;
     if (this.value) {
+      goBtn.dataset.disabled = 'false';
       goBtn.style.background = '#F39C12';
-      goBtn.style.color = '#fff';
       goBtn.style.cursor = 'pointer';
     } else {
+      goBtn.dataset.disabled = 'true';
       goBtn.style.background = '#999';
       goBtn.style.cursor = 'not-allowed';
     }
@@ -255,7 +255,7 @@ var __stehlenVehicleData = (function() {
         makeSel.dispatchEvent(new Event('change'));
         setTimeout(function(){
           modelSel.value = v.model;
-          goBtn.disabled = false;
+          goBtn.dataset.disabled = "false"; goBtn.style.background = "#F39C12"; goBtn.style.cursor = "pointer";
         }, 50);
       }, 50);
     } else {
@@ -275,7 +275,7 @@ var __stehlenVehicleData = (function() {
     yearSel.value = '';
     makeSel.innerHTML = '<option value="">— Select Make —</option>'; makeSel.disabled = true;
     modelSel.innerHTML = '<option value="">— Select Model —</option>'; modelSel.disabled = true;
-    goBtn.disabled = true;
+    goBtn.dataset.disabled = "true"; goBtn.style.background = "#999"; goBtn.style.cursor = "not-allowed";
     var tc = document.getElementById('toggle-current');
     if (tc) tc.textContent = '';
   });
