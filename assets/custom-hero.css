@@ -100,6 +100,17 @@ h1, h2, h3, h4, h5, h6,
   margin-bottom: 12px !important;
 }
 
+/* ===== Product Price - Prominent ===== */
+.product .price,
+.product .price-item,
+.product .price__regular,
+.product-information .price,
+.product-information .price-item {
+  font-size: 1.75rem !important;
+  font-weight: 700 !important;
+  color: var(--stehlen-orange) !important;
+}
+
 /* ===== CRITICAL FIX: Product Images Must Be Visible ===== */
 .product-media,
 .product-media-container,
