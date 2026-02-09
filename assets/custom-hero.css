@@ -1046,37 +1046,45 @@ header + *,
 }
 
 .header__columns,
-.header__columns.spacing-style {
+.header__columns.spacing-style,
+.header__row--top .header__columns,
+.header__row .header__columns.spacing-style {
   --padding-block-start: 12px !important;
   --padding-block-end: 12px !important;
   padding-block-start: 12px !important;
   padding-block-end: 12px !important;
-  --header-left: auto !important;
-  --header-center: auto !important;
-  --header-right: 1fr !important;
-  --header-template-columns: auto 1fr !important;
+  display: grid !important;
   grid-template-columns: auto 1fr !important;
   grid-template-areas: 'left right' !important;
   gap: 16px !important;
 }
 
-/* Left column: hamburger + logo — compact */
-.header__column--left {
-  justify-self: start !important;
+/* Left column: hamburger + logo — compact, left-aligned */
+.header__column.header__column--left {
+  grid-area: left !important;
+  display: flex !important;
+  align-items: center !important;
   gap: 4px !important;
+  width: auto !important;
+  min-width: 0 !important;
+  justify-self: start !important;
 }
 
 /* Right column: search + vehicle + account + cart — fills remaining space */
-.header__column--right {
+.header__column.header__column--right {
+  grid-area: right !important;
   display: flex !important;
   align-items: center !important;
   gap: 8px !important;
+  width: 100% !important;
 }
 
 /* Search bar fills available space in right column */
+search-button.search-action,
 .header__column--right search-button,
 .header__column--right .search-action {
   flex: 1 1 auto !important;
+  max-width: none !important;
 }
 
 /* Header section wrapper */
