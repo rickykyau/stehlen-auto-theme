@@ -48,30 +48,23 @@ h1, h2, h3, h4, h5, h6,
   }
 }
 
-/* ===== Product Zoom Dialog - Single image view ===== */
+/* ===== Product Zoom Dialog - Single image view with snap ===== */
 @media (min-width: 750px) {
   .dialog-zoomed-gallery {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    overflow: hidden !important;
-    height: 100vh !important;
     scroll-snap-type: y mandatory !important;
   }
   
   .dialog-zoomed-gallery > li {
-    scroll-snap-align: center !important;
+    scroll-snap-align: start !important;
     min-height: 100vh !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    flex-shrink: 0 !important;
   }
   
   .dialog-zoomed-gallery > li img {
     max-height: 90vh !important;
-    max-width: 90vw !important;
+    max-width: 85vw !important;
     object-fit: contain !important;
   }
 }
