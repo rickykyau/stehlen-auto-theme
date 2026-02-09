@@ -1531,3 +1531,34 @@ section:has(.stehlen-footer) .section-background,
     gap: 30px;
   }
 }
+
+/* ===== PAGE CONTENT HEADERS — reduce oversized headings ===== */
+.main-page-content h1,
+.page-content h1,
+.rte h1,
+article h1,
+.policy-page h1,
+.template-page h1,
+main h1.page-title,
+main .page-header h1 {
+  font-size: 1.8rem !important;
+  line-height: 1.2 !important;
+}
+.main-page-content h2,
+.page-content h2,
+.rte h2,
+article h2,
+.policy-page h2,
+main .rte h2 {
+  font-size: 1.3rem !important;
+  line-height: 1.3 !important;
+}
+.main-page-content h3,
+.page-content h3,
+.rte h3,
+article h3,
+.policy-page h3,
+main .rte h3 {
+  font-size: 1.1rem !important;
+  line-height: 1.3 !important;
+}
