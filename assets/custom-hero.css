@@ -177,13 +177,12 @@ header.header,
   padding-bottom: 8px !important;
 }
 
-/* Logo - black background to match dark header */
+/* Logo - transparent background */
 .header__logo img,
 .header .logo img,
 .header-logo img {
-  background-color: #1E2326 !important;
-  padding: 4px 8px !important;
-  border-radius: 4px !important;
+  background-color: transparent !important;
+  padding: 0 !important;
 }
 
 /* Header text/links white on charcoal */
@@ -802,7 +801,7 @@ header + *,
 
 .header {
   margin-bottom: 0 !important;
-  padding-bottom: 4px !important;
+  padding-bottom: 8px !important;
 }
 
 /* Hero section flush to header */
