@@ -1003,6 +1003,14 @@ a.button[href*="account"],
   padding-right: clamp(24px, 5vw, 80px) !important;
 }
 
+/* Hide empty buttons (e.g. cleared View All) */
+a.button:empty,
+a.button-secondary:empty,
+a.button[href=""]:not([class*="header"]),
+a.button:not([href]):not([class*="header"]) {
+  display: none !important;
+}
+
 /* ===== GLOBAL POLISH ===== */
 a:focus-visible,
 button:focus-visible,
