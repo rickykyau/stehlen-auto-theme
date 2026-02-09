@@ -208,6 +208,11 @@ header.header,
   color: var(--stehlen-orange) !important;
 }
 
+/* Show hamburger on desktop (since we hid nav links) */
+.header__drawer.desktop\:hidden {
+  display: block !important;
+}
+
 /* ===== HAMBURGER MENU ICON FIX ===== */
 .menu-drawer-container .header__icon--summary,
 .menu-drawer-container .header__icon--summary svg,
