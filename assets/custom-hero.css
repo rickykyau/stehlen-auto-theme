@@ -364,7 +364,7 @@ header svg {
     align-items: center !important;
     gap: 8px !important;
     background: rgba(255,255,255,0.08) !important;
-    border: 1px solid rgba(255,255,255,0.25) !important;
+    border: 1px solid rgba(255,255,255,0.35) !important;
     border-radius: 6px !important;
     padding: 6px 14px !important;
     color: #fff !important;
@@ -373,6 +373,9 @@ header svg {
     white-space: nowrap !important;
     cursor: pointer !important;
     transition: all 0.2s !important;
+    width: 240px !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
   }
   
   .my-vehicle-btn:hover {
