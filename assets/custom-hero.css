@@ -48,6 +48,37 @@ h1, h2, h3, h4, h5, h6,
   }
 }
 
+/* ===== Product Page Typography ===== */
+/* Product title */
+.product h1,
+.product__title,
+.product-information h1 {
+  font-size: 1.5rem !important;
+  line-height: 1.3 !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+  text-transform: none !important;
+  color: var(--stehlen-charcoal) !important;
+}
+
+/* Product description section headers */
+.product .rte h1,
+.product .rte h2,
+.product .rte h3,
+.product-information .rte h1,
+.product-information .rte h2,
+.product-information .rte h3 {
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: var(--stehlen-charcoal) !important;
+  border-left: 3px solid var(--stehlen-orange) !important;
+  padding-left: 10px !important;
+  margin-top: 24px !important;
+  margin-bottom: 12px !important;
+}
+
 /* ===== CRITICAL FIX: Product Images Must Be Visible ===== */
 .product-media,
 .product-media-container,
