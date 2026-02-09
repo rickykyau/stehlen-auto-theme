@@ -1051,25 +1051,25 @@ header + *,
   --padding-block-end: 12px !important;
   padding-block-start: 12px !important;
   padding-block-end: 12px !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 12px !important;
+  --header-left: auto !important;
+  --header-center: auto !important;
+  --header-right: 1fr !important;
+  --header-template-columns: auto 1fr !important;
+  grid-template-columns: auto 1fr !important;
+  grid-template-areas: 'left right' !important;
+  gap: 16px !important;
 }
 
-/* Left column: hamburger + logo — compact, no extra space */
+/* Left column: hamburger + logo — compact */
 .header__column--left {
-  flex: 0 0 auto !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 8px !important;
+  justify-self: start !important;
+  gap: 4px !important;
 }
 
 /* Right column: search + vehicle + account + cart — fills remaining space */
 .header__column--right {
-  flex: 1 1 auto !important;
   display: flex !important;
   align-items: center !important;
-  justify-content: flex-end !important;
   gap: 8px !important;
 }
 
