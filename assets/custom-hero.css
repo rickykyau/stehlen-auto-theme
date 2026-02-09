@@ -440,7 +440,12 @@ header svg {
   border-radius: 8px !important;
   padding: 0 12px !important;
   background: #fff !important;
+  color: #333 !important;
   transition: border-color 0.2s !important;
+}
+.mvd-select-group select option {
+  color: #333 !important;
+  background: #fff !important;
 }
 
 .mvd-select-group:focus-within {
@@ -457,19 +462,28 @@ header svg {
 }
 
 .mvd-select-group select {
-  flex: 1 !important;
+  flex: 1 1 auto !important;
   border: none !important;
-  background: transparent !important;
+  background: #fff !important;
   color: #333 !important;
-  font-size: 0.9rem !important;
+  font-size: 0.95rem !important;
   font-weight: 600 !important;
-  padding: 14px 4px !important;
+  padding: 14px 8px !important;
   cursor: pointer !important;
   outline: none !important;
   -webkit-appearance: menulist !important;
   appearance: menulist !important;
-  min-width: 0 !important;
-  width: 100% !important;
+  min-width: 80px !important;
+  width: auto !important;
+  height: auto !important;
+  line-height: normal !important;
+  text-indent: 0 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  overflow: visible !important;
+  text-overflow: ellipsis !important;
+  position: relative !important;
+  z-index: 1 !important;
 }
 
 .mvd-select-group select:disabled {
