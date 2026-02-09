@@ -20,6 +20,16 @@
       <span id="my-vehicle-text">SELECT YOUR VEHICLE</span>
       <span id="my-vehicle-change" style="display:none; color:#F39C12; font-weight:700; margin-left:6px; font-size:0.75rem;">CHANGE</span>
     </button>
+    <script>
+      /* Instant restore - runs inline, no DOMContentLoaded needed */
+      try {
+        var sv = JSON.parse(localStorage.getItem('selectedVehicle'));
+        if (sv && sv.year && sv.make && sv.model) {
+          document.getElementById('my-vehicle-text').textContent = sv.year + ' ' + sv.make + ' ' + sv.model;
+          document.getElementById('my-vehicle-change').style.display = 'inline';
+        }
+      } catch(e) {}
+    </script>
   </div>
 
   {% if shop.customer_accounts_enabled %}
