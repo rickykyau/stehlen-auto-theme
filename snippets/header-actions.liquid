@@ -22,36 +22,6 @@
     </button>
   </div>
 
-  <!-- Vehicle Selector Modal (CARiD style) -->
-  <div class="mvd-overlay" id="mvd-overlay">
-    <div class="mvd-modal" id="mvd-modal">
-      <button type="button" class="mvd-close" id="mvd-close">&times;</button>
-      <h2 class="mvd-title">Select Your Vehicle</h2>
-      <p class="mvd-subtitle">Provide vehicle details to confirm fitment</p>
-      <div class="mvd-form-row">
-        <div class="mvd-select-group">
-          <label class="mvd-label" for="mvd-year">Year</label>
-          <select id="mvd-year">
-            <option value="">— Select Year —</option>
-            <option value="2025">2025</option><option value="2024">2024</option><option value="2023">2023</option><option value="2022">2022</option><option value="2021">2021</option><option value="2020">2020</option><option value="2019">2019</option><option value="2018">2018</option><option value="2017">2017</option><option value="2016">2016</option><option value="2015">2015</option><option value="2014">2014</option><option value="2013">2013</option><option value="2012">2012</option><option value="2011">2011</option><option value="2010">2010</option><option value="2009">2009</option><option value="2008">2008</option><option value="2007">2007</option><option value="2006">2006</option><option value="2005">2005</option><option value="2004">2004</option><option value="2003">2003</option>
-          </select>
-        </div>
-        <div class="mvd-select-group">
-          <label class="mvd-label" for="mvd-make">Make</label>
-          <select id="mvd-make" disabled><option value="">— Select Make —</option></select>
-        </div>
-        <div class="mvd-select-group">
-          <label class="mvd-label" for="mvd-model">Model</label>
-          <select id="mvd-model" disabled><option value="">— Select Model —</option></select>
-        </div>
-        <button type="button" class="mvd-go" id="mvd-go" disabled style="background:#999;color:#fff;padding:14px 32px;border:none;border-radius:8px;font-size:1rem;font-weight:800;text-transform:uppercase;min-width:80px;height:48px;cursor:not-allowed;">GO</button>
-      </div>
-      <div class="mvd-current" id="mvd-current" style="display:none;">
-        <span id="mvd-current-text"></span>
-        <button type="button" class="mvd-clear-btn" id="mvd-clear-btn">Clear</button>
-      </div>
-    </div>
-  </div>
   {% if shop.customer_accounts_enabled %}
     {% render 'account-popover' %}
     {% render 'account-drawer' %}
@@ -70,6 +40,37 @@
     </a>
   {% endif %}
 </header-actions>
+
+<!-- Vehicle Selector Modal — OUTSIDE header-actions to avoid theme style interference -->
+<div class="mvd-overlay" id="mvd-overlay">
+  <div class="mvd-modal" id="mvd-modal">
+    <button type="button" class="mvd-close" id="mvd-close">&times;</button>
+    <h2 class="mvd-title">Select Your Vehicle</h2>
+    <p class="mvd-subtitle">Provide vehicle details to confirm fitment</p>
+    <div class="mvd-form-row">
+      <div class="mvd-select-group">
+        <label class="mvd-label" for="mvd-year">Year</label>
+        <select id="mvd-year">
+          <option value="">— Select Year —</option>
+          <option value="2025">2025</option><option value="2024">2024</option><option value="2023">2023</option><option value="2022">2022</option><option value="2021">2021</option><option value="2020">2020</option><option value="2019">2019</option><option value="2018">2018</option><option value="2017">2017</option><option value="2016">2016</option><option value="2015">2015</option><option value="2014">2014</option><option value="2013">2013</option><option value="2012">2012</option><option value="2011">2011</option><option value="2010">2010</option><option value="2009">2009</option><option value="2008">2008</option><option value="2007">2007</option><option value="2006">2006</option><option value="2005">2005</option><option value="2004">2004</option><option value="2003">2003</option>
+        </select>
+      </div>
+      <div class="mvd-select-group">
+        <label class="mvd-label" for="mvd-make">Make</label>
+        <select id="mvd-make" disabled><option value="">— Select Make —</option></select>
+      </div>
+      <div class="mvd-select-group">
+        <label class="mvd-label" for="mvd-model">Model</label>
+        <select id="mvd-model" disabled><option value="">— Select Model —</option></select>
+      </div>
+      <button type="button" id="mvd-go" disabled style="background:#999;color:#fff;padding:14px 32px;border:none;border-radius:8px;font-size:1rem;font-weight:800;text-transform:uppercase;min-width:80px;height:48px;cursor:not-allowed;flex-shrink:0;align-self:flex-end;">GO</button>
+    </div>
+    <div class="mvd-current" id="mvd-current" style="display:none;">
+      <span id="mvd-current-text"></span>
+      <button type="button" class="mvd-clear-btn" id="mvd-clear-btn">Clear</button>
+    </div>
+  </div>
+</div>
 
 <script>
 /* Vehicle data built dynamically from product titles */
