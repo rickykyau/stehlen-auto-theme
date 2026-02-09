@@ -7,6 +7,34 @@
 <header-actions
   {{- block.shopify_attributes -}}
 >
+  <!-- My Vehicle Control (CARiD style) -->
+  <div class="my-vehicle-header desktop-only" id="my-vehicle-header">
+    <button type="button" class="my-vehicle-btn" id="my-vehicle-btn" onclick="document.getElementById('vehicle-selector-wrapper') && document.getElementById('vehicle-selector-wrapper').classList.toggle('is-open'); window.scrollTo({top: 0, behavior: 'smooth'});">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+        <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+        <path d="M5 17h-2v-6l2-5h9l4 5h1a2 2 0 0 1 2 2v4h-2"/>
+        <path d="M9 17h6"/>
+        <path d="M5 11h14"/>
+      </svg>
+      <span id="my-vehicle-text">SELECT YOUR VEHICLE</span>
+      <span id="my-vehicle-change" style="display:none; color:#F39C12; font-weight:700; margin-left:6px; font-size:0.75rem;">CHANGE</span>
+    </button>
+  </div>
+  <script>
+    (function(){
+      var saved = localStorage.getItem('selectedVehicle');
+      if (saved) {
+        try {
+          var v = JSON.parse(saved);
+          var txt = document.getElementById('my-vehicle-text');
+          var chg = document.getElementById('my-vehicle-change');
+          if (txt) txt.textContent = v.year + ' ' + v.make + ' ' + v.model;
+          if (chg) chg.style.display = 'inline';
+        } catch(e) {}
+      }
+    })();
+  </script>
   {% if shop.customer_accounts_enabled %}
     {% render 'account-popover' %}
     {% render 'account-drawer' %}
