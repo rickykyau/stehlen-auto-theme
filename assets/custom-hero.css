@@ -1051,6 +1051,32 @@ header + *,
   --padding-block-end: 12px !important;
   padding-block-start: 12px !important;
   padding-block-end: 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+/* Left column: hamburger + logo — compact, no extra space */
+.header__column--left {
+  flex: 0 0 auto !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+/* Right column: search + vehicle + account + cart — fills remaining space */
+.header__column--right {
+  flex: 1 1 auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 8px !important;
+}
+
+/* Search bar fills available space in right column */
+.header__column--right search-button,
+.header__column--right .search-action {
+  flex: 1 1 auto !important;
 }
 
 /* Header section wrapper */
