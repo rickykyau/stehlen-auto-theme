@@ -462,28 +462,30 @@ header svg {
 }
 
 .mvd-select-group select {
+  display: block !important;
   flex: 1 1 auto !important;
-  border: none !important;
-  background: #fff !important;
-  color: #333 !important;
-  font-size: 0.95rem !important;
+  border: 1px solid #ccc !important;
+  border-radius: 6px !important;
+  background: #ffffff !important;
+  color: #000000 !important;
+  font-size: 1rem !important;
   font-weight: 600 !important;
-  padding: 14px 8px !important;
+  padding: 12px 30px 12px 12px !important;
   cursor: pointer !important;
   outline: none !important;
   -webkit-appearance: menulist !important;
+  -moz-appearance: menulist !important;
   appearance: menulist !important;
-  min-width: 80px !important;
-  width: auto !important;
-  height: auto !important;
-  line-height: normal !important;
+  min-width: 120px !important;
+  height: 48px !important;
+  line-height: 48px !important;
   text-indent: 0 !important;
   opacity: 1 !important;
   visibility: visible !important;
   overflow: visible !important;
-  text-overflow: ellipsis !important;
   position: relative !important;
-  z-index: 1 !important;
+  z-index: 2 !important;
+  -webkit-text-fill-color: #000000 !important;
 }
 
 .mvd-select-group select:disabled {
