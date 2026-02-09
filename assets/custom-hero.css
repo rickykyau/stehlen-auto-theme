@@ -188,12 +188,13 @@ header.header,
 /* Header text/links white on charcoal */
 .header a,
 .header .header__logo a,
-/* Hide nav menu - using search bar + vehicle selector + category nav instead */
-.header nav,
-.header__menu,
+/* Hide nav menu links - using search bar + vehicle selector + category nav instead */
 .header__nav,
-.header navigation-component,
-.header header-navigation {
+.header nav ul,
+.header nav ol,
+.header__menu-items,
+navigation-component ul,
+header-navigation ul {
   display: none !important;
 }
 
