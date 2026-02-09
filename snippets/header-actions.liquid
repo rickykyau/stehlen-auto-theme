@@ -9,7 +9,7 @@
 >
   <!-- My Vehicle Control (CARiD style) -->
   <div class="my-vehicle-header desktop-only" id="my-vehicle-header">
-    <button type="button" class="my-vehicle-btn" id="my-vehicle-btn" onclick="document.getElementById('vehicle-selector-wrapper') && document.getElementById('vehicle-selector-wrapper').classList.toggle('is-open'); window.scrollTo({top: 0, behavior: 'smooth'});">
+    <button type="button" class="my-vehicle-btn" id="my-vehicle-btn">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
         <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
         <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
@@ -20,20 +20,178 @@
       <span id="my-vehicle-text">SELECT YOUR VEHICLE</span>
       <span id="my-vehicle-change" style="display:none; color:#F39C12; font-weight:700; margin-left:6px; font-size:0.75rem;">CHANGE</span>
     </button>
+    <!-- Dropdown panel -->
+    <div class="my-vehicle-dropdown" id="my-vehicle-dropdown" style="display:none;">
+      <div class="mvd-form">
+        <div class="mvd-group">
+          <label>Year</label>
+          <select id="mvd-year"><option value="">Select Year</option></select>
+        </div>
+        <div class="mvd-group">
+          <label>Make</label>
+          <select id="mvd-make" disabled><option value="">Select Make</option></select>
+        </div>
+        <div class="mvd-group">
+          <label>Model</label>
+          <select id="mvd-model" disabled><option value="">Select Model</option></select>
+        </div>
+        <button type="button" class="mvd-find" id="mvd-find" disabled>Find Parts</button>
+        <button type="button" class="mvd-clear" id="mvd-clear" style="display:none;">Clear</button>
+      </div>
+    </div>
   </div>
   <script>
-    (function(){
-      var saved = localStorage.getItem('selectedVehicle');
-      if (saved) {
-        try {
-          var v = JSON.parse(saved);
-          var txt = document.getElementById('my-vehicle-text');
-          var chg = document.getElementById('my-vehicle-change');
-          if (txt) txt.textContent = v.year + ' ' + v.make + ' ' + v.model;
-          if (chg) chg.style.display = 'inline';
-        } catch(e) {}
+  (function(){
+    var vehicleData = {
+      'Ford': {
+        'F-150': [2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],
+        'F-250': [2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],
+        'F-350': [2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],
+        'Ranger': [2004,2005,2006,2007,2008,2009,2010,2011,2019,2020,2021,2022,2023,2024],
+        'Bronco': [2021,2022,2023,2024]
+      },
+      'Chevy': {
+        'Silverado 1500': [2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],
+        'Silverado 2500': [2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],
+        'Colorado': [2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024]
+      },
+      'GMC': {
+        'Sierra 1500': [2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],
+        'Sierra 2500': [2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],
+        'Canyon': [2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024]
+      },
+      'Dodge': {
+        'Ram 1500': [2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],
+        'Ram 2500': [2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],
+        'Charger': [2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024]
+      },
+      'Toyota': {
+        'Tundra': [2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],
+        'Tacoma': [2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],
+        '4Runner': [2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024]
       }
-    })();
+    };
+
+    var btn = document.getElementById('my-vehicle-btn');
+    var dropdown = document.getElementById('my-vehicle-dropdown');
+    var yearSel = document.getElementById('mvd-year');
+    var makeSel = document.getElementById('mvd-make');
+    var modelSel = document.getElementById('mvd-model');
+    var findBtn = document.getElementById('mvd-find');
+    var clearBtn = document.getElementById('mvd-clear');
+    var textEl = document.getElementById('my-vehicle-text');
+    var changeEl = document.getElementById('my-vehicle-change');
+
+    function getAllYears() {
+      var years = new Set();
+      Object.values(vehicleData).forEach(function(makes) {
+        Object.values(makes).forEach(function(yl) { yl.forEach(function(y) { years.add(y); }); });
+      });
+      return Array.from(years).sort(function(a,b){return b-a;});
+    }
+
+    function getMakes(year) {
+      var makes = [];
+      Object.entries(vehicleData).forEach(function(e) {
+        var hasY = Object.values(e[1]).some(function(ys){return ys.includes(parseInt(year));});
+        if(hasY) makes.push(e[0]);
+      });
+      return makes.sort();
+    }
+
+    function getModels(year, make) {
+      var models = [];
+      if(vehicleData[make]) {
+        Object.entries(vehicleData[make]).forEach(function(e) {
+          if(e[1].includes(parseInt(year))) models.push(e[0]);
+        });
+      }
+      return models.sort();
+    }
+
+    // Init years
+    getAllYears().forEach(function(y) {
+      yearSel.innerHTML += '<option value="'+y+'">'+y+'</option>';
+    });
+
+    yearSel.addEventListener('change', function() {
+      makeSel.innerHTML = '<option value="">Select Make</option>';
+      modelSel.innerHTML = '<option value="">Select Model</option>';
+      modelSel.disabled = true; findBtn.disabled = true;
+      if(this.value) {
+        getMakes(this.value).forEach(function(m) { makeSel.innerHTML += '<option value="'+m+'">'+m+'</option>'; });
+        makeSel.disabled = false;
+      } else { makeSel.disabled = true; }
+    });
+
+    makeSel.addEventListener('change', function() {
+      modelSel.innerHTML = '<option value="">Select Model</option>';
+      findBtn.disabled = true;
+      if(this.value) {
+        getModels(yearSel.value, this.value).forEach(function(m) { modelSel.innerHTML += '<option value="'+m+'">'+m+'</option>'; });
+        modelSel.disabled = false;
+      } else { modelSel.disabled = true; }
+    });
+
+    modelSel.addEventListener('change', function() { findBtn.disabled = !this.value; });
+
+    findBtn.addEventListener('click', function() {
+      var y=yearSel.value, m=makeSel.value, md=modelSel.value;
+      if(y && m && md) {
+        localStorage.setItem('selectedVehicle', JSON.stringify({year:y,make:m,model:md}));
+        textEl.textContent = y+' '+m+' '+md;
+        changeEl.style.display = 'inline';
+        clearBtn.style.display = 'inline-block';
+        dropdown.style.display = 'none';
+        // Also update the page vehicle selector if present
+        var toggleCurrent = document.getElementById('toggle-current');
+        if(toggleCurrent) toggleCurrent.textContent = '('+y+' '+m+' '+md+')';
+        window.location.href = '/search?q='+encodeURIComponent(y+' '+m+' '+md)+'&type=product';
+      }
+    });
+
+    clearBtn.addEventListener('click', function() {
+      localStorage.removeItem('selectedVehicle');
+      textEl.textContent = 'SELECT YOUR VEHICLE';
+      changeEl.style.display = 'none';
+      clearBtn.style.display = 'none';
+      yearSel.value = '';
+      makeSel.innerHTML = '<option value="">Select Make</option>'; makeSel.disabled = true;
+      modelSel.innerHTML = '<option value="">Select Model</option>'; modelSel.disabled = true;
+      findBtn.disabled = true;
+      var toggleCurrent = document.getElementById('toggle-current');
+      if(toggleCurrent) toggleCurrent.textContent = '';
+    });
+
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+    });
+
+    document.addEventListener('click', function(e) {
+      if(!document.getElementById('my-vehicle-header').contains(e.target)) {
+        dropdown.style.display = 'none';
+      }
+    });
+
+    // Restore saved vehicle
+    var saved = localStorage.getItem('selectedVehicle');
+    if(saved) {
+      try {
+        var v = JSON.parse(saved);
+        textEl.textContent = v.year+' '+v.make+' '+v.model;
+        changeEl.style.display = 'inline';
+        clearBtn.style.display = 'inline-block';
+        // Restore dropdowns
+        yearSel.value = v.year;
+        yearSel.dispatchEvent(new Event('change'));
+        makeSel.value = v.make;
+        makeSel.dispatchEvent(new Event('change'));
+        modelSel.value = v.model;
+        findBtn.disabled = false;
+      } catch(e) {}
+    }
+  })();
   </script>
   {% if shop.customer_accounts_enabled %}
     {% render 'account-popover' %}
