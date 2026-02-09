@@ -300,10 +300,11 @@ header svg {
 @media (min-width: 750px) {
   .search-action,
   search-button {
-    flex-grow: 1 !important;
-    max-width: 500px !important;
-    margin-left: 24px !important;
-    margin-right: 16px !important;
+    flex: 1 1 0% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    margin-left: 8px !important;
+    margin-right: 8px !important;
   }
   
   .search-action .search-modal__button,
@@ -1070,6 +1071,18 @@ header + *,
   justify-self: start !important;
 }
 
+/* Left column: logo compact, close to hamburger */
+@media (min-width: 750px) {
+  .header__column.header__column--left {
+    flex-shrink: 0 !important;
+    gap: 8px !important;
+    min-width: 0 !important;
+  }
+  .header__column--left .header-logo {
+    flex-shrink: 0 !important;
+  }
+}
+
 /* Right column: search + vehicle + account + cart — fills remaining space */
 .header__column.header__column--right {
   grid-area: right !important;
@@ -1077,14 +1090,28 @@ header + *,
   align-items: center !important;
   gap: 8px !important;
   width: 100% !important;
+  justify-content: flex-start !important;
 }
 
 /* Search bar fills available space in right column */
 search-button.search-action,
 .header__column--right search-button,
 .header__column--right .search-action {
-  flex: 1 1 auto !important;
+  flex: 1 1 0% !important;
   max-width: none !important;
+  min-width: 0 !important;
+}
+
+/* Header actions (vehicle, account, cart) stay compact */
+@media (min-width: 750px) {
+  .header__column--right header-actions {
+    flex-shrink: 0 !important;
+    flex-grow: 0 !important;
+  }
+  .header__column--right .dropdown-localization {
+    flex-shrink: 0 !important;
+    flex-grow: 0 !important;
+  }
 }
 
 /* Header section wrapper */
