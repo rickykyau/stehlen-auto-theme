@@ -39,20 +39,7 @@
             setTimeout(apply, 3000);
           }
         } catch(e) {}
-        /* Fix header layout: logo compact left, search fills space */
-        function fixLayout() {
-          var cols = document.querySelector('.header__columns.spacing-style');
-          if (cols) cols.style.cssText += ';display:grid!important;grid-template-columns:auto 1fr!important;gap:16px!important;';
-          var leftCol = document.querySelector('.header__column--left');
-          if (leftCol) leftCol.style.cssText += ';width:auto!important;min-width:0!important;justify-self:start!important;';
-          var rightCol = document.querySelector('.header__column--right');
-          if (rightCol) rightCol.style.cssText += ';display:flex!important;align-items:center!important;gap:8px!important;width:100%!important;';
-          var searchBtn = document.querySelector('search-button.search-action, .header__column--right search-button');
-          if (searchBtn) searchBtn.style.cssText += ';flex:1 1 auto!important;max-width:none!important;';
-        }
-        fixLayout();
-        setTimeout(fixLayout, 200);
-        setTimeout(fixLayout, 1000);
+/* layout fix moved outside header-actions */
       })();
     </script>
   </div>
@@ -75,6 +62,26 @@
     </a>
   {% endif %}
 </header-actions>
+
+<script>
+/* Fix header layout: logo compact left, search fills remaining space */
+(function fixHeaderLayout() {
+  function fix() {
+    var cols = document.querySelector('.header__columns.spacing-style');
+    if (cols) cols.style.cssText += ';display:grid!important;grid-template-columns:auto 1fr!important;gap:16px!important;';
+    var leftCol = document.querySelector('.header__column--left');
+    if (leftCol) leftCol.style.cssText += ';width:auto!important;min-width:0!important;justify-self:start!important;';
+    var rightCol = document.querySelector('.header__column--right');
+    if (rightCol) rightCol.style.cssText += ';display:flex!important;align-items:center!important;gap:8px!important;width:100%!important;';
+    var searchBtn = document.querySelector('search-button.search-action, .header__column--right search-button');
+    if (searchBtn) searchBtn.style.cssText += ';flex:1 1 auto!important;max-width:none!important;';
+  }
+  fix();
+  setTimeout(fix, 100);
+  setTimeout(fix, 500);
+  setTimeout(fix, 2000);
+})();
+</script>
 
 <!-- Vehicle Selector Modal — OUTSIDE header-actions to avoid theme style interference -->
 <div class="mvd-overlay" id="mvd-overlay">
