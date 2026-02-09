@@ -497,10 +497,14 @@ header svg {
   letter-spacing: 0.05em !important;
   transition: background 0.2s !important;
   white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  align-self: flex-end !important;
+  min-width: 80px !important;
+  height: 48px !important;
 }
 
 .mvd-go:hover { background: var(--stehlen-orange-dark) !important; }
-.mvd-go:disabled { background: #ccc !important; cursor: not-allowed !important; }
+.mvd-go:disabled { background: #999 !important; color: #fff !important; cursor: not-allowed !important; }
 
 .mvd-current {
   display: flex !important;
