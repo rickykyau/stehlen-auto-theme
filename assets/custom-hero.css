@@ -765,10 +765,10 @@ header + *,
 .section-header .header,
 .header__row,
 .header__row.section {
-  --padding-block-start: 16px !important;
+  --padding-block-start: 24px !important;
   --padding-block-end: 10px !important;
   --header-padding: 10px !important;
-  padding-top: 16px !important;
+  padding-top: 24px !important;
   padding-bottom: 10px !important;
   margin-bottom: 0 !important;
 }
@@ -800,7 +800,7 @@ header + *,
 .header {
   margin-bottom: 0 !important;
   padding-bottom: 10px !important;
-  padding-top: 16px !important;
+  padding-top: 24px !important;
 }
 
 /* Hero section flush to header */
