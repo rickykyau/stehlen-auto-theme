@@ -185,12 +185,15 @@ header.header,
   padding: 0 !important;
 }
 
-/* Header text/links white on charcoal */
-.header a,
-.header .header__logo a,
 /* Hide nav menu links - using search bar + vehicle selector + category nav instead */
 .header-menu__inner {
   display: none !important;
+}
+
+/* Header text/links white on charcoal */
+.header a,
+.header .header__logo a {
+  color: var(--stehlen-white) !important;
 }
 
 .header nav a,
