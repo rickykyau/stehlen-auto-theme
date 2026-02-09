@@ -1381,6 +1381,17 @@ a:hover {
   color: var(--stehlen-orange-dark);
 }
 /* ===== STEHLEN FOOTER (Armordillo style) ===== */
+/* Force footer section wrapper to dark bg */
+.stehlen-footer,
+.stehlen-footer ~ *,
+section:has(.stehlen-footer),
+section:has(.stehlen-footer) > *,
+section:has(.stehlen-footer) .section-background,
+.shopify-section:has(.stehlen-footer),
+.shopify-section:has(.stehlen-footer) .section-background {
+  background: #111 !important;
+  --color-background: 17, 17, 17 !important;
+}
 .stehlen-footer {
   background: #111 !important;
   color: #ccc;
