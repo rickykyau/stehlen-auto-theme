@@ -65,7 +65,9 @@
 <!-- Vehicle Selector Modal — OUTSIDE header-actions to avoid theme style interference -->
 <div class="mvd-overlay" id="mvd-overlay">
   <div class="mvd-modal" id="mvd-modal">
-    <button type="button" class="mvd-close" id="mvd-close">&times;</button>
+    <div id="mvd-close" role="button" style="position:absolute;top:12px;right:16px;background:none;border:none;color:#666;font-size:2rem;cursor:pointer;line-height:1;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%;z-index:10;"
+    onmouseover="this.style.background='#f0f0f0';this.style.color='#333'"
+    onmouseout="this.style.background='none';this.style.color='#666'">&times;</div>
     <h2 class="mvd-title">Select Your Vehicle</h2>
     <p class="mvd-subtitle">Provide vehicle details to confirm fitment</p>
     <div class="mvd-form-row">
@@ -86,9 +88,14 @@
       </div>
       <div id="mvd-go" role="button" style="background:#999;color:#fff;padding:14px 32px;border:none;border-radius:8px;font-size:1rem;font-weight:800;text-transform:uppercase;min-width:80px;height:48px;cursor:not-allowed;flex-shrink:0;align-self:flex-end;display:flex;align-items:center;justify-content:center;user-select:none;line-height:1;">GO</div>
     </div>
-    <div class="mvd-current" id="mvd-current" style="display:none;">
-      <span id="mvd-current-text"></span>
-      <button type="button" class="mvd-clear-btn" id="mvd-clear-btn">Clear</button>
+    <div id="mvd-current" style="display:none;text-align:center;margin-top:16px;padding-top:12px;border-top:1px solid #eee;">
+      <span id="mvd-current-text" style="color:#10b981;font-size:0.9rem;font-weight:600;"></span>
+      <div id="mvd-clear-btn" role="button" style="display:inline-flex;align-items:center;gap:4px;margin-left:12px;padding:6px 14px;background:#f5f5f5;border:1px solid #ddd;border-radius:6px;color:#666;font-size:0.8rem;font-weight:600;cursor:pointer;"
+      onmouseover="this.style.background='#fee2e2';this.style.color='#dc2626';this.style.borderColor='#fca5a5'"
+      onmouseout="this.style.background='#f5f5f5';this.style.color='#666';this.style.borderColor='#ddd'">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+        Clear
+      </div>
     </div>
   </div>
 </div>
