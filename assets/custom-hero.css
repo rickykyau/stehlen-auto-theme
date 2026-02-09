@@ -34,8 +34,9 @@ h1, h2, h3, h4, h5, h6,
   .product .media-gallery__viewer,
   .product .media-gallery__viewer-item,
   .product .media-gallery__viewer-item img {
-    max-height: 400px !important;
+    max-height: 350px !important;
     object-fit: contain !important;
+    width: auto !important;
   }
 }
 
