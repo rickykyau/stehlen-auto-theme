@@ -189,12 +189,7 @@ header.header,
 .header a,
 .header .header__logo a,
 /* Hide nav menu links - using search bar + vehicle selector + category nav instead */
-.header__nav,
-.header nav ul,
-.header nav ol,
-.header__menu-items,
-navigation-component ul,
-header-navigation ul {
+.header-menu__inner {
   display: none !important;
 }
 
