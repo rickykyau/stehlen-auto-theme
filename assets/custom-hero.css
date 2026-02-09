@@ -1399,7 +1399,7 @@ section:has(.stehlen-footer) .section-background,
 .stehlen-footer {
   background: #111 !important;
   color: #ccc;
-  padding: 60px 40px 30px;
+  padding: 30px 40px 30px;
   font-family: var(--font-body--family);
 }
 .stehlen-footer__grid {
