@@ -16,7 +16,7 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<h1>Built for Your Truck</h1>",
+            "text": "<h1>Your Truck, Your Style<br>Our Gear</h1>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "left",
