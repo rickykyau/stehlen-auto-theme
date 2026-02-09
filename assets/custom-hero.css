@@ -1533,6 +1533,7 @@ section:has(.stehlen-footer) .section-background,
 }
 
 /* ===== PAGE CONTENT HEADERS — reduce oversized headings ===== */
+main h1,
 .main-page-content h1,
 .page-content h1,
 .rte h1,
@@ -1540,7 +1541,8 @@ article h1,
 .policy-page h1,
 .template-page h1,
 main h1.page-title,
-main .page-header h1 {
+main .page-header h1,
+main .section h1 {
   font-size: 1.8rem !important;
   line-height: 1.2 !important;
 }
