@@ -762,24 +762,23 @@ header + *,
 
 .header.section,
 .header.spacing-style,
-.section-header .header {
-  --padding-block-end: 0px !important;
-  padding-block-end: 0 !important;
-  padding-bottom: 0 !important;
-}
-
-/* Header row bottom padding */
-.header__row {
-  --padding-block-end: 0px !important;
-  padding-bottom: 0 !important;
+.section-header .header,
+.header__row,
+.header__row.section {
+  --padding-block-start: 10px !important;
+  --padding-block-end: 10px !important;
+  --header-padding: 10px !important;
+  padding-block: 10px !important;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
   margin-bottom: 0 !important;
 }
 
+.header__columns,
 .header__columns.spacing-style {
-  --padding-block-start: 8px !important;
-  --padding-block-end: 8px !important;
-  padding-top: 8px !important;
-  padding-bottom: 8px !important;
+  --padding-block-start: 0px !important;
+  --padding-block-end: 0px !important;
+  padding: 0 !important;
 }
 
 /* Header section wrapper */
@@ -801,7 +800,8 @@ header + *,
 
 .header {
   margin-bottom: 0 !important;
-  padding-bottom: 8px !important;
+  padding-bottom: 10px !important;
+  padding-top: 10px !important;
 }
 
 /* Hero section flush to header */
