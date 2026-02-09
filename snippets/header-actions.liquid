@@ -21,8 +21,8 @@
       <span id="my-vehicle-change" style="display:none; color:#F39C12; font-weight:700; margin-left:6px; font-size:0.75rem;">CHANGE</span>
     </button>
     <script>
-      /* Persistent restore - keeps retrying until DOM stabilizes */
-      (function restoreVehicle() {
+      /* Restore saved vehicle label */
+      (function() {
         try {
           var sv = JSON.parse(localStorage.getItem('selectedVehicle'));
           if (sv && sv.year && sv.make && sv.model) {
@@ -30,21 +30,13 @@
             function apply() {
               var el = document.getElementById('my-vehicle-text');
               var ch = document.getElementById('my-vehicle-change');
-              if (el) { el.textContent = label; }
-              if (ch) { ch.style.display = 'inline'; }
+              if (el && el.textContent !== label) el.textContent = label;
+              if (ch) ch.style.display = 'inline';
             }
             apply();
-            /* Re-apply after common framework delays */
-            setTimeout(apply, 100);
-            setTimeout(apply, 500);
-            setTimeout(apply, 1500);
-            /* Watch for DOM replacement */
-            var obs = new MutationObserver(function() { apply(); });
-            var target = document.getElementById('my-vehicle-text');
-            if (target && target.parentNode) {
-              obs.observe(target.parentNode, { childList: true, subtree: true, characterData: true });
-              setTimeout(function() { obs.disconnect(); }, 5000);
-            }
+            setTimeout(apply, 200);
+            setTimeout(apply, 1000);
+            setTimeout(apply, 3000);
           }
         } catch(e) {}
       })();
