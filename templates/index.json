@@ -320,22 +320,11 @@
         "padding-block-start": 48,
         "padding-block-end": 48
       }
-    },
-    "shop_by_vehicle": {
-      "type": "custom-liquid",
-      "settings": {
-        "custom_liquid": "<div class=\"vehicle-section\">\n  <h2 class=\"vehicle-title\">Shop by Vehicle</h2>\n  <div class=\"vehicle-grid\">\n    <a href=\"/collections/ford-parts\" class=\"vehicle-card\">\n      <span class=\"vehicle-name\">Ford</span>\n    </a>\n    <a href=\"/collections/chevy-parts\" class=\"vehicle-card\">\n      <span class=\"vehicle-name\">Chevrolet</span>\n    </a>\n    <a href=\"/collections/gmc-parts\" class=\"vehicle-card\">\n      <span class=\"vehicle-name\">GMC</span>\n    </a>\n    <a href=\"/collections/dodge-parts\" class=\"vehicle-card\">\n      <span class=\"vehicle-name\">Dodge / Ram</span>\n    </a>\n    <a href=\"/collections/toyota-parts\" class=\"vehicle-card\">\n      <span class=\"vehicle-name\">Toyota</span>\n    </a>\n  </div>\n</div>",
-        "color_scheme": "scheme-1",
-        "section_width": "page-width",
-        "padding-block-start": 24,
-        "padding-block-end": 48
-      }
     }
   },
   "order": [
     "hero_main",
     "shop_by_category",
-    "featured_products",
-    "shop_by_vehicle"
+    "featured_products"
   ]
 }
