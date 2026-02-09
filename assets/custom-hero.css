@@ -1003,11 +1003,11 @@ a.button[href*="account"],
   padding-right: clamp(24px, 5vw, 80px) !important;
 }
 
-/* Hide empty buttons (e.g. cleared View All) */
+/* Hide empty/disabled buttons (e.g. cleared View All) */
+a[aria-disabled="true"],
+a[role="link"][aria-disabled],
 a.button:empty,
-a.button-secondary:empty,
-a.button[href=""]:not([class*="header"]),
-a.button:not([href]):not([class*="header"]) {
+a.button-secondary:empty {
   display: none !important;
 }
 
