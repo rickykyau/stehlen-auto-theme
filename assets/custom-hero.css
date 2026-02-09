@@ -303,8 +303,8 @@ header svg {
     flex: 1 1 0% !important;
     max-width: none !important;
     min-width: 0 !important;
-    margin-left: 8px !important;
-    margin-right: 8px !important;
+    margin-left: 0 !important;
+    margin-right: 16px !important;
   }
   
   .search-action .search-modal__button,
@@ -1075,7 +1075,7 @@ header + *,
 @media (min-width: 750px) {
   .header__column.header__column--left {
     flex-shrink: 0 !important;
-    gap: 8px !important;
+    gap: 4px !important;
     min-width: 0 !important;
   }
   .header__column--left .header-logo {
