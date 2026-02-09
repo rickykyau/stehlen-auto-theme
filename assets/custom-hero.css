@@ -26,6 +26,19 @@ h1, h2, h3, h4, h5, h6,
   color: var(--stehlen-text);
 }
 
+/* ===== Product Page: Cap main image height on desktop ===== */
+@media (min-width: 750px) {
+  .product .media-gallery,
+  .product .product-media-container,
+  .product slideshow-component,
+  .product .media-gallery__viewer,
+  .product .media-gallery__viewer-item,
+  .product .media-gallery__viewer-item img {
+    max-height: 500px !important;
+    object-fit: contain !important;
+  }
+}
+
 /* ===== CRITICAL FIX: Product Images Must Be Visible ===== */
 .product-media,
 .product-media-container,
