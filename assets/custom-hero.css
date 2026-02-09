@@ -435,57 +435,46 @@ header svg {
 .mvd-select-group {
   flex: 1 !important;
   display: flex !important;
-  align-items: center !important;
-  border: 1px solid #ddd !important;
-  border-radius: 8px !important;
-  padding: 0 12px !important;
-  background: #fff !important;
-  color: #333 !important;
-  transition: border-color 0.2s !important;
-}
-.mvd-select-group select option {
-  color: #333 !important;
-  background: #fff !important;
+  flex-direction: column !important;
+  min-width: 140px !important;
 }
 
-.mvd-select-group:focus-within {
-  border-color: var(--stehlen-orange) !important;
-}
-
-.mvd-num {
-  color: #999 !important;
-  font-size: 0.85rem !important;
+.mvd-label {
+  display: block !important;
+  color: #666 !important;
+  font-size: 0.75rem !important;
   font-weight: 700 !important;
-  margin-right: 8px !important;
-  padding-right: 8px !important;
-  border-right: 1px solid #eee !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  margin-bottom: 6px !important;
 }
 
 .mvd-select-group select {
   display: block !important;
-  flex: 1 1 auto !important;
-  border: 1px solid #ccc !important;
-  border-radius: 6px !important;
-  background: #ffffff !important;
+  width: 100% !important;
+  border: 2px solid #ddd !important;
+  border-radius: 8px !important;
+  background-color: #ffffff !important;
   color: #000000 !important;
-  font-size: 1rem !important;
+  font-size: 0.95rem !important;
   font-weight: 600 !important;
-  padding: 12px 30px 12px 12px !important;
+  padding: 12px 16px !important;
   cursor: pointer !important;
   outline: none !important;
   -webkit-appearance: menulist !important;
   -moz-appearance: menulist !important;
   appearance: menulist !important;
-  min-width: 120px !important;
   height: 48px !important;
-  line-height: 48px !important;
-  text-indent: 0 !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  overflow: visible !important;
-  position: relative !important;
-  z-index: 2 !important;
   -webkit-text-fill-color: #000000 !important;
+}
+
+.mvd-select-group select:focus {
+  border-color: var(--stehlen-orange) !important;
+}
+
+.mvd-select-group select option {
+  color: #000 !important;
+  background: #fff !important;
 }
 
 .mvd-select-group select:disabled {

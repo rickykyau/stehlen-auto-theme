@@ -30,16 +30,16 @@
       <p class="mvd-subtitle">Provide vehicle details to confirm fitment</p>
       <div class="mvd-form-row">
         <div class="mvd-select-group">
-          <span class="mvd-num">1</span>
-          <select id="mvd-year"><option value="">YEAR</option></select>
+          <label class="mvd-label" for="mvd-year">Year</label>
+          <select id="mvd-year"><option value="">— Select Year —</option></select>
         </div>
         <div class="mvd-select-group">
-          <span class="mvd-num">2</span>
-          <select id="mvd-make" disabled><option value="">MAKE</option></select>
+          <label class="mvd-label" for="mvd-make">Make</label>
+          <select id="mvd-make" disabled><option value="">— Select Make —</option></select>
         </div>
         <div class="mvd-select-group">
-          <span class="mvd-num">3</span>
-          <select id="mvd-model" disabled><option value="">MODEL</option></select>
+          <label class="mvd-label" for="mvd-model">Model</label>
+          <select id="mvd-model" disabled><option value="">— Select Model —</option></select>
         </div>
         <button type="button" class="mvd-go" id="mvd-go" disabled>GO</button>
       </div>
@@ -117,8 +117,8 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   yearSel.addEventListener('change', function() {
-    makeSel.innerHTML = '<option value="">MAKE</option>';
-    modelSel.innerHTML = '<option value="">MODEL</option>';
+    makeSel.innerHTML = '<option value="">— Select Make —</option>';
+    modelSel.innerHTML = '<option value="">— Select Model —</option>';
     modelSel.disabled = true; goBtn.disabled = true;
     if (this.value) {
       getMakes(this.value).forEach(function(m) { makeSel.innerHTML += '<option value="'+m+'">'+m+'</option>'; });
@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   makeSel.addEventListener('change', function() {
-    modelSel.innerHTML = '<option value="">MODEL</option>';
+    modelSel.innerHTML = '<option value="">— Select Model —</option>';
     goBtn.disabled = true;
     if (this.value) {
       getModels(yearSel.value, this.value).forEach(function(m) { modelSel.innerHTML += '<option value="'+m+'">'+m+'</option>'; });
@@ -185,8 +185,8 @@ document.addEventListener('DOMContentLoaded', function() {
     changeEl.style.display = 'none';
     currentDiv.style.display = 'none';
     yearSel.value = '';
-    makeSel.innerHTML = '<option value="">MAKE</option>'; makeSel.disabled = true;
-    modelSel.innerHTML = '<option value="">MODEL</option>'; modelSel.disabled = true;
+    makeSel.innerHTML = '<option value="">— Select Make —</option>'; makeSel.disabled = true;
+    modelSel.innerHTML = '<option value="">— Select Model —</option>'; modelSel.disabled = true;
     goBtn.disabled = true;
     var tc = document.getElementById('toggle-current');
     if (tc) tc.textContent = '';
