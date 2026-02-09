@@ -1364,6 +1364,10 @@ html { scroll-behavior: smooth; }
 
 /* Image loading fallback - light gray, NOT colored */
 img { background: #f5f5f5; }
+.stehlen-footer img,
+.stehlen-footer__logo {
+  background: transparent !important;
+}
 
 /* Section spacing */
 .section {
