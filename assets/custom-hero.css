@@ -101,18 +101,33 @@ h1, h2, h3, h4, h5, h6,
 }
 
 /* ===== Product Card Titles & Prices ===== */
+product-card a,
+product-card-link a,
+.product-card a,
+.product-card__link,
+.product-card__content a,
 .card-information a,
-.card-information .card-heading,
 .card__title a,
-.product-grid__item a,
-.product-list a {
+.product-grid__item a {
   color: var(--stehlen-charcoal) !important;
 }
 
+product-card a:hover,
+product-card-link a:hover,
+.product-card a:hover,
+.product-card__link:hover {
+  color: var(--stehlen-orange) !important;
+}
+
+/* Product card prices */
+product-card .price,
+product-card price-component,
+.product-card .price,
 .card-information .price,
-.card-information .price-item,
-.card__price .price-item,
-.product-grid__item .price-item {
+.card__price,
+.product-grid__item .price,
+.price-item,
+price-component {
   color: var(--stehlen-orange) !important;
   font-size: 1.1rem !important;
   font-weight: 700 !important;
