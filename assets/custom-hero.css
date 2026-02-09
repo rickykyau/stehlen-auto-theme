@@ -389,99 +389,145 @@ header svg {
 }
 
 .mvd-modal {
-  background: var(--stehlen-charcoal) !important;
-  border-radius: 16px !important;
-  padding: 40px !important;
-  max-width: 700px !important;
+  background: #fff !important;
+  border-radius: 12px !important;
+  padding: 32px 40px !important;
+  max-width: 800px !important;
   width: 90vw !important;
-  max-height: 80vh !important;
-  overflow-y: auto !important;
   position: relative !important;
-  box-shadow: 0 16px 48px rgba(0,0,0,0.5) !important;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.3) !important;
 }
 
 .mvd-close {
   position: absolute !important;
-  top: 16px !important;
-  right: 20px !important;
+  top: 12px !important;
+  right: 16px !important;
   background: none !important;
   border: none !important;
-  color: #aaa !important;
+  color: #999 !important;
   font-size: 2rem !important;
   cursor: pointer !important;
   line-height: 1 !important;
 }
-.mvd-close:hover { color: #fff !important; }
+.mvd-close:hover { color: #333 !important; }
 
 .mvd-title {
-  color: #fff !important;
-  font-size: 1.5rem !important;
+  color: #222 !important;
+  font-size: 1.3rem !important;
+  font-weight: 700 !important;
   margin: 0 0 4px !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.02em !important;
+  text-transform: none !important;
 }
 
 .mvd-subtitle {
-  color: #999 !important;
-  font-size: 0.9rem !important;
-  margin: 0 0 24px !important;
-}
-
-.mvd-step h3 {
-  color: var(--stehlen-orange) !important;
+  color: #888 !important;
   font-size: 0.85rem !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.05em !important;
-  margin: 16px 0 10px !important;
-  border-left: none !important;
-  padding-left: 0 !important;
+  margin: 0 0 20px !important;
 }
 
-.mvd-options {
+.mvd-form-row {
   display: flex !important;
-  flex-wrap: wrap !important;
-  gap: 8px !important;
+  gap: 12px !important;
+  align-items: stretch !important;
 }
 
-.mvd-option-btn {
-  padding: 10px 20px !important;
-  background: #333 !important;
-  border: 1px solid #555 !important;
+.mvd-select-group {
+  flex: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  border: 1px solid #ddd !important;
   border-radius: 8px !important;
-  color: #fff !important;
+  padding: 0 12px !important;
+  background: #fff !important;
+  transition: border-color 0.2s !important;
+}
+
+.mvd-select-group:focus-within {
+  border-color: var(--stehlen-orange) !important;
+}
+
+.mvd-num {
+  color: #999 !important;
+  font-size: 0.85rem !important;
+  font-weight: 700 !important;
+  margin-right: 8px !important;
+  padding-right: 8px !important;
+  border-right: 1px solid #eee !important;
+}
+
+.mvd-select-group select {
+  flex: 1 !important;
+  border: none !important;
+  background: transparent !important;
+  color: #333 !important;
   font-size: 0.9rem !important;
   font-weight: 600 !important;
+  padding: 14px 4px !important;
   cursor: pointer !important;
-  transition: all 0.15s !important;
+  outline: none !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 4px center !important;
+  padding-right: 20px !important;
 }
 
-.mvd-option-btn:hover {
-  background: var(--stehlen-orange) !important;
-  border-color: var(--stehlen-orange) !important;
-  color: #fff !important;
+.mvd-select-group select:disabled {
+  color: #ccc !important;
+  cursor: not-allowed !important;
 }
+
+.mvd-go {
+  padding: 14px 32px !important;
+  background: var(--stehlen-orange) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 8px !important;
+  font-size: 1rem !important;
+  font-weight: 800 !important;
+  cursor: pointer !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  transition: background 0.2s !important;
+  white-space: nowrap !important;
+}
+
+.mvd-go:hover { background: var(--stehlen-orange-dark) !important; }
+.mvd-go:disabled { background: #ccc !important; cursor: not-allowed !important; }
 
 .mvd-current {
   display: flex !important;
   align-items: center !important;
-  gap: 16px !important;
-  margin-top: 20px !important;
-  padding-top: 16px !important;
-  border-top: 1px solid #444 !important;
+  gap: 12px !important;
+  margin-top: 16px !important;
+  padding-top: 12px !important;
+  border-top: 1px solid #eee !important;
   color: #10b981 !important;
   font-weight: 600 !important;
+  font-size: 0.85rem !important;
 }
 
 .mvd-clear-btn {
-  padding: 6px 16px !important;
+  padding: 4px 12px !important;
   background: transparent !important;
-  border: 1px solid #666 !important;
-  border-radius: 6px !important;
-  color: #aaa !important;
-  font-size: 0.8rem !important;
+  border: 1px solid #ddd !important;
+  border-radius: 4px !important;
+  color: #999 !important;
+  font-size: 0.75rem !important;
   cursor: pointer !important;
 }
-.mvd-clear-btn:hover { background: #444 !important; color: #fff !important; }
+.mvd-clear-btn:hover { background: #f5f5f5 !important; color: #333 !important; }
+
+@media (max-width: 749px) {
+  .mvd-form-row {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+  .mvd-modal {
+    padding: 24px !important;
+  }
+}
 
 /* ===== ACTION BUTTONS - Orange ===== */
 button[name="add"],

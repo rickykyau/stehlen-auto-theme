@@ -22,29 +22,30 @@
     </button>
   </div>
 
-  <!-- Vehicle Selector Modal (full screen overlay) -->
+  <!-- Vehicle Selector Modal (CARiD style) -->
   <div class="mvd-overlay" id="mvd-overlay">
     <div class="mvd-modal" id="mvd-modal">
       <button type="button" class="mvd-close" id="mvd-close">&times;</button>
       <h2 class="mvd-title">Select Your Vehicle</h2>
-      <p class="mvd-subtitle">Find parts that fit your truck</p>
-      <div class="mvd-steps">
-        <div class="mvd-step" id="mvd-step-year">
-          <h3>1. Select Year</h3>
-          <div class="mvd-options" id="mvd-year-options"></div>
+      <p class="mvd-subtitle">Provide vehicle details to confirm fitment</p>
+      <div class="mvd-form-row">
+        <div class="mvd-select-group">
+          <span class="mvd-num">1</span>
+          <select id="mvd-year"><option value="">YEAR</option></select>
         </div>
-        <div class="mvd-step" id="mvd-step-make" style="display:none;">
-          <h3>2. Select Make</h3>
-          <div class="mvd-options" id="mvd-make-options"></div>
+        <div class="mvd-select-group">
+          <span class="mvd-num">2</span>
+          <select id="mvd-make" disabled><option value="">MAKE</option></select>
         </div>
-        <div class="mvd-step" id="mvd-step-model" style="display:none;">
-          <h3>3. Select Model</h3>
-          <div class="mvd-options" id="mvd-model-options"></div>
+        <div class="mvd-select-group">
+          <span class="mvd-num">3</span>
+          <select id="mvd-model" disabled><option value="">MODEL</option></select>
         </div>
+        <button type="button" class="mvd-go" id="mvd-go" disabled>GO</button>
       </div>
       <div class="mvd-current" id="mvd-current" style="display:none;">
         <span id="mvd-current-text"></span>
-        <button type="button" class="mvd-clear-btn" id="mvd-clear-btn">Clear Vehicle</button>
+        <button type="button" class="mvd-clear-btn" id="mvd-clear-btn">Clear</button>
       </div>
     </div>
   </div>
@@ -85,16 +86,12 @@ document.addEventListener('DOMContentLoaded', function() {
   var currentDiv = document.getElementById('mvd-current');
   var currentText = document.getElementById('mvd-current-text');
   var clearBtn = document.getElementById('mvd-clear-btn');
-  var stepYear = document.getElementById('mvd-step-year');
-  var stepMake = document.getElementById('mvd-step-make');
-  var stepModel = document.getElementById('mvd-step-model');
-  var yearOpts = document.getElementById('mvd-year-options');
-  var makeOpts = document.getElementById('mvd-make-options');
-  var modelOpts = document.getElementById('mvd-model-options');
+  var yearSel = document.getElementById('mvd-year');
+  var makeSel = document.getElementById('mvd-make');
+  var modelSel = document.getElementById('mvd-model');
+  var goBtn = document.getElementById('mvd-go');
 
   if (!overlay || !openBtn) return;
-
-  var selYear = '', selMake = '';
 
   function getAllYears() {
     var s = new Set();
@@ -114,77 +111,83 @@ document.addEventListener('DOMContentLoaded', function() {
     return r.sort();
   }
 
-  function renderButtons(container, items, onClick) {
-    container.innerHTML = '';
-    items.forEach(function(item) {
-      var btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'mvd-option-btn';
-      btn.textContent = item;
-      btn.addEventListener('click', function() { onClick(item); });
-      container.appendChild(btn);
-    });
-  }
+  // Populate years
+  getAllYears().forEach(function(y) {
+    yearSel.innerHTML += '<option value="'+y+'">'+y+'</option>';
+  });
+
+  yearSel.addEventListener('change', function() {
+    makeSel.innerHTML = '<option value="">MAKE</option>';
+    modelSel.innerHTML = '<option value="">MODEL</option>';
+    modelSel.disabled = true; goBtn.disabled = true;
+    if (this.value) {
+      getMakes(this.value).forEach(function(m) { makeSel.innerHTML += '<option value="'+m+'">'+m+'</option>'; });
+      makeSel.disabled = false;
+    } else { makeSel.disabled = true; }
+  });
+
+  makeSel.addEventListener('change', function() {
+    modelSel.innerHTML = '<option value="">MODEL</option>';
+    goBtn.disabled = true;
+    if (this.value) {
+      getModels(yearSel.value, this.value).forEach(function(m) { modelSel.innerHTML += '<option value="'+m+'">'+m+'</option>'; });
+      modelSel.disabled = false;
+    } else { modelSel.disabled = true; }
+  });
+
+  modelSel.addEventListener('change', function() { goBtn.disabled = !this.value; });
+
+  goBtn.addEventListener('click', function() {
+    var y=yearSel.value, m=makeSel.value, md=modelSel.value;
+    if (y && m && md) {
+      localStorage.setItem('selectedVehicle', JSON.stringify({year:y,make:m,model:md}));
+      textEl.textContent = y+' '+m+' '+md;
+      changeEl.style.display = 'inline';
+      overlay.classList.remove('mvd-open');
+      document.body.style.overflow = '';
+      var tc = document.getElementById('toggle-current');
+      if (tc) tc.textContent = '('+y+' '+m+' '+md+')';
+      window.location.href = '/search?q='+encodeURIComponent(y+' '+m+' '+md)+'&type=product';
+    }
+  });
 
   function openModal() {
-    selYear = ''; selMake = '';
-    stepMake.style.display = 'none';
-    stepModel.style.display = 'none';
-    stepYear.style.display = 'block';
-    renderButtons(yearOpts, getAllYears(), pickYear);
     overlay.classList.add('mvd-open');
     document.body.style.overflow = 'hidden';
-    // Show current vehicle if saved
     var saved = localStorage.getItem('selectedVehicle');
     if (saved) {
       var v = JSON.parse(saved);
-      currentText.textContent = 'Current: ' + v.year + ' ' + v.make + ' ' + v.model;
+      currentText.textContent = 'Currently: ' + v.year + ' ' + v.make + ' ' + v.model;
       currentDiv.style.display = 'flex';
+      // Restore selects
+      yearSel.value = v.year;
+      yearSel.dispatchEvent(new Event('change'));
+      setTimeout(function(){
+        makeSel.value = v.make;
+        makeSel.dispatchEvent(new Event('change'));
+        setTimeout(function(){
+          modelSel.value = v.model;
+          goBtn.disabled = false;
+        }, 50);
+      }, 50);
     } else {
       currentDiv.style.display = 'none';
     }
   }
 
-  function closeModal() {
-    overlay.classList.remove('mvd-open');
-    document.body.style.overflow = '';
-  }
-
-  function pickYear(yr) {
-    selYear = yr;
-    stepMake.style.display = 'block';
-    stepModel.style.display = 'none';
-    renderButtons(makeOpts, getMakes(yr), pickMake);
-    stepMake.scrollIntoView({behavior:'smooth'});
-  }
-
-  function pickMake(mk) {
-    selMake = mk;
-    stepModel.style.display = 'block';
-    renderButtons(modelOpts, getModels(selYear, mk), pickModel);
-    stepModel.scrollIntoView({behavior:'smooth'});
-  }
-
-  function pickModel(md) {
-    localStorage.setItem('selectedVehicle', JSON.stringify({year:selYear, make:selMake, model:md}));
-    textEl.textContent = selYear + ' ' + selMake + ' ' + md;
-    changeEl.style.display = 'inline';
-    closeModal();
-    // Sync page vehicle selector
-    var tc = document.getElementById('toggle-current');
-    if (tc) tc.textContent = '(' + selYear + ' ' + selMake + ' ' + md + ')';
-    window.location.href = '/search?q=' + encodeURIComponent(selYear + ' ' + selMake + ' ' + md) + '&type=product';
-  }
-
   openBtn.addEventListener('click', openModal);
-  closeBtn.addEventListener('click', closeModal);
-  overlay.addEventListener('click', function(e) { if (e.target === overlay) closeModal(); });
+  closeBtn.addEventListener('click', function() { overlay.classList.remove('mvd-open'); document.body.style.overflow = ''; });
+  overlay.addEventListener('click', function(e) { if (e.target === overlay) { overlay.classList.remove('mvd-open'); document.body.style.overflow = ''; }});
 
   clearBtn.addEventListener('click', function() {
     localStorage.removeItem('selectedVehicle');
     textEl.textContent = 'SELECT YOUR VEHICLE';
     changeEl.style.display = 'none';
     currentDiv.style.display = 'none';
+    yearSel.value = '';
+    makeSel.innerHTML = '<option value="">MAKE</option>'; makeSel.disabled = true;
+    modelSel.innerHTML = '<option value="">MODEL</option>'; modelSel.disabled = true;
+    goBtn.disabled = true;
     var tc = document.getElementById('toggle-current');
     if (tc) tc.textContent = '';
   });
