@@ -1380,3 +1380,139 @@ a {
 a:hover {
   color: var(--stehlen-orange-dark);
 }
+/* ===== STEHLEN FOOTER (Armordillo style) ===== */
+.stehlen-footer {
+  background: #111 !important;
+  color: #ccc;
+  padding: 60px 40px 30px;
+  font-family: var(--font-body--family);
+}
+.stehlen-footer__grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr 1.2fr;
+  gap: 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.stehlen-footer__logo {
+  max-width: 180px;
+  height: auto;
+  margin-bottom: 16px;
+}
+.stehlen-footer__address p {
+  color: #aaa;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin: 0 0 20px;
+}
+.stehlen-footer__social {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+.stehlen-footer__social a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid #555;
+  color: #ccc;
+  transition: all 0.2s;
+}
+.stehlen-footer__social a:hover {
+  border-color: #F39C12;
+  color: #F39C12;
+}
+.stehlen-footer__heading {
+  color: #fff !important;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 20px;
+}
+.stehlen-footer__links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.stehlen-footer__links li {
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+  color: #aaa;
+}
+.stehlen-footer__links a {
+  color: #aaa !important;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.stehlen-footer__links a:hover {
+  color: #fff !important;
+}
+.stehlen-footer__signup-row {
+  display: flex;
+  gap: 0;
+  margin-top: 8px;
+}
+.stehlen-footer__input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid #555;
+  border-right: none;
+  border-radius: 30px 0 0 30px;
+  background: transparent;
+  color: #fff;
+  font-size: 0.9rem;
+  outline: none;
+}
+.stehlen-footer__input::placeholder {
+  color: #777;
+}
+.stehlen-footer__input:focus {
+  border-color: #F39C12;
+}
+.stehlen-footer__signup-btn {
+  padding: 12px 24px;
+  border: 1px solid #555;
+  border-radius: 0 30px 30px 0;
+  background: #333 !important;
+  color: #fff !important;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.stehlen-footer__signup-btn:hover {
+  background: #F39C12 !important;
+  border-color: #F39C12;
+}
+.stehlen-footer__bottom {
+  border-top: 1px solid #333;
+  margin-top: 40px;
+  padding-top: 20px;
+  text-align: center;
+}
+.stehlen-footer__bottom p {
+  color: #666;
+  font-size: 0.8rem;
+  margin: 0;
+}
+@media (max-width: 900px) {
+  .stehlen-footer__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+}
+@media (max-width: 550px) {
+  .stehlen-footer {
+    padding: 40px 20px 20px;
+  }
+  .stehlen-footer__grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}
