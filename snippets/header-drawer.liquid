@@ -132,7 +132,7 @@
         <h3 class="stehlen-drawer-heading">Categories</h3>
         <ul class="stehlen-drawer-list">
           {%- for collection in collections -%}
-            {%- unless collection.handle == 'all' or collection.handle == 'frontpage' -%}
+            {%- unless collection.handle == 'all' or collection.handle == 'frontpage' or collection.handle contains 'ford' or collection.handle contains 'chevy' or collection.handle contains 'dodge' or collection.handle contains 'gmc' or collection.handle contains 'toyota' or collection.handle contains 'ram' or collection.handle contains 'jeep' or collection.handle contains 'nissan' or collection.handle contains 'example' or collection.handle contains 'vehicles-and' -%}
             <li class="stehlen-drawer-item">
               <a href="{{ collection.url }}" class="stehlen-drawer-link stehlen-drawer-link--category">
                 <span>{{ collection.title }}</span>
