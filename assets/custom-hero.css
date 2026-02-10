@@ -1582,3 +1582,39 @@ main .rte h3 {
     flex-shrink: 0 !important;
   }
 }
+
+/* ===== SEARCH MODAL — full width, brand-styled ===== */
+@media (min-width: 750px) {
+  .search-modal__content,
+  .dialog-modal.search-modal__content,
+  .dialog-modal[open].search-modal__content {
+    --modal-width: 90dvw !important;
+    max-width: 1200px !important;
+    margin-inline: auto !important;
+    border-radius: 8px !important;
+    border: 2px solid var(--stehlen-orange, #F39C12) !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3) !important;
+  }
+}
+/* Search modal input styling */
+.search-modal__content input[type="search"],
+.search-modal__content input[type="text"],
+.search-modal__content .search-input {
+  font-size: 1rem !important;
+  padding: 12px 16px !important;
+  border: 1px solid #ddd !important;
+  border-radius: 6px !important;
+}
+.search-modal__content input:focus {
+  border-color: var(--stehlen-orange, #F39C12) !important;
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(243,156,18,0.2) !important;
+}
+/* Close button in search modal */
+.search-modal__content .close-button,
+.search-modal__content [class*="close"] {
+  background: var(--stehlen-orange, #F39C12) !important;
+  color: #fff !important;
+  border-radius: 6px !important;
+  border: none !important;
+}
