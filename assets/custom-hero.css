@@ -1855,6 +1855,21 @@ div.vehicle-selector-wrapper {
   text-align: center;
   flex-shrink: 0;
 }
+.stehlen-drawer-svg {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  stroke: #999;
+  transition: stroke 0.15s;
+}
+.stehlen-drawer-link:hover .stehlen-drawer-svg {
+  stroke: #F39C12;
+}
+/* Hide theme featured product images in drawer */
+.menu-drawer__featured-content,
+.menu-drawer__utility-links {
+  display: none !important;
+}
 .stehlen-drawer-divider {
   height: 1px;
   background: #e5e5e5;
