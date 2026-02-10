@@ -340,6 +340,34 @@ document.addEventListener('DOMContentLoaded', function() {
     const categories = params.get('categories') ? params.get('categories').split(',') : [];
     const makes = params.get('makes') ? params.get('makes').split(',') : [];
     
+    // Auto-detect from collection URL
+    const path = window.location.pathname.toLowerCase();
+    const collectionMatch = path.match(/\/collections\/([^\/]+)/);
+    if (collectionMatch) {
+      const handle = collectionMatch[1];
+      // Detect vehicle make from collection handle
+      const makeMap = {
+        'ford-parts': 'Ford', 'chevy-parts': 'Chevy', 'chevrolet-parts': 'Chevy',
+        'gmc-parts': 'GMC', 'dodge-parts': 'Dodge', 'ram-parts': 'Dodge',
+        'toyota-parts': 'Toyota'
+      };
+      // Detect category from collection handle
+      const catMap = {
+        'bull-guards-grille-guards': 'bull-guards', 'bull-guards': 'bull-guards',
+        'grille-guards': 'bull-guards',
+        'side-steps-nerf-bars': 'side-steps', 'side-steps': 'side-steps',
+        'nerf-bars': 'side-steps',
+        'tonneau-covers': 'tonneau', 'tonneau': 'tonneau',
+        'chase-racks-sport-bars': 'chase-racks', 'chase-racks': 'chase-racks'
+      };
+      if (makeMap[handle] && !makes.includes(makeMap[handle])) {
+        makes.push(makeMap[handle]);
+      }
+      if (catMap[handle] && !categories.includes(catMap[handle])) {
+        categories.push(catMap[handle]);
+      }
+    }
+    
     categories.forEach(cat => {
       const btn = document.querySelector(`.category-filter-btn[data-category="${cat}"]`);
       if (btn) btn.classList.add('filter-btn--active');
@@ -351,12 +379,40 @@ document.addEventListener('DOMContentLoaded', function() {
       if (btn) btn.classList.add('filter-btn--active');
     });
     
+    // If any filter is active, deselect "All"
+    if (categories.length > 0 || makes.length > 0) {
+      const allBtn = document.querySelector('.category-filter-btn[data-category="all"]');
+      if (allBtn && categories.length > 0) allBtn.classList.remove('filter-btn--active');
+    }
+    
     setTimeout(() => {
       updateVehicleButtonAvailability();
       if (categories.length > 0 || makes.length > 0) {
         applyFilters();
       }
     }, 200);
+  }
+  
+  // Check if we're on a filtered collection (not /collections/all)
+  const isFilteredCollection = /\/collections\/(?!all\b)[^\/]+/.test(window.location.pathname);
+  
+  function buildFilterUrl(categories, makes) {
+    const url = new URL(window.location.origin + '/collections/all');
+    if (categories.length > 0 && !categories.includes('all')) {
+      url.searchParams.set('categories', categories.join(','));
+    }
+    if (makes.length > 0) {
+      url.searchParams.set('makes', makes.join(','));
+    }
+    return url.toString();
+  }
+  
+  function getActiveFilters() {
+    const cats = Array.from(document.querySelectorAll('.category-filter-btn.filter-btn--active'))
+      .map(btn => btn.dataset.category);
+    const mks = Array.from(document.querySelectorAll('.vehicle-filter-btn.filter-btn--active'))
+      .map(btn => btn.dataset.make);
+    return { categories: cats, makes: mks };
   }
   
   categoryButtons.forEach(btn => {
@@ -375,7 +431,13 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!anyActive && allBtn) allBtn.classList.add('filter-btn--active');
       }
       
-      applyFilters();
+      if (isFilteredCollection) {
+        // Navigate to /collections/all with filters
+        const { categories, makes } = getActiveFilters();
+        window.location.href = buildFilterUrl(categories, makes);
+      } else {
+        applyFilters();
+      }
     });
   });
   
@@ -384,7 +446,13 @@ document.addEventListener('DOMContentLoaded', function() {
       e.preventDefault();
       if (!this.disabled) {
         this.classList.toggle('filter-btn--active');
-        applyFilters();
+        
+        if (isFilteredCollection) {
+          const { categories, makes } = getActiveFilters();
+          window.location.href = buildFilterUrl(categories, makes);
+        } else {
+          applyFilters();
+        }
       }
     });
   });
