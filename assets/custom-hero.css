@@ -1898,7 +1898,7 @@ div.vehicle-selector-wrapper {
 
 /* ===== FEATURED PRODUCTS CAROUSEL ===== */
 .fp-section {
-  padding: 40px 0 30px;
+  padding: 20px 0 20px;
   background: #fff;
   overflow: hidden;
 }
@@ -1946,7 +1946,7 @@ div.vehicle-selector-wrapper {
 .fp-header {
   text-align: center;
   max-width: 700px;
-  margin: 0 auto 28px;
+  margin: 0 auto 16px;
 }
 .fp-header__eyebrow {
   font-size: 1.6rem;
@@ -2001,8 +2001,8 @@ div.vehicle-selector-wrapper {
 /* Scattered photo layout — organic, not rigid */
 .fp-scatter {
   position: relative;
-  height: 600px;
-  max-width: 1200px;
+  height: 420px;
+  max-width: 1100px;
   margin: 0 auto;
   padding: 10px;
   overflow: visible;
@@ -2024,39 +2024,39 @@ div.vehicle-selector-wrapper {
 .fp-scatter__img:hover img { transform: scale(1.06); }
 .fp-scatter__img:hover { z-index: 5; box-shadow: 0 8px 32px rgba(0,0,0,0.18); }
 
-/* Hero always center, 4 photos scatter around irregularly per variant */
+/* Hero always center, varying number of surrounding photos */
 
-/* === V1 === */
-.fp-scatter--v1 .fp-scatter__img--hero { width: 42%; height: 80%; left: 29%; top: 10%; z-index: 2; transform: rotate(-0.5deg); }
-.fp-scatter--v1 .fp-scatter__img--a { width: 26%; height: 38%; left: 1%; top: 5%; transform: rotate(2deg); }
-.fp-scatter--v1 .fp-scatter__img--b { width: 22%; height: 34%; left: 3%; top: 58%; transform: rotate(-1.5deg); }
-.fp-scatter--v1 .fp-scatter__img--c { width: 24%; height: 36%; right: 1%; top: 3%; transform: rotate(-2deg); }
-.fp-scatter--v1 .fp-scatter__img--d { width: 23%; height: 40%; right: 3%; top: 55%; transform: rotate(1.5deg); }
+/* === V1: hero + 2 photos === */
+.fp-scatter--v1 .fp-scatter__img--hero { width: 44%; height: 85%; left: 28%; top: 5%; z-index: 2; transform: rotate(-0.5deg); }
+.fp-scatter--v1 .fp-scatter__img--a { width: 26%; height: 50%; left: 1%; top: 15%; transform: rotate(2deg); }
+.fp-scatter--v1 .fp-scatter__img--b { width: 24%; height: 48%; right: 2%; top: 20%; transform: rotate(-1.5deg); }
+.fp-scatter--v1 .fp-scatter__img--c { display: none; }
+.fp-scatter--v1 .fp-scatter__img--d { display: none; }
 
-/* === V2 === */
-.fp-scatter--v2 .fp-scatter__img--hero { width: 42%; height: 80%; left: 29%; top: 10%; z-index: 2; transform: rotate(0.5deg); }
-.fp-scatter--v2 .fp-scatter__img--a { width: 24%; height: 44%; left: 2%; top: 0; transform: rotate(-1.5deg); }
-.fp-scatter--v2 .fp-scatter__img--b { width: 26%; height: 32%; left: 0; top: 62%; transform: rotate(2deg); }
-.fp-scatter--v2 .fp-scatter__img--c { width: 22%; height: 32%; right: 4%; top: 0; transform: rotate(1.5deg); }
-.fp-scatter--v2 .fp-scatter__img--d { width: 26%; height: 44%; right: 0; top: 48%; transform: rotate(-2deg); }
+/* === V2: hero + 4 photos === */
+.fp-scatter--v2 .fp-scatter__img--hero { width: 40%; height: 82%; left: 30%; top: 6%; z-index: 2; transform: rotate(0.5deg); }
+.fp-scatter--v2 .fp-scatter__img--a { width: 26%; height: 38%; left: 2%; top: 3%; transform: rotate(-1.5deg); }
+.fp-scatter--v2 .fp-scatter__img--b { width: 24%; height: 36%; left: 1%; top: 58%; transform: rotate(1.5deg); }
+.fp-scatter--v2 .fp-scatter__img--c { width: 24%; height: 36%; right: 2%; top: 2%; transform: rotate(1deg); }
+.fp-scatter--v2 .fp-scatter__img--d { width: 26%; height: 38%; right: 1%; top: 56%; transform: rotate(-2deg); }
 
-/* === V3 === */
-.fp-scatter--v3 .fp-scatter__img--hero { width: 42%; height: 80%; left: 29%; top: 10%; z-index: 2; transform: rotate(-1deg); }
-.fp-scatter--v3 .fp-scatter__img--a { width: 27%; height: 34%; left: 0; top: 2%; transform: rotate(1deg); }
-.fp-scatter--v3 .fp-scatter__img--b { width: 20%; height: 40%; left: 5%; top: 52%; transform: rotate(-2deg); }
-.fp-scatter--v3 .fp-scatter__img--c { width: 25%; height: 40%; right: 0; top: 8%; transform: rotate(2deg); }
-.fp-scatter--v3 .fp-scatter__img--d { width: 21%; height: 34%; right: 4%; top: 60%; transform: rotate(-1deg); }
+/* === V3: hero + 3 photos === */
+.fp-scatter--v3 .fp-scatter__img--hero { width: 42%; height: 84%; left: 29%; top: 5%; z-index: 2; transform: rotate(-0.5deg); }
+.fp-scatter--v3 .fp-scatter__img--a { width: 26%; height: 44%; left: 1%; top: 8%; transform: rotate(1.5deg); }
+.fp-scatter--v3 .fp-scatter__img--b { width: 24%; height: 40%; right: 2%; top: 4%; transform: rotate(-1deg); }
+.fp-scatter--v3 .fp-scatter__img--c { width: 25%; height: 38%; right: 3%; top: 56%; transform: rotate(2deg); }
+.fp-scatter--v3 .fp-scatter__img--d { display: none; }
 
-/* === V4 === */
-.fp-scatter--v4 .fp-scatter__img--hero { width: 42%; height: 80%; left: 29%; top: 10%; z-index: 2; transform: rotate(0.5deg); }
-.fp-scatter--v4 .fp-scatter__img--a { width: 22%; height: 40%; left: 3%; top: 8%; transform: rotate(-2deg); }
-.fp-scatter--v4 .fp-scatter__img--b { width: 25%; height: 30%; left: 0; top: 66%; transform: rotate(1.5deg); }
-.fp-scatter--v4 .fp-scatter__img--c { width: 20%; height: 36%; right: 2%; top: 0; transform: rotate(-1deg); }
-.fp-scatter--v4 .fp-scatter__img--d { width: 25%; height: 38%; right: 0; top: 56%; transform: rotate(2deg); }
+/* === V4: hero + 2 photos === */
+.fp-scatter--v4 .fp-scatter__img--hero { width: 44%; height: 85%; left: 28%; top: 5%; z-index: 2; transform: rotate(0.5deg); }
+.fp-scatter--v4 .fp-scatter__img--a { width: 25%; height: 46%; left: 2%; top: 22%; transform: rotate(-1.5deg); }
+.fp-scatter--v4 .fp-scatter__img--b { width: 26%; height: 44%; right: 1%; top: 18%; transform: rotate(1deg); }
+.fp-scatter--v4 .fp-scatter__img--c { display: none; }
+.fp-scatter--v4 .fp-scatter__img--d { display: none; }
 
-/* === V0 === */
-.fp-scatter--v0 .fp-scatter__img--hero { width: 42%; height: 80%; left: 29%; top: 10%; z-index: 2; transform: rotate(-0.5deg); }
-.fp-scatter--v0 .fp-scatter__img--a { width: 25%; height: 36%; left: 1%; top: 0; transform: rotate(1.5deg); }
-.fp-scatter--v0 .fp-scatter__img--b { width: 23%; height: 38%; left: 2%; top: 54%; transform: rotate(-1.5deg); }
-.fp-scatter--v0 .fp-scatter__img--c { width: 26%; height: 42%; right: 1%; top: 4%; transform: rotate(-1deg); }
-.fp-scatter--v0 .fp-scatter__img--d { width: 22%; height: 36%; right: 3%; top: 58%; transform: rotate(2deg); }
+/* === V0: hero + 3 photos === */
+.fp-scatter--v0 .fp-scatter__img--hero { width: 42%; height: 84%; left: 29%; top: 6%; z-index: 2; transform: rotate(-0.5deg); }
+.fp-scatter--v0 .fp-scatter__img--a { width: 27%; height: 42%; left: 0; top: 4%; transform: rotate(1deg); }
+.fp-scatter--v0 .fp-scatter__img--b { width: 22%; height: 36%; left: 3%; top: 58%; transform: rotate(-1.5deg); }
+.fp-scatter--v0 .fp-scatter__img--c { width: 25%; height: 46%; right: 1%; top: 12%; transform: rotate(-1deg); }
+.fp-scatter--v0 .fp-scatter__img--d { display: none; }
