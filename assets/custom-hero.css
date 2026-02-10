@@ -1764,3 +1764,17 @@ div.vehicle-selector-wrapper {
     flex: 0 0 85vw;
   }
 }
+
+/* Review product link */
+.review-product-link {
+  display: inline-block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #F39C12 !important;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.review-product-link:hover {
+  color: #E67E22 !important;
+  text-decoration: underline;
+}
