@@ -1634,6 +1634,89 @@ main .rte h3 {
 }
 
 /* ===== HIDE REDUNDANT VEHICLE SELECTOR BAR ON COLLECTION PAGES ===== */
-.vehicle-selector-wrapper {
+.vehicle-selector-wrapper,
+#vehicle-selector-wrapper,
+div.vehicle-selector-wrapper {
   display: none !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+}
+
+/* ===== CUSTOMER REVIEWS CAROUSEL ===== */
+.reviews-section {
+  padding: 40px 20px;
+  max-width: 100%;
+  overflow: hidden;
+  background: #f9f9f9;
+}
+.reviews-section__title {
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin-bottom: 24px;
+  color: var(--stehlen-text, #1E2326);
+  letter-spacing: 0.03em;
+}
+.reviews-scroll {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding: 4px 20px 16px;
+  scrollbar-width: none;
+}
+.reviews-scroll::-webkit-scrollbar {
+  display: none;
+}
+.review-card {
+  flex: 0 0 320px;
+  scroll-snap-align: start;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: box-shadow 0.2s;
+}
+.review-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+.review-stars {
+  color: #F39C12;
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+}
+.review-text {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #444;
+  margin: 0;
+  flex: 1;
+}
+.review-author {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #222;
+}
+.review-verified {
+  color: #10b981;
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+.review-product {
+  font-size: 0.8rem;
+  color: #888;
+  font-style: italic;
+}
+@media (max-width: 749px) {
+  .review-card {
+    flex: 0 0 280px;
+    padding: 20px;
+  }
 }
