@@ -1662,17 +1662,26 @@ div.vehicle-selector-wrapper {
   text-transform: uppercase;
 }
 .reviews-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0;
-  max-width: 1400px;
-  margin: 0 auto;
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding: 4px 20px 20px;
+  scrollbar-width: none;
+}
+.reviews-grid::-webkit-scrollbar {
+  display: none;
 }
 /* Card with photo: side-by-side layout */
 .review-card {
+  flex: 0 0 560px;
+  scroll-snap-align: start;
   display: flex;
   border: 1px solid #eee;
-  min-height: 320px;
+  border-radius: 10px;
+  overflow: hidden;
+  min-height: 300px;
 }
 .review-card--with-photo {
   flex-direction: row;
@@ -1737,19 +1746,21 @@ div.vehicle-selector-wrapper {
   color: #666;
   font-weight: 600;
 }
-/* Text-only card: span full width on odd count */
-.review-card--text-only:last-child:nth-child(odd) {
-  grid-column: 1 / -1;
+.review-card--text-only {
+  flex: 0 0 360px;
 }
-@media (max-width: 900px) {
-  .reviews-grid {
-    grid-template-columns: 1fr;
+@media (max-width: 749px) {
+  .review-card {
+    flex: 0 0 85vw;
   }
   .review-card--with-photo {
     flex-direction: column;
   }
   .review-card__photo {
     width: 100%;
-    height: 220px;
+    height: 200px;
+  }
+  .review-card--text-only {
+    flex: 0 0 85vw;
   }
 }
