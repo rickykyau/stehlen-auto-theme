@@ -1632,3 +1632,8 @@ main .rte h3 {
   border-radius: 6px !important;
   border: none !important;
 }
+
+/* ===== HIDE REDUNDANT VEHICLE SELECTOR BAR ON COLLECTION PAGES ===== */
+.vehicle-selector-wrapper {
+  display: none !important;
+}
