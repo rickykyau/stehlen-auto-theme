@@ -2022,65 +2022,40 @@ div.vehicle-selector-wrapper {
 .fp-scatter__img:hover img { transform: scale(1.05); }
 .fp-scatter__img:hover { z-index: 5; }
 
-/* Hero — large center */
-.fp-scatter__img--hero {
-  width: 52%;
-  height: 88%;
-  left: 24%;
-  top: 3%;
-  z-index: 2;
-}
-/* A — top-left, smaller, offset up */
-.fp-scatter__img--a {
-  width: 22%;
-  height: 42%;
-  left: 0;
-  top: 0;
-  z-index: 1;
-}
-/* B — bottom-left, offset down */
-.fp-scatter__img--b {
-  width: 24%;
-  height: 38%;
-  left: 1%;
-  top: 52%;
-  z-index: 1;
-}
-/* C — top-right */
-.fp-scatter__img--c {
-  width: 21%;
-  height: 36%;
-  right: 0;
-  top: 2%;
-  z-index: 1;
-}
-/* D — bottom-right, offset */
-.fp-scatter__img--d {
-  width: 23%;
-  height: 44%;
-  right: 0;
-  top: 46%;
-  z-index: 1;
-}
+/* === V1: Hero center, 2 left + 2 right scattered === */
+.fp-scatter--v1 .fp-scatter__img--hero { width: 48%; height: 85%; left: 26%; top: 5%; z-index: 2; }
+.fp-scatter--v1 .fp-scatter__img--a { width: 23%; height: 44%; left: 0; top: 0; }
+.fp-scatter--v1 .fp-scatter__img--b { width: 21%; height: 38%; left: 2%; bottom: 0; top: auto; }
+.fp-scatter--v1 .fp-scatter__img--c { width: 20%; height: 35%; right: 1%; top: 5%; }
+.fp-scatter--v1 .fp-scatter__img--d { width: 24%; height: 46%; right: 0; bottom: 2%; top: auto; }
 
-/* When only 3 images, spread wider */
-.fp-scatter[data-count="3"] .fp-scatter__img--hero {
-  width: 50%;
-  left: 25%;
-}
-.fp-scatter[data-count="3"] .fp-scatter__img--a {
-  width: 24%;
-  height: 50%;
-  left: 0;
-  top: 10%;
-}
-.fp-scatter[data-count="3"] .fp-scatter__img--b {
-  width: 24%;
-  height: 50%;
-  right: 0;
-  left: auto;
-  top: 15%;
-}
+/* === V2: Hero left-of-center, photos drift right + one bottom-left === */
+.fp-scatter--v2 .fp-scatter__img--hero { width: 50%; height: 90%; left: 10%; top: 2%; z-index: 2; }
+.fp-scatter--v2 .fp-scatter__img--a { width: 28%; height: 48%; right: 0; top: 0; }
+.fp-scatter--v2 .fp-scatter__img--b { width: 22%; height: 36%; right: 5%; bottom: 4%; top: auto; }
+.fp-scatter--v2 .fp-scatter__img--c { width: 18%; height: 32%; left: 0; bottom: 0; top: auto; }
+.fp-scatter--v2 .fp-scatter__img--d { width: 15%; height: 28%; right: 30%; bottom: 0; top: auto; }
+
+/* === V3: Hero right-of-center, photos cluster left === */
+.fp-scatter--v3 .fp-scatter__img--hero { width: 50%; height: 88%; right: 8%; left: auto; top: 3%; z-index: 2; }
+.fp-scatter--v3 .fp-scatter__img--a { width: 26%; height: 52%; left: 0; top: 0; }
+.fp-scatter--v3 .fp-scatter__img--b { width: 20%; height: 34%; left: 4%; bottom: 2%; top: auto; }
+.fp-scatter--v3 .fp-scatter__img--c { width: 22%; height: 30%; left: 26%; top: 0; }
+.fp-scatter--v3 .fp-scatter__img--d { width: 18%; height: 36%; right: 0; bottom: 0; top: auto; }
+
+/* === V4: Hero top-center wide, photos below scattered === */
+.fp-scatter--v4 .fp-scatter__img--hero { width: 58%; height: 58%; left: 21%; top: 0; z-index: 2; }
+.fp-scatter--v4 .fp-scatter__img--a { width: 20%; height: 42%; left: 0; top: 8%; }
+.fp-scatter--v4 .fp-scatter__img--b { width: 30%; height: 34%; left: 5%; bottom: 0; top: auto; }
+.fp-scatter--v4 .fp-scatter__img--c { width: 32%; height: 34%; right: 3%; bottom: 0; top: auto; }
+.fp-scatter--v4 .fp-scatter__img--d { width: 18%; height: 40%; right: 0; top: 5%; }
+
+/* === V0: Hero center tall, tight flanking === */
+.fp-scatter--v0 .fp-scatter__img--hero { width: 44%; height: 92%; left: 28%; top: 2%; z-index: 2; }
+.fp-scatter--v0 .fp-scatter__img--a { width: 26%; height: 40%; left: 0; top: 8%; }
+.fp-scatter--v0 .fp-scatter__img--b { width: 22%; height: 42%; left: 0; bottom: 4%; top: auto; }
+.fp-scatter--v0 .fp-scatter__img--c { width: 25%; height: 38%; right: 0; top: 4%; }
+.fp-scatter--v0 .fp-scatter__img--d { width: 22%; height: 40%; right: 2%; bottom: 6%; top: auto; }
 
 /* Dots */
 .fp-dots {
