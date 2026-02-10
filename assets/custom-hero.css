@@ -1949,20 +1949,20 @@ div.vehicle-selector-wrapper {
   margin: 0 auto 28px;
 }
 .fp-header__eyebrow {
-  font-size: 0.75rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: #999;
-  font-weight: 600;
-  display: block;
-  margin-bottom: 8px;
-}
-.fp-header__title {
   font-size: 1.6rem;
   font-weight: 900;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
+  color: #1E2326;
+  display: block;
+  margin-bottom: 14px;
+}
+.fp-header__title {
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: none;
   margin: 0 0 12px;
-  line-height: 1.2;
+  line-height: 1.4;
 }
 .fp-header__title a {
   color: #1E2326 !important;
