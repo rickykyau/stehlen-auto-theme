@@ -1818,3 +1818,65 @@ div.vehicle-selector-wrapper {
     display: none;
   }
 }
+
+/* ===== CUSTOM DRAWER MENU ===== */
+.stehlen-drawer-menu {
+  padding: 16px 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+.stehlen-drawer-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.stehlen-drawer-item {
+  margin: 0;
+}
+.stehlen-drawer-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 8px;
+  text-decoration: none;
+  color: #222 !important;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+.stehlen-drawer-link:hover {
+  background: rgba(243,156,18,0.08);
+  color: #F39C12 !important;
+}
+.stehlen-drawer-icon {
+  font-size: 1.2rem;
+  width: 28px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.stehlen-drawer-divider {
+  height: 1px;
+  background: #e5e5e5;
+  margin: 12px 0;
+}
+.stehlen-drawer-heading {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #888;
+  letter-spacing: 0.08em;
+  padding: 4px 8px;
+  margin: 0 0 4px 0;
+}
+.stehlen-drawer-link--category {
+  justify-content: space-between;
+}
+.stehlen-drawer-chevron {
+  color: #bbb;
+  font-size: 1.2rem;
+  font-weight: 300;
+}
+.stehlen-drawer-link--category:hover .stehlen-drawer-chevron {
+  color: #F39C12;
+}

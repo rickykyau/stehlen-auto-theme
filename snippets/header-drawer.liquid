@@ -84,8 +84,67 @@
           {{- 'icon-close.svg' | inline_asset_content -}}
         </span>
       </button>
+      <!-- Stehlen Custom Menu -->
+      <div class="stehlen-drawer-menu">
+        <ul class="stehlen-drawer-list">
+          <li class="stehlen-drawer-item">
+            <a href="#" class="stehlen-drawer-link" onclick="if(window.Tawk_API)Tawk_API.maximize();return false;">
+              <span class="stehlen-drawer-icon">💬</span>
+              <span>Live Chat</span>
+            </a>
+          </li>
+          <li class="stehlen-drawer-item">
+            <a href="/pages/contact" class="stehlen-drawer-link">
+              <span class="stehlen-drawer-icon">❓</span>
+              <span>Help Center</span>
+            </a>
+          </li>
+          <li class="stehlen-drawer-item">
+            <a href="/account" class="stehlen-drawer-link">
+              <span class="stehlen-drawer-icon">👤</span>
+              <span>My Account</span>
+            </a>
+          </li>
+        </ul>
+        <div class="stehlen-drawer-divider"></div>
+        <h3 class="stehlen-drawer-heading">Shop</h3>
+        <ul class="stehlen-drawer-list">
+          <li class="stehlen-drawer-item">
+            <a href="/collections/all" class="stehlen-drawer-link">
+              <span class="stehlen-drawer-icon">🔥</span>
+              <span>Top Sellers</span>
+            </a>
+          </li>
+          <li class="stehlen-drawer-item">
+            <a href="/collections/all" class="stehlen-drawer-link">
+              <span class="stehlen-drawer-icon">🏷️</span>
+              <span>Sales & Clearance</span>
+            </a>
+          </li>
+          <li class="stehlen-drawer-item">
+            <a href="/pages/gallery" class="stehlen-drawer-link">
+              <span class="stehlen-drawer-icon">📸</span>
+              <span>Gallery</span>
+            </a>
+          </li>
+        </ul>
+        <div class="stehlen-drawer-divider"></div>
+        <h3 class="stehlen-drawer-heading">Categories</h3>
+        <ul class="stehlen-drawer-list">
+          {%- for collection in collections -%}
+            {%- unless collection.handle == 'all' or collection.handle == 'frontpage' -%}
+            <li class="stehlen-drawer-item">
+              <a href="{{ collection.url }}" class="stehlen-drawer-link stehlen-drawer-link--category">
+                <span>{{ collection.title }}</span>
+                <span class="stehlen-drawer-chevron">›</span>
+              </a>
+            </li>
+            {%- endunless -%}
+          {%- endfor -%}
+        </ul>
+      </div>
       <nav
-        class="menu-drawer__navigation"
+        class="menu-drawer__navigation" style="display:none !important;"
         style="
           {%- render 'menu-font-styles', settings: block_settings, menu_type: 'drawer' %}
           {%- render 'submenu-font-styles', settings: block_settings %}
