@@ -1564,3 +1564,21 @@ main .rte h3 {
   font-size: 1.1rem !important;
   line-height: 1.3 !important;
 }
+
+/* ===== HEADER LOGO — compact left-aligned ===== */
+@media (min-width: 750px) {
+  .header-logo,
+  .header-logo__image-container {
+    max-width: 250px !important;
+    --header-logo-image-width: 250px !important;
+  }
+  .header-logo .header-logo__image {
+    max-width: 250px !important;
+    width: auto !important;
+    height: auto !important;
+  }
+  .header__column--left .header-logo {
+    margin-right: 0 !important;
+    flex-shrink: 0 !important;
+  }
+}
