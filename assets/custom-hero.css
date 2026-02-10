@@ -1778,3 +1778,43 @@ div.vehicle-selector-wrapper {
   color: #E67E22 !important;
   text-decoration: underline;
 }
+
+/* Reviews arrow navigation */
+.reviews-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.reviews-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(30,35,38,0.8);
+  color: #fff;
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+  user-select: none;
+  line-height: 1;
+}
+.reviews-arrow:hover {
+  background: #F39C12;
+}
+.reviews-arrow--left {
+  left: 8px;
+}
+.reviews-arrow--right {
+  right: 8px;
+}
+@media (max-width: 749px) {
+  .reviews-arrow {
+    display: none;
+  }
+}
