@@ -1918,17 +1918,21 @@ div.vehicle-selector-wrapper {
 }
 .fp-track {
   display: flex;
-  gap: 20px;
+  gap: 0;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  padding: 0 40px;
+  padding: 0;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 .fp-track::-webkit-scrollbar { display: none; }
 .fp-slide {
-  flex: 0 0 min(90vw, 900px);
-  scroll-snap-align: center;
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 .fp-arrow {
   position: absolute;
@@ -2065,6 +2069,6 @@ div.vehicle-selector-wrapper {
 @media (max-width: 749px) {
   .fp-collage { height: 300px; }
   .fp-arrow { display: none; }
-  .fp-slide { flex: 0 0 92vw; }
+  .fp-slide { flex: 0 0 100%; }
   .fp-info { flex-direction: column; align-items: flex-start; gap: 8px; }
 }
