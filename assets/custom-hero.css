@@ -1077,6 +1077,7 @@ header + *,
     flex-shrink: 0 !important;
     gap: 4px !important;
     min-width: 0 !important;
+    overflow: hidden !important;
   }
   .header__column--left .header-logo {
     flex-shrink: 0 !important;
@@ -1588,9 +1589,9 @@ main .rte h3 {
   .search-modal__content,
   .dialog-modal.search-modal__content,
   .dialog-modal[open].search-modal__content {
-    --modal-width: 70dvw !important;
-    max-width: 900px !important;
-    max-height: 70vh !important;
+    --modal-width: 90dvw !important;
+    max-width: 1200px !important;
+    max-height: 80vh !important;
     margin-inline: auto !important;
     border-radius: 8px !important;
     border: 2px solid var(--stehlen-orange, #F39C12) !important;
