@@ -309,7 +309,7 @@ var __stehlenVehicleData = (function() {
       document.body.style.overflow = '';
       var tc = document.getElementById('toggle-current');
       if (tc) tc.textContent = '('+y+' '+m+' '+md+')';
-      window.location.href = '/search?q='+encodeURIComponent(m+' '+md)+'&type=product&year='+encodeURIComponent(y);
+      window.location.href = '/search?q='+encodeURIComponent(m+' '+md)+'&type=product#year='+y;
     }
   });
 
@@ -614,10 +614,22 @@ var __stehlenVehicleData = (function() {
 <!-- Vehicle fitment year filter for search results -->
 <script>
 (function() {
-  var params = new URLSearchParams(window.location.search);
-  var fitYear = params.get('year');
+  /* Check hash param first, then query param */
+  var fitYear = null;
+  var hashMatch = window.location.hash.match(/year=(\d{4})/);
+  if (hashMatch) fitYear = parseInt(hashMatch[1]);
+  if (!fitYear) {
+    var params = new URLSearchParams(window.location.search);
+    if (params.get('year')) fitYear = parseInt(params.get('year'));
+  }
+  /* Also check localStorage vehicle */
+  if (!fitYear) {
+    try {
+      var sv = JSON.parse(localStorage.getItem('selectedVehicle'));
+      if (sv && sv.year && window.location.pathname.includes('/search')) fitYear = parseInt(sv.year);
+    } catch(e) {}
+  }
   if (!fitYear || !window.location.pathname.includes('/search')) return;
-  fitYear = parseInt(fitYear);
   
   function filterByYear() {
     var items = document.querySelectorAll('.product-grid__item, .product-grid > li, .search-results .grid__item, .search__results .grid__item');
