@@ -206,6 +206,7 @@
         /* Deactivate — remove filter */
         pill.classList.remove('my-vehicle-pill--active');
         showAllProducts();
+        restoreCategoryButtons();
       } else {
         /* Activate — apply fitment filter */
         pill.classList.add('my-vehicle-pill--active');
@@ -224,6 +225,7 @@
       localStorage.removeItem('selectedVehicle');
       row.style.display = 'none';
       showAllProducts();
+      restoreCategoryButtons();
       /* Update header button text */
       var headerText = document.querySelector('.my-vehicle-btn span, [id*="vehicle"] span');
       if (headerText) headerText.textContent = 'SELECT YOUR VEHICLE';
@@ -292,6 +294,41 @@
         /* Passed make + year check — show */
         item.classList.remove('filter-hidden');
         item.style.removeProperty('display');
+      });
+
+      /* Grey out category buttons that have zero visible products */
+      updateCategoryAvailability();
+    }
+
+    function updateCategoryAvailability() {
+      var visibleItems = document.querySelectorAll('.product-grid__item:not(.filter-hidden), .product-grid > li:not(.filter-hidden)');
+      var visibleText = '';
+      visibleItems.forEach(function(item) { visibleText += ' ' + item.textContent.toLowerCase(); });
+
+      document.querySelectorAll('.category-filter-btn').forEach(function(btn) {
+        var handle = btn.dataset.handle;
+        if (handle === 'all') {
+          /* "All" stays enabled if any products visible */
+          btn.classList.toggle('filter-btn--disabled', visibleItems.length === 0);
+          btn.style.pointerEvents = visibleItems.length === 0 ? 'none' : '';
+          return;
+        }
+        /* Check if any visible product text contains keywords from this category */
+        var btnText = btn.textContent.toLowerCase().trim();
+        var keywords = btnText.split(/\s*[&,]\s*|\s+/);
+        var hasMatch = keywords.some(function(kw) {
+          if (kw.length < 3) return false; /* skip short words */
+          return visibleText.includes(kw);
+        });
+        btn.classList.toggle('filter-btn--disabled', !hasMatch);
+        btn.style.pointerEvents = hasMatch ? '' : 'none';
+      });
+    }
+
+    function restoreCategoryButtons() {
+      document.querySelectorAll('.category-filter-btn').forEach(function(btn) {
+        btn.classList.remove('filter-btn--disabled');
+        btn.style.pointerEvents = '';
       });
     }
 
