@@ -719,11 +719,15 @@ quantity-selector-component,
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 10px;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
 }
 .cat-tile {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 8px;
   padding: 12px 14px;
   background: var(--stehlen-charcoal, #1E2326);
@@ -749,8 +753,9 @@ quantity-selector-component,
 }
 @media (max-width: 749px) {
   .cat-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px;
+    padding: 0 16px;
   }
   .cat-tile {
     padding: 8px 14px;
