@@ -64,6 +64,12 @@
 </header-actions>
 
 <script>
+/* Remove stale scroll-lock on page load (fixes mobile scroll after navigation) */
+(function(){
+  document.documentElement.removeAttribute('scroll-lock');
+  document.body.style.overflow = '';
+})();
+
 /* Fix header layout: logo compact left, search fills remaining space */
 (function fixHeaderLayout() {
   function fix() {
