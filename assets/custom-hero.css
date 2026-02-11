@@ -753,9 +753,9 @@ quantity-selector-component,
 }
 @media (max-width: 749px) {
   .cat-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
     gap: 8px;
-    padding: 0 16px;
+    padding: 0 24px;
   }
   .cat-tile {
     padding: 8px 14px;
