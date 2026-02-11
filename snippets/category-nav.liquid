@@ -241,7 +241,21 @@
     /* Issue #4: Auto-activate if conditions met */
     if (shouldAutoActivate) {
       pill.classList.add('my-vehicle-pill--active');
-      setTimeout(function() { applyFitmentFilter(vehicle); }, 300);
+      /* Run filter multiple times to catch late-rendering products */
+      function runFilter() {
+        applyFitmentFilter(vehicle);
+      }
+      runFilter();
+      setTimeout(runFilter, 300);
+      setTimeout(runFilter, 800);
+      setTimeout(runFilter, 1500);
+      setTimeout(runFilter, 3000);
+      /* Also watch for DOM changes (infinite scroll, lazy loading) */
+      var gridEl = document.querySelector('.product-grid, .results-list, .collection-wrapper');
+      if (gridEl) {
+        var obs = new MutationObserver(function() { applyFitmentFilter(vehicle); });
+        obs.observe(gridEl, { childList: true, subtree: true });
+      }
     }
 
     /* Issue #3: Fitment filter — properly check BOTH make AND year range */
@@ -249,7 +263,8 @@
       var year = parseInt(v.year);
       var make = v.make.toLowerCase();
       var model = v.model.toLowerCase();
-      var items = document.querySelectorAll('.product-grid__item, .product-grid > li, [data-product-id]');
+      var items = document.querySelectorAll('.product-grid__item');
+      console.log('[Fitment] Filtering for ' + year + ' ' + make + ' ' + model + ', found ' + items.length + ' items');
       
       items.forEach(function(item) {
         var text = item.textContent.toLowerCase();
@@ -333,7 +348,7 @@
     }
 
     function showAllProducts() {
-      document.querySelectorAll('.product-grid__item, .product-grid > li, [data-product-id]').forEach(function(item) {
+      document.querySelectorAll('.product-grid__item').forEach(function(item) {
         item.classList.remove('filter-hidden');
         item.style.removeProperty('display');
       });
