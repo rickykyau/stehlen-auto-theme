@@ -1,8 +1,9 @@
 {%- comment -%}
   Category & Vehicle Navigation Bar
-  Fully dynamic — pulls from Shopify collections automatically
-  Categories = any non-*-parts collection with products
-  Vehicles = any *-parts collection with products
+  Row 1: My Vehicle (from localStorage, year-aware fitment filter)
+  Row 2: Shop by Category (collection navigation)
+  Row 3: Shop by Make (collection navigation)
+  My Vehicle and Make are mutually exclusive.
 {%- endcomment -%}
 
 {%- assign skip_handles = 'all,frontpage,digital-goods-vat-tax,vehicles-and-parts-example-products' | split: ',' -%}
@@ -10,19 +11,18 @@
 <style>
   .filter-bar-wrapper {
     position: relative; top: 0; z-index: 20;
-    /* Hide when drawer is open — drawer dialog uses browser top-layer but filter bar bleeds through */
     background: var(--color-background, #fff);
     padding: 8px 0;
     border-bottom: 1px solid var(--color-border, #e5e5e5);
     margin-bottom: 16px;
   }
   .filter-row {
-    display: flex; align-items: center; gap: 8px; padding: 6px 0; position: relative;
+    display: flex; align-items: center; gap: 8px; padding: 5px 0; position: relative;
   }
   .filter-row__label {
     font-weight: 600; font-size: 12px; text-transform: uppercase;
     letter-spacing: 0.5px; color: var(--color-foreground);
-    white-space: nowrap; min-width: 70px; flex-shrink: 0;
+    white-space: nowrap; min-width: 80px; flex-shrink: 0;
   }
   .filter-row__scroll {
     display: flex; gap: 8px; overflow-x: auto;
@@ -46,20 +46,58 @@
   .filter-btn--active:hover, a.filter-btn--active:hover, button.filter-btn--active:hover {
     background: #E67E22 !important; border-color: #E67E22 !important; color: #fff !important;
   }
+  .filter-btn--active .filter-btn__icon { color: #fff !important; }
   .filter-btn:disabled, .filter-btn--disabled {
     opacity: 0.4; cursor: not-allowed; pointer-events: none;
   }
   .filter-btn__icon { width: 16px; height: 16px; color: #F39C12; flex-shrink: 0; }
-  .filter-btn--active .filter-btn__icon { color: #fff; }
   .product-grid__item.filter-hidden { display: none !important; }
+
+  /* My Vehicle row */
+  .filter-row--myvehicle { display: none; } /* hidden until JS shows it */
+  .my-vehicle-pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 14px; background: var(--color-background, #fff);
+    border: 1.5px solid #F39C12; border-radius: 20px;
+    color: #F39C12; font-weight: 600; font-size: 13px;
+    cursor: pointer; white-space: nowrap; transition: all 0.15s ease;
+    text-decoration: none;
+  }
+  .my-vehicle-pill:hover { background: rgba(243,156,18,0.05); }
+  .my-vehicle-pill--active {
+    background: #F39C12 !important; color: #fff !important;
+  }
+  .my-vehicle-pill--active:hover { background: #E67E22 !important; }
+  .my-vehicle-pill__close {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: rgba(255,255,255,0.3); font-size: 12px; line-height: 1;
+    cursor: pointer; margin-left: 2px;
+  }
+  .my-vehicle-pill--active .my-vehicle-pill__close { color: #fff; }
+  .my-vehicle-pill__close:hover { background: rgba(255,255,255,0.5); }
+
   @media (max-width: 749px) {
-    .filter-row__label { font-size: 11px; min-width: 60px; }
+    .filter-row__label { font-size: 11px; min-width: 65px; }
     .filter-btn { font-size: 12px; padding: 5px 10px; }
+    .my-vehicle-pill { font-size: 12px; padding: 5px 10px; }
   }
 </style>
 
 <div class="filter-bar-wrapper">
-  <!-- Category row -->
+  <!-- Row 1: My Vehicle (hidden if no vehicle saved) -->
+  <div class="filter-row filter-row--myvehicle" id="my-vehicle-row">
+    <span class="filter-row__label">My Vehicle:</span>
+    <div class="filter-row__scroll">
+      <div class="my-vehicle-pill" id="my-vehicle-pill" role="button">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 17h14M7 11l2-5h6l2 5M4 17a1 1 0 01-1-1v-3l1-2h16l1 2v3a1 1 0 01-1 1M7.5 17a1.5 1.5 0 100 3 1.5 1.5 0 000-3zM16.5 17a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"/></svg>
+        <span id="my-vehicle-text"></span>
+        <span class="my-vehicle-pill__close" id="my-vehicle-clear" title="Clear vehicle">✕</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 2: Shop by Category -->
   <div class="filter-row">
     <span class="filter-row__label">Shop by:</span>
     <div class="filter-row__scroll">
@@ -95,7 +133,7 @@
     </div>
   </div>
 
-  <!-- Vehicle row -->
+  <!-- Row 3: Shop by Make -->
   <div class="filter-row">
     <span class="filter-row__label">Vehicle:</span>
     <div class="filter-row__scroll">
@@ -111,24 +149,150 @@
   </div>
 </div>
 
-
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  // Highlight active filter from current URL
-  const currentHandle = (window.location.pathname.match(/\/collections\/([^\/\?]+)/) || [])[1] || 'all';
+(function() {
+  function init() {
+    var saved = localStorage.getItem('selectedVehicle');
+    var row = document.getElementById('my-vehicle-row');
+    var pill = document.getElementById('my-vehicle-pill');
+    var textEl = document.getElementById('my-vehicle-text');
+    var clearBtn = document.getElementById('my-vehicle-clear');
+    if (!row || !pill || !textEl) return;
 
-  document.querySelectorAll('.category-filter-btn').forEach(btn => {
-    // If on a vehicle collection, keep "All" active in categories
-    const isVehiclePage = currentHandle.endsWith('-parts');
-    if (isVehiclePage) {
-      btn.classList.toggle('filter-btn--active', btn.dataset.handle === 'all');
+    var vehicle = null;
+    try { vehicle = saved ? JSON.parse(saved) : null; } catch(e) {}
+
+    /* Show/hide My Vehicle row */
+    if (vehicle && vehicle.year && vehicle.make && vehicle.model) {
+      row.style.display = 'flex';
+      textEl.textContent = vehicle.year + ' ' + vehicle.make + ' ' + vehicle.model;
     } else {
-      btn.classList.toggle('filter-btn--active', btn.dataset.handle === currentHandle);
+      row.style.display = 'none';
+      return;
     }
-  });
 
-  document.querySelectorAll('.vehicle-filter-btn').forEach(btn => {
-    btn.classList.toggle('filter-btn--active', btn.dataset.handle === currentHandle);
-  });
-});
+    var isMyVehicleActive = false;
+    var currentHandle = (window.location.pathname.match(/\/collections\/([^\/\?]+)/) || [])[1] || 'all';
+    var isVehicleMakePage = currentHandle.endsWith('-parts');
+
+    /* Highlight category row */
+    document.querySelectorAll('.category-filter-btn').forEach(function(btn) {
+      if (isVehicleMakePage || isMyVehicleActive) {
+        btn.classList.toggle('filter-btn--active', btn.dataset.handle === 'all');
+      } else {
+        btn.classList.toggle('filter-btn--active', btn.dataset.handle === currentHandle);
+      }
+    });
+
+    /* Highlight vehicle row */
+    document.querySelectorAll('.vehicle-filter-btn').forEach(function(btn) {
+      btn.classList.toggle('filter-btn--active', btn.dataset.handle === currentHandle);
+    });
+
+    /* My Vehicle pill click — toggle fitment filter */
+    pill.addEventListener('click', function(e) {
+      if (e.target === clearBtn || e.target.closest('.my-vehicle-pill__close')) return;
+      
+      if (pill.classList.contains('my-vehicle-pill--active')) {
+        /* Deactivate — remove filter */
+        pill.classList.remove('my-vehicle-pill--active');
+        showAllProducts();
+      } else {
+        /* Activate — apply fitment filter */
+        pill.classList.add('my-vehicle-pill--active');
+        /* Deselect any vehicle-make button by navigating to /collections/all if on a make page */
+        if (isVehicleMakePage) {
+          window.location.href = '/collections/all#myvehicle=1';
+          return;
+        }
+        applyFitmentFilter(vehicle);
+      }
+    });
+
+    /* Clear button — remove saved vehicle */
+    clearBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      localStorage.removeItem('selectedVehicle');
+      row.style.display = 'none';
+      showAllProducts();
+      /* Update header button text */
+      var headerText = document.querySelector('.my-vehicle-btn span, [id*="vehicle"] span');
+      if (headerText) headerText.textContent = 'SELECT YOUR VEHICLE';
+    });
+
+    /* Vehicle row clicks — deactivate My Vehicle */
+    document.querySelectorAll('.vehicle-filter-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        pill.classList.remove('my-vehicle-pill--active');
+      });
+    });
+
+    /* Check if we should auto-activate (came from hash or was active) */
+    if (window.location.hash.includes('myvehicle=1')) {
+      pill.classList.add('my-vehicle-pill--active');
+      setTimeout(function() { applyFitmentFilter(vehicle); }, 300);
+    }
+
+    /* Fitment filter: hide products that don't match year+make */
+    function applyFitmentFilter(v) {
+      var year = parseInt(v.year);
+      var make = v.make.toLowerCase();
+      var model = v.model.toLowerCase();
+      var items = document.querySelectorAll('.product-grid__item, .product-grid > li, [data-product-id]');
+      
+      items.forEach(function(item) {
+        var text = item.textContent.toLowerCase();
+        
+        /* Check make match (or universal) */
+        var isUniversal = text.includes('universal');
+        var makeMatch = isUniversal || text.includes(make);
+        /* Also check alternate names */
+        if (!makeMatch && make === 'chevy') makeMatch = text.includes('chevrolet');
+        if (!makeMatch && make === 'chevrolet') makeMatch = text.includes('chevy');
+        if (!makeMatch && make === 'mercedes-benz') makeMatch = text.includes('mercedes');
+        if (!makeMatch && make === 'vw') makeMatch = text.includes('volkswagen');
+        if (!makeMatch && make === 'volkswagen') makeMatch = text.includes('vw');
+        
+        if (!makeMatch) {
+          item.classList.add('filter-hidden');
+          return;
+        }
+        
+        /* Check year range */
+        var rangeMatch = text.match(/(\d{4})\s*[-–]\s*(\d{4})/);
+        var plusMatch = !rangeMatch && text.match(/(\d{4})\+/);
+        
+        if (rangeMatch) {
+          var start = parseInt(rangeMatch[1]);
+          var end = parseInt(rangeMatch[2]);
+          if (year < start || year > end) {
+            item.classList.add('filter-hidden');
+            return;
+          }
+        } else if (plusMatch) {
+          if (year < parseInt(plusMatch[1])) {
+            item.classList.add('filter-hidden');
+            return;
+          }
+        }
+        /* Universal or matching — show */
+        item.classList.remove('filter-hidden');
+        item.style.removeProperty('display');
+      });
+    }
+
+    function showAllProducts() {
+      document.querySelectorAll('.product-grid__item, .product-grid > li, [data-product-id]').forEach(function(item) {
+        item.classList.remove('filter-hidden');
+        item.style.removeProperty('display');
+      });
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
 </script>
