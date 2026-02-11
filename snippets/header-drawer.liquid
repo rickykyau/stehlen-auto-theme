@@ -107,34 +107,53 @@
           </li>
         </ul>
         <div class="stehlen-drawer-divider"></div>
-        <h3 class="stehlen-drawer-heading">Shop</h3>
+        
+        <!-- Shop by Category (expandable) -->
         <ul class="stehlen-drawer-list">
           <li class="stehlen-drawer-item">
-            <a href="/collections/all" class="stehlen-drawer-link">
-              <svg class="stehlen-drawer-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-              <span>Top Sellers</span>
+            <a href="#" class="stehlen-drawer-link stehlen-drawer-toggle" data-target="drawer-categories" onclick="event.preventDefault();var t=document.getElementById('drawer-categories');t.style.display=t.style.display==='none'?'block':'none';this.querySelector('.stehlen-drawer-chevron').textContent=t.style.display==='none'?'›':'‹';">
+              <svg class="stehlen-drawer-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+              <span>Shop by Category</span>
+              <span class="stehlen-drawer-chevron">›</span>
             </a>
           </li>
-          <li class="stehlen-drawer-item">
-            <a href="/collections/all" class="stehlen-drawer-link">
-              <svg class="stehlen-drawer-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 7h.01M7 3h5a1.99 1.99 0 011.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
-              <span>Sales & Clearance</span>
-            </a>
-          </li>
-<!-- Gallery removed -->
         </ul>
-        <div class="stehlen-drawer-divider"></div>
-        <h3 class="stehlen-drawer-heading">Categories</h3>
-        <ul class="stehlen-drawer-list">
+        <ul id="drawer-categories" class="stehlen-drawer-list stehlen-drawer-sublist" style="display:none;">
           {%- for collection in collections -%}
             {%- unless collection.handle == 'all' or collection.handle == 'frontpage' or collection.handle contains '-parts' or collection.handle == 'digital-goods-vat-tax' or collection.handle contains 'example' or collection.handle contains 'vehicles-and' -%}
+            {%- if collection.products_count > 0 -%}
             <li class="stehlen-drawer-item">
               <a href="{{ collection.url }}" class="stehlen-drawer-link stehlen-drawer-link--category">
                 <span>{{ collection.title }}</span>
                 <span class="stehlen-drawer-chevron">›</span>
               </a>
             </li>
+            {%- endif -%}
             {%- endunless -%}
+          {%- endfor -%}
+        </ul>
+        
+        <!-- Shop by Make (expandable) -->
+        <ul class="stehlen-drawer-list">
+          <li class="stehlen-drawer-item">
+            <a href="#" class="stehlen-drawer-link stehlen-drawer-toggle" data-target="drawer-makes" onclick="event.preventDefault();var t=document.getElementById('drawer-makes');t.style.display=t.style.display==='none'?'block':'none';this.querySelector('.stehlen-drawer-chevron').textContent=t.style.display==='none'?'›':'‹';">
+              <svg class="stehlen-drawer-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 17h14M7 11l2-5h6l2 5M4 17a1 1 0 01-1-1v-3l1-2h16l1 2v3a1 1 0 01-1 1M7.5 17a1.5 1.5 0 100 3 1.5 1.5 0 000-3zM16.5 17a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"/></svg>
+              <span>Shop by Make</span>
+              <span class="stehlen-drawer-chevron">›</span>
+            </a>
+          </li>
+        </ul>
+        <ul id="drawer-makes" class="stehlen-drawer-list stehlen-drawer-sublist" style="display:none;">
+          {%- for collection in collections -%}
+            {%- if collection.handle contains '-parts' and collection.products_count > 0 -%}
+            {%- assign make_name = collection.title | remove: ' Parts' -%}
+            <li class="stehlen-drawer-item">
+              <a href="{{ collection.url }}" class="stehlen-drawer-link stehlen-drawer-link--category">
+                <span>{{ make_name }}</span>
+                <span class="stehlen-drawer-chevron">›</span>
+              </a>
+            </li>
+            {%- endif -%}
           {%- endfor -%}
         </ul>
       </div>
