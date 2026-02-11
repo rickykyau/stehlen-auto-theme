@@ -87,7 +87,7 @@
       <!-- Stehlen Custom Menu -->
       <div class="stehlen-drawer-menu">
         <!-- Select Vehicle button (visible on mobile where header button is hidden) -->
-        <div class="stehlen-drawer-vehicle-btn" onclick="document.querySelector('#Details-menu-drawer-container summary')?.click();setTimeout(function(){var m=document.getElementById('mvd-modal');if(m)m.style.display='flex';},400);">
+        <div class="stehlen-drawer-vehicle-btn" onclick="document.querySelector('#Details-menu-drawer-container summary')?.click();setTimeout(function(){var o=document.getElementById('mvd-overlay');if(o){o.classList.add('mvd-open');document.body.style.overflow='hidden';}},400);">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20"><path d="M5 17h14M7 11l2-5h6l2 5M4 17a1 1 0 01-1-1v-3l1-2h16l1 2v3a1 1 0 01-1 1M7.5 17a1.5 1.5 0 100 3 1.5 1.5 0 000-3zM16.5 17a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"/></svg>
           <span id="drawer-vehicle-text">SELECT YOUR VEHICLE</span>
         </div>
