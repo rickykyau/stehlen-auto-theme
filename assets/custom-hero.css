@@ -1901,6 +1901,11 @@ div.vehicle-selector-wrapper {
   color: #F39C12;
 }
 
+/* Ensure filter bar doesn't overlap the drawer */
+html:has(dialog[open]) .filter-bar-wrapper {
+  display: none !important;
+}
+
 .stehlen-drawer-sublist {
   padding-left: 20px;
   border-left: 2px solid rgba(243, 156, 18, 0.3);
