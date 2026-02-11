@@ -101,127 +101,33 @@
       {%- for collection in collections -%}
         {%- if collection.handle contains '-parts' and collection.products_count > 0 -%}
           {%- assign make_name = collection.title | remove: ' Parts' -%}
-          <button type="button" class="filter-btn vehicle-filter-btn" data-make="{{ make_name }}" data-handle="{{ collection.handle }}">
+          <a href="/collections/{{ collection.handle }}" class="filter-btn vehicle-filter-btn" data-handle="{{ collection.handle }}">
             {{ make_name }}
-          </button>
+          </a>
         {%- endif -%}
       {%- endfor -%}
     </div>
   </div>
 </div>
 
-{%- comment -%} Build product-to-collection mapping for client-side filtering {%- endcomment -%}
-<script type="application/json" id="collection-product-map">
-{
-  {%- assign first_col = true -%}
-  {%- for collection in collections -%}
-    {%- if collection.handle contains '-parts' and collection.products_count > 0 -%}
-      {%- assign make_name = collection.title | remove: ' Parts' -%}
-      {%- unless first_col -%},{%- endunless -%}
-      "{{ make_name }}": [
-        {%- for product in collection.products -%}
-          {%- unless forloop.first -%},{%- endunless -%}
-          {{ product.id }}
-        {%- endfor -%}
-      ]
-      {%- assign first_col = false -%}
-    {%- endif -%}
-  {%- endfor -%}
-}
-</script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  const categoryButtons = document.querySelectorAll('.category-filter-btn');
-  const vehicleButtons = document.querySelectorAll('.vehicle-filter-btn');
-
-  // Load vehicle→product mapping from Liquid-generated JSON
-  let vehicleProductMap = {};
-  try {
-    vehicleProductMap = JSON.parse(document.getElementById('collection-product-map').textContent);
-  } catch(e) {}
-
-  // Highlight current category from URL
+  // Highlight active filter from current URL
   const currentHandle = (window.location.pathname.match(/\/collections\/([^\/\?]+)/) || [])[1] || 'all';
-  categoryButtons.forEach(btn => {
+
+  document.querySelectorAll('.category-filter-btn').forEach(btn => {
+    // If on a vehicle collection, keep "All" active in categories
+    const isVehiclePage = currentHandle.endsWith('-parts');
+    if (isVehiclePage) {
+      btn.classList.toggle('filter-btn--active', btn.dataset.handle === 'all');
+    } else {
+      btn.classList.toggle('filter-btn--active', btn.dataset.handle === currentHandle);
+    }
+  });
+
+  document.querySelectorAll('.vehicle-filter-btn').forEach(btn => {
     btn.classList.toggle('filter-btn--active', btn.dataset.handle === currentHandle);
   });
-
-  // Vehicle filtering — client-side on product grid using the Liquid-injected map
-  function getProductItems() {
-    return document.querySelectorAll('.product-grid__item, .product-grid > li');
-  }
-
-  function getProductId(item) {
-    // Try data attributes, then link href
-    if (item.dataset.productId) return parseInt(item.dataset.productId);
-    const link = item.querySelector('a[href*="/products/"]');
-    return link ? link.href : item.textContent;
-  }
-
-  function getProductText(item) {
-    return (item.textContent + ' ' + (item.dataset.tags || '')).toLowerCase();
-  }
-
-  function applyVehicleFilter() {
-    const activeMakes = Array.from(document.querySelectorAll('.vehicle-filter-btn.filter-btn--active'))
-      .map(b => b.dataset.make);
-
-    if (!activeMakes.length) {
-      // Show all
-      getProductItems().forEach(item => {
-        item.classList.remove('filter-hidden');
-        item.style.removeProperty('display');
-      });
-      return;
-    }
-
-    // Build set of matching product IDs
-    const matchIds = new Set();
-    activeMakes.forEach(make => {
-      (vehicleProductMap[make] || []).forEach(id => matchIds.add(id));
-    });
-
-    getProductItems().forEach(item => {
-      const text = getProductText(item);
-      // Check by text matching as fallback (make name in product card text)
-      const textMatch = activeMakes.some(make => text.includes(make.toLowerCase()));
-      // Also check universal products
-      const isUniversal = text.includes('universal');
-
-      if (textMatch || isUniversal) {
-        item.classList.remove('filter-hidden');
-        item.style.removeProperty('display');
-      } else {
-        item.classList.add('filter-hidden');
-      }
-    });
-  }
-
-  vehicleButtons.forEach(btn => {
-    btn.addEventListener('click', function(e) {
-      e.preventDefault();
-      if (!this.disabled) {
-        this.classList.toggle('filter-btn--active');
-        applyVehicleFilter();
-      }
-    });
-  });
-
-  // Category buttons navigate to collection pages (server-side filtering)
-  // No JS needed — they're <a> links
-
-  // If vehicle params in URL, restore them
-  const params = new URLSearchParams(window.location.search);
-  const makes = params.get('makes') ? params.get('makes').split(',') : [];
-  makes.forEach(make => {
-    const btn = document.querySelector(`.vehicle-filter-btn[data-make="${make}"]`);
-    if (btn) btn.classList.add('filter-btn--active');
-  });
-  if (makes.length) applyVehicleFilter();
-
-  // Update URL when vehicle filter changes
-  const origApply = applyVehicleFilter;
-  // Already handled inline
 });
 </script>
