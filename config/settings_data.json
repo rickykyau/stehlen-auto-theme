@@ -352,7 +352,8 @@
           "selected_variant_hover_border_color": "#1a1a1a"
         }
       }
-    }
+    },
+    "favicon": "shopify://shop_images/favicon.png"
   },
   "presets": {
     "Horizon": {
