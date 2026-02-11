@@ -263,11 +263,17 @@
       var year = parseInt(v.year);
       var make = v.make.toLowerCase();
       var model = v.model.toLowerCase();
+      /* Try multiple selectors to find product items */
       var items = document.querySelectorAll('.product-grid__item');
+      if (!items.length) items = document.querySelectorAll('.product-grid > li');
+      if (!items.length) items = document.querySelectorAll('[data-product-id]');
+      if (!items.length) items = document.querySelectorAll('li[class*="product"]');
       console.log('[Fitment] Filtering for ' + year + ' ' + make + ' ' + model + ', found ' + items.length + ' items');
+      var hidden = 0;
       
       items.forEach(function(item) {
         var text = item.textContent.toLowerCase();
+        var shouldHide = false;
         
         /* Check make match (or universal) */
         var isUniversal = text.includes('universal');
@@ -280,40 +286,38 @@
         if (!makeMatch && make === 'volkswagen') makeMatch = text.includes('vw');
         
         if (!makeMatch) {
-          item.classList.add('filter-hidden');
-          return;
-        }
-        
-        /* Check year range — must match */
-        var rangeMatch = text.match(/(\d{4})\s*[-–]\s*(\d{4})/);
-        var plusMatch = !rangeMatch && text.match(/(\d{4})\+/);
-        
-        if (rangeMatch) {
-          var start = parseInt(rangeMatch[1]);
-          var end = parseInt(rangeMatch[2]);
-          if (year < start || year > end) {
-            item.classList.add('filter-hidden');
-            return;
+          shouldHide = true;
+        } else {
+          /* Check year range — must match */
+          var rangeMatch = text.match(/(\d{4})\s*[-–]\s*(\d{4})/);
+          var plusMatch = !rangeMatch && text.match(/(\d{4})\+/);
+          
+          if (rangeMatch) {
+            var start = parseInt(rangeMatch[1]);
+            var end = parseInt(rangeMatch[2]);
+            if (year < start || year > end) shouldHide = true;
+          } else if (plusMatch) {
+            if (year < parseInt(plusMatch[1])) shouldHide = true;
+          } else if (!isUniversal) {
+            shouldHide = true;
           }
-        } else if (plusMatch) {
-          if (year < parseInt(plusMatch[1])) {
-            item.classList.add('filter-hidden');
-            return;
-          }
-        } else if (!isUniversal) {
-          /* No year range found and not universal — hide it (can't confirm fitment) */
-          item.classList.add('filter-hidden');
-          return;
         }
 
-        /* Passed make + year check — show */
-        item.classList.remove('filter-hidden');
-        item.style.removeProperty('display');
+        if (shouldHide) {
+          item.style.setProperty('display', 'none', 'important');
+          item.classList.add('filter-hidden');
+          hidden++;
+        } else {
+          item.style.removeProperty('display');
+          item.classList.remove('filter-hidden');
+        }
       });
+      console.log('[Fitment] Hidden ' + hidden + ' of ' + items.length + ' products');
 
       /* Grey out category buttons that have zero visible products */
       updateCategoryAvailability();
     }
+
 
     function updateCategoryAvailability() {
       var visibleItems = document.querySelectorAll('.product-grid__item:not(.filter-hidden), .product-grid > li:not(.filter-hidden)');
@@ -348,7 +352,7 @@
     }
 
     function showAllProducts() {
-      document.querySelectorAll('.product-grid__item').forEach(function(item) {
+      document.querySelectorAll('.product-grid__item, .product-grid > li, [data-product-id]').forEach(function(item) {
         item.classList.remove('filter-hidden');
         item.style.removeProperty('display');
       });
