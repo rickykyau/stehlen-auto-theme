@@ -87,13 +87,13 @@
 
 <div class="filter-bar-wrapper">
   <!-- Row 1: My Vehicle (hidden if no vehicle saved) -->
-  <div class="filter-row filter-row--myvehicle" id="my-vehicle-row">
+  <div class="filter-row filter-row--myvehicle" id="filter-vehicle-row">
     <span class="filter-row__label">My Vehicle:</span>
     <div class="filter-row__scroll">
-      <div class="my-vehicle-pill" id="my-vehicle-pill" role="button">
+      <div class="my-vehicle-pill" id="filter-vehicle-pill" role="button">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 17h14M7 11l2-5h6l2 5M4 17a1 1 0 01-1-1v-3l1-2h16l1 2v3a1 1 0 01-1 1M7.5 17a1.5 1.5 0 100 3 1.5 1.5 0 000-3zM16.5 17a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"/></svg>
-        <span id="my-vehicle-text"></span>
-        <span class="my-vehicle-pill__close" id="my-vehicle-clear" title="Clear vehicle">✕</span>
+        <span id="filter-vehicle-text"></span>
+        <span class="my-vehicle-pill__close" id="filter-vehicle-clear" title="Clear vehicle">✕</span>
       </div>
     </div>
   </div>
@@ -154,10 +154,10 @@
 (function() {
   function init() {
     var saved = localStorage.getItem('selectedVehicle');
-    var row = document.getElementById('my-vehicle-row');
-    var pill = document.getElementById('my-vehicle-pill');
-    var textEl = document.getElementById('my-vehicle-text');
-    var clearBtn = document.getElementById('my-vehicle-clear');
+    var row = document.getElementById('filter-vehicle-row');
+    var pill = document.getElementById('filter-vehicle-pill');
+    var textEl = document.getElementById('filter-vehicle-text');
+    var clearBtn = document.getElementById('filter-vehicle-clear');
     if (!row || !pill || !textEl) return;
 
     var vehicle = null;
