@@ -309,7 +309,7 @@ var __stehlenVehicleData = (function() {
       document.body.style.overflow = '';
       var tc = document.getElementById('toggle-current');
       if (tc) tc.textContent = '('+y+' '+m+' '+md+')';
-      window.location.href = '/search?q='+encodeURIComponent(y+' '+m+' '+md)+'&type=product';
+      window.location.href = '/search?q='+encodeURIComponent(m+' '+md)+'&type=product&year='+encodeURIComponent(y);
     }
   });
 
@@ -610,3 +610,46 @@ var __stehlenVehicleData = (function() {
     animation: cartBubbleSlideIn var(--animation-speed) var(--animation-easing);
   }
 {% endstylesheet %}
+
+<!-- Vehicle fitment year filter for search results -->
+<script>
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  var fitYear = params.get('year');
+  if (!fitYear || !window.location.pathname.includes('/search')) return;
+  fitYear = parseInt(fitYear);
+  
+  function filterByYear() {
+    var items = document.querySelectorAll('.product-grid__item, .product-grid > li, .search-results .grid__item, .search__results .grid__item');
+    var hidden = 0;
+    items.forEach(function(item) {
+      var text = item.textContent;
+      var rangeMatch = text.match(/(\d{4})\s*[-–]\s*(\d{4})/);
+      var plusMatch = !rangeMatch && text.match(/(\d{4})\+/);
+      
+      if (rangeMatch) {
+        var start = parseInt(rangeMatch[1]);
+        var end = parseInt(rangeMatch[2]);
+        if (fitYear < start || fitYear > end) {
+          item.style.display = 'none';
+          hidden++;
+        }
+      } else if (plusMatch) {
+        if (fitYear < parseInt(plusMatch[1])) {
+          item.style.display = 'none';
+          hidden++;
+        }
+      }
+    });
+    console.log('[Fitment] Year '+fitYear+': hidden '+hidden+' of '+items.length+' products');
+  }
+  
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', filterByYear);
+  } else {
+    filterByYear();
+    setTimeout(filterByYear, 500);
+    setTimeout(filterByYear, 1500);
+  }
+})();
+</script>
