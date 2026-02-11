@@ -416,6 +416,19 @@ header svg {
   box-shadow: 0 16px 48px rgba(0,0,0,0.3) !important;
   overflow: visible !important;
 }
+@media (max-width: 749px) {
+  .mvd-modal {
+    width: 95vw !important;
+    padding: 24px 20px !important;
+    border-radius: 10px !important;
+  }
+  .mvd-modal .mvd-form-row {
+    flex-direction: column !important;
+  }
+  .mvd-modal .mvd-select-group {
+    width: 100% !important;
+  }
+}
 
 .mvd-close {
   position: absolute !important;
