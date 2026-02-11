@@ -25,6 +25,8 @@
       {% assign products_per_page = section.settings.products_per_page %}
     {% endif %}
 
+    {% render 'category-nav' %}
+
     {% paginate search.results by products_per_page %}
       {% if search.results_count > 0 %}
         {% content_for 'block', type: 'filters', id: 'filters', results: search, results_size: search.results_count %}
