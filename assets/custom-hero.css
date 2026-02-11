@@ -963,6 +963,10 @@ quantity-selector-component,
 .facets-controls-wrapper,
 .facets-mobile-wrapper,
 .facets-actions,
+.facets-block,
+.facets__summary,
+.column-options-wrapper,
+[class*="facets"],
 #filters-drawer {
   display: none !important;
 }
