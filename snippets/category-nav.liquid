@@ -12,7 +12,7 @@
   .filter-bar-wrapper {
     position: relative; top: 0; z-index: 20;
     background: var(--color-background, #fff);
-    padding: 8px 0;
+    padding: 8px 16px;
     border-bottom: 1px solid var(--color-border, #e5e5e5);
     margin-bottom: 16px;
   }
@@ -78,6 +78,7 @@
   .my-vehicle-pill__close:hover { background: rgba(255,255,255,0.5); }
 
   @media (max-width: 749px) {
+    .filter-bar-wrapper { padding: 8px 12px; }
     .filter-row__label { font-size: 11px; min-width: 65px; }
     .filter-btn { font-size: 12px; padding: 5px 10px; }
     .my-vehicle-pill { font-size: 12px; padding: 5px 10px; }
@@ -165,6 +166,7 @@
     /* Show/hide My Vehicle row */
     if (vehicle && vehicle.year && vehicle.make && vehicle.model) {
       row.style.display = 'flex';
+      /* Issue #2: Show full vehicle name in the pill */
       textEl.textContent = vehicle.year + ' ' + vehicle.make + ' ' + vehicle.model;
     } else {
       row.style.display = 'none';
@@ -174,10 +176,17 @@
     var isMyVehicleActive = false;
     var currentHandle = (window.location.pathname.match(/\/collections\/([^\/\?]+)/) || [])[1] || 'all';
     var isVehicleMakePage = currentHandle.endsWith('-parts');
+    var isSearchPage = window.location.pathname.includes('/search');
+
+    /* Issue #4: Auto-activate My Vehicle filter when arriving from vehicle selection
+       (hash has year= or myvehicle=1, or on search page with saved vehicle) */
+    var shouldAutoActivate = window.location.hash.includes('myvehicle=1') ||
+                             window.location.hash.includes('year=') ||
+                             (isSearchPage && vehicle);
 
     /* Highlight category row */
     document.querySelectorAll('.category-filter-btn').forEach(function(btn) {
-      if (isVehicleMakePage || isMyVehicleActive) {
+      if (isVehicleMakePage || shouldAutoActivate) {
         btn.classList.toggle('filter-btn--active', btn.dataset.handle === 'all');
       } else {
         btn.classList.toggle('filter-btn--active', btn.dataset.handle === currentHandle);
@@ -227,13 +236,13 @@
       });
     });
 
-    /* Check if we should auto-activate (came from hash or was active) */
-    if (window.location.hash.includes('myvehicle=1')) {
+    /* Issue #4: Auto-activate if conditions met */
+    if (shouldAutoActivate) {
       pill.classList.add('my-vehicle-pill--active');
       setTimeout(function() { applyFitmentFilter(vehicle); }, 300);
     }
 
-    /* Fitment filter: hide products that don't match year+make */
+    /* Issue #3: Fitment filter — properly check BOTH make AND year range */
     function applyFitmentFilter(v) {
       var year = parseInt(v.year);
       var make = v.make.toLowerCase();
@@ -258,7 +267,7 @@
           return;
         }
         
-        /* Check year range */
+        /* Check year range — must match */
         var rangeMatch = text.match(/(\d{4})\s*[-–]\s*(\d{4})/);
         var plusMatch = !rangeMatch && text.match(/(\d{4})\+/);
         
@@ -274,8 +283,13 @@
             item.classList.add('filter-hidden');
             return;
           }
+        } else if (!isUniversal) {
+          /* No year range found and not universal — hide it (can't confirm fitment) */
+          item.classList.add('filter-hidden');
+          return;
         }
-        /* Universal or matching — show */
+
+        /* Passed make + year check — show */
         item.classList.remove('filter-hidden');
         item.style.removeProperty('display');
       });
