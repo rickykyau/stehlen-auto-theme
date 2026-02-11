@@ -1902,7 +1902,7 @@ div.vehicle-selector-wrapper {
 }
 
 /* Ensure filter bar doesn't overlap the drawer */
-html:has(dialog[open]) .filter-bar-wrapper {
+html:has(#Details-menu-drawer-container[open]) .filter-bar-wrapper {
   display: none !important;
 }
 
