@@ -952,20 +952,7 @@ quantity-selector-component,
   padding-bottom: 1rem !important;
 }
 
-/* Hide ALL Shopify facets/filters - we use our own custom filters */
-.facets,
-.facets-wrapper,
-.facets-block-wrapper,
-.facets--vertical,
-.facets--drawer,
-.facets__form,
-.facets__filters-wrapper,
-.facets-controls-wrapper,
-.facets-mobile-wrapper,
-.facets-actions,
-#filters-drawer {
-  display: none !important;
-}
+/* Shopify facets/filters — visible everywhere (custom category-nav supplements, doesn't replace) */
 
 /* Keep only grid density controls visible */
 .column-options-wrapper {
