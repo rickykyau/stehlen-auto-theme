@@ -1918,9 +1918,18 @@ div.vehicle-selector-wrapper {
   color: #F39C12;
 }
 
-/* Ensure filter bar doesn't overlap the drawer */
-html:has(#Details-menu-drawer-container[open]) .filter-bar-wrapper {
+/* Ensure filter bar doesn't overlap the drawer or vehicle modal */
+html:has(#Details-menu-drawer-container[open]) .filter-bar-wrapper,
+html:has(.mvd-overlay.mvd-open) .filter-bar-wrapper {
   display: none !important;
+}
+
+/* Ensure vehicle modal is always on top */
+.mvd-overlay.mvd-open {
+  z-index: 99999 !important;
+}
+.mvd-modal {
+  z-index: 100000 !important;
 }
 
 .stehlen-drawer-vehicle-btn {
