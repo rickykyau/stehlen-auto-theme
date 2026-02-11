@@ -1,12 +1,15 @@
 {%- comment -%}
   Category Navigation Bar
-  Shows product category links for easy filtering
-  Both category and vehicle filters work as multi-select checkboxes
+  Dynamically pulls categories from collections
+  Vehicle filter row for make-based filtering
   Sticky when scrolling, compact single-line layout
 {%- endcomment -%}
 
+{%- comment -%} Build category and vehicle collections dynamically {%- endcomment -%}
+{%- assign vehicle_handles = 'ford-parts,chevy-parts,gmc-parts,dodge-parts,toyota-parts' | split: ',' -%}
+{%- assign skip_handles = 'all,frontpage,digital-goods-vat-tax,vehicles-and-parts-example-products' | split: ',' -%}
+
 <style>
-  /* Sticky wrapper for filters */
   .filter-bar-wrapper {
     position: relative;
     top: 0;
@@ -16,15 +19,13 @@
     border-bottom: 1px solid var(--color-border, #e5e5e5);
     margin-bottom: 16px;
   }
-  
-  /* Each filter row */
   .filter-row {
     display: flex;
     align-items: center;
     gap: 8px;
     padding: 6px 0;
+    position: relative;
   }
-  
   .filter-row__label {
     font-weight: 600;
     font-size: 12px;
@@ -35,7 +36,6 @@
     min-width: 70px;
     flex-shrink: 0;
   }
-  
   .filter-row__scroll {
     display: flex;
     gap: 8px;
@@ -45,28 +45,7 @@
     flex: 1;
     padding-right: 20px;
   }
-  
-  .filter-row__scroll::-webkit-scrollbar {
-    display: none;
-  }
-  
-  /* Fade hint for scroll */
-  .filter-row__scroll::after {
-    content: '';
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 30px;
-    background: linear-gradient(to right, transparent, var(--color-background, #fff));
-    pointer-events: none;
-  }
-  
-  .filter-row {
-    position: relative;
-  }
-  
-  /* Filter buttons */
+  .filter-row__scroll::-webkit-scrollbar { display: none; }
   .filter-btn {
     display: inline-flex;
     align-items: center;
@@ -85,12 +64,10 @@
     white-space: nowrap;
     flex-shrink: 0;
   }
-  
   .filter-btn:hover:not(:disabled) {
     border-color: #F39C12;
-    background: rgba(43, 69, 112, 0.05);
+    background: rgba(243, 156, 18, 0.05);
   }
-  
   .filter-btn--active,
   .filter-btn--active span,
   a.filter-btn--active,
@@ -99,7 +76,6 @@
     border-color: #F39C12 !important;
     color: #fff !important;
   }
-  
   .filter-btn--active:hover,
   a.filter-btn--active:hover,
   button.filter-btn--active:hover {
@@ -107,93 +83,79 @@
     border-color: #E67E22 !important;
     color: #fff !important;
   }
-  
   .filter-btn:disabled,
   .filter-btn--disabled {
     opacity: 0.4;
     cursor: not-allowed;
     pointer-events: none;
   }
-  
   .filter-btn__icon {
     width: 16px;
     height: 16px;
     color: #F39C12;
     flex-shrink: 0;
   }
-  
-  .filter-btn--active .filter-btn__icon {
-    color: #fff;
-  }
-  
-  /* Hide filtered products */
-  .product-grid__item.filter-hidden {
-    display: none !important;
-  }
-  
-  /* Mobile: slightly smaller text */
+  .filter-btn--active .filter-btn__icon { color: #fff; }
+  .product-grid__item.filter-hidden { display: none !important; }
   @media (max-width: 749px) {
-    .filter-row__label {
-      font-size: 11px;
-      min-width: 60px;
-    }
-    
-    .filter-btn {
-      font-size: 12px;
-      padding: 5px 10px;
-    }
+    .filter-row__label { font-size: 11px; min-width: 60px; }
+    .filter-btn { font-size: 12px; padding: 5px 10px; }
   }
 </style>
 
 <div class="filter-bar-wrapper">
-  <!-- Shop By row -->
+  <!-- Category row - dynamically from collections -->
   <div class="filter-row">
     <span class="filter-row__label">Shop by:</span>
     <div class="filter-row__scroll">
-      <button type="button" class="filter-btn category-filter-btn" data-category="all">
-        All
-      </button>
+      <button type="button" class="filter-btn category-filter-btn filter-btn--active" data-category="all">All</button>
       
-      <button type="button" class="filter-btn category-filter-btn" data-category="bull-guards">
-        <svg class="filter-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M12 2L4 6v6c0 5.5 3.5 10 8 12 4.5-2 8-6.5 8-12V6l-8-4z"/>
-          <path d="M8 11h8M8 14h8M8 8h8"/>
-        </svg>
-        Bull Guards
-      </button>
-      
-      <button type="button" class="filter-btn category-filter-btn" data-category="side-steps">
-        <svg class="filter-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="2" y="18" width="20" height="4" rx="1"/>
-          <rect x="5" y="14" width="14" height="3" rx="1"/>
-          <path d="M6 14V10M18 14V10"/>
-        </svg>
-        Side Steps
-      </button>
-      
-      <button type="button" class="filter-btn category-filter-btn" data-category="tonneau">
-        <svg class="filter-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M3 14h18v6H3z"/>
-          <path d="M5 14V8h14v6"/>
-          <path d="M7 11h10M7 8l5-3 5 3"/>
-        </svg>
-        Tonneau
-      </button>
-      
-      <button type="button" class="filter-btn category-filter-btn" data-category="chase-racks">
-        <svg class="filter-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M4 18h16"/>
-          <path d="M6 18V8h12v10"/>
-          <path d="M6 8l6-4 6 4"/>
-          <circle cx="8" cy="5" r="1.5" fill="currentColor"/>
-          <circle cx="16" cy="5" r="1.5" fill="currentColor"/>
-        </svg>
-        Chase Racks
-      </button>
+      {%- for collection in collections -%}
+        {%- assign dominated = false -%}
+        {%- for vh in vehicle_handles -%}
+          {%- if collection.handle == vh -%}{%- assign dominated = true -%}{%- endif -%}
+        {%- endfor -%}
+        {%- for sh in skip_handles -%}
+          {%- if collection.handle == sh -%}{%- assign dominated = true -%}{%- endif -%}
+        {%- endfor -%}
+        {%- unless dominated -%}
+          {%- if collection.products_count > 0 -%}
+            <button type="button" class="filter-btn category-filter-btn" data-category="{{ collection.handle }}">
+              {%- comment -%} SVG icon based on handle {%- endcomment -%}
+              {%- if collection.handle contains 'bull' or collection.handle contains 'grille' -%}
+                <svg class="filter-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L4 6v6c0 5.5 3.5 10 8 12 4.5-2 8-6.5 8-12V6l-8-4z"/><path d="M8 11h8M8 14h8M8 8h8"/></svg>
+              {%- elsif collection.handle contains 'side' or collection.handle contains 'nerf' or collection.handle contains 'step' -%}
+                <svg class="filter-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="18" width="20" height="4" rx="1"/><rect x="5" y="14" width="14" height="3" rx="1"/><path d="M6 14V10M18 14V10"/></svg>
+              {%- elsif collection.handle contains 'tonneau' or collection.handle contains 'cover' -%}
+                <svg class="filter-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 14h18v6H3z"/><path d="M5 14V8h14v6"/><path d="M7 11h10M7 8l5-3 5 3"/></svg>
+              {%- elsif collection.handle contains 'chase' or collection.handle contains 'rack' or collection.handle contains 'sport-bar' -%}
+                <svg class="filter-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 18h16"/><path d="M6 18V8h12v10"/><path d="M6 8l6-4 6 4"/><circle cx="8" cy="5" r="1.5" fill="currentColor"/><circle cx="16" cy="5" r="1.5" fill="currentColor"/></svg>
+              {%- else -%}
+                <svg class="filter-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h18"/></svg>
+              {%- endif -%}
+              {{ collection.title }}
+            </button>
+          {%- endif -%}
+        {%- endunless -%}
+      {%- endfor -%}
     </div>
   </div>
   
-  <!-- Vehicle row removed -->
+  <!-- Vehicle row -->
+  <div class="filter-row">
+    <span class="filter-row__label">Vehicle:</span>
+    <div class="filter-row__scroll">
+      {%- for vh in vehicle_handles -%}
+        {%- assign vc = collections[vh] -%}
+        {%- if vc and vc.products_count > 0 -%}
+          {%- assign make_name = vc.title | remove: ' Parts' -%}
+          <button type="button" class="filter-btn vehicle-filter-btn" data-make="{{ make_name }}">
+            {{ make_name }}
+          </button>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
 </div>
 
 <script>
@@ -201,15 +163,13 @@ document.addEventListener('DOMContentLoaded', function() {
   const categoryButtons = document.querySelectorAll('.category-filter-btn');
   const vehicleButtons = document.querySelectorAll('.vehicle-filter-btn');
   
-  // Category keywords for matching
   const categoryKeywords = {
-    'bull-guards': ['bull guard', 'grille guard', 'brush guard', 'front guard', 'bumper guard', 'bull-guard', 'grille-guard'],
-    'side-steps': ['side step', 'nerf bar', 'running board', 'side bar', 'step bar', 'side-step', 'nerf-bar'],
-    'tonneau': ['tonneau', 'bed cover', 'truck cover', 'tri-fold', 'trifold', 'roll-up', 'hard fold'],
-    'chase-racks': ['chase rack', 'sport bar', 'roll bar', 'headache rack', 'bed rack', 'chase-rack', 'sport-bar']
+    'bull-guards-grille-guards': ['bull guard', 'grille guard', 'brush guard', 'front guard', 'bumper guard', 'bull-guard', 'grille-guard'],
+    'side-steps-nerf-bars': ['side step', 'nerf bar', 'running board', 'side bar', 'step bar', 'side-step', 'nerf-bar'],
+    'tonneau-covers': ['tonneau', 'bed cover', 'truck cover', 'tri-fold', 'trifold', 'roll-up', 'hard fold'],
+    'chase-racks-sport-bars': ['chase rack', 'sport bar', 'roll bar', 'headache rack', 'bed rack', 'chase-rack', 'sport-bar']
   };
   
-  // Make keywords for matching
   const makeKeywords = {
     'Ford': ['ford', 'bronco', 'f-150', 'f150', 'f-250', 'f250', 'ranger', 'expedition'],
     'Chevy': ['chevy', 'chevrolet', 'silverado', 'colorado', 'tahoe', 'suburban'],
@@ -223,106 +183,65 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
   function getProductText(item) {
-    const text = item.textContent.toLowerCase();
-    const tags = item.dataset.tags ? item.dataset.tags.toLowerCase() : '';
-    return text + ' ' + tags;
+    return (item.textContent + ' ' + (item.dataset.tags || '')).toLowerCase();
   }
   
-  function matchesCategory(productText, categories) {
-    if (categories.length === 0 || categories.includes('all')) return true;
-    return categories.some(cat => {
-      const keywords = categoryKeywords[cat] || [cat];
-      return keywords.some(keyword => productText.includes(keyword.toLowerCase()));
+  function matchesCategory(text, cats) {
+    if (!cats.length || cats.includes('all')) return true;
+    return cats.some(cat => {
+      const kws = categoryKeywords[cat] || [cat.replace(/-/g, ' ')];
+      return kws.some(kw => text.includes(kw));
     });
   }
   
-  function isUniversalProduct(productText) {
-    return productText.includes('universal') || 
-           (!Object.values(makeKeywords).some(keywords => 
-             keywords.some(kw => productText.includes(kw.toLowerCase()))
-           ));
+  function isUniversalProduct(text) {
+    if (text.includes('universal')) return true;
+    return !Object.values(makeKeywords).some(kws => kws.some(kw => text.includes(kw)));
   }
   
-  function matchesMake(productText, makes) {
-    if (makes.length === 0) return true;
-    // Universal products always show regardless of vehicle filter
-    if (isUniversalProduct(productText)) return true;
+  function matchesMake(text, makes) {
+    if (!makes.length) return true;
+    if (isUniversalProduct(text)) return true;
     return makes.some(make => {
-      const keywords = makeKeywords[make] || [make.toLowerCase()];
-      return keywords.some(keyword => productText.includes(keyword.toLowerCase()));
-    });
-  }
-  
-  function updateVehicleButtonAvailability() {
-    const productItems = getProductItems();
-    const selectedCategories = Array.from(document.querySelectorAll('.category-filter-btn.filter-btn--active'))
-      .map(btn => btn.dataset.category);
-    
-    vehicleButtons.forEach(btn => {
-      const make = btn.dataset.make;
-      let hasMatchingProducts = false;
-      
-      productItems.forEach(item => {
-        const productText = getProductText(item);
-        if (matchesCategory(productText, selectedCategories) && matchesMake(productText, [make])) {
-          hasMatchingProducts = true;
-        }
-      });
-      
-      if (!hasMatchingProducts && !btn.classList.contains('filter-btn--active')) {
-        btn.classList.add('filter-btn--disabled');
-        btn.disabled = true;
-      } else {
-        btn.classList.remove('filter-btn--disabled');
-        btn.disabled = false;
-      }
+      const kws = makeKeywords[make] || [make.toLowerCase()];
+      return kws.some(kw => text.includes(kw));
     });
   }
   
   function applyFilters() {
-    const productItems = getProductItems();
+    const items = getProductItems();
+    const cats = Array.from(document.querySelectorAll('.category-filter-btn.filter-btn--active')).map(b => b.dataset.category);
+    const makes = Array.from(document.querySelectorAll('.vehicle-filter-btn.filter-btn--active')).map(b => b.dataset.make);
     
-    const selectedCategories = Array.from(document.querySelectorAll('.category-filter-btn.filter-btn--active'))
-      .map(btn => btn.dataset.category);
-    const selectedMakes = Array.from(document.querySelectorAll('.vehicle-filter-btn.filter-btn--active'))
-      .map(btn => btn.dataset.make);
-    
+    // Update URL
     const url = new URL(window.location.href);
-    if (selectedCategories.length > 0 && !selectedCategories.includes('all')) {
-      url.searchParams.set('categories', selectedCategories.join(','));
-    } else {
-      url.searchParams.delete('categories');
-    }
-    if (selectedMakes.length > 0) {
-      url.searchParams.set('makes', selectedMakes.join(','));
-    } else {
-      url.searchParams.delete('makes');
-    }
+    if (cats.length && !cats.includes('all')) url.searchParams.set('categories', cats.join(','));
+    else url.searchParams.delete('categories');
+    if (makes.length) url.searchParams.set('makes', makes.join(','));
+    else url.searchParams.delete('makes');
     window.history.replaceState({}, '', url);
     
-    let visibleCount = 0;
-    productItems.forEach(item => {
-      const productText = getProductText(item);
-      const categoryMatch = matchesCategory(productText, selectedCategories);
-      const makeMatch = matchesMake(productText, selectedMakes);
-      
-      if (categoryMatch && makeMatch) {
+    items.forEach(item => {
+      const text = getProductText(item);
+      if (matchesCategory(text, cats) && matchesMake(text, makes)) {
         item.classList.remove('filter-hidden');
         item.style.removeProperty('display');
-        visibleCount++;
-        
-        const images = item.querySelectorAll('img[loading="lazy"], img[data-src]');
-        images.forEach(img => {
-          if (img.dataset.src && !img.src) {
-            img.src = img.dataset.src;
-          }
-        });
       } else {
         item.classList.add('filter-hidden');
       }
     });
     
-    updateVehicleButtonAvailability();
+    // Update vehicle button availability
+    vehicleButtons.forEach(btn => {
+      const make = btn.dataset.make;
+      let has = false;
+      items.forEach(item => {
+        const text = getProductText(item);
+        if (matchesCategory(text, cats) && matchesMake(text, [make])) has = true;
+      });
+      btn.classList.toggle('filter-btn--disabled', !has && !btn.classList.contains('filter-btn--active'));
+      btn.disabled = !has && !btn.classList.contains('filter-btn--active');
+    });
   }
   
   function initFilters() {
@@ -331,84 +250,52 @@ document.addEventListener('DOMContentLoaded', function() {
     const makes = params.get('makes') ? params.get('makes').split(',') : [];
     
     // Auto-detect from collection URL
-    const path = window.location.pathname.toLowerCase();
-    const collectionMatch = path.match(/\/collections\/([^\/]+)/);
-    if (collectionMatch) {
-      const handle = collectionMatch[1];
-      // Detect vehicle make from collection handle
-      const makeMap = {
-        'ford-parts': 'Ford', 'chevy-parts': 'Chevy', 'chevrolet-parts': 'Chevy',
-        'gmc-parts': 'GMC', 'dodge-parts': 'Dodge', 'ram-parts': 'Dodge',
-        'toyota-parts': 'Toyota'
-      };
-      // Detect category from collection handle
-      const catMap = {
-        'bull-guards-grille-guards': 'bull-guards', 'bull-guards': 'bull-guards',
-        'grille-guards': 'bull-guards',
-        'side-steps-nerf-bars': 'side-steps', 'side-steps': 'side-steps',
-        'nerf-bars': 'side-steps',
-        'tonneau-covers': 'tonneau', 'tonneau': 'tonneau',
-        'chase-racks-sport-bars': 'chase-racks', 'chase-racks': 'chase-racks'
-      };
-      if (makeMap[handle] && !makes.includes(makeMap[handle])) {
-        makes.push(makeMap[handle]);
-      }
-      if (catMap[handle] && !categories.includes(catMap[handle])) {
-        categories.push(catMap[handle]);
-      }
+    const match = window.location.pathname.match(/\/collections\/([^\/]+)/);
+    if (match) {
+      const h = match[1];
+      const makeMap = { 'ford-parts':'Ford','chevy-parts':'Chevy','gmc-parts':'GMC','dodge-parts':'Dodge','toyota-parts':'Toyota' };
+      if (makeMap[h] && !makes.includes(makeMap[h])) makes.push(makeMap[h]);
+      // Check category handles dynamically
+      document.querySelectorAll('.category-filter-btn[data-category]').forEach(btn => {
+        if (btn.dataset.category === h && !categories.includes(h)) categories.push(h);
+      });
     }
     
     categories.forEach(cat => {
       const btn = document.querySelector(`.category-filter-btn[data-category="${cat}"]`);
       if (btn) btn.classList.add('filter-btn--active');
     });
-    
     makes.forEach(make => {
-      const btn = document.querySelector(`.vehicle-filter-btn[data-make="${make}"]`) ||
-                  document.querySelector(`.vehicle-filter-btn[data-make="${make.charAt(0).toUpperCase() + make.slice(1)}"]`);
+      const btn = document.querySelector(`.vehicle-filter-btn[data-make="${make}"]`);
       if (btn) btn.classList.add('filter-btn--active');
     });
     
-    // If any filter is active, deselect "All"
-    if (categories.length > 0 || makes.length > 0) {
+    if (categories.length || makes.length) {
       const allBtn = document.querySelector('.category-filter-btn[data-category="all"]');
-      if (allBtn && categories.length > 0) allBtn.classList.remove('filter-btn--active');
+      if (allBtn && categories.length) allBtn.classList.remove('filter-btn--active');
+      setTimeout(applyFilters, 200);
     }
-    
-    setTimeout(() => {
-      updateVehicleButtonAvailability();
-      if (categories.length > 0 || makes.length > 0) {
-        applyFilters();
-      }
-    }, 200);
   }
   
-  // Check if we're on a filtered collection (not /collections/all)
   const isFilteredCollection = /\/collections\/(?!all\b)[^\/]+/.test(window.location.pathname);
   
-  function buildFilterUrl(categories, makes) {
+  function buildFilterUrl(cats, makes) {
     const url = new URL(window.location.origin + '/collections/all');
-    if (categories.length > 0 && !categories.includes('all')) {
-      url.searchParams.set('categories', categories.join(','));
-    }
-    if (makes.length > 0) {
-      url.searchParams.set('makes', makes.join(','));
-    }
+    if (cats.length && !cats.includes('all')) url.searchParams.set('categories', cats.join(','));
+    if (makes.length) url.searchParams.set('makes', makes.join(','));
     return url.toString();
   }
   
   function getActiveFilters() {
-    const cats = Array.from(document.querySelectorAll('.category-filter-btn.filter-btn--active'))
-      .map(btn => btn.dataset.category);
-    const mks = Array.from(document.querySelectorAll('.vehicle-filter-btn.filter-btn--active'))
-      .map(btn => btn.dataset.make);
-    return { categories: cats, makes: mks };
+    return {
+      categories: Array.from(document.querySelectorAll('.category-filter-btn.filter-btn--active')).map(b => b.dataset.category),
+      makes: Array.from(document.querySelectorAll('.vehicle-filter-btn.filter-btn--active')).map(b => b.dataset.make)
+    };
   }
   
   categoryButtons.forEach(btn => {
     btn.addEventListener('click', function(e) {
       e.preventDefault();
-      
       if (this.dataset.category === 'all') {
         categoryButtons.forEach(b => b.classList.remove('filter-btn--active'));
         this.classList.add('filter-btn--active');
@@ -416,18 +303,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const allBtn = document.querySelector('.category-filter-btn[data-category="all"]');
         if (allBtn) allBtn.classList.remove('filter-btn--active');
         this.classList.toggle('filter-btn--active');
-        
-        const anyActive = document.querySelector('.category-filter-btn.filter-btn--active');
-        if (!anyActive && allBtn) allBtn.classList.add('filter-btn--active');
+        if (!document.querySelector('.category-filter-btn.filter-btn--active') && allBtn) allBtn.classList.add('filter-btn--active');
       }
-      
       if (isFilteredCollection) {
-        // Navigate to /collections/all with filters
-        const { categories, makes } = getActiveFilters();
-        window.location.href = buildFilterUrl(categories, makes);
-      } else {
-        applyFilters();
-      }
+        const f = getActiveFilters();
+        window.location.href = buildFilterUrl(f.categories, f.makes);
+      } else applyFilters();
     });
   });
   
@@ -436,30 +317,24 @@ document.addEventListener('DOMContentLoaded', function() {
       e.preventDefault();
       if (!this.disabled) {
         this.classList.toggle('filter-btn--active');
-        
         if (isFilteredCollection) {
-          const { categories, makes } = getActiveFilters();
-          window.location.href = buildFilterUrl(categories, makes);
-        } else {
-          applyFilters();
-        }
+          const f = getActiveFilters();
+          window.location.href = buildFilterUrl(f.categories, f.makes);
+        } else applyFilters();
       }
     });
   });
   
   initFilters();
   
-  const observer = new MutationObserver(function() {
-    const hasActiveFilters = document.querySelector('.category-filter-btn.filter-btn--active:not([data-category="all"])') ||
-                             document.querySelector('.vehicle-filter-btn.filter-btn--active');
-    if (hasActiveFilters) {
-      setTimeout(applyFilters, 100);
-    }
-  });
-  
-  const productGrid = document.querySelector('.product-grid');
-  if (productGrid) {
-    observer.observe(productGrid, { childList: true, subtree: false });
+  const pg = document.querySelector('.product-grid');
+  if (pg) {
+    new MutationObserver(function() {
+      if (document.querySelector('.category-filter-btn.filter-btn--active:not([data-category="all"])') ||
+          document.querySelector('.vehicle-filter-btn.filter-btn--active')) {
+        setTimeout(applyFilters, 100);
+      }
+    }).observe(pg, { childList: true });
   }
 });
 </script>
