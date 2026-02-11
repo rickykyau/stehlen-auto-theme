@@ -374,7 +374,9 @@ header svg {
     white-space: nowrap !important;
     cursor: pointer !important;
     transition: all 0.2s !important;
-    width: 240px !important;
+    min-width: 240px !important;
+    width: auto !important;
+    max-width: 400px !important;
     justify-content: center !important;
     box-sizing: border-box !important;
   }
