@@ -617,57 +617,5 @@ var __stehlenVehicleData = (function() {
   }
 {% endstylesheet %}
 
-<!-- Vehicle fitment year filter for search results -->
-<script>
-(function() {
-  /* Check hash param first, then query param */
-  var fitYear = null;
-  var hashMatch = window.location.hash.match(/year=(\d{4})/);
-  if (hashMatch) fitYear = parseInt(hashMatch[1]);
-  if (!fitYear) {
-    var params = new URLSearchParams(window.location.search);
-    if (params.get('year')) fitYear = parseInt(params.get('year'));
-  }
-  /* Also check localStorage vehicle */
-  if (!fitYear) {
-    try {
-      var sv = JSON.parse(localStorage.getItem('selectedVehicle'));
-      if (sv && sv.year && window.location.pathname.includes('/search')) fitYear = parseInt(sv.year);
-    } catch(e) {}
-  }
-  if (!fitYear || !window.location.pathname.includes('/search')) return;
-  
-  function filterByYear() {
-    var items = document.querySelectorAll('.product-grid__item, .product-grid > li, .search-results .grid__item, .search__results .grid__item');
-    var hidden = 0;
-    items.forEach(function(item) {
-      var text = item.textContent;
-      var rangeMatch = text.match(/(\d{4})\s*[-–]\s*(\d{4})/);
-      var plusMatch = !rangeMatch && text.match(/(\d{4})\+/);
-      
-      if (rangeMatch) {
-        var start = parseInt(rangeMatch[1]);
-        var end = parseInt(rangeMatch[2]);
-        if (fitYear < start || fitYear > end) {
-          item.style.display = 'none';
-          hidden++;
-        }
-      } else if (plusMatch) {
-        if (fitYear < parseInt(plusMatch[1])) {
-          item.style.display = 'none';
-          hidden++;
-        }
-      }
-    });
-    console.log('[Fitment] Year '+fitYear+': hidden '+hidden+' of '+items.length+' products');
-  }
-  
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', filterByYear);
-  } else {
-    filterByYear();
-    setTimeout(filterByYear, 500);
-    setTimeout(filterByYear, 1500);
-  }
-})();
+<!-- Vehicle fitment filtering now handled by category-nav.liquid -->
 </script>
