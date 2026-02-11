@@ -6,7 +6,6 @@
 {%- endcomment -%}
 
 {%- comment -%} Build category and vehicle collections dynamically {%- endcomment -%}
-{%- assign vehicle_handles = 'ford-parts,chevy-parts,gmc-parts,dodge-parts,toyota-parts' | split: ',' -%}
 {%- assign skip_handles = 'all,frontpage,digital-goods-vat-tax,vehicles-and-parts-example-products' | split: ',' -%}
 
 <style>
@@ -111,14 +110,13 @@
       <button type="button" class="filter-btn category-filter-btn filter-btn--active" data-category="all">All</button>
       
       {%- for collection in collections -%}
-        {%- assign dominated = false -%}
-        {%- for vh in vehicle_handles -%}
-          {%- if collection.handle == vh -%}{%- assign dominated = true -%}{%- endif -%}
-        {%- endfor -%}
+        {%- assign is_vehicle = false -%}
+        {%- assign is_skip = false -%}
+        {%- if collection.handle contains '-parts' -%}{%- assign is_vehicle = true -%}{%- endif -%}
         {%- for sh in skip_handles -%}
-          {%- if collection.handle == sh -%}{%- assign dominated = true -%}{%- endif -%}
+          {%- if collection.handle == sh -%}{%- assign is_skip = true -%}{%- endif -%}
         {%- endfor -%}
-        {%- unless dominated -%}
+        {%- unless is_vehicle or is_skip -%}
           {%- if collection.products_count > 0 -%}
             <button type="button" class="filter-btn category-filter-btn" data-category="{{ collection.handle }}">
               {%- comment -%} SVG icon based on handle {%- endcomment -%}
@@ -130,6 +128,8 @@
                 <svg class="filter-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 14h18v6H3z"/><path d="M5 14V8h14v6"/><path d="M7 11h10M7 8l5-3 5 3"/></svg>
               {%- elsif collection.handle contains 'chase' or collection.handle contains 'rack' or collection.handle contains 'sport-bar' -%}
                 <svg class="filter-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 18h16"/><path d="M6 18V8h12v10"/><path d="M6 8l6-4 6 4"/><circle cx="8" cy="5" r="1.5" fill="currentColor"/><circle cx="16" cy="5" r="1.5" fill="currentColor"/></svg>
+              {%- elsif collection.handle contains 'hitch' or collection.handle contains 'trailer' -%}
+                <svg class="filter-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="15" r="3"/><path d="M12 12V4"/><path d="M5 4h14"/><path d="M5 4v4h14V4"/></svg>
               {%- else -%}
                 <svg class="filter-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h18"/></svg>
               {%- endif -%}
@@ -141,14 +141,13 @@
     </div>
   </div>
   
-  <!-- Vehicle row -->
+  <!-- Vehicle row - auto-detects any *-parts collection -->
   <div class="filter-row">
     <span class="filter-row__label">Vehicle:</span>
     <div class="filter-row__scroll">
-      {%- for vh in vehicle_handles -%}
-        {%- assign vc = collections[vh] -%}
-        {%- if vc and vc.products_count > 0 -%}
-          {%- assign make_name = vc.title | remove: ' Parts' -%}
+      {%- for collection in collections -%}
+        {%- if collection.handle contains '-parts' and collection.products_count > 0 -%}
+          {%- assign make_name = collection.title | remove: ' Parts' -%}
           <button type="button" class="filter-btn vehicle-filter-btn" data-make="{{ make_name }}">
             {{ make_name }}
           </button>
@@ -167,7 +166,8 @@ document.addEventListener('DOMContentLoaded', function() {
     'bull-guards-grille-guards': ['bull guard', 'grille guard', 'brush guard', 'front guard', 'bumper guard', 'bull-guard', 'grille-guard'],
     'side-steps-nerf-bars': ['side step', 'nerf bar', 'running board', 'side bar', 'step bar', 'side-step', 'nerf-bar'],
     'tonneau-covers': ['tonneau', 'bed cover', 'truck cover', 'tri-fold', 'trifold', 'roll-up', 'hard fold'],
-    'chase-racks-sport-bars': ['chase rack', 'sport bar', 'roll bar', 'headache rack', 'bed rack', 'chase-rack', 'sport-bar']
+    'chase-racks-sport-bars': ['chase rack', 'sport bar', 'roll bar', 'headache rack', 'bed rack', 'chase-rack', 'sport-bar'],
+    'trailer-hitches': ['trailer hitch', 'hitch', 'tow hitch', 'receiver hitch']
   };
   
   const makeKeywords = {
@@ -175,7 +175,9 @@ document.addEventListener('DOMContentLoaded', function() {
     'Chevy': ['chevy', 'chevrolet', 'silverado', 'colorado', 'tahoe', 'suburban'],
     'GMC': ['gmc', 'sierra', 'canyon', 'yukon'],
     'Dodge': ['dodge', 'ram', 'durango'],
-    'Toyota': ['toyota', 'tacoma', 'tundra', '4runner', 'sequoia']
+    'Toyota': ['toyota', 'tacoma', 'tundra', '4runner', 'sequoia'],
+    'Mercedes': ['mercedes', 'mercedes-benz', 'benz'],
+    'Mercedes-Benz': ['mercedes', 'mercedes-benz', 'benz']
   };
   
   function getProductItems() {
