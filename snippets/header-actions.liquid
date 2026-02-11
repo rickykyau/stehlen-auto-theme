@@ -148,10 +148,10 @@ var __stehlenVehicleData = (function() {
   };
   var modelPatterns = {
     'Ford': { 'F-150': /\bF[- ]?150\b/i, 'F-250': /\bF[- ]?250\b/i, 'F-350': /\bF[- ]?350\b/i, 'Ranger': /\bRanger\b/i, 'Bronco': /\bBronco\b/i },
-    'Chevy': { 'Silverado 1500': /\bSilverado\s*1500\b/i, 'Silverado 2500': /\bSilverado\s*2500\b/i, 'Colorado': /\bColorado\b/i },
-    'GMC': { 'Sierra 1500': /\bSierra\s*1500\b/i, 'Sierra 2500': /\bSierra\s*2500\b/i, 'Canyon': /\bCanyon\b/i },
-    'Dodge': { 'Ram 1500': /\bRam\s*1500\b/i, 'Ram 2500': /\bRam\s*2500\b/i, 'Charger': /\bCharger\b/i },
-    'Ram': { 'Ram 1500': /\bRam\s*1500\b/i, 'Ram 2500': /\bRam\s*2500\b/i },
+    'Chevy': { 'Silverado 1500': /\b(Silverado\s*)?1500\b/i, 'Silverado 2500': /\b(Silverado\s*)?2500\b/i, 'Silverado 3500': /\b(Silverado\s*)?3500\b/i, 'Colorado': /\bColorado\b/i, 'Tahoe': /\bTahoe\b/i, 'Suburban': /\bSuburban\b/i },
+    'GMC': { 'Sierra 1500': /\b(Sierra\s*)?1500\b/i, 'Sierra 2500': /\b(Sierra\s*)?2500\b/i, 'Canyon': /\bCanyon\b/i, 'Yukon': /\bYukon\b/i },
+    'Dodge': { 'Ram 1500': /\b(Ram\s*)?1500\b/i, 'Ram 2500': /\b(Ram\s*)?2500\b/i, 'Charger': /\bCharger\b/i, 'Challenger': /\bChallenger\b/i, 'Durango': /\bDurango\b/i },
+    'Ram': { 'Ram 1500': /\b(Ram\s*)?1500\b/i, 'Ram 2500': /\b(Ram\s*)?2500\b/i, 'Ram 3500': /\b(Ram\s*)?3500\b/i },
     'Toyota': { 'Tundra': /\bTundra\b/i, 'Tacoma': /\bTacoma\b/i, '4Runner': /\b4[- ]?Runner\b/i },
     'Nissan': { 'Titan': /\bTitan\b/i, 'Frontier': /\bFrontier\b/i },
     'Jeep': { 'Wrangler': /\bWrangler\b/i, 'Gladiator': /\bGladiator\b/i }
@@ -167,26 +167,27 @@ var __stehlenVehicleData = (function() {
     else if (yrPlusMatch) { startYear = +yrPlusMatch[1]; endYear = 2025; }
     else { return; /* universal / no year = skip */ }
 
-    /* Find make */
-    var foundMake = null;
-    Object.keys(makePatterns).forEach(function(mk) { if (makePatterns[mk].test(title)) foundMake = mk; });
-    if (!foundMake) return;
+    /* Find ALL matching makes (e.g. "Chevy/GMC" matches both) */
+    var foundMakes = [];
+    Object.keys(makePatterns).forEach(function(mk) { if (makePatterns[mk].test(title)) foundMakes.push(mk); });
+    if (foundMakes.length === 0) return;
 
-    /* Find model */
-    var foundModel = null;
-    if (modelPatterns[foundMake]) {
-      Object.keys(modelPatterns[foundMake]).forEach(function(md) {
-        if (modelPatterns[foundMake][md].test(title)) foundModel = md;
-      });
-    }
-    if (!foundModel) return;
+    /* For each make, find model and build year array */
+    foundMakes.forEach(function(foundMake) {
+      var foundModel = null;
+      if (modelPatterns[foundMake]) {
+        Object.keys(modelPatterns[foundMake]).forEach(function(md) {
+          if (modelPatterns[foundMake][md].test(title)) foundModel = md;
+        });
+      }
+      if (!foundModel) return;
 
-    /* Build year array */
-    if (!data[foundMake]) data[foundMake] = {};
-    if (!data[foundMake][foundModel]) data[foundMake][foundModel] = [];
-    for (var y = startYear; y <= endYear; y++) {
-      if (data[foundMake][foundModel].indexOf(y) === -1) data[foundMake][foundModel].push(y);
-    }
+      if (!data[foundMake]) data[foundMake] = {};
+      if (!data[foundMake][foundModel]) data[foundMake][foundModel] = [];
+      for (var y = startYear; y <= endYear; y++) {
+        if (data[foundMake][foundModel].indexOf(y) === -1) data[foundMake][foundModel].push(y);
+      }
+    });
   });
 
   /* Sort years descending within each model */
