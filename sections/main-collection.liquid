@@ -85,6 +85,38 @@
 </results-list>
 
 {% stylesheet %}
+  /* === STEHLEN SIDEBAR LAYOUT OVERRIDES === */
+  .stehlen-collection-layout {
+    display: flex !important;
+    gap: 24px !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+    padding: 16px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .stehlen-collection-main {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+  }
+  .stehlen-collection-main .collection-wrapper {
+    display: block !important;
+    grid-template-columns: none !important;
+  }
+  .stehlen-collection-main .facets-block-wrapper {
+    display: none !important;
+  }
+  @media screen and (max-width: 749px) {
+    .stehlen-collection-layout {
+      flex-direction: column !important;
+      padding: 8px !important;
+    }
+  }
+  results-list.product-grid-container:has(.stehlen-collection-layout) {
+    display: block !important;
+  }
+  /* === END OVERRIDES === */
+
   .main-collection-grid {
     grid-column: var(--grid-column--mobile);
 
