@@ -128,6 +128,76 @@
   }
 }
 
+/* Year range slider */
+.sf-year-slider { padding: 4px 0; }
+.sf-year-display {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #1E2326;
+  margin-bottom: 10px;
+}
+.sf-range-wrap {
+  position: relative;
+  height: 30px;
+}
+.sf-range {
+  -webkit-appearance: none;
+  appearance: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 30px;
+  background: transparent;
+  pointer-events: none;
+  margin: 0;
+  z-index: 2;
+}
+.sf-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #F39C12;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  cursor: pointer;
+  pointer-events: all;
+  position: relative;
+  z-index: 3;
+}
+.sf-range::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #F39C12;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  cursor: pointer;
+  pointer-events: all;
+}
+.sf-range-track {
+  position: absolute;
+  top: 12px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: #e0e0e0;
+  border-radius: 2px;
+  z-index: 1;
+}
+.sf-range-fill {
+  position: absolute;
+  top: 12px;
+  height: 4px;
+  background: #F39C12;
+  border-radius: 2px;
+  z-index: 1;
+}
+
 /* Hidden product items — multiple selectors for certainty */
 .product-grid__item.sf-hidden,
 li.sf-hidden,
@@ -154,6 +224,33 @@ li.sf-hidden,
 <!-- Sidebar -->
 <aside class="collection-sidebar" id="collection-sidebar">
   
+  <!-- Category (most important, shown first) -->
+  <div class="sf-section" id="sf-category">
+    <div class="sf-header" data-toggle="sf-category">
+      Category
+      <span class="sf-chevron">▼</span>
+    </div>
+    <div class="sf-body">
+      <ul class="sf-list" id="sf-cat-list">
+        {%- for c in collections -%}
+          {%- assign skip = false -%}
+          {%- if c.handle contains '-parts' -%}{%- assign skip = true -%}{%- endif -%}
+          {%- for sh in skip_handles -%}
+            {%- if c.handle == sh -%}{%- assign skip = true -%}{%- endif -%}
+          {%- endfor -%}
+          {%- unless skip -%}
+            {%- if c.products_count > 0 -%}
+              <li class="sf-item" data-handle="{{ c.handle }}">
+                <input type="checkbox" id="cat-{{ c.handle }}" value="{{ c.handle }}" class="sf-cat">
+                <label for="cat-{{ c.handle }}">{{ c.title }}</label>
+              </li>
+            {%- endif -%}
+          {%- endunless -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+
   <!-- Vehicle Fitment -->
   <div class="sf-section" id="sf-fitment">
     <div class="sf-header" data-toggle="sf-fitment">
@@ -180,42 +277,17 @@ li.sf-hidden,
       <ul class="sf-list" id="sf-model-list"></ul>
 
       <p class="sf-sublabel" style="margin-top:12px;">Year</p>
-      <ul class="sf-list" id="sf-year-list">
-        {%- for y in (2000..2026) reversed -%}
-          <li class="sf-item">
-            <input type="checkbox" id="yr-{{ y }}" value="{{ y }}" class="sf-year">
-            <label for="yr-{{ y }}">{{ y }}</label>
-          </li>
-        {%- endfor -%}
-      </ul>
-    </div>
-  </div>
-
-  <!-- Category -->
-  <div class="sf-section" id="sf-category">
-    <div class="sf-header" data-toggle="sf-category">
-      Category
-      <span class="sf-chevron">▼</span>
-    </div>
-    <div class="sf-body">
-      <input type="text" class="sf-search" id="sf-cat-search" placeholder="Search categories...">
-      <ul class="sf-list" id="sf-cat-list">
-        {%- for c in collections -%}
-          {%- assign skip = false -%}
-          {%- if c.handle contains '-parts' -%}{%- assign skip = true -%}{%- endif -%}
-          {%- for sh in skip_handles -%}
-            {%- if c.handle == sh -%}{%- assign skip = true -%}{%- endif -%}
-          {%- endfor -%}
-          {%- unless skip -%}
-            {%- if c.products_count > 0 -%}
-              <li class="sf-item" data-handle="{{ c.handle }}">
-                <input type="checkbox" id="cat-{{ c.handle }}" value="{{ c.handle }}" class="sf-cat">
-                <label for="cat-{{ c.handle }}">{{ c.title }}</label>
-              </li>
-            {%- endif -%}
-          {%- endunless -%}
-        {%- endfor -%}
-      </ul>
+      <div class="sf-year-slider" id="sf-year-slider">
+        <div class="sf-year-display">
+          <span id="sf-year-min-val">1988</span> — <span id="sf-year-max-val">2026</span>
+        </div>
+        <div class="sf-range-wrap">
+          <input type="range" id="sf-year-min" class="sf-range sf-range-min" min="1988" max="2026" value="1988" step="1">
+          <input type="range" id="sf-year-max" class="sf-range sf-range-max" min="1988" max="2026" value="2026" step="1">
+          <div class="sf-range-track"></div>
+          <div class="sf-range-fill" id="sf-range-fill"></div>
+        </div>
+      </div>
     </div>
   </div>
 </aside>
@@ -326,14 +398,16 @@ li.sf-hidden,
     /* === MAIN FILTER === */
     function applyAllFilters(){
       var selMakes = []; document.querySelectorAll('.sf-make:checked').forEach(function(c){ selMakes.push(c.value); });
-      var selYears = []; document.querySelectorAll('.sf-year:checked').forEach(function(c){ selYears.push(+c.value); });
+      var yrMin = +document.getElementById('sf-year-min').value;
+      var yrMax = +document.getElementById('sf-year-max').value;
+      var yearActive = (yrMin > 1988 || yrMax < 2026);
       var selCats = []; document.querySelectorAll('.sf-cat:checked').forEach(function(c){ selCats.push(c.value); });
       var selModels = []; document.querySelectorAll('.sf-model:checked').forEach(function(c){ selModels.push(c.value.toLowerCase()); });
 
-      var hasFilter = selMakes.length || selYears.length || selCats.length || selModels.length;
+      var hasFilter = selMakes.length || yearActive || selCats.length || selModels.length;
       var items = getItems();
       var visible = 0;
-      console.log('[SF] Filter:', {makes:selMakes, years:selYears, cats:selCats, models:selModels, items:items.length, hasFilter:hasFilter});
+      console.log('[SF] Filter:', {makes:selMakes, yearRange:[yrMin,yrMax], cats:selCats, models:selModels, items:items.length, hasFilter:hasFilter});
 
       items.forEach(function(item){
         if(!hasFilter){ item.classList.remove('sf-hidden'); item.style.removeProperty('display'); visible++; return; }
@@ -353,12 +427,12 @@ li.sf-hidden,
           if(!makeOk) show = false;
         }
 
-        /* Year filter */
-        if(show && selYears.length && !isUniversal){
+        /* Year filter — slider range */
+        if(show && yearActive && !isUniversal){
           var yr = yearRange(pd ? pd.title : title);
           if(yr){
-            var yearOk = selYears.some(function(y){ return y >= yr[0] && y <= yr[1]; });
-            if(!yearOk) show = false;
+            /* Product fits if its year range overlaps with slider range */
+            if(yr[1] < yrMin || yr[0] > yrMax) show = false;
           } else { show = false; }
         }
 
@@ -457,9 +531,33 @@ li.sf-hidden,
     }
 
     /* === Wire up checkboxes === */
-    document.querySelectorAll('.sf-make,.sf-year,.sf-cat').forEach(function(cb){
+    document.querySelectorAll('.sf-make,.sf-cat').forEach(function(cb){
       cb.addEventListener('change', applyAllFilters);
     });
+
+    /* === Year slider === */
+    var yrMinEl = document.getElementById('sf-year-min');
+    var yrMaxEl = document.getElementById('sf-year-max');
+    var yrMinVal = document.getElementById('sf-year-min-val');
+    var yrMaxVal = document.getElementById('sf-year-max-val');
+    var yrFill = document.getElementById('sf-range-fill');
+
+    function updateYearSlider(){
+      var mn = +yrMinEl.value, mx = +yrMaxEl.value;
+      if(mn > mx){ var t=mn; mn=mx; mx=t; yrMinEl.value=mn; yrMaxEl.value=mx; }
+      yrMinVal.textContent = mn;
+      yrMaxVal.textContent = mx;
+      var pctMin = ((mn - 1988) / (2026 - 1988)) * 100;
+      var pctMax = ((mx - 1988) / (2026 - 1988)) * 100;
+      yrFill.style.left = pctMin + '%';
+      yrFill.style.width = (pctMax - pctMin) + '%';
+      applyAllFilters();
+    }
+    if(yrMinEl && yrMaxEl){
+      yrMinEl.addEventListener('input', updateYearSlider);
+      yrMaxEl.addEventListener('input', updateYearSlider);
+      updateYearSlider(); /* init fill bar */
+    }
 
     /* === Read URL params and pre-check === */
     var params = new URLSearchParams(window.location.search);
@@ -479,15 +577,16 @@ li.sf-hidden,
         if(cb.value.toLowerCase() === pMake.toLowerCase()){ cb.checked=true; any=true; }
       });
     }
-    if(pYear){
-      document.querySelectorAll('.sf-year').forEach(function(cb){
-        if(cb.value === pYear){ cb.checked=true; any=true; }
-      });
+    if(pYear && yrMinEl && yrMaxEl){
+      yrMinEl.value = pYear;
+      yrMaxEl.value = pYear;
+      any = true;
     }
 
     /* Apply on load if any filters set */
     if(any){
       setTimeout(function(){
+        if(yrMinEl && yrMaxEl) updateYearSlider();
         applyAllFilters();
         if(pModel){
           setTimeout(function(){
