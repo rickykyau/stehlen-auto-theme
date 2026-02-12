@@ -32,6 +32,26 @@
 >
   {% render 'skip-to-content-link', href: '#ResultsList', text: 'accessibility.skip_to_results_list' %}
 
+  {%- comment -%} Top Bar {%- endcomment -%}
+  <div class="stehlen-collection-topbar-wrap">
+    <div class="collection-topbar" id="collection-topbar">
+      <div>
+        <h1 class="collection-topbar__title">{{ collection.title | default: 'All Products' }}</h1>
+        <div class="collection-topbar__count" id="product-count">{{ collection.products_count }} products available</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+        <div class="collection-topbar__vehicle-badge" id="topbar-vehicle-badge" style="display:none;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F39C12" stroke-width="1.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <span>Shopping for: <strong id="topbar-vehicle-text"></strong></span>
+        </div>
+        <div class="collection-topbar__mobile-filter" id="mobile-filter-toggle">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M6 12h12M8 18h8"/></svg>
+          Filter
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="stehlen-collection-layout">
     {%- comment -%} Left Sidebar {%- endcomment -%}
     {% render 'collection-sidebar' %}
@@ -85,6 +105,56 @@
 </results-list>
 
 {% stylesheet %}
+  /* === STEHLEN TOPBAR + SIDEBAR LAYOUT === */
+  .stehlen-collection-topbar-wrap {
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+    padding: 16px 16px 0 !important;
+  }
+  .collection-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .collection-topbar__title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin: 0;
+  }
+  .collection-topbar__count {
+    font-size: 0.85rem;
+    color: #888;
+    margin-top: 2px;
+  }
+  .collection-topbar__vehicle-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1.5px solid #F39C12;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  .collection-topbar__mobile-filter {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border: 1.5px solid #ddd;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .collection-topbar__mobile-filter:hover { border-color: #F39C12; }
+  @media screen and (max-width: 749px) {
+    .collection-topbar__mobile-filter { display: inline-flex !important; }
+  }
   /* === STEHLEN SIDEBAR LAYOUT OVERRIDES === */
   .stehlen-collection-layout {
     display: flex !important;
