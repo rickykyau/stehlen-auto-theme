@@ -1,216 +1,146 @@
 {%- comment -%}
-  Collection Sidebar Filters
-  Left sidebar with checkbox filters for Make, Model, Year, Category
-  Armordillo-style design
+  Collection Sidebar Filters — Stehlen Auto
+  Single product listing page with URL param filters
 {%- endcomment -%}
 
 {%- assign skip_handles = 'all,frontpage,digital-goods-vat-tax,vehicles-and-parts-example-products' | split: ',' -%}
 
 <style>
-/* ===== SIDEBAR + GRID LAYOUT ===== */
-.stehlen-collection-layout {
-  display: flex !important;
-  gap: 24px !important;
-  max-width: var(--page-width, 1200px) !important;
-  margin: 0 auto !important;
-  padding: 16px !important;
-  width: 100% !important;
-}
+/* ===== SIDEBAR STYLES ===== */
 .collection-sidebar {
-  width: 240px;
-  min-width: 240px;
+  width: 260px;
+  min-width: 260px;
   flex-shrink: 0;
   position: sticky;
   top: 80px;
   align-self: flex-start;
   max-height: calc(100vh - 100px);
   overflow-y: auto;
-  scrollbar-width: thin;
+  overflow-x: hidden;
   padding-bottom: 40px;
+  scrollbar-width: thin;
 }
-.collection-sidebar::-webkit-scrollbar { width: 4px; }
-.collection-sidebar::-webkit-scrollbar-thumb { background: #ccc; border-radius: 2px; }
-.stehlen-collection-main {
-  flex: 1 !important;
-  min-width: 0 !important;
-}
-/* Override theme grid inside our layout */
-.stehlen-collection-main .collection-wrapper {
-  display: block !important;
-}
-.stehlen-collection-main .collection-wrapper > * {
-  grid-column: unset !important;
-}
+.collection-sidebar::-webkit-scrollbar { width: 5px; }
+.collection-sidebar::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
 
-/* Top bar */
-.collection-topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-.collection-topbar__title {
-  font-size: 1.4rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  color: var(--color-foreground);
-  margin: 0;
-}
-.collection-topbar__count {
-  font-size: 0.85rem;
-  color: #888;
-  margin-top: 2px;
-}
-.collection-topbar__vehicle-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  border: 1.5px solid #F39C12;
-  border-radius: 8px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--color-foreground);
-  background: #fff;
-}
-.collection-topbar__vehicle-badge svg { color: #F39C12; flex-shrink: 0; }
-.collection-topbar__sort select {
-  padding: 8px 32px 8px 12px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  background: #fff;
-  color: var(--color-foreground);
-  appearance: menulist;
-  cursor: pointer;
-}
-
-/* Sidebar filter sections */
-.sidebar-section {
-  border: 1px solid #eee;
+/* Filter sections */
+.sf-section {
+  border: 1px solid #e5e5e5;
   border-radius: 8px;
   margin-bottom: 12px;
   background: #fff;
   overflow: hidden;
 }
-.sidebar-section__header {
+.sf-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 12px 14px;
   cursor: pointer;
   font-weight: 700;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   text-transform: uppercase;
-  letter-spacing: 0.3px;
-  color: var(--color-foreground);
+  letter-spacing: 0.5px;
+  color: #1E2326;
   user-select: none;
   background: #fafafa;
   border-bottom: 1px solid #eee;
 }
-.sidebar-section__header:hover { background: #f5f5f5; }
-.sidebar-section__toggle {
-  font-size: 0.7rem;
+.sf-header:hover { background: #f0f0f0; }
+.sf-chevron {
   transition: transform 0.2s;
+  font-size: 0.6rem;
   color: #999;
 }
-.sidebar-section[data-collapsed="true"] .sidebar-section__body { display: none; }
-.sidebar-section[data-collapsed="true"] .sidebar-section__toggle { transform: rotate(-90deg); }
-.sidebar-section__body {
-  padding: 10px 14px 14px;
+.sf-section.collapsed .sf-body { display: none; }
+.sf-section.collapsed .sf-chevron { transform: rotate(-90deg); }
+.sf-body { padding: 10px 14px 14px; }
+
+/* Subsection labels */
+.sf-sublabel {
+  font-weight: 600;
+  font-size: 0.78rem;
+  color: #888;
+  margin: 0 0 6px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.sf-hint {
+  font-size: 0.78rem;
+  color: #aaa;
+  font-style: italic;
+  padding: 2px 0 6px;
 }
 
-/* Search within section */
-.sidebar-search {
+/* Search input */
+.sf-search {
   width: 100%;
-  padding: 6px 10px;
+  padding: 7px 10px;
   border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 0.8rem;
+  border-radius: 5px;
+  font-size: 0.82rem;
   margin-bottom: 8px;
   outline: none;
   box-sizing: border-box;
 }
-.sidebar-search:focus { border-color: #F39C12; }
+.sf-search:focus { border-color: #F39C12; box-shadow: 0 0 0 2px rgba(243,156,18,0.15); }
 
-/* Checkbox list */
-.sidebar-checks {
+/* Checkbox items — NO inner scroll, let sidebar scroll */
+.sf-list {
   list-style: none;
   margin: 0;
   padding: 0;
-  max-height: 200px;
-  overflow-y: auto;
-  scrollbar-width: thin;
 }
-.sidebar-checks::-webkit-scrollbar { width: 3px; }
-.sidebar-checks::-webkit-scrollbar-thumb { background: #ddd; border-radius: 2px; }
-.sidebar-check {
+.sf-item {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 4px 0;
+  padding: 5px 0;
   font-size: 0.85rem;
   cursor: pointer;
-  color: var(--color-foreground);
+  color: #333;
 }
-.sidebar-check:hover { color: #F39C12; }
-.sidebar-check input[type="checkbox"] {
+.sf-item:hover { color: #F39C12; }
+.sf-item input[type="checkbox"] {
   width: 16px;
   height: 16px;
   accent-color: #F39C12;
   cursor: pointer;
   flex-shrink: 0;
+  margin: 0;
 }
-.sidebar-check__label { flex: 1; }
-.sidebar-check__count {
-  font-size: 0.75rem;
-  color: #999;
-}
-.sidebar-sublabel {
-  font-size: 0.8rem;
-  color: #999;
-  font-style: italic;
-  padding: 4px 0;
-}
+.sf-item label { flex: 1; cursor: pointer; }
 
-/* Mobile: sidebar becomes top drawer */
+/* Mobile */
 @media (max-width: 749px) {
-  .stehlen-collection-layout {
-    flex-direction: column !important;
-    gap: 0 !important;
-    padding: 8px !important;
-  }
   .collection-sidebar {
-    width: 100%;
+    width: 100% !important;
+    min-width: 100% !important;
     position: relative;
     top: 0;
     max-height: none;
     overflow: visible;
-    display: none; /* hidden by default on mobile */
+    display: none;
   }
-  .collection-sidebar--open {
+  .collection-sidebar.sb-open {
     display: block;
     margin-bottom: 16px;
   }
-  .collection-topbar__mobile-filter {
-    display: inline-flex !important;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 16px;
-    border: 1.5px solid #ddd;
-    border-radius: 6px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    background: #fff;
-    color: var(--color-foreground);
-  }
-  .collection-topbar__mobile-filter:hover { border-color: #F39C12; }
 }
-@media (min-width: 750px) {
-  .collection-topbar__mobile-filter { display: none !important; }
+
+/* Hidden product items */
+.product-grid__item.sf-hidden {
+  display: none !important;
+}
+
+/* Force 3-col grid inside sidebar layout */
+.stehlen-collection-main .product-grid {
+  grid-template-columns: repeat(3, 1fr) !important;
+}
+@media (max-width: 749px) {
+  .stehlen-collection-main .product-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
 }
 </style>
 
@@ -218,71 +148,62 @@
 <aside class="collection-sidebar" id="collection-sidebar">
   
   <!-- Vehicle Fitment -->
-  <div class="sidebar-section" id="fitment-section">
-    <div class="sidebar-section__header" onclick="this.parentElement.dataset.collapsed=this.parentElement.dataset.collapsed==='true'?'false':'true'">
+  <div class="sf-section" id="sf-fitment">
+    <div class="sf-header" data-toggle="sf-fitment">
       Vehicle Fitment
-      <span class="sidebar-section__toggle">▼</span>
+      <span class="sf-chevron">▼</span>
     </div>
-    <div class="sidebar-section__body">
-      <!-- Make -->
-      <div style="margin-bottom:10px;">
-        <div style="font-weight:600;font-size:0.8rem;color:#666;margin-bottom:4px;">Make</div>
-        <input type="text" class="sidebar-search" id="make-search" placeholder="Search makes...">
-        <ul class="sidebar-checks" id="make-list">
-          {%- for collection_item in collections -%}
-            {%- if collection_item.handle contains '-parts' and collection_item.products_count > 0 -%}
-              {%- assign make_name = collection_item.title | remove: ' Parts' -%}
-              <li class="sidebar-check" data-make="{{ make_name }}">
-                <input type="checkbox" id="make-{{ make_name | handleize }}" value="{{ make_name }}" class="make-checkbox">
-                <label class="sidebar-check__label" for="make-{{ make_name | handleize }}">{{ make_name }}</label>
-              </li>
-            {%- endif -%}
-          {%- endfor -%}
-        </ul>
-      </div>
-      
-      <!-- Model -->
-      <div style="margin-bottom:10px;">
-        <div style="font-weight:600;font-size:0.8rem;color:#666;margin-bottom:4px;">Model</div>
-        <div class="sidebar-sublabel" id="model-placeholder">Select a make first</div>
-        <ul class="sidebar-checks" id="model-list" style="display:none;"></ul>
-      </div>
-      
-      <!-- Year -->
-      <div>
-        <div style="font-weight:600;font-size:0.8rem;color:#666;margin-bottom:4px;">Year</div>
-        <ul class="sidebar-checks" id="year-list">
-          {%- for y in (2000..2026) reversed -%}
-            <li class="sidebar-check" data-year="{{ y }}">
-              <input type="checkbox" id="year-{{ y }}" value="{{ y }}" class="year-checkbox">
-              <label class="sidebar-check__label" for="year-{{ y }}">{{ y }}</label>
+    <div class="sf-body">
+      <p class="sf-sublabel">Make</p>
+      <input type="text" class="sf-search" id="sf-make-search" placeholder="Search makes...">
+      <ul class="sf-list" id="sf-make-list">
+        {%- for c in collections -%}
+          {%- if c.handle contains '-parts' and c.products_count > 0 -%}
+            {%- assign mk = c.title | remove: ' Parts' -%}
+            <li class="sf-item">
+              <input type="checkbox" id="mk-{{ mk | handleize }}" value="{{ mk }}" class="sf-make">
+              <label for="mk-{{ mk | handleize }}">{{ mk }}</label>
             </li>
-          {%- endfor -%}
-        </ul>
-      </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+
+      <p class="sf-sublabel" style="margin-top:12px;">Model</p>
+      <div class="sf-hint" id="sf-model-hint">Select a make first</div>
+      <ul class="sf-list" id="sf-model-list"></ul>
+
+      <p class="sf-sublabel" style="margin-top:12px;">Year</p>
+      <ul class="sf-list" id="sf-year-list">
+        {%- for y in (2000..2026) reversed -%}
+          <li class="sf-item">
+            <input type="checkbox" id="yr-{{ y }}" value="{{ y }}" class="sf-year">
+            <label for="yr-{{ y }}">{{ y }}</label>
+          </li>
+        {%- endfor -%}
+      </ul>
     </div>
   </div>
 
   <!-- Category -->
-  <div class="sidebar-section" id="category-section">
-    <div class="sidebar-section__header" onclick="this.parentElement.dataset.collapsed=this.parentElement.dataset.collapsed==='true'?'false':'true'">
+  <div class="sf-section" id="sf-category">
+    <div class="sf-header" data-toggle="sf-category">
       Category
-      <span class="sidebar-section__toggle">▼</span>
+      <span class="sf-chevron">▼</span>
     </div>
-    <div class="sidebar-section__body">
-      <input type="text" class="sidebar-search" id="category-search" placeholder="Search categories...">
-      <ul class="sidebar-checks" id="category-list">
-        {%- for collection_item in collections -%}
-          {%- assign dominated = false -%}
-          {%- if collection_item.handle contains '-parts' -%}{%- assign dominated = true -%}{%- endif -%}
+    <div class="sf-body">
+      <input type="text" class="sf-search" id="sf-cat-search" placeholder="Search categories...">
+      <ul class="sf-list" id="sf-cat-list">
+        {%- for c in collections -%}
+          {%- assign skip = false -%}
+          {%- if c.handle contains '-parts' -%}{%- assign skip = true -%}{%- endif -%}
           {%- for sh in skip_handles -%}
-            {%- if collection_item.handle == sh -%}{%- assign dominated = true -%}{%- endif -%}
+            {%- if c.handle == sh -%}{%- assign skip = true -%}{%- endif -%}
           {%- endfor -%}
-          {%- unless dominated -%}
-            {%- if collection_item.products_count > 0 -%}
-              <li class="sidebar-check" data-category="{{ collection_item.handle }}">
-                <input type="checkbox" id="cat-{{ collection_item.handle }}" value="{{ collection_item.handle }}" class="category-checkbox" data-url="/collections/{{ collection_item.handle }}">
-                <label class="sidebar-check__label" for="cat-{{ collection_item.handle }}">{{ collection_item.title }}</label>
+          {%- unless skip -%}
+            {%- if c.products_count > 0 -%}
+              <li class="sf-item" data-handle="{{ c.handle }}">
+                <input type="checkbox" id="cat-{{ c.handle }}" value="{{ c.handle }}" class="sf-cat">
+                <label for="cat-{{ c.handle }}">{{ c.title }}</label>
               </li>
             {%- endif -%}
           {%- endunless -%}
@@ -292,304 +213,283 @@
   </div>
 </aside>
 
+{%- comment -%} Product data for client-side filtering {%- endcomment -%}
+<script id="sf-product-data" type="application/json">
+[
+  {%- paginate collections.all.products by 250 -%}
+    {%- for p in collections.all.products -%}
+      {%- unless forloop.first -%},{%- endunless -%}
+      { "id": {{ p.id }}, "title": {{ p.title | json }}, "type": {{ p.type | json }}, "tags": {{ p.tags | json }} }
+    {%- endfor -%}
+  {%- endpaginate -%}
+]
+</script>
+
 <script>
-(function() {
-  function initSidebar() {
-    /* === Vehicle badge === */
-    var saved = localStorage.getItem('selectedVehicle');
-    if (saved) {
-      try {
-        var v = JSON.parse(saved);
-        if (v.year && v.make && v.model) {
-          var badge = document.getElementById('topbar-vehicle-badge');
-          var badgeText = document.getElementById('topbar-vehicle-text');
-          if (badge && badgeText) {
-            badgeText.textContent = v.year + ' ' + v.make + ' ' + v.model;
-            badge.style.display = 'inline-flex';
-          }
-        }
-      } catch(e) {}
-    }
+(function(){
+  /* === CONFIG === */
+  var ALIASES = {
+    'chevy':['chevy','chevrolet'],'chevrolet':['chevy','chevrolet'],
+    'dodge':['dodge','ram'],'ram':['dodge','ram'],
+    'mercedes-benz':['mercedes','mercedes-benz','benz'],'mercedes':['mercedes','mercedes-benz','benz'],
+    'vw':['vw','volkswagen'],'volkswagen':['vw','volkswagen'],
+    'gmc':['gmc','chevy','chevrolet']
+  };
+  var STOP = ['trailer','hitch','class','bull','guard','grille','side','step','nerf','bar',
+    'tonneau','cover','chase','rack','sport','matte','black','stainless','led','light',
+    'low','profile','hard','tri-fold','bed','universal','-','w/','&','front','rear'];
 
-    /* === Mobile filter toggle === */
-    var mobileToggle = document.getElementById('mobile-filter-toggle');
-    var sidebar = document.getElementById('collection-sidebar');
-    if (mobileToggle && sidebar) {
-      mobileToggle.addEventListener('click', function() {
-        sidebar.classList.toggle('collection-sidebar--open');
+  function kws(make){ return ALIASES[make.toLowerCase()] || [make.toLowerCase()]; }
+  function yearRange(title){
+    var m = title.match(/(\d{4})\s*[-–]\s*(\d{4})/);
+    if(m) return [+m[1],+m[2]];
+    m = title.match(/(\d{4})\+/);
+    if(m) return [+m[1],2026];
+    m = title.match(/\b(19|20)\d{2}\b/);
+    if(m) return [+m[0],+m[0]];
+    return null;
+  }
+
+  function init(){
+    /* Load product data */
+    var dataEl = document.getElementById('sf-product-data');
+    var products = [];
+    try { products = JSON.parse(dataEl.textContent); } catch(e){ console.error('SF: bad product data',e); }
+
+    /* Build product ID → data map */
+    var pMap = {};
+    products.forEach(function(p){ pMap[p.id] = p; });
+
+    /* === Collapsible sections === */
+    document.querySelectorAll('.sf-header[data-toggle]').forEach(function(h){
+      h.addEventListener('click', function(){
+        var sec = document.getElementById(h.dataset.toggle);
+        if(sec) sec.classList.toggle('collapsed');
       });
-    }
+    });
 
-    /* === Search filters === */
-    function setupSearch(inputId, listId) {
-      var input = document.getElementById(inputId);
+    /* === Search inputs === */
+    function wireSearch(inputId, listId){
+      var inp = document.getElementById(inputId);
       var list = document.getElementById(listId);
-      if (!input || !list) return;
-      input.addEventListener('input', function() {
+      if(!inp || !list) return;
+      inp.addEventListener('input', function(){
         var q = this.value.toLowerCase();
-        list.querySelectorAll('.sidebar-check').forEach(function(li) {
+        list.querySelectorAll('.sf-item').forEach(function(li){
           li.style.display = li.textContent.toLowerCase().includes(q) ? '' : 'none';
         });
       });
     }
-    setupSearch('make-search', 'make-list');
-    setupSearch('category-search', 'category-list');
+    wireSearch('sf-make-search','sf-make-list');
+    wireSearch('sf-cat-search','sf-cat-list');
 
-    /* === Make/Model/Year keyword maps === */
-    var makeAliases = {
-      'chevy': ['chevy','chevrolet'],
-      'chevrolet': ['chevy','chevrolet'],
-      'dodge': ['dodge','ram'],
-      'ram': ['dodge','ram'],
-      'mercedes-benz': ['mercedes','mercedes-benz','benz'],
-      'mercedes': ['mercedes','mercedes-benz','benz'],
-      'vw': ['vw','volkswagen'],
-      'volkswagen': ['vw','volkswagen']
-    };
-
-    function getMakeKeywords(make) {
-      var ml = make.toLowerCase();
-      return makeAliases[ml] || [ml];
+    /* === Vehicle badge === */
+    var saved = localStorage.getItem('selectedVehicle');
+    if(saved){
+      try{
+        var v = JSON.parse(saved);
+        if(v.year && v.make && v.model){
+          var badge = document.getElementById('topbar-vehicle-badge');
+          var txt = document.getElementById('topbar-vehicle-text');
+          if(badge && txt){ txt.textContent = v.year+' '+v.make+' '+v.model; badge.style.display='inline-flex'; }
+        }
+      } catch(e){}
     }
 
-    function getProductText(item) {
-      return (item.textContent || '').toLowerCase();
+    /* === Mobile toggle === */
+    var mobBtn = document.getElementById('mobile-filter-toggle');
+    var sb = document.getElementById('collection-sidebar');
+    if(mobBtn && sb){ mobBtn.addEventListener('click', function(){ sb.classList.toggle('sb-open'); }); }
+
+    /* === Get all product grid items === */
+    function getItems(){
+      return document.querySelectorAll('.product-grid__item, ul.product-grid > li');
     }
 
-    function getProductYearRange(text) {
-      var m = text.match(/(\d{4})\s*[-–]\s*(\d{4})/);
-      if (m) return { start: parseInt(m[1]), end: parseInt(m[2]) };
-      var mp = text.match(/(\d{4})\+/);
-      if (mp) return { start: parseInt(mp[1]), end: 2026 };
-      return null;
+    function getItemProductId(item){
+      /* ID format: "sectionId-productId" */
+      var id = item.getAttribute('data-product-id');
+      if(id) return +id;
+      var rawId = item.id || '';
+      var parts = rawId.split('-');
+      if(parts.length >= 2) return +parts[parts.length-1];
+      return 0;
     }
 
-    function getProductItems() {
-      return document.querySelectorAll('.product-grid__item, .product-grid > li');
-    }
+    /* === MAIN FILTER === */
+    function applyAllFilters(){
+      var selMakes = []; document.querySelectorAll('.sf-make:checked').forEach(function(c){ selMakes.push(c.value); });
+      var selYears = []; document.querySelectorAll('.sf-year:checked').forEach(function(c){ selYears.push(+c.value); });
+      var selCats = []; document.querySelectorAll('.sf-cat:checked').forEach(function(c){ selCats.push(c.value); });
+      var selModels = []; document.querySelectorAll('.sf-model:checked').forEach(function(c){ selModels.push(c.value.toLowerCase()); });
 
-    /* === Apply all filters === */
-    function applyFilters() {
-      var selectedMakes = Array.from(document.querySelectorAll('.make-checkbox:checked')).map(function(cb) { return cb.value; });
-      var selectedYears = Array.from(document.querySelectorAll('.year-checkbox:checked')).map(function(cb) { return parseInt(cb.value); });
-      var selectedCategories = Array.from(document.querySelectorAll('.category-checkbox:checked')).map(function(cb) { return cb.value; });
+      var hasFilter = selMakes.length || selYears.length || selCats.length || selModels.length;
+      var items = getItems();
+      var visible = 0;
 
-      var items = getProductItems();
-      var visibleCount = 0;
+      items.forEach(function(item){
+        if(!hasFilter){ item.classList.remove('sf-hidden'); visible++; return; }
 
-      items.forEach(function(item) {
-        var text = getProductText(item);
+        var pid = getItemProductId(item);
+        var pd = pMap[pid];
+        var title = pd ? pd.title.toLowerCase() : (item.textContent||'').toLowerCase();
+        var ptype = pd ? (pd.type||'').toLowerCase() : '';
+        var isUniversal = title.includes('universal');
         var show = true;
 
         /* Make filter */
-        if (selectedMakes.length > 0) {
-          var makeMatch = text.includes('universal') || selectedMakes.some(function(make) {
-            return getMakeKeywords(make).some(function(kw) { return text.includes(kw.toLowerCase()); });
+        if(selMakes.length && !isUniversal){
+          var makeOk = selMakes.some(function(mk){
+            return kws(mk).some(function(k){ return title.includes(k); });
           });
-          if (!makeMatch) show = false;
+          if(!makeOk) show = false;
         }
 
         /* Year filter */
-        if (show && selectedYears.length > 0) {
-          var range = getProductYearRange(text);
-          if (range) {
-            var yearMatch = selectedYears.some(function(y) { return y >= range.start && y <= range.end; });
-            if (!yearMatch) show = false;
-          } else if (text.includes('universal')) {
-            /* Universal products always show */
-          } else {
-            show = false;
-          }
+        if(show && selYears.length && !isUniversal){
+          var yr = yearRange(pd ? pd.title : title);
+          if(yr){
+            var yearOk = selYears.some(function(y){ return y >= yr[0] && y <= yr[1]; });
+            if(!yearOk) show = false;
+          } else { show = false; }
         }
 
-        /* Category filter - uses collection handles, match by keywords from handle */
-        if (show && selectedCategories.length > 0) {
-          var catMatch = selectedCategories.some(function(handle) {
-            var keywords = handle.replace(/-/g, ' ').split(' ');
-            return keywords.some(function(kw) { return kw.length > 2 && text.includes(kw); });
+        /* Model filter */
+        if(show && selModels.length && !isUniversal){
+          var modelOk = selModels.some(function(m){ return title.includes(m); });
+          if(!modelOk) show = false;
+        }
+
+        /* Category filter — match product type keywords against handle */
+        if(show && selCats.length){
+          var catOk = selCats.some(function(handle){
+            var words = handle.replace(/-/g,' ').split(' ');
+            return words.some(function(w){ return w.length > 2 && (title.includes(w) || ptype.includes(w)); });
           });
-          if (!catMatch) show = false;
+          if(!catOk) show = false;
         }
 
-        if (show) {
-          item.classList.remove('filter-hidden');
-          item.style.removeProperty('display');
-          visibleCount++;
-        } else {
-          item.classList.add('filter-hidden');
-        }
+        if(show){ item.classList.remove('sf-hidden'); visible++; }
+        else { item.classList.add('sf-hidden'); }
       });
 
-      /* Update count */
+      /* Count */
       var countEl = document.getElementById('product-count');
-      if (countEl) {
-        var total = items.length;
-        if (selectedMakes.length || selectedYears.length || selectedCategories.length) {
-          countEl.textContent = visibleCount + ' of ' + total + ' products';
-        } else {
-          countEl.textContent = total + ' products available';
-        }
+      if(countEl){
+        countEl.textContent = hasFilter
+          ? visible + ' of ' + items.length + ' products'
+          : items.length + ' products';
       }
 
-      /* Update models based on selected makes */
-      updateModels(selectedMakes);
+      /* Update models */
+      updateModels(selMakes);
     }
 
     /* === Dynamic model list === */
-    function updateModels(selectedMakes) {
-      var modelList = document.getElementById('model-list');
-      var modelPlaceholder = document.getElementById('model-placeholder');
-      if (!modelList || !modelPlaceholder) return;
+    function updateModels(selMakes){
+      var mList = document.getElementById('sf-model-list');
+      var mHint = document.getElementById('sf-model-hint');
+      if(!mList) return;
 
-      if (selectedMakes.length === 0) {
-        modelList.style.display = 'none';
-        modelPlaceholder.style.display = 'block';
-        modelPlaceholder.textContent = 'Select a make first';
+      if(!selMakes.length){
+        mList.innerHTML = '';
+        if(mHint){ mHint.style.display=''; mHint.textContent='Select a make first'; }
         return;
       }
 
-      /* Extract models from visible product titles */
-      var models = new Set();
-      var items = getProductItems();
-      items.forEach(function(item) {
-        if (item.classList.contains('filter-hidden')) return;
-        var text = item.textContent;
-        /* Try to extract model from title patterns like "2003-2009 Toyota 4Runner ..." */
-        var titleEl = item.querySelector('.product-card__title, .card__heading, h3, a[href*="/products/"]');
-        if (!titleEl) return;
-        var title = titleEl.textContent.trim();
-        /* Remove year prefix */
-        var rest = title.replace(/^\d{4}\s*[-–+]\s*\d{0,4}\s*/, '').trim();
-        /* Remove make */
-        selectedMakes.forEach(function(make) {
-          getMakeKeywords(make).forEach(function(kw) {
-            var re = new RegExp('\\b' + kw.replace(/[-\/]/g, '[-\\/]?') + '\\b\\s*', 'i');
-            rest = rest.replace(re, '');
+      var models = {};
+      products.forEach(function(p){
+        var t = p.title;
+        if(t.toLowerCase().includes('universal')) return;
+        var makeMatch = selMakes.some(function(mk){ return kws(mk).some(function(k){ return t.toLowerCase().includes(k); }); });
+        if(!makeMatch) return;
+        /* Extract model: remove year prefix, remove make words, take first 1-2 non-stop words */
+        var rest = t.replace(/^\d{4}\s*[-–+]\s*\d{0,4}\s*/,'').trim();
+        selMakes.forEach(function(mk){
+          kws(mk).forEach(function(k){
+            rest = rest.replace(new RegExp('\\b'+k.replace(/[\/\-]/g,'[\\/-]?')+'\\b\\s*','ig'),'');
           });
         });
-        /* Model = first 1-2 words */
         var words = rest.trim().split(/\s+/);
-        var stopWords = ['trailer','hitch','class','bull','guard','grille','side','step','nerf',
-          'bar','tonneau','cover','chase','rack','sport','matte','black','stainless','led',
-          'light','low','profile','hard','tri-fold','bed','universal','-','w/','&','front'];
-        var modelWords = [];
-        for (var i = 0; i < words.length && modelWords.length < 2; i++) {
-          if (stopWords.indexOf(words[i].toLowerCase()) >= 0) break;
-          if (/^\d/.test(words[i]) && modelWords.length === 0) continue;
-          modelWords.push(words[i]);
+        var mw = [];
+        for(var i=0; i<words.length && mw.length<2; i++){
+          if(STOP.indexOf(words[i].toLowerCase())>=0) break;
+          if(/^\d/.test(words[i]) && !mw.length) continue;
+          mw.push(words[i]);
         }
-        var model = modelWords.join(' ').replace(/[,\/]$/, '');
-        if (model && model.length > 1) models.add(model);
+        var model = mw.join(' ').replace(/[,\/]$/,'');
+        if(model && model.length > 1) models[model] = (models[model]||0)+1;
       });
 
-      if (models.size === 0) {
-        modelList.style.display = 'none';
-        modelPlaceholder.style.display = 'block';
-        modelPlaceholder.textContent = 'No models found';
+      var sorted = Object.keys(models).sort();
+      if(!sorted.length){
+        mList.innerHTML = '';
+        if(mHint){ mHint.style.display=''; mHint.textContent='No models found'; }
         return;
       }
 
-      modelPlaceholder.style.display = 'none';
-      modelList.style.display = '';
-      modelList.innerHTML = '';
-      Array.from(models).sort().forEach(function(model) {
+      if(mHint) mHint.style.display='none';
+      /* Preserve checked state */
+      var wasChecked = {};
+      mList.querySelectorAll('.sf-model:checked').forEach(function(c){ wasChecked[c.value]=true; });
+      mList.innerHTML = '';
+      sorted.forEach(function(model){
         var li = document.createElement('li');
-        li.className = 'sidebar-check';
-        li.innerHTML = '<input type="checkbox" class="model-checkbox" value="' + model + '" id="model-' + model.replace(/\s+/g,'-').toLowerCase() + '"><label class="sidebar-check__label" for="model-' + model.replace(/\s+/g,'-').toLowerCase() + '">' + model + '</label>';
-        modelList.appendChild(li);
-        li.querySelector('input').addEventListener('change', applyModelFilter);
+        li.className = 'sf-item';
+        var id = 'mdl-'+model.replace(/\s+/g,'-').toLowerCase();
+        li.innerHTML = '<input type="checkbox" id="'+id+'" value="'+model+'" class="sf-model"'+(wasChecked[model]?' checked':'')+'>'+
+          '<label for="'+id+'">'+model+'</label>';
+        mList.appendChild(li);
+        li.querySelector('input').addEventListener('change', applyAllFilters);
       });
     }
 
-    function applyModelFilter() {
-      var selectedModels = Array.from(document.querySelectorAll('.model-checkbox:checked')).map(function(cb) { return cb.value.toLowerCase(); });
-      if (selectedModels.length === 0) { applyFilters(); return; }
-
-      var items = getProductItems();
-      items.forEach(function(item) {
-        if (item.classList.contains('filter-hidden')) return;
-        var text = getProductText(item);
-        var modelMatch = selectedModels.some(function(m) { return text.includes(m); });
-        if (!modelMatch && !text.includes('universal')) {
-          item.classList.add('filter-hidden');
-        }
-      });
-
-      /* Update count */
-      var countEl = document.getElementById('product-count');
-      if (countEl) {
-        var total = items.length;
-        var visible = Array.from(items).filter(function(i) { return !i.classList.contains('filter-hidden'); }).length;
-        countEl.textContent = visible + ' of ' + total + ' products';
-      }
-    }
-
-    /* === Event listeners === */
-    document.querySelectorAll('.make-checkbox, .year-checkbox, .category-checkbox').forEach(function(cb) {
-      cb.addEventListener('change', applyFilters);
+    /* === Wire up checkboxes === */
+    document.querySelectorAll('.sf-make,.sf-year,.sf-cat').forEach(function(cb){
+      cb.addEventListener('change', applyAllFilters);
     });
 
-    /* === Auto-select from URL params === */
-    var urlParams = new URLSearchParams(window.location.search);
-    var paramCategory = urlParams.get('category');
-    var paramMake = urlParams.get('make');
-    var paramYear = urlParams.get('year');
-    var paramModel = urlParams.get('model');
-    var anyParamSet = false;
+    /* === Read URL params and pre-check === */
+    var params = new URLSearchParams(window.location.search);
+    var pCat = params.get('category');
+    var pMake = params.get('make');
+    var pYear = params.get('year');
+    var pModel = params.get('model');
+    var any = false;
 
-    if (paramCategory) {
-      document.querySelectorAll('.category-checkbox').forEach(function(cb) {
-        if (cb.value === paramCategory) { cb.checked = true; anyParamSet = true; }
+    if(pCat){
+      document.querySelectorAll('.sf-cat').forEach(function(cb){
+        if(cb.value === pCat){ cb.checked=true; any=true; }
       });
     }
-    if (paramMake) {
-      document.querySelectorAll('.make-checkbox').forEach(function(cb) {
-        if (cb.value.toLowerCase() === paramMake.toLowerCase()) { cb.checked = true; anyParamSet = true; }
+    if(pMake){
+      document.querySelectorAll('.sf-make').forEach(function(cb){
+        if(cb.value.toLowerCase() === pMake.toLowerCase()){ cb.checked=true; any=true; }
       });
     }
-    if (paramYear) {
-      document.querySelectorAll('.year-checkbox').forEach(function(cb) {
-        if (cb.value === paramYear) { cb.checked = true; anyParamSet = true; }
-      });
-    }
-
-    /* Also check old-style collection URL for backward compat */
-    var currentHandle = (window.location.pathname.match(/\/collections\/([^\/\?]+)/) || [])[1];
-    if (!anyParamSet && currentHandle && currentHandle !== 'all') {
-      document.querySelectorAll('.make-checkbox').forEach(function(cb) {
-        var handle = cb.value.toLowerCase().replace(/\s+/g, '-') + '-parts';
-        if (handle === currentHandle || currentHandle.includes(cb.value.toLowerCase())) {
-          cb.checked = true; anyParamSet = true;
-        }
-      });
-      document.querySelectorAll('.category-checkbox').forEach(function(cb) {
-        if (cb.getAttribute('data-url') === '/collections/' + currentHandle) {
-          cb.checked = true; anyParamSet = true;
-        }
+    if(pYear){
+      document.querySelectorAll('.sf-year').forEach(function(cb){
+        if(cb.value === pYear){ cb.checked=true; any=true; }
       });
     }
 
-    if (anyParamSet) {
-      setTimeout(function() {
-        applyFilters();
-        /* After make filter runs and models populate, apply model filter if param exists */
-        if (paramModel) {
-          setTimeout(function() {
-            document.querySelectorAll('.model-checkbox').forEach(function(cb) {
-              if (cb.value.toLowerCase() === paramModel.toLowerCase()) { cb.checked = true; }
+    /* Apply on load if any filters set */
+    if(any){
+      setTimeout(function(){
+        applyAllFilters();
+        if(pModel){
+          setTimeout(function(){
+            document.querySelectorAll('.sf-model').forEach(function(cb){
+              if(cb.value.toLowerCase() === pModel.toLowerCase()) cb.checked = true;
             });
-            var anyModelChecked = document.querySelector('.model-checkbox:checked');
-            if (anyModelChecked) applyModelFilter();
-          }, 500);
+            if(document.querySelector('.sf-model:checked')) applyAllFilters();
+          }, 400);
         }
-      }, 300);
+      }, 200);
     }
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initSidebar);
-  } else {
-    initSidebar();
-  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
 })();
 </script>
