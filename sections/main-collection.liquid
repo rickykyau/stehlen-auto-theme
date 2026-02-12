@@ -68,11 +68,8 @@
           results_size: collection.products_count
         %}
 
-        {% assign products_per_page = 24 %}
-
-        {% if section.settings.enable_infinite_scroll == false %}
-          {% assign products_per_page = section.settings.products_per_page %}
-        {% endif %}
+        {%- comment -%} Load all products for client-side filtering (max 250) {%- endcomment -%}
+        {% assign products_per_page = 250 %}
 
         {% paginate collection.products by products_per_page %}
           {% capture children %}
@@ -96,7 +93,7 @@
             children: children,
             products: collection.products,
             paginate: paginate,
-            enable_infinite_scroll: section.settings.enable_infinite_scroll
+            enable_infinite_scroll: false
           %}
         {% endpaginate %}
       </div>
