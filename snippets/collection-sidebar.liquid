@@ -529,26 +529,60 @@
       cb.addEventListener('change', applyFilters);
     });
 
-    /* === Auto-select from URL === */
+    /* === Auto-select from URL params === */
+    var urlParams = new URLSearchParams(window.location.search);
+    var paramCategory = urlParams.get('category');
+    var paramMake = urlParams.get('make');
+    var paramYear = urlParams.get('year');
+    var paramModel = urlParams.get('model');
+    var anyParamSet = false;
+
+    if (paramCategory) {
+      document.querySelectorAll('.category-checkbox').forEach(function(cb) {
+        if (cb.value === paramCategory) { cb.checked = true; anyParamSet = true; }
+      });
+    }
+    if (paramMake) {
+      document.querySelectorAll('.make-checkbox').forEach(function(cb) {
+        if (cb.value.toLowerCase() === paramMake.toLowerCase()) { cb.checked = true; anyParamSet = true; }
+      });
+    }
+    if (paramYear) {
+      document.querySelectorAll('.year-checkbox').forEach(function(cb) {
+        if (cb.value === paramYear) { cb.checked = true; anyParamSet = true; }
+      });
+    }
+
+    /* Also check old-style collection URL for backward compat */
     var currentHandle = (window.location.pathname.match(/\/collections\/([^\/\?]+)/) || [])[1];
-    if (currentHandle && currentHandle !== 'all') {
-      /* Check if it's a make collection */
-      var makeCheckbox = document.querySelector('.make-checkbox[value]');
+    if (!anyParamSet && currentHandle && currentHandle !== 'all') {
       document.querySelectorAll('.make-checkbox').forEach(function(cb) {
         var handle = cb.value.toLowerCase().replace(/\s+/g, '-') + '-parts';
         if (handle === currentHandle || currentHandle.includes(cb.value.toLowerCase())) {
-          cb.checked = true;
+          cb.checked = true; anyParamSet = true;
         }
       });
-      /* Check if it's a category */
       document.querySelectorAll('.category-checkbox').forEach(function(cb) {
         if (cb.getAttribute('data-url') === '/collections/' + currentHandle) {
-          cb.checked = true;
+          cb.checked = true; anyParamSet = true;
         }
       });
-      /* Apply initial filters */
-      var anyChecked = document.querySelector('.make-checkbox:checked, .year-checkbox:checked, .category-checkbox:checked');
-      if (anyChecked) setTimeout(applyFilters, 300);
+    }
+
+    if (anyParamSet) {
+      setTimeout(function() {
+        applyFilters();
+        /* After make filter runs and models populate, apply model filter if param exists */
+        if (paramModel) {
+          setTimeout(function() {
+            document.querySelectorAll('.model-checkbox').forEach(function(cb) {
+              if (cb.value.toLowerCase() === paramModel.toLowerCase()) { cb.checked = true; }
+            });
+            var anyModelChecked = document.querySelector('.model-checkbox:checked');
+            if (anyModelChecked) applyModelFilter();
+          }, 500);
+        }
+      }, 300);
     }
   }
 

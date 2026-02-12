@@ -135,7 +135,7 @@
             {%- unless collection.handle == 'all' or collection.handle == 'frontpage' or collection.handle contains '-parts' or collection.handle == 'digital-goods-vat-tax' or collection.handle contains 'example' or collection.handle contains 'vehicles-and' -%}
             {%- if collection.products_count > 0 -%}
             <li class="stehlen-drawer-item">
-              <a href="{{ collection.url }}" class="stehlen-drawer-link stehlen-drawer-link--category">
+              <a href="/collections/all?category={{ collection.handle }}" class="stehlen-drawer-link stehlen-drawer-link--category">
                 <span>{{ collection.title }}</span>
                 <span class="stehlen-drawer-chevron">›</span>
               </a>
@@ -160,7 +160,7 @@
             {%- if collection.handle contains '-parts' and collection.products_count > 0 -%}
             {%- assign make_name = collection.title | remove: ' Parts' -%}
             <li class="stehlen-drawer-item">
-              <a href="{{ collection.url }}" class="stehlen-drawer-link stehlen-drawer-link--category">
+              <a href="/collections/all?make={{ make_name | url_encode }}" class="stehlen-drawer-link stehlen-drawer-link--category">
                 <span>{{ make_name }}</span>
                 <span class="stehlen-drawer-chevron">›</span>
               </a>
