@@ -963,10 +963,6 @@ quantity-selector-component,
 .facets-controls-wrapper,
 .facets-mobile-wrapper,
 .facets-actions,
-.facets-block,
-.facets__summary,
-.column-options-wrapper,
-[class*="facets"],
 #filters-drawer {
   display: none !important;
 }
@@ -1918,18 +1914,9 @@ div.vehicle-selector-wrapper {
   color: #F39C12;
 }
 
-/* Ensure filter bar doesn't overlap the drawer or vehicle modal */
-html:has(#Details-menu-drawer-container[open]) .filter-bar-wrapper,
-html:has(.mvd-overlay.mvd-open) .filter-bar-wrapper {
+/* Ensure filter bar doesn't overlap the drawer */
+html:has(#Details-menu-drawer-container[open]) .filter-bar-wrapper {
   display: none !important;
-}
-
-/* Ensure vehicle modal is always on top */
-.mvd-overlay.mvd-open {
-  z-index: 99999 !important;
-}
-.mvd-modal {
-  z-index: 100000 !important;
 }
 
 .stehlen-drawer-vehicle-btn {
@@ -2133,3 +2120,20 @@ html:has(.mvd-overlay.mvd-open) .filter-bar-wrapper {
 .fp-scatter--v0 .fp-scatter__img--b { width: 22%; height: 36%; left: 3%; top: 58%; transform: rotate(-1.5deg); }
 .fp-scatter--v0 .fp-scatter__img--c { width: 25%; height: 46%; right: 1%; top: 12%; transform: rotate(-1deg); }
 .fp-scatter--v0 .fp-scatter__img--d { display: none; }
+
+
+/* ===== COLLECTION SIDEBAR LAYOUT OVERRIDES ===== */
+.collection-layout .collection-wrapper {
+  display: block !important;
+  grid-template-columns: none !important;
+}
+.collection-layout .collection-wrapper > .facets-block-wrapper {
+  display: none !important; /* hide built-in filters, using sidebar instead */
+}
+.collection-layout .product-grid-container {
+  display: block !important;
+}
+.collection-layout .section--page-width {
+  max-width: none !important;
+  padding: 0 !important;
+}
