@@ -128,9 +128,16 @@
   }
 }
 
-/* Hidden product items */
-.product-grid__item.sf-hidden {
+/* Hidden product items — multiple selectors for certainty */
+.product-grid__item.sf-hidden,
+li.sf-hidden,
+.sf-hidden {
   display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 /* Force 3-col grid inside sidebar layout */
@@ -326,9 +333,10 @@
       var hasFilter = selMakes.length || selYears.length || selCats.length || selModels.length;
       var items = getItems();
       var visible = 0;
+      console.log('[SF] Filter:', {makes:selMakes, years:selYears, cats:selCats, models:selModels, items:items.length, hasFilter:hasFilter});
 
       items.forEach(function(item){
-        if(!hasFilter){ item.classList.remove('sf-hidden'); visible++; return; }
+        if(!hasFilter){ item.classList.remove('sf-hidden'); item.style.removeProperty('display'); visible++; return; }
 
         var pid = getItemProductId(item);
         var pd = pMap[pid];
@@ -369,8 +377,11 @@
           if(!catOk) show = false;
         }
 
-        if(show){ item.classList.remove('sf-hidden'); visible++; }
-        else { item.classList.add('sf-hidden'); }
+        if(show){ item.classList.remove('sf-hidden'); item.style.removeProperty('display'); visible++; }
+        else {
+          item.classList.add('sf-hidden');
+          item.style.display = 'none';
+        }
       });
 
       /* Count */
@@ -400,8 +411,9 @@
       var models = {};
       products.forEach(function(p){
         var t = p.title;
-        if(t.toLowerCase().includes('universal')) return;
-        var makeMatch = selMakes.some(function(mk){ return kws(mk).some(function(k){ return t.toLowerCase().includes(k); }); });
+        var tl = t.toLowerCase();
+        if(tl.includes('universal')) return;
+        var makeMatch = selMakes.some(function(mk){ return kws(mk).some(function(k){ return tl.includes(k); }); });
         if(!makeMatch) return;
         /* Extract model: remove year prefix, remove make words, take first 1-2 non-stop words */
         var rest = t.replace(/^\d{4}\s*[-–+]\s*\d{0,4}\s*/,'').trim();
