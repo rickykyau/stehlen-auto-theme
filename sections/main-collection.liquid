@@ -32,55 +32,56 @@
 >
   {% render 'skip-to-content-link', href: '#ResultsList', text: 'accessibility.skip_to_results_list' %}
 
-  {%- comment -%} Collection Sidebar + Top Bar {%- endcomment -%}
-  <div class="section--page-width collection-layout" style="padding-inline: var(--padding-inline-start, 0) var(--padding-inline-end, 0);">
+  <div class="stehlen-collection-layout">
+    {%- comment -%} Left Sidebar {%- endcomment -%}
     {% render 'collection-sidebar' %}
-    <div class="collection-main">
 
-  <div
-    class="collection-wrapper grid gap-style"
-  >
-    {% content_for 'block',
-      type: 'filters',
-      id: 'filters',
-      results: collection,
-      results_size: collection.products_count
-    %}
+    {%- comment -%} Right: Product Grid {%- endcomment -%}
+    <div class="stehlen-collection-main">
+      <div
+        class="collection-wrapper grid gap-style"
+      >
+        {% content_for 'block',
+          type: 'filters',
+          id: 'filters',
+          results: collection,
+          results_size: collection.products_count
+        %}
 
-    {% assign products_per_page = 24 %}
+        {% assign products_per_page = 24 %}
 
-    {% if section.settings.enable_infinite_scroll == false %}
-      {% assign products_per_page = section.settings.products_per_page %}
-    {% endif %}
+        {% if section.settings.enable_infinite_scroll == false %}
+          {% assign products_per_page = section.settings.products_per_page %}
+        {% endif %}
 
-    {% paginate collection.products by products_per_page %}
-      {% capture children %}
-        {% for product in collection.products %}
-          <li
-            id="{{ section.id }}-{{ product.id }}"
-            class="product-grid__item product-grid__item--{{ forloop.index0 }}"
-            data-page="{{ paginate.current_page }}"
-            data-product-id="{{ product.id }}"
-            ref="cards[]"
-          >
-            {% # theme-check-disable %}
-            {% content_for 'block', type: '_product-card', id: 'product-card', closest.product: product %}
-            {% # theme-check-enable %}
-          </li>
-        {% endfor %}
-      {% endcapture %}
+        {% paginate collection.products by products_per_page %}
+          {% capture children %}
+            {% for product in collection.products %}
+              <li
+                id="{{ section.id }}-{{ product.id }}"
+                class="product-grid__item product-grid__item--{{ forloop.index0 }}"
+                data-page="{{ paginate.current_page }}"
+                data-product-id="{{ product.id }}"
+                ref="cards[]"
+              >
+                {% # theme-check-disable %}
+                {% content_for 'block', type: '_product-card', id: 'product-card', closest.product: product %}
+                {% # theme-check-enable %}
+              </li>
+            {% endfor %}
+          {% endcapture %}
 
-      {% render 'product-grid',
-        section: section,
-        children: children,
-        products: collection.products,
-        paginate: paginate,
-        enable_infinite_scroll: section.settings.enable_infinite_scroll
-      %}
-    {% endpaginate %}
+          {% render 'product-grid',
+            section: section,
+            children: children,
+            products: collection.products,
+            paginate: paginate,
+            enable_infinite_scroll: section.settings.enable_infinite_scroll
+          %}
+        {% endpaginate %}
+      </div>
+    </div>
   </div>
-    </div>{%- comment -%} .collection-main {%- endcomment -%}
-  </div>{%- comment -%} .collection-layout {%- endcomment -%}
 </results-list>
 
 {% stylesheet %}

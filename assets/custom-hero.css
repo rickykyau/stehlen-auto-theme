@@ -2123,17 +2123,24 @@ html:has(#Details-menu-drawer-container[open]) .filter-bar-wrapper {
 
 
 /* ===== COLLECTION SIDEBAR LAYOUT OVERRIDES ===== */
-.collection-layout .collection-wrapper {
+.stehlen-collection-layout {
+  display: flex !important;
+}
+.stehlen-collection-main .collection-wrapper {
   display: block !important;
   grid-template-columns: none !important;
 }
-.collection-layout .collection-wrapper > .facets-block-wrapper {
-  display: none !important; /* hide built-in filters, using sidebar instead */
+.stehlen-collection-main .facets-block-wrapper {
+  display: none !important;
 }
-.collection-layout .product-grid-container {
-  display: block !important;
-}
-.collection-layout .section--page-width {
+.stehlen-collection-layout .section--page-width {
   max-width: none !important;
   padding: 0 !important;
+}
+/* Ensure results-list doesn't constrain the layout */
+results-list.product-grid-container {
+  display: block !important;
+}
+results-list .stehlen-collection-layout {
+  grid-column: 1 / -1 !important;
 }
