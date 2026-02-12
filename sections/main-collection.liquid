@@ -32,15 +32,10 @@
 >
   {% render 'skip-to-content-link', href: '#ResultsList', text: 'accessibility.skip_to_results_list' %}
 
-  {%- comment -%} Vehicle Fitment Selector {%- endcomment -%}
-  <div class="section--page-width" style="padding-inline: var(--padding-inline-start, 0) var(--padding-inline-end, 0);">
-    {% render 'vehicle-selector' %}
-  </div>
-  
-  {%- comment -%} Category Navigation Bar {%- endcomment -%}
-  <div class="section--page-width" style="padding-inline: var(--padding-inline-start, 0) var(--padding-inline-end, 0);">
-    {% render 'category-nav' %}
-  </div>
+  {%- comment -%} Collection Sidebar + Top Bar {%- endcomment -%}
+  <div class="section--page-width collection-layout" style="padding-inline: var(--padding-inline-start, 0) var(--padding-inline-end, 0);">
+    {% render 'collection-sidebar' %}
+    <div class="collection-main">
 
   <div
     class="collection-wrapper grid gap-style"
@@ -84,6 +79,8 @@
       %}
     {% endpaginate %}
   </div>
+    </div>{%- comment -%} .collection-main {%- endcomment -%}
+  </div>{%- comment -%} .collection-layout {%- endcomment -%}
 </results-list>
 
 {% stylesheet %}
