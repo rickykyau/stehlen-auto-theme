@@ -39,11 +39,7 @@
         <h1 class="collection-topbar__title">{{ collection.title | default: 'All Products' }}</h1>
         <div class="collection-topbar__count" id="product-count">{{ collection.products_count }} products available</div>
       </div>
-      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-        <div class="collection-topbar__vehicle-badge" id="topbar-vehicle-badge" style="display:none;">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F39C12" stroke-width="1.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          <span>Shopping for: <strong id="topbar-vehicle-text"></strong></span>
-        </div>
+      <div style="display:flex;align-items:center;gap:12px;">
         <div class="collection-topbar__mobile-filter" id="mobile-filter-toggle">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M6 12h12M8 18h8"/></svg>
           Filter
