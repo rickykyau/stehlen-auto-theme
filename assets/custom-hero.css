@@ -2219,3 +2219,57 @@ results-list .stehlen-collection-layout {
   margin: 0 0 16px 0;
   padding: 0 16px;
 }
+
+/* ===== MOBILE PRODUCT CARDS — Clean & compact ===== */
+@media (max-width: 749px) {
+  /* Hide quantity selector on collection cards */
+  .stehlen-collection-main quantity-input,
+  .stehlen-collection-main .quantity,
+  .product-grid__item quantity-input,
+  .product-grid__item .quantity {
+    display: none !important;
+  }
+  /* Hide Shop Pay + More payment options */
+  .stehlen-collection-main .shopify-payment-button,
+  .stehlen-collection-main .dynamic-checkout-buttons,
+  .stehlen-collection-main [data-shopify="dynamic-checkout"],
+  .product-grid__item .shopify-payment-button,
+  .product-grid__item .dynamic-checkout-buttons,
+  .product-grid__item [data-shopify="dynamic-checkout"] {
+    display: none !important;
+  }
+  /* Compact Add to Cart */
+  .product-grid__item .quick-add__button--add,
+  .product-grid__item .quick-add__button--choose,
+  .product-grid__item add-to-cart-component button,
+  .product-grid__item .product-form__submit {
+    padding: 8px 12px !important;
+    font-size: 0.78rem !important;
+    min-height: unset !important;
+    background: #F39C12 !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 6px !important;
+    text-transform: uppercase !important;
+    font-weight: 700 !important;
+    width: 100% !important;
+  }
+  /* Tighter card content */
+  .product-grid__item .card-information {
+    padding: 6px 8px !important;
+    gap: 6px !important;
+  }
+  .product-grid__item .card__heading {
+    font-size: 0.8rem !important;
+    line-height: 1.25 !important;
+  }
+}
+
+/* Desktop collection cards — also hide Shop Pay + qty */
+.stehlen-collection-main quantity-input,
+.stehlen-collection-main .quantity,
+.stehlen-collection-main .shopify-payment-button,
+.stehlen-collection-main .dynamic-checkout-buttons,
+.stehlen-collection-main [data-shopify="dynamic-checkout"] {
+  display: none !important;
+}
