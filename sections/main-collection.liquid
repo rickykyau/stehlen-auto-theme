@@ -26,7 +26,7 @@
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
 <results-list
   class="section product-grid-container color-{{ section.settings.color_scheme }}"
-  style="--padding-block-start: {{ section.settings.padding-block-start }}px; --padding-block-end: {{ section.settings.padding-block-end }}px;"
+  style="display:block !important; --padding-block-start: {{ section.settings.padding-block-start }}px; --padding-block-end: {{ section.settings.padding-block-end }}px;"
   section-id="{{ section.id }}"
   infinite-scroll="{{ section.settings.enable_infinite_scroll }}"
 >
@@ -59,7 +59,7 @@
     {%- comment -%} Right: Product Grid {%- endcomment -%}
     <div class="stehlen-collection-main">
       <div
-        class="collection-wrapper grid gap-style"
+        class="collection-wrapper gap-style"
       >
         {% content_for 'block',
           type: 'filters',
