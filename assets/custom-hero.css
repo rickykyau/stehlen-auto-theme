@@ -2273,3 +2273,95 @@ results-list .stehlen-collection-layout {
 .stehlen-collection-main [data-shopify="dynamic-checkout"] {
   display: none !important;
 }
+
+/* ===== PRODUCT CARDS — Qty + Cart icon same row ===== */
+/* Quantity + Add to Cart on same row */
+.product-grid__item .quick-add,
+.product-grid__item .quick-add__product-form-component {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex-wrap: nowrap !important;
+}
+/* Compact quantity */
+.product-grid__item quantity-input,
+.product-grid__item .quantity {
+  display: flex !important;
+  flex: 0 0 auto !important;
+  height: 34px !important;
+}
+.product-grid__item quantity-input input,
+.product-grid__item .quantity__input {
+  width: 32px !important;
+  height: 34px !important;
+  font-size: 0.8rem !important;
+  padding: 0 !important;
+  text-align: center !important;
+}
+.product-grid__item quantity-input button,
+.product-grid__item .quantity__button {
+  width: 28px !important;
+  height: 34px !important;
+  padding: 0 !important;
+}
+/* Cart button — icon only, square */
+.product-grid__item add-to-cart-component,
+.product-grid__item .quick-add__button--add,
+.product-grid__item .product-form__submit {
+  flex: 0 0 auto !important;
+  width: 38px !important;
+  height: 34px !important;
+  min-height: unset !important;
+  min-width: unset !important;
+  padding: 0 !important;
+  background: #F39C12 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 6px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+}
+.product-grid__item add-to-cart-component button,
+.product-grid__item .quick-add__button--add button {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: unset !important;
+  min-width: unset !important;
+  padding: 0 !important;
+  background: #F39C12 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 6px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+/* Hide text, show only icon */
+.product-grid__item add-to-cart-component span:not(.icon),
+.product-grid__item .quick-add__button--add span:not(.icon),
+.product-grid__item .product-form__submit span:not(.icon) {
+  font-size: 0 !important;
+  width: 0 !important;
+  overflow: hidden !important;
+}
+/* Make sure cart icon is visible */
+.product-grid__item add-to-cart-component svg,
+.product-grid__item add-to-cart-component .icon,
+.product-grid__item .quick-add__button--add svg,
+.product-grid__item .product-form__submit svg {
+  width: 18px !important;
+  height: 18px !important;
+  display: block !important;
+  color: #fff !important;
+  fill: none !important;
+  stroke: #fff !important;
+}
+/* Hide Shop Pay + More payment on all screens in collection */
+.product-grid__item .shopify-payment-button,
+.product-grid__item .dynamic-checkout-buttons,
+.product-grid__item [data-shopify="dynamic-checkout"] {
+  display: none !important;
+}
