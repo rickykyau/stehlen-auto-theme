@@ -143,6 +143,8 @@ console.log('[MVD] Inline data loaded, makes:', Object.keys(__mvdVehicleData).le
 })();
 
 function initVehicleSelector(vehicleData) {
+  if (window.__mvdInitDone) { console.log('[MVD] Already initialized, skipping'); return; }
+  window.__mvdInitDone = true;
 
   var overlay = document.getElementById('mvd-overlay');
   var openBtn = document.getElementById('my-vehicle-btn');
