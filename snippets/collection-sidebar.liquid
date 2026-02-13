@@ -491,15 +491,31 @@
 
     /* === URL params === */
     var params=new URLSearchParams(window.location.search);
-    var pCat=params.get('category'),pMake=params.get('make'),pYear=params.get('year'),pModel=params.get('model');
+    var pCat=params.get('category'),pMake=params.get('make'),pYear=params.get('year'),pModel=params.get('model'),pSearch=params.get('search');
     var any=false;
     if(pCat){document.querySelectorAll('.sf-cat').forEach(function(cb){if(cb.value===pCat){cb.checked=true;any=true;}});}
     if(pMake){document.querySelectorAll('.sf-make').forEach(function(cb){if(cb.value.toLowerCase()===pMake.toLowerCase()){cb.checked=true;any=true;}});}
     if(pYear){yrMinEl.value=pYear;yrMaxEl.value=pYear;updateSlider();any=true;}
+    /* Smart search: parse query for year, make, model keywords */
+    if(pSearch){
+      var sq=pSearch.trim().toLowerCase();
+      var yrMatch=sq.match(/\b(19\d{2}|20[0-2]\d)\b/);
+      if(yrMatch){yrMinEl.value=yrMatch[1];yrMaxEl.value=yrMatch[1];updateSlider();any=true;sq=sq.replace(yrMatch[0],'').trim();}
+      if(sq){
+        /* Try matching make */
+        document.querySelectorAll('.sf-make').forEach(function(cb){
+          if(sq.indexOf(cb.value.toLowerCase())>=0||cb.value.toLowerCase().indexOf(sq)>=0){cb.checked=true;any=true;sq=sq.replace(cb.value.toLowerCase(),'').trim();}
+        });
+        /* Try matching category */
+        if(!any||sq){document.querySelectorAll('.sf-cat').forEach(function(cb){
+          if(sq.indexOf(cb.value.toLowerCase())>=0||cb.value.toLowerCase().indexOf(sq)>=0){cb.checked=true;any=true;}
+        });}
+      }
+    }
     if(any){
       setTimeout(function(){
         applyFilters();
-        if(pModel){setTimeout(function(){var pm=pModel.toLowerCase();document.querySelectorAll('.sf-model').forEach(function(cb){if(cb.value.toLowerCase()===pm||cb.value.toLowerCase().indexOf(pm)===0)cb.checked=true;});if(document.querySelector('.sf-model:checked'))applyFilters();},500);}
+        var pm2=pModel||(pSearch?'':'');if(pm2){setTimeout(function(){var pm=pm2.toLowerCase();document.querySelectorAll('.sf-model').forEach(function(cb){if(cb.value.toLowerCase()===pm||cb.value.toLowerCase().indexOf(pm)===0)cb.checked=true;});if(document.querySelector('.sf-model:checked'))applyFilters();},500);}
       },100);
     }
   }
