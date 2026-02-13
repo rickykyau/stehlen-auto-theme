@@ -2292,30 +2292,39 @@ results-list .stehlen-collection-layout {
 
 /* (cleaned up - rules moved to product card section) */
 
-/* ===== Price + Add to Cart on SAME ROW ===== */
+/* ===== Price + Add to Cart — SAME ROW ===== */
+/* Use last two items (price + buy-buttons) as inline row */
 .product-grid__item .product-card__content {
   display: flex !important;
   flex-direction: column !important;
 }
-/* Wrap price + buy-buttons in a row using CSS grid trick */
+/* Price + button wrapper row */
 .product-grid__item product-price {
-  width: auto !important;
-  flex: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
 }
 .product-grid__item .buy-buttons-block {
-  margin-top: -32px !important;
+  margin-top: -44px !important;
   margin-left: auto !important;
   width: auto !important;
   align-self: flex-end !important;
+  z-index: 2 !important;
+  position: relative !important;
 }
+/* Cart button: 44x44 min touch target (UX best practice) */
 .product-grid__item .buy-buttons-block add-to-cart-component button {
-  width: auto !important;
-  padding: 0 14px !important;
-  height: 32px !important;
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  padding: 0 !important;
   font-size: 0 !important;
   gap: 0 !important;
+  border-radius: 8px !important;
+  touch-action: manipulation !important;
 }
-/* Icon only on the inline button */
+/* Icon only */
 .product-grid__item .buy-buttons-block .add-to-cart-text__content {
   display: none !important;
 }
@@ -2323,6 +2332,11 @@ results-list .stehlen-collection-layout {
   display: flex !important;
 }
 .product-grid__item .buy-buttons-block .add-to-cart-icon svg {
-  width: 20px !important;
-  height: 20px !important;
+  width: 22px !important;
+  height: 22px !important;
+}
+/* Eliminate tap delay on all card interactive elements */
+.product-grid__item button,
+.product-grid__item a {
+  touch-action: manipulation !important;
 }
