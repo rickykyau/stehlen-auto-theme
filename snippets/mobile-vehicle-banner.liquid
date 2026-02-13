@@ -1,7 +1,7 @@
 {%- comment -%}
   Mobile Vehicle Banner - Sticky bar below header on mobile
-  Shows "🚗 Set My Vehicle" or the saved vehicle name
-  Tapping opens the vehicle selector panel
+  Order: Make → Model → Year (cascading)
+  Pre-populates from localStorage savedVehicle
 {%- endcomment -%}
 
 <style>
@@ -49,10 +49,6 @@
       margin-left: 4px;
     }
 
-    .mobile-vehicle-banner__icon {
-      flex-shrink: 0;
-    }
-
     .mobile-vehicle-banner__chevron {
       flex-shrink: 0;
       margin-left: auto;
@@ -63,7 +59,6 @@
       transform: rotate(180deg);
     }
 
-    /* The expandable vehicle selector panel */
     .mobile-vehicle-panel {
       display: none;
       background: linear-gradient(135deg, #1E2326 0%, #2d2d2d 100%);
@@ -100,8 +95,6 @@
       font-size: 0.9rem;
       cursor: pointer;
       transition: border-color 0.2s;
-      -webkit-appearance: none;
-      appearance: none;
     }
 
     .mobile-vehicle-panel__group select:focus {
@@ -147,7 +140,6 @@
       border-radius: 8px;
       font-size: 0.8rem;
       cursor: pointer;
-      display: none;
     }
 
     .mobile-vehicle-panel__status {
@@ -155,14 +147,13 @@
       color: #10b981;
       font-size: 0.8rem;
       margin-top: 4px;
-      display: none;
     }
   }
 </style>
 
 <div class="mobile-vehicle-banner" id="mobile-vehicle-banner">
   <div class="mobile-vehicle-banner__content">
-    <svg class="mobile-vehicle-banner__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
       <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
       <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
       <path d="M5 17h-2v-6l2-5h9l4 5h1a2 2 0 0 1 2 2v4h-2"/>
@@ -179,14 +170,8 @@
 <div class="mobile-vehicle-panel" id="mobile-vehicle-panel">
   <form class="mobile-vehicle-panel__form" id="mobile-vehicle-form">
     <div class="mobile-vehicle-panel__group">
-      <label for="m-select-year">Year</label>
-      <select id="m-select-year" name="year">
-        <option value="">Select Year</option>
-      </select>
-    </div>
-    <div class="mobile-vehicle-panel__group">
       <label for="m-select-make">Make</label>
-      <select id="m-select-make" name="make" disabled>
+      <select id="m-select-make" name="make">
         <option value="">Select Make</option>
       </select>
     </div>
@@ -194,6 +179,12 @@
       <label for="m-select-model">Model</label>
       <select id="m-select-model" name="model" disabled>
         <option value="">Select Model</option>
+      </select>
+    </div>
+    <div class="mobile-vehicle-panel__group">
+      <label for="m-select-year">Year</label>
+      <select id="m-select-year" name="year" disabled>
+        <option value="">Select Year</option>
       </select>
     </div>
     <div class="mobile-vehicle-panel__actions">
@@ -207,11 +198,16 @@
 <script>
 (function() {
   var banner = document.getElementById('mobile-vehicle-banner');
-  var panel = document.getElementById('mobile-vehicle-panel');
-  var label = document.getElementById('mobile-banner-label');
   if (!banner) return;
+  var label = document.getElementById('mobile-banner-label');
+  var makeEl = document.getElementById('m-select-make');
+  var modelEl = document.getElementById('m-select-model');
+  var yearEl = document.getElementById('m-select-year');
+  var findBtn = document.getElementById('m-find-btn');
+  var clearBtn = document.getElementById('m-clear-btn');
+  var statusEl = document.getElementById('m-vehicle-status');
 
-  // Vehicle data (shared with main selector)
+  // Vehicle data — Make → Model → Year cascade
   var vehicleData = {
     'Ford': {
       'F-150': [2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],
@@ -242,110 +238,78 @@
     }
   };
 
-  var yearEl = document.getElementById('m-select-year');
-  var makeEl = document.getElementById('m-select-make');
-  var modelEl = document.getElementById('m-select-model');
-  var findBtn = document.getElementById('m-find-btn');
-  var clearBtn = document.getElementById('m-clear-btn');
-  var status = document.getElementById('m-vehicle-status');
-
   // Toggle panel
   banner.addEventListener('click', function() {
     banner.classList.toggle('is-expanded');
   });
 
-  // Helpers
-  function allYears() {
-    var s = {};
-    Object.values(vehicleData).forEach(function(makes) {
-      Object.values(makes).forEach(function(yrs) {
-        yrs.forEach(function(y) { s[y] = true; });
-      });
-    });
-    return Object.keys(s).map(Number).sort(function(a,b){return b-a;});
-  }
-
-  function makesForYear(yr) {
-    var out = [];
-    Object.entries(vehicleData).forEach(function(e) {
-      var hasY = Object.values(e[1]).some(function(yrs){return yrs.includes(yr);});
-      if (hasY) out.push(e[0]);
-    });
-    return out.sort();
-  }
-
-  function modelsForYM(yr, mk) {
-    var out = [];
-    if (vehicleData[mk]) {
-      Object.entries(vehicleData[mk]).forEach(function(e) {
-        if (e[1].includes(yr)) out.push(e[0]);
-      });
-    }
-    return out.sort();
-  }
-
-  function initYears() {
-    yearEl.innerHTML = '<option value="">Select Year</option>';
-    allYears().forEach(function(y) {
-      yearEl.innerHTML += '<option value="'+y+'">'+y+'</option>';
-    });
-  }
-
-  yearEl.addEventListener('change', function() {
+  // Populate makes (always available)
+  function initMakes() {
     makeEl.innerHTML = '<option value="">Select Make</option>';
-    modelEl.innerHTML = '<option value="">Select Model</option>';
-    modelEl.disabled = true;
-    findBtn.disabled = true;
-    if (this.value) {
-      makesForYear(parseInt(this.value)).forEach(function(m) {
-        makeEl.innerHTML += '<option value="'+m+'">'+m+'</option>';
-      });
-      makeEl.disabled = false;
-    } else {
-      makeEl.disabled = true;
-    }
-  });
+    Object.keys(vehicleData).sort().forEach(function(mk) {
+      makeEl.innerHTML += '<option value="' + mk + '">' + mk + '</option>';
+    });
+  }
 
-  makeEl.addEventListener('change', function() {
+  // Populate models for selected make
+  function populateModels(make) {
     modelEl.innerHTML = '<option value="">Select Model</option>';
+    yearEl.innerHTML = '<option value="">Select Year</option>';
+    yearEl.disabled = true;
     findBtn.disabled = true;
-    if (this.value) {
-      modelsForYM(parseInt(yearEl.value), this.value).forEach(function(m) {
-        modelEl.innerHTML += '<option value="'+m+'">'+m+'</option>';
+    if (make && vehicleData[make]) {
+      Object.keys(vehicleData[make]).sort().forEach(function(md) {
+        modelEl.innerHTML += '<option value="' + md + '">' + md + '</option>';
       });
       modelEl.disabled = false;
     } else {
       modelEl.disabled = true;
     }
+  }
+
+  // Populate years for selected make+model
+  function populateYears(make, model) {
+    yearEl.innerHTML = '<option value="">Select Year</option>';
+    findBtn.disabled = true;
+    if (make && model && vehicleData[make] && vehicleData[make][model]) {
+      var years = vehicleData[make][model].slice().sort(function(a,b){return b-a;});
+      years.forEach(function(y) {
+        yearEl.innerHTML += '<option value="' + y + '">' + y + '</option>';
+      });
+      yearEl.disabled = false;
+    } else {
+      yearEl.disabled = true;
+    }
+  }
+
+  makeEl.addEventListener('change', function() {
+    populateModels(this.value);
   });
 
   modelEl.addEventListener('change', function() {
+    populateYears(makeEl.value, this.value);
+  });
+
+  yearEl.addEventListener('change', function() {
     findBtn.disabled = !this.value;
   });
 
   document.getElementById('mobile-vehicle-form').addEventListener('submit', function(e) {
     e.preventDefault();
-    var y = yearEl.value, mk = makeEl.value, md = modelEl.value;
-    if (y && mk && md) {
-      localStorage.setItem('selectedVehicle', JSON.stringify({year:y, make:mk, model:md}));
+    var mk = makeEl.value, md = modelEl.value, yr = yearEl.value;
+    if (mk && md && yr) {
+      localStorage.setItem('selectedVehicle', JSON.stringify({year: yr, make: mk, model: md}));
       banner.classList.remove('is-expanded');
       updateBannerLabel();
-      // Sync with main selector if present
       window.dispatchEvent(new CustomEvent('vehicleChanged'));
-      window.location.href = '/search?q=' + encodeURIComponent(y+' '+mk+' '+md) + '&type=product';
+      window.location.href = '/search?q=' + encodeURIComponent(yr + ' ' + mk + ' ' + md) + '&type=product';
     }
   });
 
   clearBtn.addEventListener('click', function() {
     localStorage.removeItem('selectedVehicle');
-    yearEl.value = '';
-    makeEl.innerHTML = '<option value="">Select Make</option>';
-    makeEl.disabled = true;
-    modelEl.innerHTML = '<option value="">Select Model</option>';
-    modelEl.disabled = true;
-    findBtn.disabled = true;
-    clearBtn.style.display = 'none';
-    status.style.display = 'none';
+    makeEl.value = '';
+    populateModels('');
     updateBannerLabel();
     window.dispatchEvent(new CustomEvent('vehicleChanged'));
   });
@@ -355,30 +319,32 @@
     if (saved) {
       var v = JSON.parse(saved);
       label.innerHTML = '<span class="mobile-vehicle-banner__vehicle">' + v.year + ' ' + v.make + ' ' + v.model + '</span><span class="mobile-vehicle-banner__change">Change</span>';
-      clearBtn.style.display = 'inline-block';
-      status.innerHTML = 'Viewing parts for: <strong>' + v.year + ' ' + v.make + ' ' + v.model + '</strong>';
-      status.style.display = 'block';
+      statusEl.innerHTML = 'Viewing parts for: <strong>' + v.year + ' ' + v.make + ' ' + v.model + '</strong>';
+      statusEl.style.display = 'block';
     } else {
       label.textContent = 'Find Parts For Your Vehicle';
-      clearBtn.style.display = 'none';
-      status.style.display = 'none';
+      statusEl.style.display = 'none';
     }
   }
 
+  // Restore saved vehicle into dropdowns
   function restoreSaved() {
     var saved = localStorage.getItem('selectedVehicle');
     if (saved) {
       var v = JSON.parse(saved);
-      yearEl.value = v.year;
-      yearEl.dispatchEvent(new Event('change'));
+      // Set make
       makeEl.value = v.make;
-      makeEl.dispatchEvent(new Event('change'));
+      // Populate and set model
+      populateModels(v.make);
       modelEl.value = v.model;
-      modelEl.dispatchEvent(new Event('change'));
+      // Populate and set year
+      populateYears(v.make, v.model);
+      yearEl.value = v.year;
+      findBtn.disabled = false;
     }
   }
 
-  initYears();
+  initMakes();
   restoreSaved();
   updateBannerLabel();
 })();
