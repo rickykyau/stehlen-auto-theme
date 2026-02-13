@@ -105,7 +105,7 @@
     <div class="mvd-form-row">
       <div class="mvd-select-group">
         <label class="mvd-label" for="mvd-make">Make</label>
-        <select id="mvd-make"><option value="">— Select Make —</option></select>
+        <select id="mvd-make"><option value="">— Select Make —</option><option value="Acura">Acura</option><option value="Audi">Audi</option><option value="Buick">Buick</option><option value="Chevy">Chevy</option><option value="Chrysler">Chrysler</option><option value="Dodge">Dodge</option><option value="Ford">Ford</option><option value="GMC">GMC</option><option value="Honda">Honda</option><option value="Hyundai">Hyundai</option><option value="Infiniti">Infiniti</option><option value="Jeep">Jeep</option><option value="Kia">Kia</option><option value="Lincoln">Lincoln</option><option value="Mazda">Mazda</option><option value="Mercedes-Benz">Mercedes-Benz</option><option value="Mercury">Mercury</option><option value="Nissan">Nissan</option><option value="Subaru">Subaru</option><option value="Toyota">Toyota</option></select>
       </div>
       <div class="mvd-select-group">
         <label class="mvd-label" for="mvd-model">Model</label>
@@ -176,15 +176,8 @@ function initVehicleSelector(vehicleData) {
     return vehicleData[mk][md].slice().sort(function(a,b){return b-a;});
   }
 
-  // Populate all makes on load
-  var allMakes = getAllMakes();
-  allMakes.forEach(function(m) {
-    var opt = document.createElement('option');
-    opt.value = m;
-    opt.textContent = m;
-    makeSel.appendChild(opt);
-  });
-  console.log('[MVD] Vehicle data:', JSON.stringify(allMakes), 'Makes:', allMakes.length, 'Select options:', makeSel.options.length);
+  // Makes are pre-populated in HTML — no JS needed for initial load
+  console.log('[MVD] Make options:', makeSel.options.length);
 
   function disableGo() { goBtn.dataset.disabled = "true"; goBtn.style.background = "#999"; goBtn.style.cursor = "not-allowed"; }
 
