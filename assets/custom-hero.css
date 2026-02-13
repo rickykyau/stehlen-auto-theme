@@ -2220,149 +2220,46 @@ results-list .stehlen-collection-layout {
   padding: 0 16px;
 }
 
-/* ===== MOBILE PRODUCT CARDS — Clean & compact ===== */
+/* ===== MOBILE PRODUCT CARDS ===== */
 @media (max-width: 749px) {
-  /* Hide quantity selector on collection cards */
-  .stehlen-collection-main quantity-input,
-  .stehlen-collection-main .quantity,
-  .product-grid__item quantity-input,
-  .product-grid__item .quantity {
-    display: none !important;
-  }
-  /* Hide Shop Pay + More payment options */
-  .stehlen-collection-main .shopify-payment-button,
-  .stehlen-collection-main .dynamic-checkout-buttons,
-  .stehlen-collection-main [data-shopify="dynamic-checkout"],
-  .product-grid__item .shopify-payment-button,
-  .product-grid__item .dynamic-checkout-buttons,
-  .product-grid__item [data-shopify="dynamic-checkout"] {
-    display: none !important;
-  }
-  /* Compact Add to Cart */
-  .product-grid__item .quick-add__button--add,
-  .product-grid__item .quick-add__button--choose,
-  .product-grid__item add-to-cart-component button,
-  .product-grid__item .product-form__submit {
-    padding: 8px 12px !important;
-    font-size: 0.78rem !important;
-    min-height: unset !important;
-    background: #F39C12 !important;
-    color: #fff !important;
-    border: none !important;
-    border-radius: 6px !important;
-    text-transform: uppercase !important;
-    font-weight: 700 !important;
-    width: 100% !important;
-  }
-  /* Tighter card content */
-  .product-grid__item .card-information {
-    padding: 6px 8px !important;
-    gap: 6px !important;
-  }
   .product-grid__item .card__heading {
     font-size: 0.8rem !important;
     line-height: 1.25 !important;
   }
 }
 
-/* Desktop collection cards — also hide Shop Pay + qty */
-.stehlen-collection-main quantity-input,
-.stehlen-collection-main .quantity,
-.stehlen-collection-main .shopify-payment-button,
-.stehlen-collection-main .dynamic-checkout-buttons,
-.stehlen-collection-main [data-shopify="dynamic-checkout"] {
-  display: none !important;
-}
-
-/* ===== PRODUCT CARDS — Qty + Cart icon same row ===== */
-/* The buy-buttons form row: qty + button horizontal */
-.product-grid__item .product-form-buttons,
-.product-grid__item .buy-buttons-block {
+/* ===== PRODUCT CARDS — Add to Cart styling ===== */
+/* Move quick-add out of gallery overlay to below price */
+.product-grid__item .product-card__content {
   display: flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-  gap: 8px !important;
-  flex-wrap: nowrap !important;
+  flex-direction: column !important;
 }
-/* Kill any extra spacing in buy-buttons form */
-.product-grid__item .buy-buttons-block form {
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-  gap: 8px !important;
-  flex-wrap: nowrap !important;
+.product-grid__item .card-gallery {
+  order: 1 !important;
+}
+.product-grid__item .card-gallery .quick-add {
+  position: relative !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+  order: 99 !important;
+  width: 100% !important;
+  padding: 8px 0 0 !important;
+  pointer-events: all !important;
+}
+/* Full-width Add to Cart button */
+.product-grid__item .quick-add form {
   width: 100% !important;
 }
-.product-grid__item .buy-buttons-block {
+.product-grid__item .quick-add add-to-cart-component {
   width: 100% !important;
+  display: block !important;
 }
-.product-grid__item .buy-buttons-block .product-form-buttons {
-  flex-direction: row !important;
-  gap: 8px !important;
-  flex-wrap: nowrap !important;
-  align-items: center !important;
-}
-/* Remove quantity label */
-.product-grid__item .quantity-label {
-  display: none !important;
-}
-.product-grid__item .quantity-rules {
-  display: none !important;
-}
-/* Compact quantity — match cart button height, fill width */
-.product-grid__item quantity-selector-component,
-.product-grid__item .quantity-selector,
-.product-grid__item quantity-input,
-.product-grid__item .quantity {
-  display: flex !important;
-  flex: 1 1 auto !important;
-  height: 36px !important;
-  min-height: 0 !important;
-  max-height: 36px !important;
-  border-radius: 6px !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  box-sizing: border-box !important;
-  align-items: center !important;
-}
-.product-grid__item quantity-selector-component *,
-.product-grid__item .quantity-selector *,
-.product-grid__item quantity-input *,
-.product-grid__item .quantity * {
-  margin: 0 !important;
-  padding: 0 !important;
-  min-height: 0 !important;
-  max-height: 36px !important;
-  box-sizing: border-box !important;
-  line-height: 36px !important;
-}
-.product-grid__item quantity-selector-component input,
-.product-grid__item .quantity-selector input {
-  width: 28px !important;
-  height: 36px !important;
-  font-size: 0.8rem !important;
-  text-align: center !important;
-  border: none !important;
-}
-.product-grid__item quantity-selector-component button,
-.product-grid__item .quantity-selector button {
-  width: 28px !important;
-  height: 36px !important;
-}
-.product-grid__item quantity-selector-component .svg-wrapper,
-.product-grid__item .quantity-selector .svg-wrapper {
-  line-height: 0 !important;
-}
-/* Cart button — icon only, compact */
-.product-grid__item add-to-cart-component {
-  flex: 0 0 auto !important;
-}
-.product-grid__item add-to-cart-component button {
-  width: 48px !important;
+.product-grid__item .quick-add add-to-cart-component button {
+  width: 100% !important;
   height: 36px !important;
   min-height: unset !important;
-  min-width: unset !important;
-  padding: 0 !important;
+  padding: 0 8px !important;
   background: #F39C12 !important;
   color: #fff !important;
   border: none !important;
@@ -2370,55 +2267,37 @@ results-list .stehlen-collection-layout {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  position: relative !important;
-  overflow: hidden !important;
+  gap: 6px !important;
+  font-size: 0.8rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  cursor: pointer !important;
 }
-.product-grid__item add-to-cart-component button:hover {
+.product-grid__item .quick-add add-to-cart-component button:hover {
   background: #E67E22 !important;
 }
-/* Hide text label, keep icon */
-.product-grid__item add-to-cart-component .add-to-cart-text__content {
-  display: none !important;
-}
-/* Show cart icon */
-.product-grid__item add-to-cart-component .add-to-cart-icon {
+/* Show icon + short text */
+.product-grid__item .quick-add .add-to-cart-icon {
   display: flex !important;
 }
-.product-grid__item add-to-cart-component .add-to-cart-icon svg {
-  width: 20px !important;
-  height: 20px !important;
+.product-grid__item .quick-add .add-to-cart-icon svg {
+  width: 18px !important;
+  height: 18px !important;
   color: #fff !important;
 }
-/* Hide Shop Pay, dynamic checkout, more payment options */
+.product-grid__item .quick-add .add-to-cart-text__content {
+  display: inline !important;
+  font-size: 0.8rem !important;
+  visibility: visible !important;
+  width: auto !important;
+  clip: auto !important;
+  position: static !important;
+}
+/* Hide Shop Pay, dynamic checkout */
 .product-grid__item .shopify-payment-button,
 .product-grid__item .dynamic-checkout-buttons,
 .product-grid__item [data-shopify="dynamic-checkout"] {
   display: none !important;
 }
-/* Hide cart count label on cards */
-.product-grid__item .quantity-label__cart-count {
-  display: none !important;
-}
 
-/* ===== FORCE FULL WIDTH on qty+cart row at every level ===== */
-.product-grid__item .buy-buttons-block,
-.product-grid__item .buy-buttons-block > *,
-.product-grid__item .buy-buttons-block form,
-.product-grid__item .buy-buttons-block product-form-component,
-.product-grid__item .buy-buttons-block .product-form-buttons,
-.product-grid__item .quick-add,
-.product-grid__item .quick-add > *,
-.product-grid__item .quick-add form,
-.product-grid__item .quick-add product-form-component {
-  width: 100% !important;
-  max-width: 100% !important;
-}
-.product-grid__item .product-form-buttons,
-.product-grid__item .quick-add__product-form-component {
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-  gap: 8px !important;
-  flex-wrap: nowrap !important;
-  width: 100% !important;
-}
+/* (cleaned up - rules moved to product card section) */
