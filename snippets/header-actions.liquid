@@ -212,6 +212,7 @@ function initVehicleSelector(vehicleData) {
     var y=yearSel.value, m=makeSel.value, md=modelSel.value;
     if (y && m && md) {
       localStorage.setItem('selectedVehicle', JSON.stringify({year:y,make:m,model:md}));
+      window.dispatchEvent(new Event('vehicleSelected'));
       textEl.textContent = y+' '+m+' '+md;
       changeEl.style.display = 'inline';
       overlay.classList.remove('mvd-open');

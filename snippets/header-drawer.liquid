@@ -93,8 +93,31 @@
         </div>
         <script>
           (function(){
-            var v = localStorage.getItem('selectedVehicle');
-            if(v){try{var d=JSON.parse(v);var el=document.getElementById('drawer-vehicle-text');if(el&&d.year&&d.make&&d.model)el.textContent=d.year+' '+d.make+' '+d.model;}catch(e){}}
+            function updateDrawerVehicle(){
+              var v = localStorage.getItem('selectedVehicle');
+              var el = document.getElementById('drawer-vehicle-text');
+              if(!el) return;
+              if(v){
+                try{
+                  var d=JSON.parse(v);
+                  if(d.year&&d.make&&d.model){
+                    el.textContent=d.year+' '+d.make.toUpperCase()+' '+d.model.toUpperCase();
+                    el.closest('.stehlen-drawer-vehicle-btn').style.fontSize='0.85rem';
+                  }
+                }catch(e){}
+              } else {
+                el.textContent='SELECT YOUR VEHICLE';
+                el.closest('.stehlen-drawer-vehicle-btn').style.fontSize='';
+              }
+            }
+            updateDrawerVehicle();
+            /* Retry for lazy-loaded drawer */
+            setTimeout(updateDrawerVehicle, 500);
+            setTimeout(updateDrawerVehicle, 1500);
+            /* Update when vehicle is saved from modal */
+            window.addEventListener('storage', updateDrawerVehicle);
+            /* Custom event fired by vehicle modal save */
+            window.addEventListener('vehicleSelected', updateDrawerVehicle);
           })();
         </script>
 
