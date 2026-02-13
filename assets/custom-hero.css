@@ -2353,11 +2353,6 @@ results-list .stehlen-collection-layout {
   touch-action: manipulation !important;
 }
 /* Hide Recently Viewed in search modal */
-.search-modal .recently-viewed,
-.search-modal [class*="recently-viewed"],
-.search-modal [class*="recent"],
-predictive-search .recently-viewed,
-predictive-search [data-recently-viewed],
-.predictive-search__recently-viewed {
+.recently-viewed-wrapper {
   display: none !important;
 }
