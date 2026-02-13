@@ -2275,9 +2275,8 @@ results-list .stehlen-collection-layout {
 }
 
 /* ===== PRODUCT CARDS — Qty + Cart icon same row ===== */
-/* Quantity + Add to Cart on same row */
-.product-grid__item .quick-add,
-.product-grid__item .quick-add__product-form-component {
+/* The buy-buttons form row: qty + button horizontal */
+.product-grid__item .product-form-buttons {
   display: flex !important;
   flex-direction: row !important;
   align-items: center !important;
@@ -2305,12 +2304,12 @@ results-list .stehlen-collection-layout {
   height: 34px !important;
   padding: 0 !important;
 }
-/* Cart button — icon only, square */
-.product-grid__item add-to-cart-component,
-.product-grid__item .quick-add__button--add,
-.product-grid__item .product-form__submit {
+/* Cart button — icon only, compact */
+.product-grid__item add-to-cart-component {
   flex: 0 0 auto !important;
-  width: 38px !important;
+}
+.product-grid__item add-to-cart-component button {
+  width: 40px !important;
   height: 34px !important;
   min-height: unset !important;
   min-width: unset !important;
@@ -2322,46 +2321,32 @@ results-list .stehlen-collection-layout {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  cursor: pointer !important;
-}
-.product-grid__item add-to-cart-component button,
-.product-grid__item .quick-add__button--add button {
-  width: 100% !important;
-  height: 100% !important;
-  min-height: unset !important;
-  min-width: unset !important;
-  padding: 0 !important;
-  background: #F39C12 !important;
-  color: #fff !important;
-  border: none !important;
-  border-radius: 6px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-/* Hide text, show only icon */
-.product-grid__item add-to-cart-component span:not(.icon),
-.product-grid__item .quick-add__button--add span:not(.icon),
-.product-grid__item .product-form__submit span:not(.icon) {
-  font-size: 0 !important;
-  width: 0 !important;
+  position: relative !important;
   overflow: hidden !important;
 }
-/* Make sure cart icon is visible */
-.product-grid__item add-to-cart-component svg,
-.product-grid__item add-to-cart-component .icon,
-.product-grid__item .quick-add__button--add svg,
-.product-grid__item .product-form__submit svg {
-  width: 18px !important;
-  height: 18px !important;
-  display: block !important;
-  color: #fff !important;
-  fill: none !important;
-  stroke: #fff !important;
+.product-grid__item add-to-cart-component button:hover {
+  background: #E67E22 !important;
 }
-/* Hide Shop Pay + More payment on all screens in collection */
+/* Hide text label, keep icon */
+.product-grid__item add-to-cart-component .add-to-cart-text__content {
+  display: none !important;
+}
+/* Show cart icon */
+.product-grid__item add-to-cart-component .add-to-cart-icon {
+  display: flex !important;
+}
+.product-grid__item add-to-cart-component .add-to-cart-icon svg {
+  width: 20px !important;
+  height: 20px !important;
+  color: #fff !important;
+}
+/* Hide Shop Pay, dynamic checkout, more payment options */
 .product-grid__item .shopify-payment-button,
 .product-grid__item .dynamic-checkout-buttons,
 .product-grid__item [data-shopify="dynamic-checkout"] {
+  display: none !important;
+}
+/* Hide cart count label on cards */
+.product-grid__item .quantity-label__cart-count {
   display: none !important;
 }
