@@ -37,6 +37,11 @@
             setTimeout(apply, 200);
             setTimeout(apply, 1000);
             setTimeout(apply, 3000);
+            setTimeout(apply, 5000);
+            /* Watch for theme re-renders that reset the text */
+            var obs = new MutationObserver(function(){ apply(); });
+            var target = document.getElementById('my-vehicle-text');
+            if(target) obs.observe(target, {childList:true, characterData:true, subtree:true});
           }
         } catch(e) {}
 /* layout fix moved outside header-actions */
