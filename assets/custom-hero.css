@@ -1129,7 +1129,16 @@ search-button.search-action,
 .header__column--right .search-action {
   flex: 1 1 0% !important;
   max-width: none !important;
-  min-width: 0 !important;
+  min-width: 120px !important;
+  overflow: hidden !important;
+}
+/* Hide search bar at medium widths to prevent logo overlap */
+@media (max-width: 999px) and (min-width: 750px) {
+  search-button.search-action,
+  .header__column--right search-button,
+  .header__column--right .search-action {
+    display: none !important;
+  }
 }
 
 /* Header actions (vehicle, account, cart) stay compact */
