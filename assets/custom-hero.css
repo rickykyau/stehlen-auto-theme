@@ -2356,3 +2356,61 @@ results-list .stehlen-collection-layout {
 .recently-viewed-wrapper {
   display: none !important;
 }
+
+/* === Search redirect script injected via CSS trick — not possible, use layout === */
+
+/* === Mobile Header: Center logo === */
+@media (max-width: 749px) {
+  .header__columns,
+  .header__columns.spacing-style {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+  .header__column.header__column--left {
+    flex: 0 0 auto !important;
+    order: 0 !important;
+  }
+  .header__column.header__column--right {
+    flex: 0 0 auto !important;
+    order: 2 !important;
+  }
+  /* Logo centered absolutely */
+  .header-logo,
+  .header__column--left .header-logo {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+}
+
+/* === Mobile Vehicle Banner: More prominent === */
+@media (max-width: 749px) {
+  .mobile-vehicle-banner {
+    background: linear-gradient(135deg, #1E2326 0%, #2a2f33 100%) !important;
+    border-bottom: 2px solid #F39C12 !important;
+    padding: 12px 16px !important;
+  }
+  .mobile-vehicle-banner__content {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    color: #fff !important;
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+  }
+  .mobile-vehicle-banner__vehicle {
+    color: #F39C12 !important;
+    font-weight: 800 !important;
+    font-size: 1rem !important;
+  }
+  .mobile-vehicle-banner__change {
+    margin-left: auto !important;
+    font-size: 0.8rem !important;
+    color: #aaa !important;
+    font-weight: 500 !important;
+  }
+  .mobile-vehicle-banner__chevron {
+    flex-shrink: 0 !important;
+  }
+}
