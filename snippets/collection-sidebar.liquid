@@ -54,13 +54,11 @@
 .sf-section-chip{display:none;padding:10px 14px;background:#fafafa;border-bottom:1px solid #eee;}
 .sf-section-chip.visible{display:block;}
 
-/* === YEAR INPUTS === */
-.sf-year-inputs{display:flex;align-items:center;gap:8px;justify-content:center;}
-.sf-year-input{width:72px;padding:8px 10px;border:1.5px solid #ddd;border-radius:6px;font-size:0.88rem;font-weight:700;text-align:center;color:#1E2326;outline:none;box-sizing:border-box;-moz-appearance:textfield;}
+/* === YEAR INPUT === */
+.sf-year-input{width:100%;padding:9px 12px;border:1.5px solid #ddd;border-radius:6px;font-size:0.88rem;font-weight:600;text-align:center;color:#1E2326;outline:none;box-sizing:border-box;-moz-appearance:textfield;}
 .sf-year-input::-webkit-outer-spin-button,.sf-year-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
 .sf-year-input:focus{border-color:#F39C12;box-shadow:0 0 0 2px rgba(243,156,18,0.15);}
 .sf-year-input.sf-invalid{border-color:#e74c3c;box-shadow:0 0 0 2px rgba(231,76,60,0.15);}
-.sf-year-dash{font-weight:700;color:#999;font-size:0.9rem;}
 
 /* === HIDDEN === */
 .sf-hidden{display:none!important;}
@@ -125,11 +123,7 @@
     <div class="sf-header" data-toggle="sf-year-section">Year <span class="sf-chevron">▼</span></div>
     <div class="sf-body">
       <div id="sf-year-slider">
-        <div class="sf-year-inputs">
-          <input type="number" id="sf-year-min" class="sf-year-input" min="1988" max="2026" value="1988" placeholder="From">
-          <span class="sf-year-dash">—</span>
-          <input type="number" id="sf-year-max" class="sf-year-input" min="1988" max="2026" value="2026" placeholder="To">
-        </div>
+        <input type="number" id="sf-year-single" class="sf-year-input" min="1988" max="2026" placeholder="e.g. 2004">
       </div>
     </div>
   </div>
@@ -174,7 +168,11 @@
     console.log('[SF] Loaded',products.length,'products');
 
     /* === DOM refs === */
-    var yrMinEl=document.getElementById('sf-year-min'),yrMaxEl=document.getElementById('sf-year-max');
+    var yrSingleEl=document.getElementById('sf-year-single');
+    /* Compat shims so existing filter code still works */
+    var yrMinEl={get value(){var v=parseInt(yrSingleEl.value,10);return isNaN(v)?1988:v;},set value(x){yrSingleEl.value=(x==1988)?'':x;}};
+    var yrMaxEl={get value(){var v=parseInt(yrSingleEl.value,10);return isNaN(v)?2026:v;},set value(x){/* no-op, single input */}};
+    function updateSlider(){/* no-op, replaced by single input */}
     var makeBody=document.getElementById('sf-make-body');
     var makeChipArea=document.getElementById('sf-make-chip-area');
     var modelSection=document.getElementById('sf-model-section');
@@ -204,24 +202,18 @@
     var mobBtn=document.getElementById('mobile-filter-toggle'),sb=document.getElementById('collection-sidebar');
     if(mobBtn&&sb)mobBtn.addEventListener('click',function(){sb.classList.toggle('sb-open');});
 
-    /* === Year inputs === */
-    function validateYear(el){
-      var v=parseInt(el.value,10);
-      if(isNaN(v)||v<1988||v>2026){el.classList.add('sf-invalid');return false;}
-      el.classList.remove('sf-invalid');return true;
-    }
-    function onYearChange(){
-      var validMin=validateYear(yrMinEl),validMax=validateYear(yrMaxEl);
-      if(validMin&&validMax){
-        var mn=+yrMinEl.value,mx=+yrMaxEl.value;
-        if(mn>mx){yrMinEl.classList.add('sf-invalid');yrMaxEl.classList.add('sf-invalid');return;}
-      }
-      if(validMin&&validMax){vehicleBtnOff();applyFilters();}
-    }
-    yrMinEl.addEventListener('input',onYearChange);
-    yrMaxEl.addEventListener('input',onYearChange);
-    yrMinEl.addEventListener('blur',function(){var v=parseInt(this.value,10);if(isNaN(v))this.value=1988;else this.value=Math.max(1988,Math.min(2026,v));validateYear(this);onYearChange();});
-    yrMaxEl.addEventListener('blur',function(){var v=parseInt(this.value,10);if(isNaN(v))this.value=2026;else this.value=Math.max(1988,Math.min(2026,v));validateYear(this);onYearChange();});
+    /* === Year input === */
+    yrSingleEl.addEventListener('input',function(){
+      var v=parseInt(this.value,10);
+      if(this.value===''){ this.classList.remove('sf-invalid');vehicleBtnOff();applyFilters();return; }
+      if(isNaN(v)||v<1900||v>2030){this.classList.add('sf-invalid');return;}
+      this.classList.remove('sf-invalid');
+      vehicleBtnOff();applyFilters();
+    });
+    yrSingleEl.addEventListener('blur',function(){
+      var v=parseInt(this.value,10);
+      if(this.value!==''&&(isNaN(v)||v<1988||v>2026)){this.value='';this.classList.remove('sf-invalid');applyFilters();}
+    });
 
     /* === Vehicle badge === */
     var vBtn=document.getElementById('sf-vehicle-btn'),vLabel=document.getElementById('sf-vehicle-label');
@@ -312,7 +304,7 @@
       var chips=[];
       f.makes.forEach(function(m){chips.push('<span class="sf-chip">'+m+' <span class="sf-chip-x" data-clear-make="'+m+'">✕</span></span>');});
       f.models.forEach(function(m){chips.push('<span class="sf-chip">'+m+' <span class="sf-chip-x" data-clear-model="'+m+'">✕</span></span>');});
-      if(f.yearActive){chips.push('<span class="sf-chip">'+f.yr[0]+'–'+f.yr[1]+' <span class="sf-chip-x" data-clear-year>✕</span></span>');}
+      if(f.yearActive){chips.push('<span class="sf-chip">Year: '+f.yr[0]+' <span class="sf-chip-x" data-clear-year>✕</span></span>');}
       f.cats.forEach(function(c){
         var label=c.replace(/-/g,' ').replace(/\b\w/g,function(l){return l.toUpperCase();});
         chips.push('<span class="sf-chip">'+label+' <span class="sf-chip-x" data-clear-cat="'+c+'">✕</span></span>');
