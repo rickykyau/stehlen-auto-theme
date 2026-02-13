@@ -114,6 +114,20 @@
       </div>
     </div>
   </form>
+  <script>
+    /* Redirect search form to collections/all with search param */
+    (function(){
+      var form = document.querySelector('.predictive-search-form');
+      if(!form) return;
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        var q = form.querySelector('input[name="q"]');
+        if(q && q.value.trim()){
+          window.location.href = '/collections/all?search=' + encodeURIComponent(q.value.trim());
+        }
+      });
+    })();
+  </script>
 </predictive-search-component>
 
 {% stylesheet %}
