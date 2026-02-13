@@ -1,54 +1,44 @@
 /**
  * Stehlen Auto — Custom Predictive Search
  * Year-range aware: typing "2004" matches "2003-2011 Honda Element"
- * Also matches text/keywords in title, type, vendor, tags
+ * Replaces Shopify's default predictive search entirely
  */
 (function () {
   'use strict';
 
-  let products = null;
+  var products = null;
 
   function loadProducts() {
     if (products) return products;
-    const el = document.getElementById('stehlen-product-data');
+    var el = document.getElementById('stehlen-product-data');
     if (!el) return null;
     try {
       products = JSON.parse(el.textContent);
-      // Pre-compute year ranges
       products.forEach(function (p) {
         p._years = extractYearRange(p.t);
-        p._searchText = [p.t, p.type, p.vendor, (p.tags || []).join(' ')].join(' ').toLowerCase();
+        p._searchText = [p.t, p.type || '', p.vendor || '', (p.tags || []).join(' ')].join(' ').toLowerCase();
       });
     } catch (e) {
-      console.error('Failed to parse product data', e);
+      console.error('[CPS] Failed to parse product data', e);
       products = [];
     }
     return products;
   }
 
-  /**
-   * Extract year range from title like "2003-2011 Honda Element"
-   * Returns [startYear, endYear] or null
-   */
   function extractYearRange(title) {
-    // Match "YYYY-YYYY" or "YYYY/YYYY"
     var m = title.match(/\b((?:19|20)\d{2})\s*[-\/]\s*((?:19|20)\d{2})\b/);
     if (m) return [parseInt(m[1]), parseInt(m[2])];
-    // Match single year "YYYY Something"
     m = title.match(/\b((?:19|20)\d{2})\b/);
     if (m) return [parseInt(m[1]), parseInt(m[1])];
     return null;
   }
 
-  /**
-   * Check if a search term (possibly a year) matches a product
-   */
   function matchesProduct(product, terms) {
     for (var i = 0; i < terms.length; i++) {
       var term = terms[i];
       var matched = false;
 
-      // Check if term is a year
+      // Check if term is a year (full 4 digits)
       var yearMatch = term.match(/^((?:19|20)\d{2})$/);
       if (yearMatch && product._years) {
         var year = parseInt(yearMatch[1]);
@@ -57,7 +47,20 @@
         }
       }
 
-      // Also check text match
+      // Check if term is a partial year (e.g. "198" or "19")
+      if (!matched && /^\d{1,3}$/.test(term)) {
+        // Check if any year in the product's range starts with this partial
+        if (product._years) {
+          for (var y = product._years[0]; y <= product._years[1]; y++) {
+            if (String(y).indexOf(term) === 0) {
+              matched = true;
+              break;
+            }
+          }
+        }
+      }
+
+      // Text match
       if (!matched && product._searchText.indexOf(term) !== -1) {
         matched = true;
       }
@@ -67,13 +70,10 @@
     return true;
   }
 
-  /**
-   * Search products and return matches
-   */
   function searchProducts(query, limit) {
     var prods = loadProducts();
     if (!prods) return [];
-    limit = limit || 8;
+    limit = limit || 10;
 
     var terms = query.toLowerCase().trim().split(/\s+/).filter(Boolean);
     if (!terms.length) return [];
@@ -87,21 +87,37 @@
     return results;
   }
 
-  /**
-   * Render custom results HTML
-   */
+  function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.textContent = str || '';
+    return div.innerHTML;
+  }
+
+  function highlightMatch(title, query) {
+    var safe = escapeHtml(title);
+    var terms = query.trim().split(/\s+/);
+    terms.forEach(function (term) {
+      if (!term) return;
+      var re = new RegExp('(' + term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+      safe = safe.replace(re, '<mark>$1</mark>');
+    });
+    return safe;
+  }
+
   function renderResults(results, query) {
     if (!results.length) {
-      return '<div class="cps-no-results">No products found for "' + escapeHtml(query) + '"</div>';
+      return '<div class="predictive-search-results__inner" data-search-results>' +
+        '<div class="cps-no-results">No products found for "' + escapeHtml(query) + '"</div>' +
+        '</div>';
     }
 
-    var html = '<div class="cps-results" data-search-results>';
+    var html = '<div class="predictive-search-results__inner" data-search-results>';
     html += '<div class="cps-results-header">Products</div>';
     html += '<div class="cps-results-list">';
 
     results.forEach(function (p, idx) {
-      html += '<div class="cps-result-item" data-index="' + idx + '" role="option">';
-      html += '<a href="/products/' + p.h + '" class="cps-result-link">';
+      html += '<div class="cps-result-item predictive-search-results__card" data-index="' + idx + '" role="option">';
+      html += '<a href="/products/' + escapeHtml(p.h) + '" class="cps-result-link">';
       if (p.img) {
         html += '<img class="cps-result-img" src="' + escapeHtml(p.img) + '" alt="" loading="lazy" width="60" height="60">';
       }
@@ -117,116 +133,119 @@
     return html;
   }
 
-  function escapeHtml(str) {
-    var div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-  }
+  function hookComponent(component) {
+    if (component._cpsHooked) return;
+    component._cpsHooked = true;
 
-  function highlightMatch(title, query) {
-    var safe = escapeHtml(title);
-    var terms = query.trim().split(/\s+/);
-    terms.forEach(function (term) {
-      if (!term) return;
-      // For year terms, also highlight year ranges containing that year
-      var re = new RegExp('(' + term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
-      safe = safe.replace(re, '<mark>$1</mark>');
-    });
-    return safe;
-  }
+    var input = component.querySelector('input[type="search"]');
+    var resultsContainer = component.querySelector('[ref="predictiveSearchResults"]');
+    if (!input || !resultsContainer) return;
 
-  /**
-   * Hook into the predictive search component
-   */
-  function init() {
-    if (!loadProducts()) {
-      // Retry after a short delay (product data might not be in DOM yet)
-      setTimeout(init, 500);
-      return;
-    }
+    var currentIndex = -1;
+    var debounceTimer = null;
 
-    // Find the search input(s) — there may be multiple (header + modal)
-    var searchInputs = document.querySelectorAll('predictive-search-component input[type="search"]');
-    if (!searchInputs.length) {
-      setTimeout(init, 500);
-      return;
-    }
+    // Stop Shopify's default search from firing by intercepting the input event
+    // The component listens on:input="/search" — we add a capture-phase listener
+    // that performs our search and then prevents the component's handler from overwriting
+    input.addEventListener('input', function (e) {
+      clearTimeout(debounceTimer);
+      var q = input.value.trim();
 
-    searchInputs.forEach(function (input) {
-      var component = input.closest('predictive-search-component');
-      if (!component || component._cpsHooked) return;
-      component._cpsHooked = true;
+      if (!q.length) {
+        // Let the component's reset handle empty input
+        return;
+      }
 
-      var resultsContainer = component.querySelector('[ref="predictiveSearchResults"]');
-      if (!resultsContainer) return;
+      debounceTimer = setTimeout(function () {
+        var results = searchProducts(q);
+        resultsContainer.innerHTML = renderResults(results, q);
+        currentIndex = -1;
 
-      var debounceTimer = null;
-      var currentIndex = -1;
+        // Show the "View All" footer button
+        var footer = component.querySelector('.predictive-search-form__footer');
+        if (footer) footer.style.display = results.length ? 'block' : 'none';
+      }, 100);
+    }, true); // capture phase — fires before component
 
-      input.addEventListener('input', function () {
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(function () {
-          var q = input.value.trim();
-          if (!q) return; // Let default reset handle empty
-
-          var results = searchProducts(q);
-          // Inject our custom results
-          var html = renderResults(results, q);
-          resultsContainer.innerHTML = html;
-          currentIndex = -1;
-        }, 150); // Slightly faster than the default 200ms debounce
-      });
-
-      // Keyboard navigation for our custom results
-      input.addEventListener('keydown', function (e) {
-        var items = resultsContainer.querySelectorAll('.cps-result-item');
-        if (!items.length) return;
-
-        if (e.key === 'ArrowDown') {
-          e.preventDefault();
-          e.stopPropagation();
-          currentIndex = Math.min(currentIndex + 1, items.length - 1);
-          updateSelection(items, currentIndex);
-        } else if (e.key === 'ArrowUp') {
-          e.preventDefault();
-          e.stopPropagation();
-          currentIndex = Math.max(currentIndex - 1, -1);
-          updateSelection(items, currentIndex);
-        } else if (e.key === 'Enter') {
-          if (currentIndex >= 0 && items[currentIndex]) {
-            e.preventDefault();
-            e.stopPropagation();
-            var link = items[currentIndex].querySelector('a');
-            if (link) link.click();
-          }
-          // If no selection, the form submit handler redirects to /collections/all?search=
+    // Block the component's own search method by monkey-patching
+    // The component's `search` is a debounced method on the element
+    if (component.search) {
+      var origSearch = component.search;
+      component.search = function () {
+        var q = input.value.trim();
+        if (q.length > 0) {
+          // Don't let Shopify's search run — our handler already did it
+          return;
         }
-      }, true); // Capture phase to beat the component's handler
-    });
+        // Empty input — let default reset happen
+        return origSearch.apply(this, arguments);
+      };
+    }
+
+    // Keyboard navigation
+    input.addEventListener('keydown', function (e) {
+      var items = resultsContainer.querySelectorAll('.cps-result-item');
+      if (!items.length) return;
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        currentIndex = Math.min(currentIndex + 1, items.length - 1);
+        updateSelection(items, currentIndex);
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        currentIndex = Math.max(currentIndex - 1, -1);
+        updateSelection(items, currentIndex);
+      } else if (e.key === 'Enter') {
+        if (currentIndex >= 0 && items[currentIndex]) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          var link = items[currentIndex].querySelector('a');
+          if (link) link.click();
+        }
+        // else: form submit handler redirects to /collections/all?search=
+      }
+    }, true);
+
+    console.log('[CPS] Hooked predictive search component');
   }
 
   function updateSelection(items, index) {
     items.forEach(function (item, i) {
-      if (i === index) {
-        item.classList.add('cps-selected');
-        item.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-      } else {
-        item.classList.remove('cps-selected');
-      }
+      item.classList.toggle('cps-selected', i === index);
+      if (i === index) item.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
     });
   }
 
-  // Init when DOM is ready
+  function init() {
+    if (!loadProducts()) {
+      setTimeout(init, 500);
+      return;
+    }
+
+    var components = document.querySelectorAll('predictive-search-component');
+    components.forEach(hookComponent);
+
+    // Watch for dynamically added components (e.g. search modal opening)
+    if (typeof MutationObserver !== 'undefined') {
+      var observer = new MutationObserver(function () {
+        document.querySelectorAll('predictive-search-component').forEach(hookComponent);
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+    }
+  }
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
     init();
   }
 
-  // Also re-init when search modal opens (dialog might lazy-load)
-  document.addEventListener('click', function (e) {
-    if (e.target.closest('[aria-controls="search-modal"]') || e.target.closest('button[aria-label*="Search"]')) {
-      setTimeout(init, 100);
-    }
+  // Also hook when search modal opens
+  document.addEventListener('click', function () {
+    setTimeout(function () {
+      document.querySelectorAll('predictive-search-component').forEach(hookComponent);
+    }, 200);
   });
 })();
