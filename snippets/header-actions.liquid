@@ -104,19 +104,16 @@
     <p class="mvd-subtitle">Provide vehicle details to confirm fitment</p>
     <div class="mvd-form-row">
       <div class="mvd-select-group">
-        <label class="mvd-label" for="mvd-year">Year</label>
-        <select id="mvd-year">
-          <option value="">— Select Year —</option>
-          {%- for y in (1990..2026) reversed -%}<option value="{{ y }}">{{ y }}</option>{%- endfor -%}
-        </select>
-      </div>
-      <div class="mvd-select-group">
         <label class="mvd-label" for="mvd-make">Make</label>
-        <select id="mvd-make" disabled><option value="">— Select Make —</option></select>
+        <select id="mvd-make"><option value="">— Select Make —</option></select>
       </div>
       <div class="mvd-select-group">
         <label class="mvd-label" for="mvd-model">Model</label>
         <select id="mvd-model" disabled><option value="">— Select Model —</option></select>
+      </div>
+      <div class="mvd-select-group">
+        <label class="mvd-label" for="mvd-year">Year</label>
+        <select id="mvd-year" disabled><option value="">— Select Year —</option></select>
       </div>
       <div id="mvd-go" role="button" style="background:#999;color:#fff;padding:14px 32px;border:none;border-radius:8px;font-size:1rem;font-weight:800;text-transform:uppercase;min-width:80px;height:48px;cursor:not-allowed;flex-shrink:0;align-self:flex-end;display:flex;align-items:center;justify-content:center;user-select:none;line-height:1;">GO</div>
     </div>
@@ -247,62 +244,52 @@ var __stehlenVehicleData = (function() {
 
   if (!overlay || !openBtn) return;
 
-  function getAllYears() {
-    var s = new Set();
-    Object.values(vehicleData).forEach(function(mk){Object.values(mk).forEach(function(ys){ys.forEach(function(y){s.add(y);});});});
-    return Array.from(s).sort(function(a,b){return b-a;});
+  function getAllMakes() {
+    return Object.keys(vehicleData).sort();
   }
 
-  function getMakes(yr) {
-    var r=[];
-    Object.entries(vehicleData).forEach(function(e){if(Object.values(e[1]).some(function(ys){return ys.includes(+yr);}))r.push(e[0]);});
-    return r.sort();
+  function getModelsForMake(mk) {
+    if(!vehicleData[mk]) return [];
+    return Object.keys(vehicleData[mk]).sort();
   }
 
-  function getModels(yr, mk) {
-    var r=[];
-    if(vehicleData[mk]) Object.entries(vehicleData[mk]).forEach(function(e){if(e[1].includes(+yr))r.push(e[0]);});
-    return r.sort();
+  function getYearsForMakeModel(mk, md) {
+    if(!vehicleData[mk] || !vehicleData[mk][md]) return [];
+    return vehicleData[mk][md].slice().sort(function(a,b){return b-a;});
   }
 
-  // Filter year options to only show years that have products
-  var validYears = getAllYears();
-  if (validYears.length > 0) {
-    var yearHtml = '<option value="">— Select Year —</option>';
-    validYears.forEach(function(y) { yearHtml += '<option value="'+y+'">'+y+'</option>'; });
-    yearSel.innerHTML = yearHtml;
-  }
-  console.log('[MVD] Vehicle data:', JSON.stringify(Object.keys(vehicleData)), 'Years:', validYears.length);
+  // Populate all makes on load
+  var allMakes = getAllMakes();
+  allMakes.forEach(function(m) { makeSel.innerHTML += '<option value="'+m+'">'+m+'</option>'; });
+  console.log('[MVD] Vehicle data:', JSON.stringify(allMakes), 'Makes:', allMakes.length);
 
-  yearSel.addEventListener('change', function() {
-    makeSel.innerHTML = '<option value="">— Select Make —</option>';
-    modelSel.innerHTML = '<option value="">— Select Model —</option>';
-    modelSel.disabled = true; goBtn.dataset.disabled = "true"; goBtn.style.background = "#999"; goBtn.style.cursor = "not-allowed";
-    if (this.value) {
-      getMakes(this.value).forEach(function(m) { makeSel.innerHTML += '<option value="'+m+'">'+m+'</option>'; });
-      makeSel.disabled = false;
-    } else { makeSel.disabled = true; }
-  });
+  function disableGo() { goBtn.dataset.disabled = "true"; goBtn.style.background = "#999"; goBtn.style.cursor = "not-allowed"; }
 
   makeSel.addEventListener('change', function() {
     modelSel.innerHTML = '<option value="">— Select Model —</option>';
-    goBtn.dataset.disabled = "true"; goBtn.style.background = "#999"; goBtn.style.cursor = "not-allowed";
+    yearSel.innerHTML = '<option value="">— Select Year —</option>';
+    yearSel.disabled = true; modelSel.disabled = true; disableGo();
     if (this.value) {
-      getModels(yearSel.value, this.value).forEach(function(m) { modelSel.innerHTML += '<option value="'+m+'">'+m+'</option>'; });
+      getModelsForMake(this.value).forEach(function(m) { modelSel.innerHTML += '<option value="'+m+'">'+m+'</option>'; });
       modelSel.disabled = false;
-    } else { modelSel.disabled = true; }
+    }
   });
 
   modelSel.addEventListener('change', function() {
+    yearSel.innerHTML = '<option value="">— Select Year —</option>';
+    yearSel.disabled = true; disableGo();
+    if (this.value) {
+      getYearsForMakeModel(makeSel.value, this.value).forEach(function(y) { yearSel.innerHTML += '<option value="'+y+'">'+y+'</option>'; });
+      yearSel.disabled = false;
+    }
+  });
+
+  yearSel.addEventListener('change', function() {
     if (this.value) {
       goBtn.dataset.disabled = 'false';
       goBtn.style.background = '#F39C12';
       goBtn.style.cursor = 'pointer';
-    } else {
-      goBtn.dataset.disabled = 'true';
-      goBtn.style.background = '#999';
-      goBtn.style.cursor = 'not-allowed';
-    }
+    } else { disableGo(); }
   });
 
   goBtn.addEventListener('click', function() {
@@ -328,14 +315,14 @@ var __stehlenVehicleData = (function() {
       var v = JSON.parse(saved);
       currentText.textContent = 'Currently: ' + v.year + ' ' + v.make + ' ' + v.model;
       currentDiv.style.display = 'flex';
-      // Restore selects
-      yearSel.value = v.year;
-      yearSel.dispatchEvent(new Event('change'));
+      // Restore selects: Make → Model → Year
+      makeSel.value = v.make;
+      makeSel.dispatchEvent(new Event('change'));
       setTimeout(function(){
-        makeSel.value = v.make;
-        makeSel.dispatchEvent(new Event('change'));
+        modelSel.value = v.model;
+        modelSel.dispatchEvent(new Event('change'));
         setTimeout(function(){
-          modelSel.value = v.model;
+          yearSel.value = v.year;
           goBtn.dataset.disabled = "false"; goBtn.style.background = "#F39C12"; goBtn.style.cursor = "pointer";
         }, 50);
       }, 50);
@@ -353,9 +340,9 @@ var __stehlenVehicleData = (function() {
     textEl.textContent = 'SELECT YOUR VEHICLE';
     changeEl.style.display = 'none';
     currentDiv.style.display = 'none';
-    yearSel.value = '';
-    makeSel.innerHTML = '<option value="">— Select Make —</option>'; makeSel.disabled = true;
+    makeSel.value = '';
     modelSel.innerHTML = '<option value="">— Select Model —</option>'; modelSel.disabled = true;
+    yearSel.innerHTML = '<option value="">— Select Year —</option>'; yearSel.disabled = true;
     goBtn.dataset.disabled = "true"; goBtn.style.background = "#999"; goBtn.style.cursor = "not-allowed";
     var tc = document.getElementById('toggle-current');
     if (tc) tc.textContent = '';
