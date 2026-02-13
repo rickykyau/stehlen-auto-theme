@@ -2291,6 +2291,10 @@ results-list .stehlen-collection-layout {
   align-items: center !important;
   gap: 8px !important;
   flex-wrap: nowrap !important;
+  width: 100% !important;
+}
+.product-grid__item .buy-buttons-block {
+  width: 100% !important;
 }
 .product-grid__item .buy-buttons-block .product-form-buttons {
   flex-direction: row !important;
@@ -2305,13 +2309,13 @@ results-list .stehlen-collection-layout {
 .product-grid__item .quantity-rules {
   display: none !important;
 }
-/* Compact quantity — match cart button height */
+/* Compact quantity — match cart button height, fill width */
 .product-grid__item quantity-selector-component,
 .product-grid__item .quantity-selector,
 .product-grid__item quantity-input,
 .product-grid__item .quantity {
   display: flex !important;
-  flex: 0 0 auto !important;
+  flex: 1 1 auto !important;
   height: 36px !important;
   min-height: 0 !important;
   max-height: 36px !important;
@@ -2354,7 +2358,7 @@ results-list .stehlen-collection-layout {
   flex: 0 0 auto !important;
 }
 .product-grid__item add-to-cart-component button {
-  width: 40px !important;
+  width: 48px !important;
   height: 36px !important;
   min-height: unset !important;
   min-width: unset !important;
