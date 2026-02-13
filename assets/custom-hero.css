@@ -2276,46 +2276,78 @@ results-list .stehlen-collection-layout {
 
 /* ===== PRODUCT CARDS — Qty + Cart icon same row ===== */
 /* The buy-buttons form row: qty + button horizontal */
-.product-grid__item .product-form-buttons {
+.product-grid__item .product-form-buttons,
+.product-grid__item .buy-buttons-block {
   display: flex !important;
   flex-direction: row !important;
   align-items: center !important;
   gap: 8px !important;
   flex-wrap: nowrap !important;
 }
+/* Kill any extra spacing in buy-buttons form */
+.product-grid__item .buy-buttons-block form {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex-wrap: nowrap !important;
+}
+.product-grid__item .buy-buttons-block .product-form-buttons {
+  flex-direction: row !important;
+  gap: 8px !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+}
+/* Remove quantity label */
+.product-grid__item .quantity-label {
+  display: none !important;
+}
+.product-grid__item .quantity-rules {
+  display: none !important;
+}
 /* Compact quantity — match cart button height */
+.product-grid__item quantity-selector-component,
+.product-grid__item .quantity-selector,
 .product-grid__item quantity-input,
 .product-grid__item .quantity {
   display: flex !important;
   flex: 0 0 auto !important;
   height: 36px !important;
-  min-height: 36px !important;
+  min-height: 0 !important;
   max-height: 36px !important;
   border-radius: 6px !important;
   margin: 0 !important;
   padding: 0 !important;
   box-sizing: border-box !important;
+  align-items: center !important;
 }
+.product-grid__item quantity-selector-component *,
+.product-grid__item .quantity-selector *,
 .product-grid__item quantity-input *,
 .product-grid__item .quantity * {
   margin: 0 !important;
   padding: 0 !important;
-  min-height: unset !important;
+  min-height: 0 !important;
   max-height: 36px !important;
   box-sizing: border-box !important;
+  line-height: 36px !important;
 }
-.product-grid__item quantity-input input,
-.product-grid__item .quantity__input {
+.product-grid__item quantity-selector-component input,
+.product-grid__item .quantity-selector input {
   width: 28px !important;
   height: 36px !important;
   font-size: 0.8rem !important;
   text-align: center !important;
   border: none !important;
 }
-.product-grid__item quantity-input button,
-.product-grid__item .quantity__button {
+.product-grid__item quantity-selector-component button,
+.product-grid__item .quantity-selector button {
   width: 28px !important;
   height: 36px !important;
+}
+.product-grid__item quantity-selector-component .svg-wrapper,
+.product-grid__item .quantity-selector .svg-wrapper {
+  line-height: 0 !important;
 }
 /* Cart button — icon only, compact */
 .product-grid__item add-to-cart-component {
