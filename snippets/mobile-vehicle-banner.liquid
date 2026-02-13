@@ -1,0 +1,385 @@
+{%- comment -%}
+  Mobile Vehicle Banner - Sticky bar below header on mobile
+  Shows "🚗 Set My Vehicle" or the saved vehicle name
+  Tapping opens the vehicle selector panel
+{%- endcomment -%}
+
+<style>
+  .mobile-vehicle-banner {
+    display: none;
+  }
+
+  @media (max-width: 749px) {
+    .mobile-vehicle-banner {
+      display: block;
+      position: sticky;
+      top: var(--header-height, 60px);
+      z-index: 3;
+      background: linear-gradient(135deg, #1E2326 0%, #2a2f33 100%);
+      border-bottom: 2px solid #F39C12;
+      padding: 10px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .mobile-vehicle-banner:active {
+      background: linear-gradient(135deg, #2a2f33 0%, #353b40 100%);
+    }
+
+    .mobile-vehicle-banner__content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .mobile-vehicle-banner__vehicle {
+      color: #F39C12;
+      font-weight: 700;
+    }
+
+    .mobile-vehicle-banner__change {
+      font-size: 0.75rem;
+      color: #999;
+      font-weight: 400;
+      margin-left: 4px;
+    }
+
+    .mobile-vehicle-banner__icon {
+      flex-shrink: 0;
+    }
+
+    .mobile-vehicle-banner__chevron {
+      flex-shrink: 0;
+      margin-left: auto;
+      transition: transform 0.2s;
+    }
+
+    .mobile-vehicle-banner.is-expanded .mobile-vehicle-banner__chevron {
+      transform: rotate(180deg);
+    }
+
+    /* The expandable vehicle selector panel */
+    .mobile-vehicle-panel {
+      display: none;
+      background: linear-gradient(135deg, #1E2326 0%, #2d2d2d 100%);
+      padding: 16px;
+      border-bottom: 1px solid #333;
+    }
+
+    .mobile-vehicle-banner.is-expanded + .mobile-vehicle-panel {
+      display: block;
+    }
+
+    .mobile-vehicle-panel__form {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .mobile-vehicle-panel__group label {
+      display: block;
+      color: #ccc;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .mobile-vehicle-panel__group select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 2px solid #444;
+      border-radius: 8px;
+      background: #333;
+      color: #fff;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .mobile-vehicle-panel__group select:focus {
+      border-color: #F39C12;
+      outline: none;
+    }
+
+    .mobile-vehicle-panel__group select:disabled {
+      opacity: 0.5;
+    }
+
+    .mobile-vehicle-panel__actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .mobile-vehicle-panel__find {
+      flex: 1;
+      padding: 10px 24px;
+      background: #F39C12;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .mobile-vehicle-panel__find:disabled {
+      background: #666;
+    }
+
+    .mobile-vehicle-panel__find:not(:disabled):active {
+      background: #E67E22;
+    }
+
+    .mobile-vehicle-panel__clear {
+      padding: 10px 16px;
+      background: transparent;
+      color: #ccc;
+      border: 1px solid #666;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      display: none;
+    }
+
+    .mobile-vehicle-panel__status {
+      text-align: center;
+      color: #10b981;
+      font-size: 0.8rem;
+      margin-top: 4px;
+      display: none;
+    }
+  }
+</style>
+
+<div class="mobile-vehicle-banner" id="mobile-vehicle-banner">
+  <div class="mobile-vehicle-banner__content">
+    <svg class="mobile-vehicle-banner__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+      <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+      <path d="M5 17h-2v-6l2-5h9l4 5h1a2 2 0 0 1 2 2v4h-2"/>
+      <path d="M9 17h6"/>
+      <path d="M5 11h14"/>
+    </svg>
+    <span id="mobile-banner-label">Find Parts For Your Vehicle</span>
+    <svg class="mobile-vehicle-banner__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M6 9l6 6 6-6"/>
+    </svg>
+  </div>
+</div>
+
+<div class="mobile-vehicle-panel" id="mobile-vehicle-panel">
+  <form class="mobile-vehicle-panel__form" id="mobile-vehicle-form">
+    <div class="mobile-vehicle-panel__group">
+      <label for="m-select-year">Year</label>
+      <select id="m-select-year" name="year">
+        <option value="">Select Year</option>
+      </select>
+    </div>
+    <div class="mobile-vehicle-panel__group">
+      <label for="m-select-make">Make</label>
+      <select id="m-select-make" name="make" disabled>
+        <option value="">Select Make</option>
+      </select>
+    </div>
+    <div class="mobile-vehicle-panel__group">
+      <label for="m-select-model">Model</label>
+      <select id="m-select-model" name="model" disabled>
+        <option value="">Select Model</option>
+      </select>
+    </div>
+    <div class="mobile-vehicle-panel__actions">
+      <button type="submit" class="mobile-vehicle-panel__find" id="m-find-btn" disabled>Find Parts</button>
+      <button type="button" class="mobile-vehicle-panel__clear" id="m-clear-btn">Clear</button>
+    </div>
+    <div class="mobile-vehicle-panel__status" id="m-vehicle-status"></div>
+  </form>
+</div>
+
+<script>
+(function() {
+  var banner = document.getElementById('mobile-vehicle-banner');
+  var panel = document.getElementById('mobile-vehicle-panel');
+  var label = document.getElementById('mobile-banner-label');
+  if (!banner) return;
+
+  // Vehicle data (shared with main selector)
+  var vehicleData = {
+    'Ford': {
+      'F-150': [2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],
+      'F-250': [2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],
+      'F-350': [2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],
+      'Ranger': [2004,2005,2006,2007,2008,2009,2010,2011,2019,2020,2021,2022,2023,2024],
+      'Bronco': [2021,2022,2023,2024]
+    },
+    'Chevy': {
+      'Silverado 1500': [2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],
+      'Silverado 2500': [2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],
+      'Colorado': [2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024]
+    },
+    'GMC': {
+      'Sierra 1500': [2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],
+      'Sierra 2500': [2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],
+      'Canyon': [2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024]
+    },
+    'Dodge': {
+      'Ram 1500': [2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],
+      'Ram 2500': [2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],
+      'Charger': [2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024]
+    },
+    'Toyota': {
+      'Tundra': [2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],
+      'Tacoma': [2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],
+      '4Runner': [2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024]
+    }
+  };
+
+  var yearEl = document.getElementById('m-select-year');
+  var makeEl = document.getElementById('m-select-make');
+  var modelEl = document.getElementById('m-select-model');
+  var findBtn = document.getElementById('m-find-btn');
+  var clearBtn = document.getElementById('m-clear-btn');
+  var status = document.getElementById('m-vehicle-status');
+
+  // Toggle panel
+  banner.addEventListener('click', function() {
+    banner.classList.toggle('is-expanded');
+  });
+
+  // Helpers
+  function allYears() {
+    var s = {};
+    Object.values(vehicleData).forEach(function(makes) {
+      Object.values(makes).forEach(function(yrs) {
+        yrs.forEach(function(y) { s[y] = true; });
+      });
+    });
+    return Object.keys(s).map(Number).sort(function(a,b){return b-a;});
+  }
+
+  function makesForYear(yr) {
+    var out = [];
+    Object.entries(vehicleData).forEach(function(e) {
+      var hasY = Object.values(e[1]).some(function(yrs){return yrs.includes(yr);});
+      if (hasY) out.push(e[0]);
+    });
+    return out.sort();
+  }
+
+  function modelsForYM(yr, mk) {
+    var out = [];
+    if (vehicleData[mk]) {
+      Object.entries(vehicleData[mk]).forEach(function(e) {
+        if (e[1].includes(yr)) out.push(e[0]);
+      });
+    }
+    return out.sort();
+  }
+
+  function initYears() {
+    yearEl.innerHTML = '<option value="">Select Year</option>';
+    allYears().forEach(function(y) {
+      yearEl.innerHTML += '<option value="'+y+'">'+y+'</option>';
+    });
+  }
+
+  yearEl.addEventListener('change', function() {
+    makeEl.innerHTML = '<option value="">Select Make</option>';
+    modelEl.innerHTML = '<option value="">Select Model</option>';
+    modelEl.disabled = true;
+    findBtn.disabled = true;
+    if (this.value) {
+      makesForYear(parseInt(this.value)).forEach(function(m) {
+        makeEl.innerHTML += '<option value="'+m+'">'+m+'</option>';
+      });
+      makeEl.disabled = false;
+    } else {
+      makeEl.disabled = true;
+    }
+  });
+
+  makeEl.addEventListener('change', function() {
+    modelEl.innerHTML = '<option value="">Select Model</option>';
+    findBtn.disabled = true;
+    if (this.value) {
+      modelsForYM(parseInt(yearEl.value), this.value).forEach(function(m) {
+        modelEl.innerHTML += '<option value="'+m+'">'+m+'</option>';
+      });
+      modelEl.disabled = false;
+    } else {
+      modelEl.disabled = true;
+    }
+  });
+
+  modelEl.addEventListener('change', function() {
+    findBtn.disabled = !this.value;
+  });
+
+  document.getElementById('mobile-vehicle-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var y = yearEl.value, mk = makeEl.value, md = modelEl.value;
+    if (y && mk && md) {
+      localStorage.setItem('selectedVehicle', JSON.stringify({year:y, make:mk, model:md}));
+      banner.classList.remove('is-expanded');
+      updateBannerLabel();
+      // Sync with main selector if present
+      window.dispatchEvent(new CustomEvent('vehicleChanged'));
+      window.location.href = '/search?q=' + encodeURIComponent(y+' '+mk+' '+md) + '&type=product';
+    }
+  });
+
+  clearBtn.addEventListener('click', function() {
+    localStorage.removeItem('selectedVehicle');
+    yearEl.value = '';
+    makeEl.innerHTML = '<option value="">Select Make</option>';
+    makeEl.disabled = true;
+    modelEl.innerHTML = '<option value="">Select Model</option>';
+    modelEl.disabled = true;
+    findBtn.disabled = true;
+    clearBtn.style.display = 'none';
+    status.style.display = 'none';
+    updateBannerLabel();
+    window.dispatchEvent(new CustomEvent('vehicleChanged'));
+  });
+
+  function updateBannerLabel() {
+    var saved = localStorage.getItem('selectedVehicle');
+    if (saved) {
+      var v = JSON.parse(saved);
+      label.innerHTML = '<span class="mobile-vehicle-banner__vehicle">' + v.year + ' ' + v.make + ' ' + v.model + '</span><span class="mobile-vehicle-banner__change">Change</span>';
+      clearBtn.style.display = 'inline-block';
+      status.innerHTML = 'Viewing parts for: <strong>' + v.year + ' ' + v.make + ' ' + v.model + '</strong>';
+      status.style.display = 'block';
+    } else {
+      label.textContent = 'Find Parts For Your Vehicle';
+      clearBtn.style.display = 'none';
+      status.style.display = 'none';
+    }
+  }
+
+  function restoreSaved() {
+    var saved = localStorage.getItem('selectedVehicle');
+    if (saved) {
+      var v = JSON.parse(saved);
+      yearEl.value = v.year;
+      yearEl.dispatchEvent(new Event('change'));
+      makeEl.value = v.make;
+      makeEl.dispatchEvent(new Event('change'));
+      modelEl.value = v.model;
+      modelEl.dispatchEvent(new Event('change'));
+    }
+  }
+
+  initYears();
+  restoreSaved();
+  updateBannerLabel();
+})();
+</script>
