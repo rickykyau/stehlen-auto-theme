@@ -2399,3 +2399,26 @@ results-list .stehlen-collection-layout {
 .product-grid__item .quantity-label__cart-count {
   display: none !important;
 }
+
+/* ===== FORCE FULL WIDTH on qty+cart row at every level ===== */
+.product-grid__item .buy-buttons-block,
+.product-grid__item .buy-buttons-block > *,
+.product-grid__item .buy-buttons-block form,
+.product-grid__item .buy-buttons-block product-form-component,
+.product-grid__item .buy-buttons-block .product-form-buttons,
+.product-grid__item .quick-add,
+.product-grid__item .quick-add > *,
+.product-grid__item .quick-add form,
+.product-grid__item .quick-add product-form-component {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+.product-grid__item .product-form-buttons,
+.product-grid__item .quick-add__product-form-component {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex-wrap: nowrap !important;
+  width: 100% !important;
+}
