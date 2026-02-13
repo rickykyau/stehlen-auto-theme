@@ -2363,24 +2363,28 @@ results-list .stehlen-collection-layout {
 @media (max-width: 749px) {
   .header__columns,
   .header__columns.spacing-style {
-    display: flex !important;
+    display: grid !important;
+    grid-template-columns: auto 1fr auto !important;
     align-items: center !important;
-    justify-content: space-between !important;
   }
   .header__column.header__column--left {
-    flex: 0 0 auto !important;
-    order: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    justify-self: start !important;
   }
-  .header__column.header__column--right {
-    flex: 0 0 auto !important;
-    order: 2 !important;
-  }
-  /* Logo centered absolutely */
-  .header-logo,
-  .header__column--left .header-logo {
+  .header__column.header__column--left .header-logo {
     position: absolute !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
+    z-index: 1 !important;
+  }
+  .header__column.header__column--right {
+    justify-self: end !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    z-index: 2 !important;
   }
 }
 
