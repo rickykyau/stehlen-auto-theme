@@ -158,7 +158,8 @@ function initVehicleSelector(vehicleData) {
   var modelSel = document.getElementById('mvd-model');
   var goBtn = document.getElementById('mvd-go');
 
-  if (!overlay || !openBtn) return;
+  console.log('[MVD] Init: overlay=', !!overlay, 'openBtn=', !!openBtn, 'makeSel=', !!makeSel);
+  if (!overlay || !openBtn) { console.warn('[MVD] Missing elements, aborting'); return; }
 
   function getAllMakes() {
     return Object.keys(vehicleData).sort();
