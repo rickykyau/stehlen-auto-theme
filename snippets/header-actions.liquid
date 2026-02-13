@@ -131,6 +131,7 @@
 
 <script>
 /* Vehicle data built dynamically from product titles */
+/* Liquid-injected product titles (may be empty if paginate fails in this context) */
 var __stehlenProducts = [
   {%- paginate collections.all.products by 250 -%}
     {%- for product in collections.all.products -%}
@@ -138,7 +139,30 @@ var __stehlenProducts = [
     {%- endfor -%}
   {%- endpaginate -%}
 ];
+/* Fallback: fetch via AJAX if Liquid didn't populate */
+var __stehlenProductsReady = (function() {
+  if (__stehlenProducts.length > 0) return Promise.resolve();
+  function fetchPage(page) {
+    return fetch('/collections/all/products.json?limit=250&page=' + page)
+      .then(function(r) { return r.json(); })
+      .then(function(d) { return d.products || []; });
+  }
+  return fetchPage(1).then(function(p1) {
+    p1.forEach(function(p) { __stehlenProducts.push(p.title); });
+    if (p1.length >= 250) {
+      return fetchPage(2).then(function(p2) {
+        p2.forEach(function(p) { __stehlenProducts.push(p.title); });
+        if (p2.length >= 250) {
+          return fetchPage(3).then(function(p3) {
+            p3.forEach(function(p) { __stehlenProducts.push(p.title); });
+          });
+        }
+      });
+    }
+  }).catch(function(e) { console.warn('[MVD] AJAX fallback failed:', e); });
+})();
 
+function __parseAndInit() {
 /* Parse year ranges, makes, and models from product titles */
 var __stehlenVehicleData = (function() {
   /* Auto-extract make + model from product titles
@@ -358,6 +382,10 @@ var __stehlenVehicleData = (function() {
     } catch(e) {}
   }
 })();
+} /* end __parseAndInit */
+
+/* Run after product data is ready */
+__stehlenProductsReady.then(__parseAndInit);
 </script>
 
 {% stylesheet %}
