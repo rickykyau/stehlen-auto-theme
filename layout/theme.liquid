@@ -40,7 +40,7 @@
       {% sections 'header-group' %}
     </div>
 
-
+    {% render 'mobile-vehicle-banner' %}
 
     <script
       src="{{ 'critical.js' | asset_url }}"
@@ -64,47 +64,14 @@
 
     {% render 'search-modal' %}
 
+    {%- comment -%} Custom predictive search with year-range awareness {%- endcomment -%}
+    {% render 'product-data-json' %}
+    {{ 'custom-predictive-search.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'custom-predictive-search.js' | asset_url }}" defer></script>
+
     {% if settings.quick_add or settings.mobile_quick_add %}
       {% render 'quick-add-modal' %}
     {% endif %}
-  <script>
-  /* Redirect search to /collections/all?search=QUERY */
-  (function(){
-    function hijack(){
-      /* Intercept predictive search "View All" and form submits */
-      document.addEventListener('submit',function(e){
-        var form=e.target;
-        if(form.action&&form.action.indexOf('/search')>=0){
-          e.preventDefault();
-          var q=(form.querySelector('input[name="q"]')||{}).value||'';
-          if(q.trim()) window.location.href='/collections/all?search='+encodeURIComponent(q.trim());
-        }
-      },true);
-      /* Intercept Enter key in predictive search input */
-      document.addEventListener('keydown',function(e){
-        if(e.key==='Enter'){
-          var inp=e.target;
-          if(inp&&inp.matches&&(inp.matches('.predictive-search-form__input')||inp.matches('.search-page-input')||inp.matches('input[name="q"]'))){
-            e.preventDefault();e.stopPropagation();
-            var q=inp.value||'';
-            if(q.trim()) window.location.href='/collections/all?search='+encodeURIComponent(q.trim());
-          }
-        }
-      },true);
-      /* Intercept "View All" button clicks in predictive search */
-      document.addEventListener('click',function(e){
-        var a=e.target.closest('a');
-        if(a&&a.href&&a.href.indexOf('/search?')>=0){
-          e.preventDefault();
-          var url=new URL(a.href);
-          var q=url.searchParams.get('q')||'';
-          if(q.trim()) window.location.href='/collections/all?search='+encodeURIComponent(q.trim());
-        }
-      },true);
-    }
-    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hijack);else hijack();
-  })();
-  </script>
   </body>
 </html>
 <!-- cache-bust: 1770977160 -->

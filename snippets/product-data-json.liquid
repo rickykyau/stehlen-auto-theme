@@ -1,0 +1,19 @@
+{%- comment -%}
+  Outputs all products as a JSON array for client-side predictive search.
+  Only loaded once per page. Includes year-range data extracted from titles.
+{%- endcomment -%}
+<script id="stehlen-product-data" type="application/json">
+[
+  {%- for product in collections.all.products -%}
+    {
+      "t": {{ product.title | json }},
+      "h": {{ product.handle | json }},
+      "p": {{ product.price | money_without_trailing_zeros | json }},
+      "img": {{ product.featured_image | image_url: width: 200 | json }},
+      "tags": {{ product.tags | json }},
+      "type": {{ product.type | json }},
+      "vendor": {{ product.vendor | json }}
+    }{%- unless forloop.last -%},{%- endunless -%}
+  {%- endfor -%}
+]
+</script>
