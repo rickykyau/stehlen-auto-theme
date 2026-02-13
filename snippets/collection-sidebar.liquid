@@ -1,60 +1,79 @@
-{%- comment -%} Collection Sidebar — Stehlen Auto {%- endcomment -%}
+{%- comment -%} Collection Sidebar — Stehlen Auto — Progressive Disclosure v2 {%- endcomment -%}
 {%- assign skip_handles = 'all,frontpage,digital-goods-vat-tax,vehicles-and-parts-example-products' | split: ',' -%}
 
 <style>
-.collection-sidebar { width:260px; min-width:260px; flex-shrink:0; position:sticky; top:80px; align-self:flex-start; max-height:calc(100vh - 100px); overflow-y:auto; overflow-x:hidden; padding-bottom:40px; scrollbar-width:thin; }
-.collection-sidebar::-webkit-scrollbar { width:5px; }
-.collection-sidebar::-webkit-scrollbar-thumb { background:#ccc; border-radius:3px; }
+/* === BASE === */
+.collection-sidebar{width:260px;min-width:260px;flex-shrink:0;position:sticky;top:80px;align-self:flex-start;max-height:calc(100vh - 100px);overflow-y:auto;overflow-x:hidden;padding-bottom:40px;scrollbar-width:thin;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;}
+.collection-sidebar::-webkit-scrollbar{width:5px;}
+.collection-sidebar::-webkit-scrollbar-thumb{background:#ccc;border-radius:3px;}
 
-/* Vehicle badge toggle */
-.sf-vehicle-toggle {
-  display:flex; align-items:center; gap:8px; padding:10px 14px;
-  border:1.5px solid #ddd; border-radius:8px; margin-bottom:12px;
-  cursor:pointer; font-size:0.85rem; font-weight:600; color:#333;
-  background:#fff; transition: all 0.2s;
-}
-.sf-vehicle-toggle:hover { border-color:#F39C12; }
-.sf-vehicle-toggle.active { border-color:#F39C12; background:#FEF5E7; color:#1E2326; }
-.sf-vehicle-toggle .sf-vt-icon { flex-shrink:0; color:#F39C12; }
-.sf-vehicle-toggle .sf-vt-x { margin-left:auto; color:#999; font-size:0.75rem; }
-.sf-vehicle-toggle.active .sf-vt-x { color:#F39C12; }
+/* === MY VEHICLE BUTTON === */
+.sf-vehicle-toggle{display:flex;align-items:center;gap:8px;padding:10px 14px;border:1.5px solid #ddd;border-radius:8px;margin-bottom:12px;cursor:pointer;font-size:0.85rem;font-weight:600;color:#333;background:#fff;transition:all 0.2s;}
+.sf-vehicle-toggle:hover{border-color:#F39C12;}
+.sf-vehicle-toggle.active{border-color:#F39C12;background:#FEF5E7;color:#1E2326;}
+.sf-vehicle-toggle .sf-vt-icon{flex-shrink:0;color:#F39C12;}
+.sf-vehicle-toggle .sf-vt-x{margin-left:auto;color:#999;font-size:0.75rem;}
+.sf-vehicle-toggle.active .sf-vt-x{color:#F39C12;}
 
-/* Sections */
-.sf-section { border:1px solid #e5e5e5; border-radius:8px; margin-bottom:12px; background:#fff; overflow:hidden; }
-.sf-header { display:flex; align-items:center; justify-content:space-between; padding:12px 14px; cursor:pointer; font-weight:700; font-size:0.82rem; text-transform:uppercase; letter-spacing:0.5px; color:#1E2326; user-select:none; background:#fafafa; border-bottom:1px solid #eee; }
-.sf-header:hover { background:#f0f0f0; }
-.sf-chevron { transition:transform 0.2s; font-size:0.6rem; color:#999; }
-.sf-section.collapsed .sf-body { display:none; }
-.sf-section.collapsed .sf-chevron { transform:rotate(-90deg); }
-.sf-body { padding:10px 14px 14px; }
-.sf-sublabel { font-weight:600; font-size:0.78rem; color:#888; margin:0 0 6px; text-transform:uppercase; letter-spacing:0.3px; }
-.sf-hint { font-size:0.78rem; color:#aaa; font-style:italic; padding:2px 0 6px; }
-.sf-search { width:100%; padding:7px 10px; border:1px solid #ddd; border-radius:5px; font-size:0.82rem; margin-bottom:8px; outline:none; box-sizing:border-box; }
-.sf-search:focus { border-color:#F39C12; box-shadow:0 0 0 2px rgba(243,156,18,0.15); }
-.sf-list { list-style:none; margin:0; padding:0; }
-.sf-item { display:flex; align-items:center; gap:8px; padding:5px 0; font-size:0.85rem; cursor:pointer; color:#333; }
-.sf-item:hover { color:#F39C12; }
-.sf-item input[type="checkbox"] { width:16px; height:16px; accent-color:#F39C12; cursor:pointer; flex-shrink:0; margin:0; }
-.sf-item label { flex:1; cursor:pointer; }
+/* === ACTIVE FILTER BAR === */
+.sf-active-bar{display:none;margin-bottom:12px;padding:8px 10px;background:#fafafa;border:1px solid #e5e5e5;border-radius:8px;}
+.sf-active-bar.has-filters{display:block;}
+.sf-active-bar-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.sf-active-bar-title{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#888;}
+.sf-clear-all{font-size:0.75rem;color:#F39C12;cursor:pointer;font-weight:600;border:none;background:none;padding:0;}
+.sf-clear-all:hover{text-decoration:underline;}
+.sf-chips-row{display:flex;flex-wrap:wrap;gap:6px;}
 
-/* Year slider */
-.sf-year-display { display:flex; justify-content:center; gap:6px; font-size:0.9rem; font-weight:700; color:#1E2326; margin-bottom:10px; }
-.sf-range-wrap { position:relative; height:30px; }
-.sf-range { -webkit-appearance:none; appearance:none; position:absolute; top:0; left:0; width:100%; height:30px; background:transparent; pointer-events:none; margin:0; z-index:2; }
-.sf-range::-webkit-slider-thumb { -webkit-appearance:none; width:20px; height:20px; border-radius:50%; background:#F39C12; border:2px solid #fff; box-shadow:0 1px 4px rgba(0,0,0,0.3); cursor:pointer; pointer-events:all; position:relative; z-index:3; }
-.sf-range::-moz-range-thumb { width:18px; height:18px; border-radius:50%; background:#F39C12; border:2px solid #fff; box-shadow:0 1px 4px rgba(0,0,0,0.3); cursor:pointer; pointer-events:all; }
-.sf-range-track { position:absolute; top:12px; left:0; right:0; height:4px; background:#e0e0e0; border-radius:2px; z-index:1; }
-.sf-range-fill { position:absolute; top:12px; height:4px; background:#F39C12; border-radius:2px; z-index:1; }
+/* === CHIPS === */
+.sf-chip{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;background:#FEF5E7;border:1px solid #F39C12;border-radius:16px;font-size:0.78rem;font-weight:600;color:#1E2326;cursor:default;transition:all 0.15s;}
+.sf-chip-x{cursor:pointer;color:#F39C12;font-size:0.7rem;margin-left:2px;line-height:1;}
+.sf-chip-x:hover{color:#c0392b;}
 
-/* Hidden items */
-.sf-hidden { display:none !important; }
+/* === SECTIONS === */
+.sf-section{border:1px solid #e5e5e5;border-radius:8px;margin-bottom:12px;background:#fff;overflow:hidden;}
+.sf-header{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;cursor:pointer;font-weight:700;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.5px;color:#1E2326;user-select:none;background:#fafafa;border-bottom:1px solid #eee;}
+.sf-header:hover{background:#f0f0f0;}
+.sf-chevron{transition:transform 0.2s;font-size:0.6rem;color:#999;}
+.sf-section.collapsed .sf-body{display:none;}
+.sf-section.collapsed .sf-chevron{transform:rotate(-90deg);}
+.sf-body{padding:10px 14px 14px;}
 
-/* 3-col grid */
-.stehlen-collection-main .product-grid { grid-template-columns:repeat(3,1fr) !important; }
+/* === FORM ELEMENTS === */
+.sf-search{width:100%;padding:7px 10px;border:1px solid #ddd;border-radius:5px;font-size:0.82rem;margin-bottom:8px;outline:none;box-sizing:border-box;}
+.sf-search:focus{border-color:#F39C12;box-shadow:0 0 0 2px rgba(243,156,18,0.15);}
+.sf-list{list-style:none;margin:0;padding:0;}
+.sf-item{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:0.85rem;cursor:pointer;color:#333;}
+.sf-item:hover{color:#F39C12;}
+.sf-item input[type="checkbox"]{width:16px;height:16px;accent-color:#F39C12;cursor:pointer;flex-shrink:0;margin:0;}
+.sf-item label{flex:1;cursor:pointer;}
+.sf-item .sf-count{color:#999;font-size:0.75rem;margin-left:auto;}
+.sf-hint{font-size:0.78rem;color:#aaa;font-style:italic;padding:2px 0 6px;}
+.sf-sublabel{font-weight:600;font-size:0.78rem;color:#888;margin:0 0 6px;text-transform:uppercase;letter-spacing:0.3px;}
+
+/* Section chip (inline, shown when section is collapsed via selection) */
+.sf-section-chip{display:none;padding:10px 14px;background:#fafafa;border-bottom:1px solid #eee;}
+.sf-section-chip.visible{display:block;}
+
+/* === YEAR SLIDER === */
+.sf-year-display{display:flex;justify-content:center;gap:6px;font-size:0.9rem;font-weight:700;color:#1E2326;margin-bottom:10px;}
+.sf-range-wrap{position:relative;height:30px;}
+.sf-range{-webkit-appearance:none;appearance:none;position:absolute;top:0;left:0;width:100%;height:30px;background:transparent;pointer-events:none;margin:0;z-index:2;}
+.sf-range::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#F39C12;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.3);cursor:pointer;pointer-events:all;position:relative;z-index:3;}
+.sf-range::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:#F39C12;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.3);cursor:pointer;pointer-events:all;}
+.sf-range-track{position:absolute;top:12px;left:0;right:0;height:4px;background:#e0e0e0;border-radius:2px;z-index:1;}
+.sf-range-fill{position:absolute;top:12px;height:4px;background:#F39C12;border-radius:2px;z-index:1;}
+
+/* === HIDDEN === */
+.sf-hidden{display:none!important;}
+
+/* === GRID === */
+.stehlen-collection-main .product-grid{grid-template-columns:repeat(3,1fr)!important;}
+
+/* === MOBILE === */
 @media(max-width:749px){
-  .collection-sidebar { width:100%!important; min-width:100%!important; position:relative; top:0; max-height:none; overflow:visible; display:none; }
-  .collection-sidebar.sb-open { display:block; margin-bottom:16px; }
-  .stehlen-collection-main .product-grid { grid-template-columns:repeat(2,1fr)!important; }
+  .collection-sidebar{width:100%!important;min-width:100%!important;position:relative;top:0;max-height:none;overflow:visible;display:none;}
+  .collection-sidebar.sb-open{display:block;margin-bottom:16px;}
+  .stehlen-collection-main .product-grid{grid-template-columns:repeat(2,1fr)!important;}
 }
 </style>
 
@@ -67,6 +86,57 @@
     <span class="sf-vt-x">✕</span>
   </div>
 
+  <!-- Active Filter Bar -->
+  <div class="sf-active-bar" id="sf-active-bar">
+    <div class="sf-active-bar-header">
+      <span class="sf-active-bar-title">Active Filters</span>
+      <button class="sf-clear-all" id="sf-clear-all">Clear All</button>
+    </div>
+    <div class="sf-chips-row" id="sf-chips-row"></div>
+  </div>
+
+  <!-- Make -->
+  <div class="sf-section" id="sf-make-section">
+    <div class="sf-header" data-toggle="sf-make-section">Make <span class="sf-chevron">▼</span></div>
+    <div class="sf-section-chip" id="sf-make-chip-area"></div>
+    <div class="sf-body" id="sf-make-body">
+      <input type="text" class="sf-search" id="sf-make-search" placeholder="Search makes...">
+      <ul class="sf-list" id="sf-make-list">
+        {%- for c in collections -%}
+          {%- if c.handle contains '-parts' and c.products_count > 0 -%}
+            {%- assign mk = c.title | remove: ' Parts' -%}
+            <li class="sf-item"><input type="checkbox" id="mk-{{ mk | handleize }}" value="{{ mk }}" class="sf-make"><label for="mk-{{ mk | handleize }}">{{ mk }}</label></li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+
+  <!-- Model (hidden until make selected) -->
+  <div class="sf-section" id="sf-model-section" style="display:none;">
+    <div class="sf-header" data-toggle="sf-model-section">Model <span class="sf-chevron">▼</span></div>
+    <div class="sf-section-chip" id="sf-model-chip-area"></div>
+    <div class="sf-body" id="sf-model-body">
+      <ul class="sf-list" id="sf-model-list"></ul>
+    </div>
+  </div>
+
+  <!-- Year -->
+  <div class="sf-section" id="sf-year-section">
+    <div class="sf-header" data-toggle="sf-year-section">Year <span class="sf-chevron">▼</span></div>
+    <div class="sf-body">
+      <div id="sf-year-slider">
+        <div class="sf-year-display"><span id="sf-year-min-val">1988</span> — <span id="sf-year-max-val">2026</span></div>
+        <div class="sf-range-wrap">
+          <input type="range" id="sf-year-min" class="sf-range" min="1988" max="2026" value="1988" step="1">
+          <input type="range" id="sf-year-max" class="sf-range" min="1988" max="2026" value="2026" step="1">
+          <div class="sf-range-track"></div>
+          <div class="sf-range-fill" id="sf-range-fill"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Category -->
   <div class="sf-section" id="sf-category">
     <div class="sf-header" data-toggle="sf-category">Category <span class="sf-chevron">▼</span></div>
@@ -77,40 +147,10 @@
           {%- if c.handle contains '-parts' -%}{%- assign skip = true -%}{%- endif -%}
           {%- for sh in skip_handles -%}{%- if c.handle == sh -%}{%- assign skip = true -%}{%- endif -%}{%- endfor -%}
           {%- unless skip -%}{%- if c.products_count > 0 -%}
-            <li class="sf-item"><input type="checkbox" id="cat-{{ c.handle }}" value="{{ c.handle }}" class="sf-cat"><label for="cat-{{ c.handle }}">{{ c.title }}</label></li>
+            <li class="sf-item" data-cat-handle="{{ c.handle }}"><input type="checkbox" id="cat-{{ c.handle }}" value="{{ c.handle }}" class="sf-cat"><label for="cat-{{ c.handle }}">{{ c.title }}</label><span class="sf-count"></span></li>
           {%- endif -%}{%- endunless -%}
         {%- endfor -%}
       </ul>
-    </div>
-  </div>
-
-  <!-- Vehicle Fitment -->
-  <div class="sf-section" id="sf-fitment">
-    <div class="sf-header" data-toggle="sf-fitment">Vehicle Fitment <span class="sf-chevron">▼</span></div>
-    <div class="sf-body">
-      <p class="sf-sublabel">Make</p>
-      <input type="text" class="sf-search" id="sf-make-search" placeholder="Search makes...">
-      <ul class="sf-list" id="sf-make-list">
-        {%- for c in collections -%}
-          {%- if c.handle contains '-parts' and c.products_count > 0 -%}
-            {%- assign mk = c.title | remove: ' Parts' -%}
-            <li class="sf-item"><input type="checkbox" id="mk-{{ mk | handleize }}" value="{{ mk }}" class="sf-make"><label for="mk-{{ mk | handleize }}">{{ mk }}</label></li>
-          {%- endif -%}
-        {%- endfor -%}
-      </ul>
-      <p class="sf-sublabel" style="margin-top:12px;">Model</p>
-      <div class="sf-hint" id="sf-model-hint">Select a make first</div>
-      <ul class="sf-list" id="sf-model-list"></ul>
-      <p class="sf-sublabel" style="margin-top:12px;">Year</p>
-      <div id="sf-year-slider">
-        <div class="sf-year-display"><span id="sf-year-min-val">1988</span> — <span id="sf-year-max-val">2026</span></div>
-        <div class="sf-range-wrap">
-          <input type="range" id="sf-year-min" class="sf-range" min="1988" max="2026" value="1988" step="1">
-          <input type="range" id="sf-year-max" class="sf-range" min="1988" max="2026" value="2026" step="1">
-          <div class="sf-range-track"></div>
-          <div class="sf-range-fill" id="sf-range-fill"></div>
-        </div>
-      </div>
     </div>
   </div>
 </aside>
@@ -126,198 +166,342 @@
 
 <script>
 (function(){
-  var ALIASES = {'chevy':['chevy','chevrolet'],'chevrolet':['chevy','chevrolet'],'dodge':['dodge','ram'],'ram':['dodge','ram'],'mercedes-benz':['mercedes','mercedes-benz','benz'],'mercedes':['mercedes','mercedes-benz','benz'],'vw':['vw','volkswagen'],'volkswagen':['vw','volkswagen'],'gmc':['gmc','chevy','chevrolet']};
-  var STOP = 'trailer,hitch,class,bull,guard,grille,side,step,nerf,bar,tonneau,cover,chase,rack,sport,matte,black,stainless,led,light,low,profile,hard,tri-fold,bed,universal,w/,&,front,rear'.split(',');
-  function kws(m){ return ALIASES[m.toLowerCase()]||[m.toLowerCase()]; }
-  function yrRange(t){ var m=t.match(/(\d{4})\s*[-–]\s*(\d{4})/); if(m)return[+m[1],+m[2]]; m=t.match(/(\d{4})\+/); if(m)return[+m[1],2026]; m=t.match(/\b(19|20)\d{2}\b/); return m?[+m[0],+m[0]]:null; }
+  var ALIASES={'chevy':['chevy','chevrolet'],'chevrolet':['chevy','chevrolet'],'dodge':['dodge','ram'],'ram':['dodge','ram'],'mercedes-benz':['mercedes','mercedes-benz','benz'],'mercedes':['mercedes','mercedes-benz','benz'],'vw':['vw','volkswagen'],'volkswagen':['vw','volkswagen'],'gmc':['gmc','chevy','chevrolet']};
+  var STOP='trailer,hitch,class,bull,guard,grille,side,step,nerf,bar,tonneau,cover,chase,rack,sport,matte,black,stainless,led,light,low,profile,hard,tri-fold,bed,universal,w/,&,front,rear'.split(',');
+  function kws(m){return ALIASES[m.toLowerCase()]||[m.toLowerCase()];}
+  function yrRange(t){var m=t.match(/(\d{4})\s*[-–]\s*(\d{4})/);if(m)return[+m[1],+m[2]];m=t.match(/(\d{4})\+/);if(m)return[+m[1],2026];m=t.match(/\b(19|20)\d{2}\b/);return m?[+m[0],+m[0]]:null;}
 
   function init(){
-    var products=[]; try{ products=JSON.parse(document.getElementById('sf-product-data').textContent); }catch(e){}
-    var pMap={}; products.forEach(function(p){ pMap[p.id]=p; });
-    console.log('[SF] Loaded',products.length,'products,',Object.keys(pMap).length,'in map');
+    var products=[];try{products=JSON.parse(document.getElementById('sf-product-data').textContent);}catch(e){}
+    var pMap={};products.forEach(function(p){pMap[p.id]=p;});
+    console.log('[SF] Loaded',products.length,'products');
 
-    /* Collapsible */
+    /* === DOM refs === */
+    var yrMinEl=document.getElementById('sf-year-min'),yrMaxEl=document.getElementById('sf-year-max');
+    var yrMinV=document.getElementById('sf-year-min-val'),yrMaxV=document.getElementById('sf-year-max-val');
+    var yrFill=document.getElementById('sf-range-fill');
+    var makeBody=document.getElementById('sf-make-body');
+    var makeChipArea=document.getElementById('sf-make-chip-area');
+    var modelSection=document.getElementById('sf-model-section');
+    var modelBody=document.getElementById('sf-model-body');
+    var modelChipArea=document.getElementById('sf-model-chip-area');
+    var activeBar=document.getElementById('sf-active-bar');
+    var chipsRow=document.getElementById('sf-chips-row');
+    var clearAllBtn=document.getElementById('sf-clear-all');
+
+    /* === Collapsible sections === */
     document.querySelectorAll('.sf-header[data-toggle]').forEach(function(h){
-      h.addEventListener('click',function(){ document.getElementById(h.dataset.toggle).classList.toggle('collapsed'); });
+      h.addEventListener('click',function(){document.getElementById(h.dataset.toggle).classList.toggle('collapsed');});
     });
 
-    /* Search */
-    function wireSearch(iid,lid){ var i=document.getElementById(iid),l=document.getElementById(lid); if(!i||!l)return; i.addEventListener('input',function(){ var q=this.value.toLowerCase(); l.querySelectorAll('.sf-item').forEach(function(li){ li.style.display=li.textContent.toLowerCase().includes(q)?'':'none'; }); }); }
-    wireSearch('sf-make-search','sf-make-list');
-
-    /* Mobile */
-    var mobBtn=document.getElementById('mobile-filter-toggle'), sb=document.getElementById('collection-sidebar');
-    if(mobBtn&&sb) mobBtn.addEventListener('click',function(){ sb.classList.toggle('sb-open'); });
-
-    /* Year slider */
-    var yrMinEl=document.getElementById('sf-year-min'), yrMaxEl=document.getElementById('sf-year-max');
-    var yrMinV=document.getElementById('sf-year-min-val'), yrMaxV=document.getElementById('sf-year-max-val');
-    var yrFill=document.getElementById('sf-range-fill');
-    function updateSlider(){
-      var mn=+yrMinEl.value, mx=+yrMaxEl.value;
-      if(mn>mx){var t=mn;mn=mx;mx=t;yrMinEl.value=mn;yrMaxEl.value=mx;}
-      yrMinV.textContent=mn; yrMaxV.textContent=mx;
-      var p1=((mn-1988)/(2026-1988))*100, p2=((mx-1988)/(2026-1988))*100;
-      yrFill.style.left=p1+'%'; yrFill.style.width=(p2-p1)+'%';
+    /* === Search === */
+    var makeSearch=document.getElementById('sf-make-search');
+    if(makeSearch){
+      makeSearch.addEventListener('input',function(){
+        var q=this.value.toLowerCase();
+        document.getElementById('sf-make-list').querySelectorAll('.sf-item').forEach(function(li){
+          li.style.display=li.textContent.toLowerCase().includes(q)?'':'none';
+        });
+      });
     }
-    yrMinEl.addEventListener('input',function(){ updateSlider(); vehicleBtnOff(); applyFilters(); });
-    yrMaxEl.addEventListener('input',function(){ updateSlider(); vehicleBtnOff(); applyFilters(); });
+
+    /* === Mobile === */
+    var mobBtn=document.getElementById('mobile-filter-toggle'),sb=document.getElementById('collection-sidebar');
+    if(mobBtn&&sb)mobBtn.addEventListener('click',function(){sb.classList.toggle('sb-open');});
+
+    /* === Year slider === */
+    function updateSlider(){
+      var mn=+yrMinEl.value,mx=+yrMaxEl.value;
+      if(mn>mx){var t=mn;mn=mx;mx=t;yrMinEl.value=mn;yrMaxEl.value=mx;}
+      yrMinV.textContent=mn;yrMaxV.textContent=mx;
+      var p1=((mn-1988)/(2026-1988))*100,p2=((mx-1988)/(2026-1988))*100;
+      yrFill.style.left=p1+'%';yrFill.style.width=(p2-p1)+'%';
+    }
+    yrMinEl.addEventListener('input',function(){updateSlider();vehicleBtnOff();applyFilters();});
+    yrMaxEl.addEventListener('input',function(){updateSlider();vehicleBtnOff();applyFilters();});
     updateSlider();
 
-    /* Vehicle badge toggle */
-    var vBtn=document.getElementById('sf-vehicle-btn'), vLabel=document.getElementById('sf-vehicle-label');
+    /* === Vehicle badge === */
+    var vBtn=document.getElementById('sf-vehicle-btn'),vLabel=document.getElementById('sf-vehicle-label');
     var savedV=null;
-    try{ savedV=JSON.parse(localStorage.getItem('selectedVehicle')); }catch(e){}
+    try{savedV=JSON.parse(localStorage.getItem('selectedVehicle'));}catch(e){}
     var vehicleActive=false;
 
-    if(savedV && savedV.year && savedV.make){
+    if(savedV&&savedV.year&&savedV.make){
       vBtn.style.display='flex';
       vLabel.textContent=savedV.year+' '+savedV.make+(savedV.model?' '+savedV.model:'');
     }
 
-    function vehicleBtnOff(){ vehicleActive=false; vBtn.classList.remove('active'); }
+    function vehicleBtnOff(){vehicleActive=false;vBtn.classList.remove('active');}
 
     vBtn.addEventListener('click',function(){
       if(vehicleActive){
-        /* Turn OFF — clear all filters */
-        vehicleActive=false;
-        vBtn.classList.remove('active');
-        document.querySelectorAll('.sf-make:checked,.sf-cat:checked').forEach(function(c){c.checked=false;});
-        document.querySelectorAll('.sf-model:checked').forEach(function(c){c.checked=false;});
-        yrMinEl.value=1988; yrMaxEl.value=2026; updateSlider();
-        applyFilters();
-      } else {
-        /* Turn ON — set make + year + model from saved vehicle */
-        vehicleActive=true;
-        vBtn.classList.add('active');
-        /* Clear existing */
+        vehicleActive=false;vBtn.classList.remove('active');
+        clearAll();
+      }else{
+        vehicleActive=true;vBtn.classList.add('active');
         document.querySelectorAll('.sf-make:checked').forEach(function(c){c.checked=false;});
         document.querySelectorAll('.sf-model:checked').forEach(function(c){c.checked=false;});
-        /* Check matching make */
         var mk=savedV.make;
         document.querySelectorAll('.sf-make').forEach(function(c){
-          if(c.value.toLowerCase()===mk.toLowerCase()) c.checked=true;
+          if(c.value.toLowerCase()===mk.toLowerCase())c.checked=true;
         });
-        /* Set year */
         var yr=+savedV.year;
-        yrMinEl.value=yr; yrMaxEl.value=yr; updateSlider();
-        /* Apply, then check model */
+        yrMinEl.value=yr;yrMaxEl.value=yr;updateSlider();
         applyFilters();
         if(savedV.model){
           setTimeout(function(){
             document.querySelectorAll('.sf-model').forEach(function(c){
-              if(c.value.toLowerCase()===savedV.model.toLowerCase()) c.checked=true;
+              if(c.value.toLowerCase()===savedV.model.toLowerCase())c.checked=true;
             });
-            if(document.querySelector('.sf-model:checked')) applyFilters();
+            if(document.querySelector('.sf-model:checked'))applyFilters();
           },100);
         }
       }
     });
 
-    /* Items */
-    function getItems(){ return document.querySelectorAll('[data-product-id]'); }
+    /* === Clear all === */
+    function clearAll(){
+      document.querySelectorAll('.sf-make:checked,.sf-cat:checked,.sf-model:checked').forEach(function(c){c.checked=false;});
+      yrMinEl.value=1988;yrMaxEl.value=2026;updateSlider();
+      applyFilters();
+    }
+    clearAllBtn.addEventListener('click',function(){vehicleBtnOff();clearAll();});
+
+    /* === Get filter state === */
+    function getFilterState(){
+      var selMakes=[];document.querySelectorAll('.sf-make:checked').forEach(function(c){selMakes.push(c.value);});
+      var mn=+yrMinEl.value,mx=+yrMaxEl.value;
+      var yearActive=(mn>1988||mx<2026);
+      var selCats=[];document.querySelectorAll('.sf-cat:checked').forEach(function(c){selCats.push(c.value);});
+      var selModels=[];document.querySelectorAll('.sf-model:checked').forEach(function(c){selModels.push(c.value.toLowerCase());});
+      return{makes:selMakes,yr:[mn,mx],yearActive:yearActive,cats:selCats,models:selModels,hasFilter:!!(selMakes.length||yearActive||selCats.length||selModels.length)};
+    }
+
+    /* === Progressive disclosure: update UI state === */
+    function updateDisclosure(){
+      var f=getFilterState();
+
+      /* Make section: if make selected, collapse body, show chip */
+      if(f.makes.length){
+        makeBody.style.display='none';
+        makeChipArea.classList.add('visible');
+        makeChipArea.innerHTML=f.makes.map(function(m){return '<span class="sf-chip">'+m+' <span class="sf-chip-x" data-clear-make="'+m+'">✕</span></span>';}).join(' ');
+        modelSection.style.display='';
+      }else{
+        makeBody.style.display='';
+        makeChipArea.classList.remove('visible');
+        makeChipArea.innerHTML='';
+        modelSection.style.display='none';
+      }
+
+      /* Model section: if model selected, collapse body, show chip */
+      if(f.models.length){
+        modelBody.style.display='none';
+        modelChipArea.classList.add('visible');
+        modelChipArea.innerHTML=f.models.map(function(m){return '<span class="sf-chip">'+m+' <span class="sf-chip-x" data-clear-model="'+m+'">✕</span></span>';}).join(' ');
+      }else{
+        modelBody.style.display='';
+        modelChipArea.classList.remove('visible');
+        modelChipArea.innerHTML='';
+      }
+
+      /* Active filter bar */
+      var chips=[];
+      f.makes.forEach(function(m){chips.push('<span class="sf-chip">'+m+' <span class="sf-chip-x" data-clear-make="'+m+'">✕</span></span>');});
+      f.models.forEach(function(m){chips.push('<span class="sf-chip">'+m+' <span class="sf-chip-x" data-clear-model="'+m+'">✕</span></span>');});
+      if(f.yearActive){chips.push('<span class="sf-chip">'+f.yr[0]+'–'+f.yr[1]+' <span class="sf-chip-x" data-clear-year>✕</span></span>');}
+      f.cats.forEach(function(c){
+        var label=c.replace(/-/g,' ').replace(/\b\w/g,function(l){return l.toUpperCase();});
+        chips.push('<span class="sf-chip">'+label+' <span class="sf-chip-x" data-clear-cat="'+c+'">✕</span></span>');
+      });
+      chipsRow.innerHTML=chips.join('');
+      if(chips.length){activeBar.classList.add('has-filters');}else{activeBar.classList.remove('has-filters');}
+
+      /* Wire chip ✕ buttons */
+      document.querySelectorAll('[data-clear-make]').forEach(function(el){
+        el.addEventListener('click',function(e){
+          e.stopPropagation();
+          var v=this.getAttribute('data-clear-make');
+          document.querySelectorAll('.sf-make').forEach(function(c){if(c.value===v)c.checked=false;});
+          vehicleBtnOff();applyFilters();
+        });
+      });
+      document.querySelectorAll('[data-clear-model]').forEach(function(el){
+        el.addEventListener('click',function(e){
+          e.stopPropagation();
+          var v=this.getAttribute('data-clear-model').toLowerCase();
+          document.querySelectorAll('.sf-model').forEach(function(c){if(c.value.toLowerCase()===v)c.checked=false;});
+          vehicleBtnOff();applyFilters();
+        });
+      });
+      document.querySelectorAll('[data-clear-year]').forEach(function(el){
+        el.addEventListener('click',function(e){
+          e.stopPropagation();
+          yrMinEl.value=1988;yrMaxEl.value=2026;updateSlider();vehicleBtnOff();applyFilters();
+        });
+      });
+      document.querySelectorAll('[data-clear-cat]').forEach(function(el){
+        el.addEventListener('click',function(e){
+          e.stopPropagation();
+          var v=this.getAttribute('data-clear-cat');
+          document.querySelectorAll('.sf-cat').forEach(function(c){if(c.value===v)c.checked=false;});
+          vehicleBtnOff();applyFilters();
+        });
+      });
+    }
+
+    /* === Category smart filtering === */
+    function updateCategoryCounts(f){
+      var items=document.querySelectorAll('[data-product-id]');
+      /* For each category, count how many products match current vehicle filters */
+      document.querySelectorAll('#sf-cat-list .sf-item').forEach(function(li){
+        var handle=li.getAttribute('data-cat-handle');
+        if(!handle)return;
+        var countEl=li.querySelector('.sf-count');
+        var hasVehicleFilter=f.makes.length||f.yearActive||f.models.length;
+
+        if(!hasVehicleFilter){
+          /* Show all categories, no counts */
+          li.style.display='';
+          if(countEl)countEl.textContent='';
+          return;
+        }
+
+        /* Count products matching vehicle filter AND this category */
+        var count=0;
+        var catWords=handle.replace(/-/g,' ').split(' ');
+        items.forEach(function(item){
+          var pid=+(item.getAttribute('data-product-id'));
+          var pd=pMap[pid];
+          if(!pd)return;
+          var tl=pd.title.toLowerCase(),ptype=(pd.type||'').toLowerCase();
+          var isUniv=tl.includes('universal');
+
+          /* Check vehicle match */
+          var vehicleMatch=true;
+          if(f.makes.length&&!isUniv){
+            vehicleMatch=f.makes.some(function(mk){return kws(mk).some(function(k){return tl.includes(k);});});
+          }
+          if(vehicleMatch&&f.yearActive&&!isUniv){
+            var yr=yrRange(pd.title);
+            if(yr){if(yr[1]<f.yr[0]||yr[0]>f.yr[1])vehicleMatch=false;}
+            else vehicleMatch=false;
+          }
+          if(vehicleMatch&&f.models.length&&!isUniv){
+            vehicleMatch=f.models.some(function(m){return tl.includes(m);});
+          }
+          if(!vehicleMatch)return;
+
+          /* Check category match */
+          var catMatch=catWords.some(function(w){return w.length>2&&(tl.includes(w)||ptype.includes(w));});
+          if(catMatch)count++;
+        });
+
+        if(count===0){
+          li.style.display='none';
+        }else{
+          li.style.display='';
+          if(countEl)countEl.textContent='('+count+')';
+        }
+      });
+    }
+
+    /* === Items === */
+    function getItems(){return document.querySelectorAll('[data-product-id]');}
 
     /* === MAIN FILTER === */
     function applyFilters(){
-      var selMakes=[]; document.querySelectorAll('.sf-make:checked').forEach(function(c){selMakes.push(c.value);});
-      var mn=+yrMinEl.value, mx=+yrMaxEl.value;
-      var yearActive=(mn>1988||mx<2026);
-      var selCats=[]; document.querySelectorAll('.sf-cat:checked').forEach(function(c){selCats.push(c.value);});
-      var selModels=[]; document.querySelectorAll('.sf-model:checked').forEach(function(c){selModels.push(c.value.toLowerCase());});
-      var hasFilter=selMakes.length||yearActive||selCats.length||selModels.length;
-
-      var items=getItems(), visible=0;
-      console.log('[SF] Applying:',{makes:selMakes,yr:[mn,mx],cats:selCats,models:selModels,items:items.length});
+      var f=getFilterState();
+      var items=getItems(),visible=0;
 
       items.forEach(function(item){
-        if(!hasFilter){ item.classList.remove('sf-hidden'); item.style.removeProperty('display'); visible++; return; }
+        if(!f.hasFilter){item.classList.remove('sf-hidden');item.style.removeProperty('display');visible++;return;}
         var pid=+(item.getAttribute('data-product-id'));
         var pd=pMap[pid];
-        if(!pd){
-          /* No data — try text match as fallback */
-          pd={title:(item.textContent||''),type:'',tags:[]};
-        }
-        var tl=pd.title.toLowerCase(), ptype=(pd.type||'').toLowerCase();
+        if(!pd)pd={title:(item.textContent||''),type:'',tags:[]};
+        var tl=pd.title.toLowerCase(),ptype=(pd.type||'').toLowerCase();
         var isUniv=tl.includes('universal');
         var show=true;
 
-        if(selMakes.length&&!isUniv){
-          show=selMakes.some(function(mk){ return kws(mk).some(function(k){ return tl.includes(k); }); });
+        if(f.makes.length&&!isUniv){
+          show=f.makes.some(function(mk){return kws(mk).some(function(k){return tl.includes(k);});});
         }
-        if(show&&yearActive&&!isUniv){
+        if(show&&f.yearActive&&!isUniv){
           var yr=yrRange(pd.title);
-          if(yr){ if(yr[1]<mn||yr[0]>mx) show=false; }
+          if(yr){if(yr[1]<f.yr[0]||yr[0]>f.yr[1])show=false;}
           else show=false;
         }
-        if(show&&selModels.length&&!isUniv){
-          show=selModels.some(function(m){ return tl.includes(m); });
+        if(show&&f.models.length&&!isUniv){
+          show=f.models.some(function(m){return tl.includes(m);});
         }
-        if(show&&selCats.length){
-          /* Match product type against category handle keywords */
-          show=selCats.some(function(h){
+        if(show&&f.cats.length){
+          show=f.cats.some(function(h){
             var words=h.replace(/-/g,' ').split(' ');
-            return words.some(function(w){ return w.length>2&&(tl.includes(w)||ptype.includes(w)); });
+            return words.some(function(w){return w.length>2&&(tl.includes(w)||ptype.includes(w));});
           });
         }
 
-        if(show){ item.classList.remove('sf-hidden'); item.style.removeProperty('display'); visible++; }
-        else { item.classList.add('sf-hidden'); item.style.display='none'; }
+        if(show){item.classList.remove('sf-hidden');item.style.removeProperty('display');visible++;}
+        else{item.classList.add('sf-hidden');item.style.display='none';}
       });
 
       var cEl=document.getElementById('product-count');
-      if(cEl) cEl.textContent=hasFilter? visible+' of '+items.length+' products' : items.length+' products';
-      updateModels(selMakes);
+      if(cEl)cEl.textContent=f.hasFilter?visible+' of '+items.length+' products':items.length+' products';
+
+      updateModels(f.makes);
+      updateCategoryCounts(f);
+      updateDisclosure();
     }
 
-    /* Models */
+    /* === Models === */
     function updateModels(selMakes){
-      var mList=document.getElementById('sf-model-list'), mHint=document.getElementById('sf-model-hint');
+      var mList=document.getElementById('sf-model-list');
       if(!mList)return;
-      if(!selMakes.length){ mList.innerHTML=''; if(mHint){mHint.style.display='';mHint.textContent='Select a make first';} return; }
+      if(!selMakes.length){mList.innerHTML='';return;}
       var models={};
       products.forEach(function(p){
-        var tl=p.title.toLowerCase(); if(tl.includes('universal'))return;
+        var tl=p.title.toLowerCase();if(tl.includes('universal'))return;
         if(!selMakes.some(function(mk){return kws(mk).some(function(k){return tl.includes(k);});}))return;
         var rest=p.title.replace(/^\d{4}\s*[-–+]\s*\d{0,4}\s*/,'').trim();
         selMakes.forEach(function(mk){kws(mk).forEach(function(k){rest=rest.replace(new RegExp('\\b'+k.replace(/[\\/-]/g,'[\\\\/-]?')+'\\b\\s*','ig'),'');});});
-        var words=rest.trim().split(/\s+/), mw=[];
-        for(var i=0;i<words.length&&mw.length<2;i++){ if(STOP.indexOf(words[i].toLowerCase())>=0)break; if(/^\d/.test(words[i])&&!mw.length)continue; mw.push(words[i]); }
+        var words=rest.trim().split(/\s+/),mw=[];
+        for(var i=0;i<words.length&&mw.length<2;i++){if(STOP.indexOf(words[i].toLowerCase())>=0)break;if(/^\d/.test(words[i])&&!mw.length)continue;mw.push(words[i]);}
         var model=mw.join(' ').replace(/[,\/]$/,'');
-        if(model&&model.length>1) models[model]=(models[model]||0)+1;
+        if(model&&model.length>1)models[model]=(models[model]||0)+1;
       });
       var sorted=Object.keys(models).sort();
-      if(!sorted.length){ mList.innerHTML=''; if(mHint){mHint.style.display='';mHint.textContent='No models found';} return; }
-      if(mHint) mHint.style.display='none';
-      var was={}; mList.querySelectorAll('.sf-model:checked').forEach(function(c){was[c.value]=true;});
+      if(!sorted.length){mList.innerHTML='';return;}
+      var was={};mList.querySelectorAll('.sf-model:checked').forEach(function(c){was[c.value]=true;});
       mList.innerHTML='';
       sorted.forEach(function(model){
-        var li=document.createElement('li'); li.className='sf-item';
+        var li=document.createElement('li');li.className='sf-item';
         var id='mdl-'+model.replace(/\s+/g,'-').toLowerCase();
         li.innerHTML='<input type="checkbox" id="'+id+'" value="'+model+'" class="sf-model"'+(was[model]?' checked':'')+'><label for="'+id+'">'+model+'</label>';
         mList.appendChild(li);
-        li.querySelector('input').addEventListener('change',function(){ vehicleBtnOff(); applyFilters(); });
+        li.querySelector('input').addEventListener('change',function(){vehicleBtnOff();applyFilters();});
       });
     }
 
-    /* Wire checkboxes */
-    document.querySelectorAll('.sf-make').forEach(function(cb){ cb.addEventListener('change',function(){ vehicleBtnOff(); applyFilters(); }); });
-    document.querySelectorAll('.sf-cat').forEach(function(cb){ cb.addEventListener('change',function(){ vehicleBtnOff(); applyFilters(); }); });
+    /* === Wire checkboxes === */
+    document.querySelectorAll('.sf-make').forEach(function(cb){cb.addEventListener('change',function(){vehicleBtnOff();applyFilters();});});
+    document.querySelectorAll('.sf-cat').forEach(function(cb){cb.addEventListener('change',function(){vehicleBtnOff();applyFilters();});});
 
-    /* URL params */
+    /* === URL params === */
     var params=new URLSearchParams(window.location.search);
-    var pCat=params.get('category'), pMake=params.get('make'), pYear=params.get('year'), pModel=params.get('model');
+    var pCat=params.get('category'),pMake=params.get('make'),pYear=params.get('year'),pModel=params.get('model');
     var any=false;
-    if(pCat){ document.querySelectorAll('.sf-cat').forEach(function(cb){ if(cb.value===pCat){cb.checked=true;any=true;} }); }
-    if(pMake){ document.querySelectorAll('.sf-make').forEach(function(cb){ if(cb.value.toLowerCase()===pMake.toLowerCase()){cb.checked=true;any=true;} }); }
-    if(pYear){ yrMinEl.value=pYear; yrMaxEl.value=pYear; updateSlider(); any=true; }
+    if(pCat){document.querySelectorAll('.sf-cat').forEach(function(cb){if(cb.value===pCat){cb.checked=true;any=true;}});}
+    if(pMake){document.querySelectorAll('.sf-make').forEach(function(cb){if(cb.value.toLowerCase()===pMake.toLowerCase()){cb.checked=true;any=true;}});}
+    if(pYear){yrMinEl.value=pYear;yrMaxEl.value=pYear;updateSlider();any=true;}
     if(any){
       setTimeout(function(){
         applyFilters();
-        if(pModel){ setTimeout(function(){ document.querySelectorAll('.sf-model').forEach(function(cb){ if(cb.value.toLowerCase()===pModel.toLowerCase())cb.checked=true; }); if(document.querySelector('.sf-model:checked'))applyFilters(); },200); }
+        if(pModel){setTimeout(function(){document.querySelectorAll('.sf-model').forEach(function(cb){if(cb.value.toLowerCase()===pModel.toLowerCase())cb.checked=true;});if(document.querySelector('.sf-model:checked'))applyFilters();},200);}
       },100);
     }
   }
 
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
 </script>
