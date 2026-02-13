@@ -57,6 +57,7 @@
 /* === YEAR INPUT === */
 .sf-year-input{width:100%;padding:9px 12px;border:1.5px solid #ddd;border-radius:6px;font-size:0.88rem;font-weight:600;text-align:center;color:#1E2326;outline:none;box-sizing:border-box;-moz-appearance:textfield;}
 .sf-year-input::-webkit-outer-spin-button,.sf-year-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+.sf-year-input::placeholder{color:#ccc;font-weight:400;}
 .sf-year-input:focus{border-color:#F39C12;box-shadow:0 0 0 2px rgba(243,156,18,0.15);}
 .sf-year-input.sf-invalid{border-color:#e74c3c;box-shadow:0 0 0 2px rgba(231,76,60,0.15);}
 
@@ -123,7 +124,7 @@
     <div class="sf-header" data-toggle="sf-year-section">Year <span class="sf-chevron">▼</span></div>
     <div class="sf-body">
       <div id="sf-year-slider">
-        <input type="number" id="sf-year-single" class="sf-year-input" min="1988" max="2026" placeholder="e.g. 2004">
+        <input type="text" id="sf-year-single" class="sf-year-input" maxlength="4" inputmode="numeric" pattern="\d{4}" placeholder="e.g. 2004">
       </div>
     </div>
   </div>
@@ -202,17 +203,18 @@
     var mobBtn=document.getElementById('mobile-filter-toggle'),sb=document.getElementById('collection-sidebar');
     if(mobBtn&&sb)mobBtn.addEventListener('click',function(){sb.classList.toggle('sb-open');});
 
-    /* === Year input === */
+    /* === Year input — 4-digit numeric only === */
     yrSingleEl.addEventListener('input',function(){
-      var v=parseInt(this.value,10);
+      this.value=this.value.replace(/\D/g,'').slice(0,4);
       if(this.value===''){ this.classList.remove('sf-invalid');vehicleBtnOff();applyFilters();return; }
-      if(isNaN(v)||v<1900||v>2030){this.classList.add('sf-invalid');return;}
+      if(this.value.length<4){ this.classList.remove('sf-invalid');return; }
+      var v=parseInt(this.value,10);
+      if(v<1988||v>2026){this.classList.add('sf-invalid');return;}
       this.classList.remove('sf-invalid');
       vehicleBtnOff();applyFilters();
     });
-    yrSingleEl.addEventListener('blur',function(){
-      var v=parseInt(this.value,10);
-      if(this.value!==''&&(isNaN(v)||v<1988||v>2026)){this.value='';this.classList.remove('sf-invalid');applyFilters();}
+    yrSingleEl.addEventListener('keydown',function(e){
+      if(e.key.length===1&&!/\d/.test(e.key)&&!e.ctrlKey&&!e.metaKey){e.preventDefault();}
     });
 
     /* === Vehicle badge === */
