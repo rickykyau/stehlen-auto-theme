@@ -130,119 +130,20 @@
 </div>
 
 <script>
-/* Vehicle data fetched via AJAX from Shopify storefront API */
-var __stehlenProducts = [];
-var __stehlenProductsReady = (function() {
-  function fetchPage(page) {
-    return fetch('/collections/all/products.json?limit=250&page=' + page)
-      .then(function(r) { return r.json(); })
-      .then(function(d) { return d.products || []; });
-  }
-  return fetchPage(1).then(function(p1) {
-    p1.forEach(function(p) { __stehlenProducts.push(p.title); });
-    if (p1.length >= 250) {
-      return fetchPage(2).then(function(p2) {
-        p2.forEach(function(p) { __stehlenProducts.push(p.title); });
-        if (p2.length >= 250) {
-          return fetchPage(3).then(function(p3) {
-            p3.forEach(function(p) { __stehlenProducts.push(p.title); });
-          });
-        }
-      });
-    }
-  }).catch(function(e) { console.warn('[MVD] AJAX product fetch failed:', e); });
-})();
+/* Vehicle data loaded from pre-built static JSON asset */
+fetch('{{ "vehicle-data.json" | asset_url }}')
+  .then(function(r) { return r.json(); })
+  .then(function(vehicleData) {
+    console.log('[MVD] Vehicle data loaded, makes:', Object.keys(vehicleData).length);
+    initVehicleSelector(vehicleData);
+  })
+  .catch(function(e) { console.warn('[MVD] Failed to load vehicle data:', e); });
 
-function __parseAndInit() {
-/* Parse year ranges, makes, and models from product titles */
-var __stehlenVehicleData = (function() {
-  /* Auto-extract make + model from product titles
-     Title format: "YYYY-YYYY Make Model Rest..." or "YYYY+ Make Model Rest..."
-     Examples: "2003-2009 Toyota 4Runner Bull Guard"
-               "2011-2023 Chrysler 300/300C Trailer Hitch"
-               "1991-2002 Ford Escort/Mercury Tracer Class 1"  */
-
-  var data = {};
-
-  __stehlenProducts.forEach(function(title) {
-    /* Extract year range */
-    var yrMatch = title.match(/(\d{4})\s*[-–]\s*(\d{4})/);
-    var yrPlusMatch = !yrMatch && title.match(/(\d{4})\+/);
-    var startYear, endYear;
-    if (yrMatch) { startYear = +yrMatch[1]; endYear = +yrMatch[2]; }
-    else if (yrPlusMatch) { startYear = +yrPlusMatch[1]; endYear = 2026; }
-    else { return; }
-
-    /* Remove year portion to get "Make Model Rest..." */
-    var rest = title.replace(/^\d{4}\s*[-–+]\s*\d{0,4}\s*/, '').trim();
-
-    /* Known makes to look for (auto-expanded) */
-    var makes = ['Ford','Chevy','Chevrolet','GMC','Dodge','Ram','Toyota','Honda','Nissan',
-      'Jeep','Subaru','Mazda','Hyundai','Mercedes-Benz','Mercedes','Chrysler','Buick',
-      'Saturn','Pontiac','Acura','Kia','Audi','BMW','Volkswagen','VW','Lincoln',
-      'Mercury','Infiniti','Lexus','Mitsubishi','Volvo','Cadillac','Scion'];
-
-    /* Normalize display names */
-    var nameMap = {'Chevrolet':'Chevy','Mercedes':'Mercedes-Benz','VW':'Volkswagen'};
-
-    /* Handle slash-separated makes: "Chevy/GMC", "Ford Escort/Mercury Tracer" */
-    var segments = rest.split(/\s*\/\s*/);
-
-    segments.forEach(function(seg) {
-      var words = seg.trim().split(/\s+/);
-      var foundMake = null;
-      var modelStart = 0;
-
-      /* Check first 1-2 words for make */
-      for (var i = 0; i < Math.min(2, words.length); i++) {
-        var candidate = words.slice(0, i+1).join(' ');
-        for (var mi = 0; mi < makes.length; mi++) {
-          if (candidate.toLowerCase() === makes[mi].toLowerCase()) {
-            foundMake = nameMap[makes[mi]] || makes[mi];
-            modelStart = i + 1;
-            break;
-          }
-        }
-        if (foundMake) break;
-      }
-      if (!foundMake) return;
-
-      /* Model = next 1-3 words until we hit a product-type keyword */
-      var stopWords = ['trailer','hitch','class','bull','guard','grille','side','step','nerf',
-        'bar','tonneau','cover','chase','rack','sport','matte','black','stainless','led',
-        'light','low','profile','hard','tri-fold','bed','universal','-','w/'];
-      var modelWords = [];
-      for (var j = modelStart; j < words.length && modelWords.length < 3; j++) {
-        if (stopWords.indexOf(words[j].toLowerCase()) >= 0) break;
-        /* Also stop at "C/K" style model qualifiers after we have something */
-        modelWords.push(words[j]);
-      }
-
-      var model = modelWords.join(' ').replace(/[-,]$/, '') || 'Other';
-      if (!data[foundMake]) data[foundMake] = {};
-      if (!data[foundMake][model]) data[foundMake][model] = [];
-      for (var y = startYear; y <= endYear; y++) {
-        if (data[foundMake][model].indexOf(y) === -1) data[foundMake][model].push(y);
-      }
-    });
-  });
-
-  /* Sort years descending */
-  Object.keys(data).forEach(function(mk) {
-    Object.keys(data[mk]).forEach(function(md) {
-      data[mk][md].sort(function(a,b) { return b - a; });
-    });
-  });
-
-  return data;
-})();
-
-(function initVehicleSelector() {
+function initVehicleSelector(vehicleData) {
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initVehicleSelector);
+    document.addEventListener('DOMContentLoaded', function() { initVehicleSelector(vehicleData); });
     return;
   }
-  var vehicleData = __stehlenVehicleData;
 
   var overlay = document.getElementById('mvd-overlay');
   var openBtn = document.getElementById('my-vehicle-btn');
@@ -372,11 +273,7 @@ var __stehlenVehicleData = (function() {
       changeEl.style.display = 'inline';
     } catch(e) {}
   }
-})();
-} /* end __parseAndInit */
-
-/* Run after product data is ready */
-__stehlenProductsReady.then(__parseAndInit);
+}
 </script>
 
 {% stylesheet %}
