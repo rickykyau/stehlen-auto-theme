@@ -2228,70 +2228,58 @@ results-list .stehlen-collection-layout {
   }
 }
 
-/* ===== PRODUCT CARDS — Add to Cart styling ===== */
-/* Move quick-add out of gallery overlay to below price */
-.product-grid__item .product-card__content {
-  display: flex !important;
-  flex-direction: column !important;
-}
-.product-grid__item .card-gallery {
-  order: 1 !important;
-}
-.product-grid__item .card-gallery .quick-add {
-  position: relative !important;
+/* ===== PRODUCT CARDS — Add to Cart button ===== */
+/* Quick-add sits inside card-gallery as overlay — make it a clean bottom bar */
+.product-grid__item quick-add-component {
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
   opacity: 1 !important;
   visibility: visible !important;
-  display: block !important;
-  order: 99 !important;
-  width: 100% !important;
-  padding: 8px 0 0 !important;
   pointer-events: all !important;
+  padding: 0 !important;
+  z-index: 5 !important;
 }
-/* Full-width Add to Cart button */
-.product-grid__item .quick-add form {
+.product-grid__item quick-add-component form {
   width: 100% !important;
 }
-.product-grid__item .quick-add add-to-cart-component {
+.product-grid__item quick-add-component add-to-cart-component {
   width: 100% !important;
   display: block !important;
 }
-.product-grid__item .quick-add add-to-cart-component button {
+.product-grid__item quick-add-component button {
   width: 100% !important;
-  height: 36px !important;
+  height: 34px !important;
   min-height: unset !important;
   padding: 0 8px !important;
   background: #F39C12 !important;
   color: #fff !important;
   border: none !important;
-  border-radius: 6px !important;
+  border-radius: 0 0 6px 6px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   gap: 6px !important;
-  font-size: 0.8rem !important;
+  font-size: 0.78rem !important;
   font-weight: 700 !important;
   text-transform: uppercase !important;
   cursor: pointer !important;
 }
-.product-grid__item .quick-add add-to-cart-component button:hover {
+.product-grid__item quick-add-component button:hover {
   background: #E67E22 !important;
 }
-/* Show icon + short text */
-.product-grid__item .quick-add .add-to-cart-icon {
-  display: flex !important;
-}
-.product-grid__item .quick-add .add-to-cart-icon svg {
-  width: 18px !important;
-  height: 18px !important;
+.product-grid__item .add-to-cart-icon svg {
+  width: 16px !important;
+  height: 16px !important;
   color: #fff !important;
 }
-.product-grid__item .quick-add .add-to-cart-text__content {
-  display: inline !important;
-  font-size: 0.8rem !important;
-  visibility: visible !important;
-  width: auto !important;
-  clip: auto !important;
-  position: static !important;
+.product-grid__item .add-to-cart-text__content {
+  font-size: 0.78rem !important;
+}
+/* Ensure gallery has relative positioning for the overlay */
+.product-grid__item .card-gallery {
+  position: relative !important;
 }
 /* Hide Shop Pay, dynamic checkout */
 .product-grid__item .shopify-payment-button,
