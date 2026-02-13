@@ -130,44 +130,16 @@
 </div>
 
 <script>
-/* Vehicle data - inline from static asset with fetch fallback */
-var __mvdVehicleData = null;
+/* Vehicle data — hardcoded, regenerated via Admin API when products change */
+var __mvdVehicleData = {"Acura":{"TL CL":[2007,2006,2005,2004,2003,2002,2001,2000,1999,1998]},"Audi":{"A4":[2008,2007,2006,2005,2004,2003,2002]},"Buick":{"Enclave Chevrolet Traverse":[2017,2016,2015,2014,2013,2012,2011,2010,2009,2008]},"Chevy":{"Cavalier Pontiac Sunfire":[2005,2004,2003,2002,2001,2000,1999,1998,1997,1996,1995],"Cobalt":[2011,2010,2009,2008,2007,2006,2005,2004],"Colorado":[2014,2013,2012,2011,2010,2009,2008,2007,2006,2005,2004],"Camaro Convertible":[2015,2014,2013,2012,2011],"Cruze":[2015,2014,2013,2012,2011],"Equinox":[2024,2023,2022,2021,2020,2019,2018]},"Chrysler":{"Town & Country":[2007,2006,2005,2004,2003,2002,2001,2000,1999,1998,1997,1996]},"Dodge":{"Durango":[2003,2002,2001,2000,1999,1998],"Caliber":[2012,2011,2010,2009,2008,2007],"Charger Front":[2014,2013,2012,2011],"Chrysler 300 Charger":[2023,2022,2021,2020,2019,2018,2017,2016,2015,2014,2013,2012,2011]},"Ford":{"Escort":[2002,2001,2000,1999,1998,1997,1996,1995,1994,1993,1992,1991],"E-Series":[2014,2013,2012,2011,2010,2009,2008,2007,2006,2005,2004,2003,2002,2001,2000],"F-150 4\" Oval":[2008,2007,2006,2005,2004],"Edge":[2015,2014,2013,2012,2011,2010,2009,2008,2007],"F-150 6.5ft":[2026,2025,2024,2023,2022,2021,2020,2019,2018,2017,2016,2015],"Bronco":[2024,2023,2022,2021]},"GMC":{"C":[2000,1999,1998,1997,1996,1995,1994,1993,1992,1991,1990,1989,1988],"Canyon 6'":[2014,2013,2012,2011,2010,2009,2008,2007,2006,2005,2004],"Acadia":[2023,2022,2021,2020,2019,2018,2017],"Terrain":[2024,2023,2022,2021,2020,2019,2018]},"Honda":{"Accord":[2007,2006,2005,2004,2003,2002,2001,2000,1999,1998,1997,1996,1995,1994],"CR-V":[2026,2025,2024,2023,2022,2021,2020,2019,2018,2017,2016,2015,2014,2013,2012,2011,2010,2009,2008,2007,2006,2005,2004,2003,2002],"Element":[2011,2010,2009,2008,2007,2006,2005,2004,2003],"Accord & Acura":[2014,2013,2012,2011,2010,2009,2008]},"Hyundai":{"Azera":[2011,2010,2009,2008,2007,2006],"Elantra":[2010,2009,2008,2007],"Accent":[2017,2016,2015,2014,2013,2012]},"Infiniti":{"QX56":[2015,2014,2013,2012,2011,2010,2009,2008,2007,2006,2005,2004]},"Jeep":{"Compass":[2026,2025,2024,2023,2022,2021,2020,2019,2018,2017]},"Kia":{"Rio":[2017,2016,2015,2014,2013,2012]},"Lincoln":{"MKX":[2015,2014,2013,2012,2011,2010,2009,2008,2007]},"Mazda":{"CX-5":[2025,2024,2023,2022,2021,2020,2019,2018,2017,2016,2015,2014,2013]},"Mercedes-Benz":{"E-Class":[2009,2008,2007,2006,2005,2004,2003]},"Mercury":{"Tracer":[2002,2001,2000,1999,1998,1997,1996,1995,1994,1993,1992,1991]},"Nissan":{"Armada":[2015,2014,2013,2012,2011,2010,2009,2008,2007,2006,2005,2004],"Altima":[2025,2024,2023,2022,2021,2020,2019,2018,2017,2016,2015,2014,2013,2012,2011,2010,2009,2008,2007],"Altima Coupe":[2013,2012,2011,2010,2009,2008]},"Subaru":{"Crosstrek 1.25\"":[2023,2022,2021,2020,2019,2018],"Crosstrek 2\"":[2023,2022,2021,2020,2019,2018]},"Toyota":{"4Runner & Lexus":[2009,2008,2007,2006,2005,2004,2003],"4Runner":[2024,2023,2022,2021,2020,2019,2018,2017,2016,2015,2014,2013,2012,2011,2010],"Tundra 5.5'":[2026,2025,2024,2023,2022]}};
+console.log('[MVD] Inline data loaded, makes:', Object.keys(__mvdVehicleData).length);
 
 (function() {
-  function boot(vehicleData) {
-    if (!vehicleData || !Object.keys(vehicleData).length) {
-      console.warn('[MVD] No vehicle data');
-      return;
-    }
-    console.log('[MVD] Booting with', Object.keys(vehicleData).length, 'makes');
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', function() { initVehicleSelector(vehicleData); });
-    } else {
-      initVehicleSelector(vehicleData);
-    }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() { initVehicleSelector(__mvdVehicleData); });
+  } else {
+    initVehicleSelector(__mvdVehicleData);
   }
-
-  /* Try loading from CDN asset */
-  var assetUrl = '{{ "vehicle-data.json" | asset_url }}';
-  console.log('[MVD] Loading vehicle data from:', assetUrl);
-  
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', assetUrl, true);
-  xhr.onload = function() {
-    if (xhr.status === 200) {
-      try {
-        __mvdVehicleData = JSON.parse(xhr.responseText);
-        console.log('[MVD] XHR loaded OK, makes:', Object.keys(__mvdVehicleData).length);
-        boot(__mvdVehicleData);
-      } catch(e) {
-        console.warn('[MVD] JSON parse error:', e);
-      }
-    } else {
-      console.warn('[MVD] XHR status:', xhr.status);
-    }
-  };
-  xhr.onerror = function() { console.warn('[MVD] XHR network error'); };
-  xhr.send();
 })();
 
 function initVehicleSelector(vehicleData) {
