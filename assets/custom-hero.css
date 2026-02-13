@@ -2289,23 +2289,33 @@ results-list .stehlen-collection-layout {
   display: flex !important;
   flex: 0 0 auto !important;
   height: 36px !important;
+  min-height: 36px !important;
+  max-height: 36px !important;
   border-radius: 6px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+}
+.product-grid__item quantity-input *,
+.product-grid__item .quantity * {
+  margin: 0 !important;
+  padding: 0 !important;
+  min-height: unset !important;
+  max-height: 36px !important;
+  box-sizing: border-box !important;
 }
 .product-grid__item quantity-input input,
 .product-grid__item .quantity__input {
   width: 28px !important;
   height: 36px !important;
   font-size: 0.8rem !important;
-  padding: 0 !important;
   text-align: center !important;
-  min-height: unset !important;
+  border: none !important;
 }
 .product-grid__item quantity-input button,
 .product-grid__item .quantity__button {
   width: 28px !important;
   height: 36px !important;
-  padding: 0 !important;
-  min-height: unset !important;
 }
 /* Cart button — icon only, compact */
 .product-grid__item add-to-cart-component {
