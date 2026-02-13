@@ -130,20 +130,47 @@
 </div>
 
 <script>
-/* Vehicle data loaded from pre-built static JSON asset */
-fetch('{{ "vehicle-data.json" | asset_url }}')
-  .then(function(r) { return r.json(); })
-  .then(function(vehicleData) {
-    console.log('[MVD] Vehicle data loaded, makes:', Object.keys(vehicleData).length);
-    initVehicleSelector(vehicleData);
-  })
-  .catch(function(e) { console.warn('[MVD] Failed to load vehicle data:', e); });
+/* Vehicle data - inline from static asset with fetch fallback */
+var __mvdVehicleData = null;
+
+(function() {
+  function boot(vehicleData) {
+    if (!vehicleData || !Object.keys(vehicleData).length) {
+      console.warn('[MVD] No vehicle data');
+      return;
+    }
+    console.log('[MVD] Booting with', Object.keys(vehicleData).length, 'makes');
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() { initVehicleSelector(vehicleData); });
+    } else {
+      initVehicleSelector(vehicleData);
+    }
+  }
+
+  /* Try loading from CDN asset */
+  var assetUrl = '{{ "vehicle-data.json" | asset_url }}';
+  console.log('[MVD] Loading vehicle data from:', assetUrl);
+  
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', assetUrl, true);
+  xhr.onload = function() {
+    if (xhr.status === 200) {
+      try {
+        __mvdVehicleData = JSON.parse(xhr.responseText);
+        console.log('[MVD] XHR loaded OK, makes:', Object.keys(__mvdVehicleData).length);
+        boot(__mvdVehicleData);
+      } catch(e) {
+        console.warn('[MVD] JSON parse error:', e);
+      }
+    } else {
+      console.warn('[MVD] XHR status:', xhr.status);
+    }
+  };
+  xhr.onerror = function() { console.warn('[MVD] XHR network error'); };
+  xhr.send();
+})();
 
 function initVehicleSelector(vehicleData) {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function() { initVehicleSelector(vehicleData); });
-    return;
-  }
 
   var overlay = document.getElementById('mvd-overlay');
   var openBtn = document.getElementById('my-vehicle-btn');
