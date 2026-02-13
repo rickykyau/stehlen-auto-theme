@@ -165,6 +165,7 @@
       <path d="M5 11h14"/>
     </svg>
     <span id="mobile-banner-label">Find Parts For Your Vehicle</span>
+    <span id="mobile-banner-change" class="mobile-vehicle-banner__change" style="display:none;">Change</span>
     <svg class="mobile-vehicle-banner__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M6 9l6 6 6-6"/>
     </svg>
@@ -322,11 +323,13 @@
     var saved = localStorage.getItem('selectedVehicle');
     if (saved) {
       var v = JSON.parse(saved);
-      label.innerHTML = '<span class="mobile-vehicle-banner__vehicle">' + v.year + ' ' + v.make + ' ' + v.model + '</span><span class="mobile-vehicle-banner__change">Change</span>';
+      label.innerHTML = '<span class="mobile-vehicle-banner__vehicle">' + v.year + ' ' + v.make + ' ' + v.model + '</span>';
+      var chg = document.getElementById('mobile-banner-change'); if(chg) chg.style.display = 'inline';
       statusEl.innerHTML = 'Viewing parts for: <strong>' + v.year + ' ' + v.make + ' ' + v.model + '</strong>';
       statusEl.style.display = 'block';
     } else {
       label.textContent = 'Find Parts For Your Vehicle';
+      var chg = document.getElementById('mobile-banner-change'); if(chg) chg.style.display = 'none';
       statusEl.style.display = 'none';
     }
   }
