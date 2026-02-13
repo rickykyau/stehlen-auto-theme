@@ -111,15 +111,17 @@
         '</div>';
     }
 
-    var html = '<div class="predictive-search-results__inner" data-search-results>';
+    var html = '<div class="predictive-search-results__inner cps-results" data-search-results>';
     html += '<div class="cps-results-header">Products</div>';
-    html += '<div class="cps-results-list">';
+    html += '<div class="cps-results-grid">';
 
     results.forEach(function (p, idx) {
-      html += '<div class="cps-result-item predictive-search-results__card" data-index="' + idx + '" role="option">';
+      html += '<div class="cps-result-card predictive-search-results__card" data-index="' + idx + '" role="option">';
       html += '<a href="/products/' + escapeHtml(p.h) + '" class="cps-result-link">';
       if (p.img) {
-        html += '<img class="cps-result-img" src="' + escapeHtml(p.img) + '" alt="" loading="lazy" width="60" height="60">';
+        // Use larger image for tile view
+        var bigImg = p.img.replace(/width=\d+/, 'width=400');
+        html += '<div class="cps-result-img-wrap"><img class="cps-result-img" src="' + escapeHtml(bigImg) + '" alt="" loading="lazy"></div>';
       }
       html += '<div class="cps-result-info">';
       html += '<div class="cps-result-title">' + highlightMatch(p.t, query) + '</div>';
@@ -184,7 +186,7 @@
 
     // Keyboard navigation
     input.addEventListener('keydown', function (e) {
-      var items = resultsContainer.querySelectorAll('.cps-result-item');
+      var items = resultsContainer.querySelectorAll('.cps-result-card');
       if (!items.length) return;
 
       if (e.key === 'ArrowDown') {
