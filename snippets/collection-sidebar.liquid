@@ -497,7 +497,7 @@
     if(any){
       setTimeout(function(){
         applyFilters();
-        if(pModel){setTimeout(function(){document.querySelectorAll('.sf-model').forEach(function(cb){if(cb.value.toLowerCase()===pModel.toLowerCase())cb.checked=true;});if(document.querySelector('.sf-model:checked'))applyFilters();},200);}
+        if(pModel){setTimeout(function(){var pm=pModel.toLowerCase();document.querySelectorAll('.sf-model').forEach(function(cb){if(cb.value.toLowerCase()===pm||cb.value.toLowerCase().indexOf(pm)===0)cb.checked=true;});if(document.querySelector('.sf-model:checked'))applyFilters();},200);}
       },100);
     }
   }
