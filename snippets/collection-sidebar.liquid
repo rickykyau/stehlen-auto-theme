@@ -54,14 +54,13 @@
 .sf-section-chip{display:none;padding:10px 14px;background:#fafafa;border-bottom:1px solid #eee;}
 .sf-section-chip.visible{display:block;}
 
-/* === YEAR SLIDER === */
-.sf-year-display{display:flex;justify-content:center;gap:6px;font-size:0.9rem;font-weight:700;color:#1E2326;margin-bottom:10px;}
-.sf-range-wrap{position:relative;height:30px;}
-.sf-range{-webkit-appearance:none;appearance:none;position:absolute;top:0;left:0;width:100%;height:30px;background:transparent;pointer-events:none;margin:0;z-index:2;}
-.sf-range::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#F39C12;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.3);cursor:pointer;pointer-events:all;position:relative;z-index:3;}
-.sf-range::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:#F39C12;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.3);cursor:pointer;pointer-events:all;}
-.sf-range-track{position:absolute;top:12px;left:0;right:0;height:4px;background:#e0e0e0;border-radius:2px;z-index:1;}
-.sf-range-fill{position:absolute;top:12px;height:4px;background:#F39C12;border-radius:2px;z-index:1;}
+/* === YEAR INPUTS === */
+.sf-year-inputs{display:flex;align-items:center;gap:8px;justify-content:center;}
+.sf-year-input{width:72px;padding:8px 10px;border:1.5px solid #ddd;border-radius:6px;font-size:0.88rem;font-weight:700;text-align:center;color:#1E2326;outline:none;box-sizing:border-box;-moz-appearance:textfield;}
+.sf-year-input::-webkit-outer-spin-button,.sf-year-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+.sf-year-input:focus{border-color:#F39C12;box-shadow:0 0 0 2px rgba(243,156,18,0.15);}
+.sf-year-input.sf-invalid{border-color:#e74c3c;box-shadow:0 0 0 2px rgba(231,76,60,0.15);}
+.sf-year-dash{font-weight:700;color:#999;font-size:0.9rem;}
 
 /* === HIDDEN === */
 .sf-hidden{display:none!important;}
@@ -126,12 +125,10 @@
     <div class="sf-header" data-toggle="sf-year-section">Year <span class="sf-chevron">▼</span></div>
     <div class="sf-body">
       <div id="sf-year-slider">
-        <div class="sf-year-display"><span id="sf-year-min-val">1988</span> — <span id="sf-year-max-val">2026</span></div>
-        <div class="sf-range-wrap">
-          <input type="range" id="sf-year-min" class="sf-range" min="1988" max="2026" value="1988" step="1">
-          <input type="range" id="sf-year-max" class="sf-range" min="1988" max="2026" value="2026" step="1">
-          <div class="sf-range-track"></div>
-          <div class="sf-range-fill" id="sf-range-fill"></div>
+        <div class="sf-year-inputs">
+          <input type="number" id="sf-year-min" class="sf-year-input" min="1988" max="2026" value="1988" placeholder="From">
+          <span class="sf-year-dash">—</span>
+          <input type="number" id="sf-year-max" class="sf-year-input" min="1988" max="2026" value="2026" placeholder="To">
         </div>
       </div>
     </div>
@@ -178,8 +175,6 @@
 
     /* === DOM refs === */
     var yrMinEl=document.getElementById('sf-year-min'),yrMaxEl=document.getElementById('sf-year-max');
-    var yrMinV=document.getElementById('sf-year-min-val'),yrMaxV=document.getElementById('sf-year-max-val');
-    var yrFill=document.getElementById('sf-range-fill');
     var makeBody=document.getElementById('sf-make-body');
     var makeChipArea=document.getElementById('sf-make-chip-area');
     var modelSection=document.getElementById('sf-model-section');
@@ -209,17 +204,24 @@
     var mobBtn=document.getElementById('mobile-filter-toggle'),sb=document.getElementById('collection-sidebar');
     if(mobBtn&&sb)mobBtn.addEventListener('click',function(){sb.classList.toggle('sb-open');});
 
-    /* === Year slider === */
-    function updateSlider(){
-      var mn=+yrMinEl.value,mx=+yrMaxEl.value;
-      if(mn>mx){var t=mn;mn=mx;mx=t;yrMinEl.value=mn;yrMaxEl.value=mx;}
-      yrMinV.textContent=mn;yrMaxV.textContent=mx;
-      var p1=((mn-1988)/(2026-1988))*100,p2=((mx-1988)/(2026-1988))*100;
-      yrFill.style.left=p1+'%';yrFill.style.width=(p2-p1)+'%';
+    /* === Year inputs === */
+    function validateYear(el){
+      var v=parseInt(el.value,10);
+      if(isNaN(v)||v<1988||v>2026){el.classList.add('sf-invalid');return false;}
+      el.classList.remove('sf-invalid');return true;
     }
-    yrMinEl.addEventListener('input',function(){updateSlider();vehicleBtnOff();applyFilters();});
-    yrMaxEl.addEventListener('input',function(){updateSlider();vehicleBtnOff();applyFilters();});
-    updateSlider();
+    function onYearChange(){
+      var validMin=validateYear(yrMinEl),validMax=validateYear(yrMaxEl);
+      if(validMin&&validMax){
+        var mn=+yrMinEl.value,mx=+yrMaxEl.value;
+        if(mn>mx){yrMinEl.classList.add('sf-invalid');yrMaxEl.classList.add('sf-invalid');return;}
+      }
+      if(validMin&&validMax){vehicleBtnOff();applyFilters();}
+    }
+    yrMinEl.addEventListener('input',onYearChange);
+    yrMaxEl.addEventListener('input',onYearChange);
+    yrMinEl.addEventListener('blur',function(){var v=parseInt(this.value,10);if(isNaN(v))this.value=1988;else this.value=Math.max(1988,Math.min(2026,v));validateYear(this);onYearChange();});
+    yrMaxEl.addEventListener('blur',function(){var v=parseInt(this.value,10);if(isNaN(v))this.value=2026;else this.value=Math.max(1988,Math.min(2026,v));validateYear(this);onYearChange();});
 
     /* === Vehicle badge === */
     var vBtn=document.getElementById('sf-vehicle-btn'),vLabel=document.getElementById('sf-vehicle-label');
