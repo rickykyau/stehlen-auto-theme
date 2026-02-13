@@ -477,7 +477,9 @@
       sorted.forEach(function(model){
         var li=document.createElement('li');li.className='sf-item';
         var id='mdl-'+model.replace(/\s+/g,'-').toLowerCase();
-        li.innerHTML='<input type="checkbox" id="'+id+'" value="'+model+'" class="sf-model"'+(was[model]?' checked':'')+'><label for="'+id+'">'+model+'</label>';
+        var cb=document.createElement('input');cb.type='checkbox';cb.id=id;cb.value=model;cb.className='sf-model';if(was[model])cb.checked=true;
+        var lbl=document.createElement('label');lbl.htmlFor=id;lbl.textContent=model;
+        li.appendChild(cb);li.appendChild(lbl);
         mList.appendChild(li);
         li.querySelector('input').addEventListener('change',function(){vehicleBtnOff();applyFilters();});
       });
