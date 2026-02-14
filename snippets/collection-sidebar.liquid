@@ -463,8 +463,15 @@
         selMakes.forEach(function(mk){kws(mk).forEach(function(k){rest=rest.replace(new RegExp('\\b'+k.replace(/[\\/-]/g,'[\\\\/-]?')+'\\b\\s*','ig'),'');});});
         var words=rest.trim().split(/\s+/),mw=[];
         for(var i=0;i<words.length&&mw.length<2;i++){if(STOP.indexOf(words[i].toLowerCase())>=0)break;if(/^\d/.test(words[i])&&!mw.length)continue;mw.push(words[i]);}
-        var model=mw.join(' ').replace(/[,\/]$/,'');
-        if(model&&model.length>1)models[model]=(models[model]||0)+1;
+        var model=mw.join(' ').replace(/[,\/&\-]+$/,'').replace(/\s+/g,' ').trim();
+        /* Normalize: title-case first word for consistent dedup */
+        if(model) model=model.split(' ').map(function(w){return w.charAt(0).toUpperCase()+w.slice(1).toLowerCase();}).join(' ');
+        if(model&&model.length>1){
+          /* Dedup: check if already exists case-insensitively */
+          var found=Object.keys(models).find(function(k){return k.toLowerCase()===model.toLowerCase();});
+          if(found) models[found]++;
+          else models[model]=1;
+        }
       });
       var sorted=Object.keys(models).sort();
       if(!sorted.length){mList.innerHTML='';return;}
