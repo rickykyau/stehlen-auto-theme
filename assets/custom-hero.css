@@ -349,13 +349,20 @@ header svg {
 }
 
 /* ===== MY VEHICLE HEADER CONTROL ===== */
-/* Fix: cart bubble overlapping logo on mobile — give header-actions both right columns */
+/* Fix: cart bubble overlapping logo on mobile — force header-actions to right */
 @media (max-width: 749px) {
-  header-actions {
-    grid-area: auto !important;
-    grid-column: 4 / -1 !important;
-    grid-row: 1 !important;
-    justify-content: flex-end !important;
+  .header__columns {
+    position: relative !important;
+  }
+  .header__columns header-actions {
+    position: absolute !important;
+    right: 8px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    z-index: 10 !important;
   }
 }
 
