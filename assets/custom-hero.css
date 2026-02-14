@@ -349,6 +349,14 @@ header svg {
 }
 
 /* ===== MY VEHICLE HEADER CONTROL ===== */
+/* Fix: cart bubble overlapping logo on mobile — give header-actions both right columns */
+@media (max-width: 749px) {
+  header-actions {
+    grid-column: 4 / -1 !important;
+    justify-content: flex-end;
+  }
+}
+
 .my-vehicle-header {
   display: none;
 }
