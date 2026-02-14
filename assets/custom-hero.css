@@ -352,8 +352,10 @@ header svg {
 /* Fix: cart bubble overlapping logo on mobile — give header-actions both right columns */
 @media (max-width: 749px) {
   header-actions {
+    grid-area: auto !important;
     grid-column: 4 / -1 !important;
-    justify-content: flex-end;
+    grid-row: 1 !important;
+    justify-content: flex-end !important;
   }
 }
 
