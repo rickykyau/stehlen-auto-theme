@@ -133,8 +133,12 @@ a.button-secondary:hover {
   background: transparent;
 }
 .vehicle-selector__content {
-  padding: 24px !important;
+  padding: 20px !important;
   overflow: visible !important;
+}
+/* Ensure dialog doesn't overflow viewport */
+.vehicle-selector__dialog[open] {
+  max-width: calc(100vw - 20px) !important;
 }
 .vehicle-selector__header {
   display: flex !important;

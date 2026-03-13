@@ -136,7 +136,7 @@ class VehicleSelector extends HTMLElement {
     if (!this._fitmentData) return;
 
     const makes = Object.keys(this._fitmentData).sort();
-    makeSelect.innerHTML = '<option value="">— Select Make —</option>';
+    makeSelect.innerHTML = '<option value="">— Select —</option>';
     for (const make of makes) {
       const opt = document.createElement('option');
       opt.value = make;
@@ -149,8 +149,8 @@ class VehicleSelector extends HTMLElement {
     const { makeSelect, modelSelect, yearSelect } = this._refs;
     const make = makeSelect.value;
 
-    modelSelect.innerHTML = '<option value="">— Select Model —</option>';
-    yearSelect.innerHTML = '<option value="">— Select Year —</option>';
+    modelSelect.innerHTML = '<option value="">— Select —</option>';
+    yearSelect.innerHTML = '<option value="">— Select —</option>';
     yearSelect.disabled = true;
 
     if (make && this._fitmentData[make]) {
@@ -174,7 +174,7 @@ class VehicleSelector extends HTMLElement {
     const make = makeSelect.value;
     const model = modelSelect.value;
 
-    yearSelect.innerHTML = '<option value="">— Select Year —</option>';
+    yearSelect.innerHTML = '<option value="">— Select —</option>';
 
     if (make && model && this._fitmentData[make]?.[model]) {
       const years = this._fitmentData[make][model];
@@ -249,9 +249,9 @@ class VehicleSelector extends HTMLElement {
     this.classList.remove('vehicle-selector--active');
     savedVehicle.style.display = 'none';
     makeSelect.value = '';
-    modelSelect.innerHTML = '<option value="">— Select Model —</option>';
+    modelSelect.innerHTML = '<option value="">— Select —</option>';
     modelSelect.disabled = true;
-    yearSelect.innerHTML = '<option value="">— Select Year —</option>';
+    yearSelect.innerHTML = '<option value="">— Select —</option>';
     yearSelect.disabled = true;
     this._updateGoButton();
 
