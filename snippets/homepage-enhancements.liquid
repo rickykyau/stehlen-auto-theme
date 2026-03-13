@@ -801,7 +801,7 @@ a.button-secondary:hover {
   window.addEventListener('load', function() { setTimeout(injectPopularModels, 500); });
 })();
 
-/* Force-show filter sidebar on collection pages */
+/* Force-show filter sidebar — template: {{ template.name }} | {{ template }} */
 {% if template.name == 'collection' %}
 (function() {
   function showFilters() {
