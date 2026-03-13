@@ -17,7 +17,7 @@
         "announcement_BxgCk9": {
           "type": "_announcement",
           "settings": {
-            "text": "✔️ Free Shipping on All Orders | Fitment Guaranteed",
+            "text": "Free Shipping on All Orders | Fitment Guaranteed",
             "link": "",
             "font": "var(--font-subheading--family)",
             "font_size": "0.75rem",
@@ -27,10 +27,10 @@
           },
           "blocks": {}
         },
-        "announcement_returns": {
+        "announcement_Rk4mT2": {
           "type": "_announcement",
           "settings": {
-            "text": "🔄 Easy 30-Day Returns | No Hassle, No Questions Asked",
+            "text": "Easy 30-Day Returns | No Hassle, No Questions Asked",
             "link": "",
             "font": "var(--font-subheading--family)",
             "font_size": "0.75rem",
@@ -40,10 +40,10 @@
           },
           "blocks": {}
         },
-        "announcement_fitment": {
+        "announcement_Ft7nW3": {
           "type": "_announcement",
           "settings": {
-            "text": "🚗 Guaranteed Fitment for Your Vehicle | Shop with Confidence",
+            "text": "Guaranteed Fitment for Your Vehicle | Shop with Confidence",
             "link": "",
             "font": "var(--font-subheading--family)",
             "font_size": "0.75rem",
@@ -53,10 +53,10 @@
           },
           "blocks": {}
         },
-        "announcement_warranty": {
+        "announcement_Wr9pQ1": {
           "type": "_announcement",
           "settings": {
-            "text": "🛡️ Manufacturer Warranty on Every Product | Trusted Since Day One",
+            "text": "Manufacturer Warranty on Every Product | Trusted Since Day One",
             "link": "",
             "font": "var(--font-subheading--family)",
             "font_size": "0.75rem",
@@ -69,9 +69,9 @@
       },
       "block_order": [
         "announcement_BxgCk9",
-        "announcement_returns",
-        "announcement_fitment",
-        "announcement_warranty"
+        "announcement_Rk4mT2",
+        "announcement_Ft7nW3",
+        "announcement_Wr9pQ1"
       ],
       "name": "t:names.announcement_bar",
       "settings": {
