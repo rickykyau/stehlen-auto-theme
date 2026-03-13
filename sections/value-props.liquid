@@ -1,0 +1,229 @@
+{% comment %}
+  Value Props Bar — 4-column trust indicators
+{% endcomment %}
+
+<div class="value-props-bar color-{{ section.settings.color_scheme }}">
+  <div class="value-props-bar__inner section section--{{ section.settings.section_width }}">
+    {% for block in section.blocks %}
+      <div class="value-props-bar__item" {{ block.shopify_attributes }}>
+        <div class="value-props-bar__icon">
+          {% case block.settings.icon %}
+            {% when 'shipping' %}
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+            {% when 'shield' %}
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg>
+            {% when 'warranty' %}
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M12 8v4l2 2"></path></svg>
+            {% when 'return' %}
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+            {% when 'check' %}
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            {% when 'wrench' %}
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+          {% endcase %}
+        </div>
+        <div class="value-props-bar__text">
+          <span class="value-props-bar__title">{{ block.settings.title }}</span>
+          {% if block.settings.subtitle != blank %}
+            <span class="value-props-bar__subtitle">{{ block.settings.subtitle }}</span>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% stylesheet %}
+  .value-props-bar {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .value-props-bar__inner {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+
+  .value-props-bar__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 16px 12px;
+    position: relative;
+  }
+
+  .value-props-bar__item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 25%;
+    height: 50%;
+    width: 1px;
+    background: var(--color-border);
+  }
+
+  .value-props-bar__icon {
+    flex-shrink: 0;
+    color: #FFB74F;
+  }
+
+  .value-props-bar__text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .value-props-bar__title {
+    font-family: var(--font-heading--family);
+    font-weight: 600;
+    font-size: 0.8125rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+
+  .value-props-bar__subtitle {
+    font-family: var(--font-body--family);
+    font-size: 0.75rem;
+    opacity: 0.7;
+    line-height: 1.3;
+  }
+
+  @media screen and (max-width: 989px) {
+    .value-props-bar__inner {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .value-props-bar__item:nth-child(2)::after {
+      display: none;
+    }
+
+    .value-props-bar__item:nth-child(1),
+    .value-props-bar__item:nth-child(2) {
+      border-bottom: 1px solid var(--color-border);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .value-props-bar__inner {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .value-props-bar__item {
+      padding: 12px 8px;
+      gap: 8px;
+    }
+
+    .value-props-bar__icon svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .value-props-bar__title {
+      font-size: 0.6875rem;
+    }
+
+    .value-props-bar__subtitle {
+      display: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Value Props Bar",
+  "tag": "section",
+  "class": "value-props-section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Width",
+      "options": [
+        { "value": "page-width", "label": "Page" },
+        { "value": "full-width", "label": "Full" }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "prop",
+      "name": "Value Prop",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "shipping", "label": "Shipping" },
+            { "value": "shield", "label": "Shield/Fitment" },
+            { "value": "warranty", "label": "Warranty" },
+            { "value": "return", "label": "Returns" },
+            { "value": "check", "label": "Checkmark" },
+            { "value": "wrench", "label": "Wrench" }
+          ],
+          "default": "shipping"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Free Shipping"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Value Props Bar",
+      "blocks": [
+        {
+          "type": "prop",
+          "settings": {
+            "icon": "shipping",
+            "title": "Free Shipping",
+            "subtitle": "On all orders"
+          }
+        },
+        {
+          "type": "prop",
+          "settings": {
+            "icon": "shield",
+            "title": "Guaranteed Fitment",
+            "subtitle": "Fits your vehicle or money back"
+          }
+        },
+        {
+          "type": "prop",
+          "settings": {
+            "icon": "warranty",
+            "title": "Manufacturer Warranty",
+            "subtitle": "On every product"
+          }
+        },
+        {
+          "type": "prop",
+          "settings": {
+            "icon": "return",
+            "title": "Easy Returns",
+            "subtitle": "30-day hassle-free returns"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
