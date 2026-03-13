@@ -15,7 +15,7 @@
         "heading": {
           "type": "text",
           "settings": {
-            "text": "<h1>BUILT FOR YOUR TRUCK</h1>",
+            "text": "<h1>BUILT FOR YOUR TRUCK<\/h1>",
             "alignment": "left",
             "type_preset": "h1"
           }
@@ -23,7 +23,7 @@
         "subheading": {
           "type": "text",
           "settings": {
-            "text": "<p>Premium tonneau covers, bull bars, running boards & more. Guaranteed to fit your vehicle.</p>",
+            "text": "<p>Premium tonneau covers, bull bars, running boards & more. Guaranteed to fit your vehicle.<\/p>",
             "alignment": "left",
             "type_preset": "rte"
           }
@@ -32,14 +32,19 @@
           "type": "button",
           "settings": {
             "label": "Shop Now",
-            "link": "shopify://collections/all",
+            "link": "shopify:\/\/collections\/all",
             "style_class": "button-primary"
           }
         }
       },
-      "block_order": ["heading", "subheading", "button"],
+      "block_order": [
+        "heading",
+        "subheading",
+        "button"
+      ],
       "settings": {
         "media_type_1": "image",
+        "image_1": "shopify:\/\/shop_images\/Stehlen_Hero.png",
         "content_direction": "column",
         "horizontal_alignment_flex_direction_column": "flex-start",
         "vertical_alignment_flex_direction_column": "center",
@@ -89,7 +94,12 @@
           }
         }
       },
-      "block_order": ["prop1", "prop2", "prop3", "prop4"],
+      "block_order": [
+        "prop1",
+        "prop2",
+        "prop3",
+        "prop4"
+      ],
       "settings": {
         "section_width": "page-width",
         "color_scheme": "scheme-1"
@@ -101,7 +111,7 @@
         "header_text": {
           "type": "text",
           "settings": {
-            "text": "<h2>Shop by Category</h2>",
+            "text": "<h2>Shop by Category<\/h2>",
             "alignment": "center",
             "type_preset": "h2"
           }
@@ -112,7 +122,9 @@
           "settings": {}
         }
       },
-      "block_order": ["header_text"],
+      "block_order": [
+        "header_text"
+      ],
       "settings": {
         "layout_type": "grid",
         "columns": 3,
@@ -140,7 +152,7 @@
             "header_text": {
               "type": "_product-list-text",
               "settings": {
-                "text": "<h2>Featured Products</h2>",
+                "text": "<h2>Featured Products<\/h2>",
                 "type_preset": "h3",
                 "alignment": "left"
               }
@@ -153,7 +165,10 @@
               }
             }
           },
-          "block_order": ["header_text", "view_all_btn"]
+          "block_order": [
+            "header_text",
+            "view_all_btn"
+          ]
         },
         "static-product-card": {
           "type": "_product-card",
@@ -182,7 +197,11 @@
               }
             }
           },
-          "block_order": ["gallery", "title", "price"]
+          "block_order": [
+            "gallery",
+            "title",
+            "price"
+          ]
         }
       },
       "settings": {
@@ -200,5 +219,10 @@
       }
     }
   },
-  "order": ["hero", "value_props", "collection_list", "featured_products"]
+  "order": [
+    "hero",
+    "value_props",
+    "collection_list",
+    "featured_products"
+  ]
 }
