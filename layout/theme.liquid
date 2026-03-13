@@ -36,11 +36,10 @@
 
   <body class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }}">
     {% render 'skip-to-content-link', href: '#MainContent', text: 'accessibility.skip_to_text' %}
+    {% render 'rotating-announcements' %}
     <div id="header-group">
       {% sections 'header-group' %}
     </div>
-
-    {% render 'mobile-vehicle-banner' %}
 
     <script
       src="{{ 'critical.js' | asset_url }}"
@@ -64,14 +63,8 @@
 
     {% render 'search-modal' %}
 
-    {%- comment -%} Custom predictive search with year-range awareness {%- endcomment -%}
-    {% render 'product-data-json' %}
-    {{ 'custom-predictive-search.css' | asset_url | stylesheet_tag }}
-    <script src="{{ 'custom-predictive-search.js' | asset_url }}" defer></script>
-
     {% if settings.quick_add or settings.mobile_quick_add %}
       {% render 'quick-add-modal' %}
     {% endif %}
   </body>
 </html>
-<!-- cache-bust: 1770977160 -->

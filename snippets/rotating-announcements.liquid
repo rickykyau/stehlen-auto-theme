@@ -1,0 +1,69 @@
+{% comment %}
+  Rotating Announcement Bar — trust messages that cycle every 4 seconds
+  To edit messages, change the pipe-delimited string below.
+{% endcomment %}
+
+<style>
+  /* Hide the original theme announcement bar */
+  .shopify-section-group-header-group .announcement-bar {
+    display: none !important;
+  }
+  .shopify-section-group-header-group .section-background:first-child {
+    display: none !important;
+  }
+  .stehlen-announcements {
+    background: var(--color-scheme-4-bg, #1A3F22);
+    color: var(--color-scheme-4-text, #fff);
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    position: relative;
+    z-index: 10;
+  }
+  .stehlen-announcements__slides {
+    display: grid;
+    grid-template-areas: "stack";
+    max-width: 680px;
+    margin: 0 auto;
+  }
+  .stehlen-announcements__slide {
+    grid-area: stack;
+    text-align: center;
+    font-family: var(--font-subheading--family, sans-serif);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    line-height: 1;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+  }
+  .stehlen-announcements__slide[aria-hidden="true"] {
+    opacity: 0;
+    visibility: hidden;
+  }
+  .stehlen-announcements__slide[aria-hidden="false"] {
+    opacity: 1;
+    visibility: visible;
+  }
+</style>
+
+<div class="stehlen-announcements">
+  <div class="stehlen-announcements__slides">
+    <div class="stehlen-announcements__slide" aria-hidden="false">Free Shipping on All Orders | Fitment Guaranteed</div>
+    <div class="stehlen-announcements__slide" aria-hidden="true">Easy 30-Day Returns | No Hassle, No Questions Asked</div>
+    <div class="stehlen-announcements__slide" aria-hidden="true">Guaranteed Fitment for Your Vehicle | Shop with Confidence</div>
+    <div class="stehlen-announcements__slide" aria-hidden="true">Manufacturer Warranty on Every Product | Trusted Since Day One</div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    var slides = document.querySelectorAll('.stehlen-announcements__slide');
+    if (slides.length < 2) return;
+    var current = 0;
+    setInterval(function() {
+      slides[current].setAttribute('aria-hidden', 'true');
+      current = (current + 1) % slides.length;
+      slides[current].setAttribute('aria-hidden', 'false');
+    }, 4000);
+  })();
+</script>
