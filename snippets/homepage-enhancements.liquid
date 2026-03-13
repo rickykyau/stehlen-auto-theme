@@ -1,0 +1,169 @@
+<style>
+/* ===== Hero gradient fix — stronger overlay for text readability ===== */
+.hero .overlay--gradient {
+  background: linear-gradient(
+    to right,
+    rgba(0,0,0,0.65) 0%,
+    rgba(0,0,0,0.4) 40%,
+    rgba(0,0,0,0.1) 70%,
+    rgba(0,0,0,0) 100%
+  ) !important;
+}
+
+/* Hero text shadow for extra readability */
+.hero__content-wrapper .text-block h1,
+.hero__content-wrapper .text-block h2 {
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+.hero__content-wrapper rte-formatter p,
+.hero__content-wrapper .rte p {
+  text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+}
+
+/* ===== Collection card enhancements ===== */
+.collection-card {
+  border-radius: 8px !important;
+  overflow: hidden;
+  position: relative;
+}
+
+.collection-card .collection-card__image {
+  border-radius: 8px !important;
+  overflow: hidden;
+}
+
+/* Dark gradient overlay on collection card images */
+.collection-card .collection-card__inner {
+  position: relative;
+}
+
+.collection-card .collection-card__inner::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0) 100%);
+  pointer-events: none;
+  z-index: 2;
+  border-radius: 0 0 8px 8px;
+}
+
+/* Title overlay positioned at bottom of card */
+.stehlen-card-title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  z-index: 3;
+  color: #fff;
+  pointer-events: none;
+}
+
+.stehlen-card-title__name {
+  font-family: var(--font-heading-family, 'Oswald', sans-serif);
+  font-weight: 700;
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 4px;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+}
+
+.stehlen-card-title__link {
+  font-size: 13px;
+  color: #FFB74F;
+  font-weight: 600;
+  text-decoration: none;
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.stehlen-card-title__link:hover {
+  color: #ffc978;
+  text-decoration: underline;
+}
+
+/* Card hover lift effect */
+.collection-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.collection-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+/* ===== Featured Products section polish ===== */
+.ui-test-product-list .product-card {
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.ui-test-product-list .product-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+}
+
+/* ===== Value props bar polish ===== */
+#stehlen-value-props {
+  border-top: 1px solid rgba(0,0,0,0.06);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+/* ===== Mobile adjustments ===== */
+@media (max-width: 749px) {
+  .stehlen-card-title__name {
+    font-size: 14px;
+  }
+  .stehlen-card-title__link {
+    font-size: 12px;
+  }
+  .stehlen-card-title {
+    padding: 10px;
+  }
+}
+</style>
+
+<script>
+/* Inject collection card title overlays */
+(function() {
+  function enhanceCollectionCards() {
+    var cards = document.querySelectorAll('.collection-card');
+    cards.forEach(function(card) {
+      if (card.querySelector('.stehlen-card-title')) return;
+      var link = card.querySelector('.collection-card__link');
+      if (!link) return;
+      var hidden = link.querySelector('.visually-hidden');
+      if (!hidden) return;
+      var title = hidden.textContent.trim();
+      var href = link.getAttribute('href');
+      if (!title || !href) return;
+
+      var overlay = document.createElement('div');
+      overlay.className = 'stehlen-card-title';
+      overlay.innerHTML =
+        '<div class="stehlen-card-title__name">' + title + '</div>' +
+        '<a href="' + href + '" class="stehlen-card-title__link">View All Parts <span style="font-size:16px">&rarr;</span></a>';
+
+      var inner = card.querySelector('.collection-card__inner');
+      if (inner) {
+        inner.style.position = 'relative';
+        inner.appendChild(overlay);
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', enhanceCollectionCards);
+  } else {
+    enhanceCollectionCards();
+  }
+  /* Re-run after Shopify section rendering */
+  window.addEventListener('load', function() {
+    setTimeout(enhanceCollectionCards, 500);
+  });
+})();
+</script>
