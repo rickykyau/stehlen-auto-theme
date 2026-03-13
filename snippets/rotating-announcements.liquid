@@ -1,45 +1,90 @@
 {% comment %}
-  Rotating Announcement Bar — trust messages that cycle every 4 seconds
-  To edit messages, change the pipe-delimited string below.
+  Rotating Announcement Bar + Value Props Bar
+  Trust messages that cycle every 4 seconds, plus a value props bar below the header
 {% endcomment %}
 
 <style>
-  /* Hide original announcement bar text only — keep section intact */
-  .announcement-bar__slides {
-    display: none !important;
-  }
+  /* Hide original announcement bar text */
+  .announcement-bar__slides { display: none !important; }
+
   .stehlen-announcements {
-    background: var(--color-scheme-4-bg, #1A3F22);
-    color: var(--color-scheme-4-text, #fff);
+    background: #1A3F22;
+    color: #fff;
     padding: 10px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    text-align: center;
+    font-family: var(--font-body--family, sans-serif);
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
     position: relative;
-    z-index: 10;
+    overflow: hidden;
+    min-height: 38px;
   }
   .stehlen-announcements__slides {
-    display: grid;
-    grid-template-areas: "stack";
-    max-width: 680px;
-    margin: 0 auto;
+    position: relative;
+    width: 100%;
+    min-height: 18px;
   }
   .stehlen-announcements__slide {
-    grid-area: stack;
-    text-align: center;
-    font-family: var(--font-subheading--family, sans-serif);
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    line-height: 1;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
-  }
-  .stehlen-announcements__slide[aria-hidden="true"] {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    transition: opacity 0.5s ease;
     opacity: 0;
     visibility: hidden;
   }
   .stehlen-announcements__slide[aria-hidden="false"] {
     opacity: 1;
     visibility: visible;
+    position: relative;
+  }
+
+  /* Value Props Bar */
+  #stehlen-value-props {
+    background: #fff;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  #stehlen-value-props .vp-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  #stehlen-value-props .vp-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 18px 12px;
+    border-right: 1px solid #e0e0e0;
+  }
+  #stehlen-value-props .vp-item:last-child {
+    border-right: none;
+  }
+  #stehlen-value-props .vp-title {
+    font-family: var(--font-heading--family, Oswald, sans-serif);
+    font-weight: 600;
+    font-size: .8125rem;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+    color: #1A1A1A;
+  }
+  #stehlen-value-props .vp-sub {
+    font-family: var(--font-body--family, sans-serif);
+    font-size: .75rem;
+    color: #666;
+  }
+  @media screen and (max-width: 989px) {
+    #stehlen-value-props .vp-grid { grid-template-columns: repeat(2, 1fr); }
+    #stehlen-value-props .vp-item:nth-child(2) { border-right: none; }
+    #stehlen-value-props .vp-item:nth-child(1),
+    #stehlen-value-props .vp-item:nth-child(2) { border-bottom: 1px solid #e0e0e0; }
+  }
+  @media screen and (max-width: 749px) {
+    #stehlen-value-props .vp-item { padding: 12px 8px; gap: 8px; }
+    #stehlen-value-props svg { width: 22px; height: 22px; }
+    #stehlen-value-props .vp-sub { display: none; }
   }
 </style>
 
@@ -53,14 +98,52 @@
 </div>
 
 <script>
-  (function() {
-    var slides = document.querySelectorAll('.stehlen-announcements__slide');
-    if (slides.length < 2) return;
+(function() {
+  // Rotating announcements
+  var slides = document.querySelectorAll('.stehlen-announcements__slide');
+  if (slides.length > 1) {
     var current = 0;
     setInterval(function() {
       slides[current].setAttribute('aria-hidden', 'true');
       current = (current + 1) % slides.length;
       slides[current].setAttribute('aria-hidden', 'false');
     }, 4000);
-  })();
+  }
+
+  // Inject Value Props Bar after header-group
+  function injectValueProps() {
+    var headerGroup = document.getElementById('header-group');
+    if (!headerGroup) return;
+    if (document.getElementById('stehlen-value-props')) return; // already injected
+
+    var vpHTML = '<div id="stehlen-value-props">'
+      + '<div class="vp-grid">'
+      + '<div class="vp-item">'
+      + '<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFB74F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>'
+      + '<div style="display:flex;flex-direction:column;gap:2px;"><span class="vp-title">Free Shipping</span><span class="vp-sub">On all orders</span></div>'
+      + '</div>'
+      + '<div class="vp-item">'
+      + '<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFB74F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg>'
+      + '<div style="display:flex;flex-direction:column;gap:2px;"><span class="vp-title">Guaranteed Fitment</span><span class="vp-sub">Fits your vehicle or money back</span></div>'
+      + '</div>'
+      + '<div class="vp-item">'
+      + '<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFB74F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M12 8v4l2 2"></path></svg>'
+      + '<div style="display:flex;flex-direction:column;gap:2px;"><span class="vp-title">Manufacturer Warranty</span><span class="vp-sub">On every product</span></div>'
+      + '</div>'
+      + '<div class="vp-item">'
+      + '<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFB74F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>'
+      + '<div style="display:flex;flex-direction:column;gap:2px;"><span class="vp-title">Easy Returns</span><span class="vp-sub">30-day hassle-free returns</span></div>'
+      + '</div>'
+      + '</div></div>';
+
+    headerGroup.insertAdjacentHTML('afterend', vpHTML);
+  }
+
+  // Run after DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', injectValueProps);
+  } else {
+    injectValueProps();
+  }
+})();
 </script>
