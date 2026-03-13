@@ -52,10 +52,11 @@
 }
 
 /* ===== 3. INNER PAGE — prevent sticky header from covering content ===== */
-/* JS will add .stehlen-inner class to body on non-homepage pages */
-body.stehlen-inner #MainContent {
+{% if template.name != 'index' %}
+#MainContent {
   padding-top: 80px !important;
 }
+{% endif %}
 
 /* ===== 4. BUTTONS — global fix for missing button styles ===== */
 .button-primary,
@@ -376,16 +377,18 @@ a.button-secondary:hover {
 .stehlen-card-title__link:hover { color: #ffc978; }
 
 /* ===== 8. HOMEPAGE SECTION SPACING — breathing room ===== */
-body.stehlen-home #MainContent > .shopify-section + .shopify-section {
+{% if template.name == 'index' %}
+#MainContent > .shopify-section + .shopify-section {
   border-top: 1px solid rgba(0,0,0,0.06);
 }
-body.stehlen-home .section-resource-list {
+.section-resource-list {
   padding-top: 56px !important;
   padding-bottom: 56px !important;
 }
-body.stehlen-home .section-resource-list .section-resource-list__content {
+.section-resource-list .section-resource-list__content {
   margin-bottom: 28px;
 }
+{% endif %}
 
 /* ===== 9. PRODUCT CARD POLISH ===== */
 .ui-test-product-list .product-card {
@@ -645,9 +648,11 @@ body.stehlen-home .section-resource-list .section-resource-list__content {
   padding: 8px !important;
 }
 /* Reduce white space in collection heading */
-body.stehlen-collection .spacing-style {
+{% if template.name == 'collection' %}
+.spacing-style {
   --padding-block-start: 24px;
 }
+{% endif %}
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 989px) {
@@ -690,159 +695,114 @@ body.stehlen-collection .spacing-style {
 </style>
 
 <script>
-/* Page detection: add body classes based on URL */
-(function() {
-  var p = window.location.pathname;
-  if (p === '/' || p === '') {
-    document.body.classList.add('stehlen-home');
-  } else {
-    document.body.classList.add('stehlen-inner');
-    if (p.indexOf('/collections') === 0) document.body.classList.add('stehlen-collection');
-    if (p.indexOf('/products') === 0) document.body.classList.add('stehlen-pdp');
+/* All DOM manipulation deferred to DOMContentLoaded since this snippet runs in <head> */
+document.addEventListener('DOMContentLoaded', function() {
+  var path = window.location.pathname;
+  var isHome = (path === '/' || path === '');
+  var isCollection = path.indexOf('/collections') === 0;
+
+  /* Add body classes for CSS */
+  if (isHome) document.body.classList.add('stehlen-home');
+  else document.body.classList.add('stehlen-inner');
+  if (isCollection) document.body.classList.add('stehlen-collection');
+
+  /* --- HOMEPAGE ONLY --- */
+  if (isHome) {
+    /* Value props bar after hero */
+    (function() {
+      if (document.getElementById('stehlen-value-props')) return;
+      var mc = document.getElementById('MainContent');
+      if (!mc) return;
+      var fs = mc.querySelector('.shopify-section');
+      if (!fs) return;
+      var h = '<div id="stehlen-value-props"><div class="vp-grid">' +
+        '<div class="vp-item"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFB74F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg><div style="display:flex;flex-direction:column;gap:2px"><span class="vp-title">Free Shipping</span><span class="vp-sub">On all orders</span></div></div>' +
+        '<div class="vp-item"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFB74F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg><div style="display:flex;flex-direction:column;gap:2px"><span class="vp-title">Guaranteed Fitment</span><span class="vp-sub">Fits your vehicle or money back</span></div></div>' +
+        '<div class="vp-item"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFB74F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M12 8v4l2 2"></path></svg><div style="display:flex;flex-direction:column;gap:2px"><span class="vp-title">Manufacturer Warranty</span><span class="vp-sub">On every product</span></div></div>' +
+        '<div class="vp-item"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFB74F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg><div style="display:flex;flex-direction:column;gap:2px"><span class="vp-title">Easy Returns</span><span class="vp-sub">30-day hassle-free returns</span></div></div>' +
+      '</div></div>';
+      fs.insertAdjacentHTML('afterend', h);
+    })();
+
+    /* Collection card title overlays */
+    (function() {
+      document.querySelectorAll('.collection-card').forEach(function(card) {
+        if (card.querySelector('.stehlen-card-title')) return;
+        var link = card.querySelector('.collection-card__link');
+        if (!link) return;
+        var hidden = link.querySelector('.visually-hidden');
+        if (!hidden) return;
+        var title = hidden.textContent.trim();
+        var href = link.getAttribute('href');
+        if (!title || !href) return;
+        var overlay = document.createElement('div');
+        overlay.className = 'stehlen-card-title';
+        overlay.innerHTML = '<div class="stehlen-card-title__name">' + title + '</div>' +
+          '<a href="' + href + '" class="stehlen-card-title__link">View All Parts <span style="font-size:15px">&rarr;</span></a>';
+        var inner = card.querySelector('.collection-card__inner');
+        if (inner) { inner.style.position = 'relative'; inner.appendChild(overlay); }
+      });
+    })();
+
+    /* Shop by Popular Models */
+    (function() {
+      if (document.getElementById('stehlen-popular-models')) return;
+      var mc = document.getElementById('MainContent');
+      if (!mc) return;
+      var cl = mc.querySelector('.ui-test-collection-list');
+      if (!cl) { var ss = mc.querySelectorAll('.shopify-section'); if (ss.length < 2) return; cl = ss[ss.length - 1]; }
+
+      var models = [
+        { name: 'Ford F-150', badge: 'MOST POPULAR', color: '#1a3f22' },
+        { name: 'Toyota Tundra', badge: 'TRENDING', color: '#1a2a4a' },
+        { name: 'Chevy Silverado', badge: 'BEST SELLERS', color: '#2a1a1a' },
+        { name: 'Dodge Charger', badge: 'OFF-ROAD', color: '#1a1a2a' }
+      ];
+      var cards = models.map(function(m) {
+        return '<a href="/collections/all?filter.p.m.custom.make=' + encodeURIComponent(m.name.split(' ')[0]) + '&filter.p.m.custom.model=' + encodeURIComponent(m.name.split(' ').slice(1).join(' ')) + '" class="pm-card" style="background-color:' + m.color + '">' +
+          '<div class="pm-card-overlay"></div>' +
+          '<div class="pm-badge">' + m.badge + '</div>' +
+          '<div class="pm-card-info">' +
+            '<div class="pm-card-name">' + m.name + '</div>' +
+            '<div class="pm-card-count">Truck &amp; SUV Parts</div>' +
+            '<span class="pm-card-link">View All Parts <span style="font-size:14px">&rarr;</span></span>' +
+          '</div></a>';
+      }).join('');
+      var html = '<div id="stehlen-popular-models"><div class="pm-inner">' +
+        '<div class="pm-header"><h2>Shop by Popular Models</h2><p>Find parts specifically designed for your vehicle</p></div>' +
+        '<div class="pm-grid">' + cards + '</div></div></div>';
+      var ps = cl.closest('.shopify-section') || cl;
+      ps.insertAdjacentHTML('afterend', html);
+    })();
   }
-})();
 
-/* Inject value props bar after first section in MainContent (homepage only) */
-(function() {
-  if (!document.body.classList.contains('stehlen-home')) return;
-  function injectValueProps() {
-    if (document.getElementById('stehlen-value-props')) return;
-    var mainContent = document.getElementById('MainContent');
-    if (!mainContent) return;
-    var firstSection = mainContent.querySelector('.shopify-section');
-    if (!firstSection) return;
-    var vpHTML = '<div id="stehlen-value-props"><div class="vp-grid">' +
-      '<div class="vp-item"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFB74F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg><div style="display:flex;flex-direction:column;gap:2px"><span class="vp-title">Free Shipping</span><span class="vp-sub">On all orders</span></div></div>' +
-      '<div class="vp-item"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFB74F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg><div style="display:flex;flex-direction:column;gap:2px"><span class="vp-title">Guaranteed Fitment</span><span class="vp-sub">Fits your vehicle or money back</span></div></div>' +
-      '<div class="vp-item"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFB74F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M12 8v4l2 2"></path></svg><div style="display:flex;flex-direction:column;gap:2px"><span class="vp-title">Manufacturer Warranty</span><span class="vp-sub">On every product</span></div></div>' +
-      '<div class="vp-item"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFB74F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg><div style="display:flex;flex-direction:column;gap:2px"><span class="vp-title">Easy Returns</span><span class="vp-sub">30-day hassle-free returns</span></div></div>' +
-    '</div></div>';
-    firstSection.insertAdjacentHTML('afterend', vpHTML);
+  /* --- COLLECTION PAGES — force filter sidebar --- */
+  if (isCollection) {
+    setTimeout(function() {
+      var sidebar = document.querySelector('.facets-block-wrapper--sidebar');
+      if (!sidebar) return;
+      sidebar.style.setProperty('display', 'block', 'important');
+      sidebar.style.setProperty('grid-column', '1/2', 'important');
+      sidebar.style.setProperty('grid-row', '1/99', 'important');
+      ['facets--sidebar', 'facets__form', 'facets__filters-wrapper', 'facets__form-wrapper'].forEach(function(cls) {
+        var el = sidebar.querySelector('.' + cls);
+        if (el) el.style.setProperty('display', 'block', 'important');
+      });
+      var cw = document.querySelector('.collection-wrapper.grid');
+      if (cw) {
+        cw.style.setProperty('display', 'grid', 'important');
+        cw.style.setProperty('grid-template-columns', '260px 1fr', 'important');
+        cw.style.setProperty('gap', '24px', 'important');
+      }
+      var pg = document.querySelector('.main-collection-grid');
+      if (pg) {
+        pg.style.setProperty('grid-column', '2/3', 'important');
+        pg.style.setProperty('grid-row', '1/99', 'important');
+      }
+      /* Open first 3 filter panels */
+      var details = sidebar.querySelectorAll('details');
+      for (var i = 0; i < details.length && i < 3; i++) details[i].open = true;
+    }, 100);
   }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', injectValueProps);
-  } else { injectValueProps(); }
-  window.addEventListener('load', function() { setTimeout(injectValueProps, 300); });
-})();
-
-/* Inject collection card title overlays */
-(function() {
-  function enhanceCollectionCards() {
-    var cards = document.querySelectorAll('.collection-card');
-    cards.forEach(function(card) {
-      if (card.querySelector('.stehlen-card-title')) return;
-      var link = card.querySelector('.collection-card__link');
-      if (!link) return;
-      var hidden = link.querySelector('.visually-hidden');
-      if (!hidden) return;
-      var title = hidden.textContent.trim();
-      var href = link.getAttribute('href');
-      if (!title || !href) return;
-      var overlay = document.createElement('div');
-      overlay.className = 'stehlen-card-title';
-      overlay.innerHTML = '<div class="stehlen-card-title__name">' + title + '</div>' +
-        '<a href="' + href + '" class="stehlen-card-title__link">View All Parts <span style="font-size:15px">&rarr;</span></a>';
-      var inner = card.querySelector('.collection-card__inner');
-      if (inner) { inner.style.position = 'relative'; inner.appendChild(overlay); }
-    });
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', enhanceCollectionCards);
-  } else { enhanceCollectionCards(); }
-  window.addEventListener('load', function() { setTimeout(enhanceCollectionCards, 500); });
-})();
-
-/* Inject "Shop by Popular Models" section on homepage */
-(function() {
-  if (!document.body.classList.contains('stehlen-home')) return;
-  function injectPopularModels() {
-    if (document.getElementById('stehlen-popular-models')) return;
-    var mainContent = document.getElementById('MainContent');
-    if (!mainContent) return;
-    /* Insert after the collection-list section (Shop by Category) */
-    var collListSection = mainContent.querySelector('.ui-test-collection-list');
-    if (!collListSection) {
-      /* Fallback: insert before featured products */
-      var sections = mainContent.querySelectorAll('.shopify-section');
-      if (sections.length < 2) return;
-      collListSection = sections[sections.length - 1];
-    }
-
-    var models = [
-      { name: 'Ford F-150', badge: 'MOST POPULAR', img: '/cdn/shop/files/ford-f150.jpg', slug: 'ford-f-150', color: '#1a3f22' },
-      { name: 'Toyota Tundra', badge: 'TRENDING', img: '/cdn/shop/files/toyota-tundra.jpg', slug: 'toyota-tundra', color: '#1a2a4a' },
-      { name: 'Chevy Silverado', badge: 'BEST SELLERS', img: '/cdn/shop/files/chevy-silverado.jpg', slug: 'chevy-silverado', color: '#2a1a1a' },
-      { name: 'Dodge Charger', badge: 'OFF-ROAD', img: '/cdn/shop/files/dodge-charger.jpg', slug: 'dodge-charger', color: '#1a1a2a' }
-    ];
-
-    var cardsHTML = models.map(function(m) {
-      return '<a href="/collections/all?filter.p.m.custom.make=' + encodeURIComponent(m.name.split(' ')[0]) + '&filter.p.m.custom.model=' + encodeURIComponent(m.name.split(' ').slice(1).join(' ')) + '" class="pm-card" style="background-color:' + m.color + '">' +
-        '<div class="pm-card-overlay"></div>' +
-        '<div class="pm-badge">' + m.badge + '</div>' +
-        '<div class="pm-card-info">' +
-          '<div class="pm-card-name">' + m.name + '</div>' +
-          '<div class="pm-card-count">Truck & SUV Parts</div>' +
-          '<span class="pm-card-link">View All Parts <span style="font-size:14px">&rarr;</span></span>' +
-        '</div>' +
-      '</a>';
-    }).join('');
-
-    var html = '<div id="stehlen-popular-models"><div class="pm-inner">' +
-      '<div class="pm-header"><h2>Shop by Popular Models</h2><p>Find parts specifically designed for your vehicle</p></div>' +
-      '<div class="pm-grid">' + cardsHTML + '</div>' +
-    '</div></div>';
-
-    /* Insert after collection list section */
-    var parentSection = collListSection.closest('.shopify-section') || collListSection;
-    parentSection.insertAdjacentHTML('afterend', html);
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', injectPopularModels);
-  } else { injectPopularModels(); }
-  window.addEventListener('load', function() { setTimeout(injectPopularModels, 500); });
-})();
-
-/* Force-show filter sidebar on collection pages */
-(function() {
-  if (window.location.pathname.indexOf('/collections') !== 0) return;
-  function showFilters() {
-    var sidebar = document.querySelector('.facets-block-wrapper--sidebar');
-    if (!sidebar) return;
-    /* Force sidebar visible */
-    sidebar.style.setProperty('display', 'block', 'important');
-    sidebar.style.setProperty('grid-column', '1/2', 'important');
-    sidebar.style.setProperty('grid-row', '1/99', 'important');
-    var facets = sidebar.querySelector('.facets--sidebar');
-    if (facets) facets.style.setProperty('display', 'block', 'important');
-    var form = sidebar.querySelector('.facets__form');
-    if (form) form.style.setProperty('display', 'block', 'important');
-    var wrapper = sidebar.querySelector('.facets__filters-wrapper');
-    if (wrapper) wrapper.style.setProperty('display', 'block', 'important');
-    var formWrapper = sidebar.querySelector('.facets__form-wrapper');
-    if (formWrapper) formWrapper.style.setProperty('display', 'block', 'important');
-
-    /* Fix grid: sidebar col 1, products col 2 */
-    var collWrapper = document.querySelector('.collection-wrapper.grid');
-    if (collWrapper) {
-      collWrapper.style.setProperty('display', 'grid', 'important');
-      collWrapper.style.setProperty('grid-template-columns', '260px 1fr', 'important');
-      collWrapper.style.setProperty('gap', '24px', 'important');
-    }
-    var productGrid = document.querySelector('.main-collection-grid');
-    if (productGrid) {
-      productGrid.style.setProperty('grid-column', '2/3', 'important');
-      productGrid.style.setProperty('grid-row', '1/99', 'important');
-    }
-
-    /* Open first 3 filter panels by default */
-    var details = sidebar.querySelectorAll('details');
-    for (var i = 0; i < details.length && i < 3; i++) {
-      details[i].open = true;
-    }
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function() { setTimeout(showFilters, 200); });
-  } else { setTimeout(showFilters, 200); }
-  window.addEventListener('load', function() { setTimeout(showFilters, 600); });
-})();
+});
 </script>
