@@ -33,6 +33,10 @@
       ],
       "name": "t:names.announcement_bar",
       "settings": {
+        "message_1": "Free Shipping on All Orders | Fitment Guaranteed",
+        "message_2": "Easy 30-Day Returns | No Hassle, No Questions Asked",
+        "message_3": "Guaranteed Fitment for Your Vehicle | Shop with Confidence",
+        "message_4": "Manufacturer Warranty on Every Product | Trusted Since Day One",
         "speed": 4,
         "section_width": "full-width",
         "color_scheme": "scheme-4",
