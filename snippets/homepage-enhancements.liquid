@@ -776,8 +776,8 @@ document.addEventListener('DOMContentLoaded', function() {
     })();
   }
 
-  /* --- COLLECTION PAGES — force filter sidebar --- */
-  if (isCollection) {
+  /* --- COLLECTION PAGES — force filter sidebar (desktop only) --- */
+  if (isCollection && window.innerWidth >= 750) {
     setTimeout(function() {
       var sidebar = document.querySelector('.facets-block-wrapper--sidebar');
       if (!sidebar) return;
