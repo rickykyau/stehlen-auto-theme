@@ -21,8 +21,7 @@
     try {
       const vehicle = JSON.parse(saved);
       const params = new URLSearchParams(window.location.search);
-      const tags = params.getAll('filter.p.tag');
-      const hasFitment = tags.some(t => t.startsWith('make:'));
+      const hasFitment = params.has('filter.p.m.custom.make');
       if (!hasFitment) return;
 
       const label = [vehicle.year, vehicle.make, vehicle.model].filter(Boolean).join(' ');

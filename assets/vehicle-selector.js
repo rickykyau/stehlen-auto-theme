@@ -210,12 +210,12 @@ class VehicleSelector extends HTMLElement {
     const vehicle = { make, model, year };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(vehicle));
 
-    // Build collection URL with filter.p.tag params
+    // Build collection URL with metafield filter params
     const url = new URL('/collections/all', window.location.origin);
-    url.searchParams.append('filter.p.tag', `make:${make}`);
-    url.searchParams.append('filter.p.tag', `model:${model}`);
+    url.searchParams.append('filter.p.m.custom.make', make);
+    url.searchParams.append('filter.p.m.custom.model', model);
     if (year) {
-      url.searchParams.append('filter.p.tag', `year:${year}`);
+      url.searchParams.append('filter.p.m.custom.year', year);
     }
 
     this._closeDialog();
