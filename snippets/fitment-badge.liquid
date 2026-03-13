@@ -1,0 +1,114 @@
+{% comment %}
+  Fitment Badge — Shows "FITS YOUR VEHICLE" or "CHECK FITMENT" on PDP
+  Reads the selected vehicle from localStorage and compares against product tags.
+{% endcomment %}
+
+<div id="stehlen-fitment-badge" style="display:none;">
+  <div id="fitment-fits" class="fitment-badge fitment-badge--fits" style="display:none;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+    <span>This Fits Your <strong id="fitment-vehicle-name"></strong></span>
+  </div>
+  <div id="fitment-nofit" class="fitment-badge fitment-badge--nofit" style="display:none;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+    <span>May Not Fit Your <strong id="fitment-vehicle-name-nofit"></strong></span>
+  </div>
+  <div id="fitment-check" class="fitment-badge fitment-badge--check" style="display:none;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFB74F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+    <span>Select your vehicle to check fitment</span>
+  </div>
+</div>
+
+<style>
+  .fitment-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: 4px;
+    font-family: var(--font-body--family, sans-serif);
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin: 12px 0;
+  }
+
+  .fitment-badge--fits {
+    background: #1A3F22;
+    color: #ffffff;
+  }
+
+  .fitment-badge--nofit {
+    background: #FF4E4E;
+    color: #ffffff;
+  }
+
+  .fitment-badge--check {
+    background: #f5f5f5;
+    color: #333;
+    border: 1px solid #e0e0e0;
+    cursor: pointer;
+  }
+
+  .fitment-badge--check:hover {
+    background: #ebebeb;
+  }
+
+  .fitment-badge svg {
+    flex-shrink: 0;
+  }
+
+  .fitment-badge strong {
+    font-weight: 700;
+  }
+</style>
+
+<script>
+  (function() {
+    var badge = document.getElementById('stehlen-fitment-badge');
+    if (!badge) return;
+
+    // Get product tags from the page
+    var productTags = [];
+    try {
+      var tagsEl = document.querySelector('[data-product-tags]');
+      if (tagsEl) {
+        productTags = JSON.parse(tagsEl.getAttribute('data-product-tags'));
+      }
+    } catch(e) {}
+
+    // Get saved vehicle from localStorage
+    var savedVehicle = null;
+    try {
+      var sv = localStorage.getItem('stehlen_vehicle');
+      if (sv) savedVehicle = JSON.parse(sv);
+    } catch(e) {}
+
+    badge.style.display = 'block';
+
+    if (savedVehicle && savedVehicle.year && savedVehicle.make && savedVehicle.model) {
+      var vehicleName = savedVehicle.year + ' ' + savedVehicle.make + ' ' + savedVehicle.model;
+
+      // Check if product fits
+      var makeTag = 'make:' + savedVehicle.make.toLowerCase();
+      var modelTag = 'model:' + savedVehicle.model.toLowerCase();
+      var yearTag = 'year:' + savedVehicle.year;
+
+      var lowerTags = productTags.map(function(t) { return t.toLowerCase(); });
+      var fitsMake = lowerTags.some(function(t) { return t === makeTag; });
+      var fitsModel = lowerTags.some(function(t) { return t === modelTag; });
+      var fitsYear = lowerTags.some(function(t) { return t === yearTag; });
+
+      if (fitsMake && fitsModel && fitsYear) {
+        document.getElementById('fitment-fits').style.display = 'flex';
+        document.getElementById('fitment-vehicle-name').textContent = vehicleName;
+      } else if (productTags.length === 0) {
+        // No fitment data — show check prompt
+        document.getElementById('fitment-check').style.display = 'flex';
+      } else {
+        document.getElementById('fitment-nofit').style.display = 'flex';
+        document.getElementById('fitment-vehicle-name-nofit').textContent = vehicleName;
+      }
+    } else {
+      document.getElementById('fitment-check').style.display = 'flex';
+    }
+  })();
+</script>
