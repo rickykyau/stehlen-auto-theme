@@ -737,11 +737,22 @@ button.vehicle-selector__go:disabled,
 </style>
 
 <script>
+/* Hide duplicate logo container immediately (can't wait for DOMContentLoaded) */
+(function() {
+  var style = document.createElement('style');
+  style.textContent = '.header-logo__image-container--original{display:none!important;width:0!important;height:0!important;overflow:hidden!important}.header-logo__image{display:none!important}';
+  document.head.appendChild(style);
+})();
+
 /* All DOM manipulation deferred to DOMContentLoaded since this snippet runs in <head> */
 document.addEventListener('DOMContentLoaded', function() {
   var path = window.location.pathname;
   var isHome = (path === '/' || path === '');
   var isCollection = path.indexOf('/collections') === 0;
+
+  /* Ensure duplicate logo container is hidden */
+  var origContainer = document.querySelector('.header-logo__image-container--original');
+  if (origContainer) origContainer.style.setProperty('display', 'none', 'important');
 
   /* Add body classes for CSS */
   if (isHome) document.body.classList.add('stehlen-home');
