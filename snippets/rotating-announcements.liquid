@@ -4,11 +4,9 @@
 {% endcomment %}
 
 <style>
-  /* Hide the original theme announcement bar */
-  .shopify-section-group-header-group .announcement-bar {
-    display: none !important;
-  }
-  .shopify-section-group-header-group .section-background:first-child {
+  /* Hide only the original announcement bar section (not the main header) */
+  [id*="header_announcements"] > .section-background,
+  [id*="header_announcements"] > .announcement-bar {
     display: none !important;
   }
   .stehlen-announcements {
