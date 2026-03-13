@@ -1,484 +1,66 @@
-{%- comment -%}
-  Vehicle Fitment Selector (Collapsible)
-  Customers select Year → Make → Model to find compatible products
-{%- endcomment -%}
+{% comment %}
+  Vehicle Selector Modal - YMM (Year/Make/Model) fitment selector
+  Uses filter.p.tag params for server-side Shopify filtering
+{% endcomment %}
 
-<style>
-  .vehicle-selector-wrapper {
-    margin-bottom: 8px; margin-top: 0 !important;
-  }
-  
-  .vehicle-selector-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    width: 100%;
-    padding: 12px 24px;
-    background: linear-gradient(135deg, #1E2326 0%, #2d2d2d 100%);
-    border: none;
-    border-radius: 8px;
-    color: #fff;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  
-  .vehicle-selector-toggle:hover {
-    background: linear-gradient(135deg, #2d2d2d 0%, #3d3d3d 100%);
-  }
-  
-  .vehicle-selector-toggle__icon {
-    transition: transform 0.2s;
-  }
-  
-  .vehicle-selector-wrapper.is-open .vehicle-selector-toggle__icon {
-    transform: rotate(180deg);
-  }
-  
-  .vehicle-selector {
-    background: linear-gradient(135deg, #1E2326 0%, #2d2d2d 100%);
-    padding: 24px;
-    border-radius: 0 0 12px 12px;
-    margin-top: -8px;
-    display: none;
-  }
-  
-  .vehicle-selector-wrapper.is-open .vehicle-selector {
-    display: block;
-  }
-  
-  .vehicle-selector-wrapper.is-open .vehicle-selector-toggle {
-    border-radius: 8px 8px 0 0;
-  }
-  
-  .vehicle-selector__form {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: flex-end;
-  }
-  
-  .vehicle-selector__group {
-    flex: 1;
-    min-width: 140px;
-    max-width: 200px;
-  }
-  
-  .vehicle-selector__label {
-    display: block;
-    color: #ccc;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 6px;
-  }
-  
-  .vehicle-selector__select {
-    width: 100%;
-    padding: 12px 16px;
-    border: 2px solid #444;
-    border-radius: 8px;
-    background: #333;
-    color: #fff;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: border-color 0.2s;
-  }
-  
-  .vehicle-selector__select:hover,
-  .vehicle-selector__select:focus {
-    border-color: #F39C12;
-    outline: none;
-  }
-  
-  .vehicle-selector__select:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-  
-  .vehicle-selector__button {
-    padding: 12px 32px;
-    background: #F39C12;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  
-  .vehicle-selector__button:hover {
-    background: #E67E22;
-  }
-  
-  .vehicle-selector__button:disabled {
-    background: #666;
-    cursor: not-allowed;
-  }
-  
-  .vehicle-selector__clear {
-    padding: 12px 20px;
-    background: transparent;
-    color: #ccc;
-    border: 1px solid #666;
-    border-radius: 8px;
-    font-size: 0.875rem;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  
-  .vehicle-selector__clear:hover {
-    background: #444;
-    color: #fff;
-  }
-  
-  .vehicle-selector__current {
-    text-align: center;
-    margin-top: 12px;
-    color: #10b981;
-    font-size: 0.875rem;
-  }
-  
-  /* Show current vehicle in toggle when collapsed */
-  .vehicle-selector-toggle__current {
-    font-size: 0.875rem;
-    color: #10b981;
-    margin-left: 8px;
-    font-weight: normal;
-  }
-  
-  @media (max-width: 749px) {
-    .vehicle-selector {
-      padding: 16px !important;
-    }
-    
-    .vehicle-selector__form {
-      flex-direction: column;
-      gap: 8px;
-    }
-    
-    .vehicle-selector__group {
-      max-width: 100%;
-      min-width: 100%;
-    }
-    
-    .vehicle-selector__label {
-      margin-bottom: 4px;
-      font-size: 0.7rem;
-    }
-    
-    .vehicle-selector__select {
-      padding: 10px 12px;
-      font-size: 0.9rem;
-    }
-    
-    .vehicle-selector__button {
-      width: 100%;
-      padding: 10px 24px;
-      margin-top: 4px;
-    }
-    
-    .vehicle-selector__clear {
-      width: 100%;
-      margin-top: 4px;
-    }
-    
-    .vehicle-selector__current {
-      margin-top: 8px;
-      font-size: 0.8rem;
-    }
-    
-    .vehicle-selector-toggle {
-      padding: 10px 16px;
-      font-size: 0.9rem;
-    }
-  }
-</style>
-
-<div class="vehicle-selector-wrapper" id="vehicle-selector-wrapper">
-  <button type="button" class="vehicle-selector-toggle" id="vehicle-toggle">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M19 9l-7 7-7-7"/>
+<vehicle-selector class="vehicle-selector">
+  <button
+    type="button"
+    class="vehicle-selector__trigger"
+    ref="trigger"
+    aria-label="Select your vehicle"
+  >
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 17h2m10 0h2M2 9l2-4h4l2 4h8l2 4H2zM7 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM17 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
     </svg>
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-right: 4px;">
-      <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
-      <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
-      <path d="M5 17h-2v-6l2-5h9l4 5h1a2 2 0 0 1 2 2v4h-2"/>
-      <path d="M9 17h6"/>
-      <path d="M5 11h14"/>
-    </svg>
-    <span>Find Parts For Your Vehicle</span>
-    <span class="vehicle-selector-toggle__current" id="toggle-current"></span>
-    <svg class="vehicle-selector-toggle__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M6 9l6 6 6-6"/>
-    </svg>
+    <span ref="triggerText" class="vehicle-selector__trigger-text">SELECT YOUR VEHICLE</span>
   </button>
-  
-  <div class="vehicle-selector" id="vehicle-selector">
-    <form class="vehicle-selector__form" id="vehicle-form">
-      <div class="vehicle-selector__group">
-        <label class="vehicle-selector__label" for="select-year">Year</label>
-        <select class="vehicle-selector__select" id="select-year" name="year">
-          <option value="">Select Year</option>
-        </select>
+
+  <dialog ref="dialog" class="vehicle-selector__dialog">
+    <div class="vehicle-selector__content">
+      <div class="vehicle-selector__header">
+        <div>
+          <h2 class="vehicle-selector__title">Select Your Vehicle</h2>
+          <p class="vehicle-selector__subtitle">Provide vehicle details to confirm fitment</p>
+        </div>
+        <button type="button" class="vehicle-selector__close" ref="close" aria-label="Close">&times;</button>
       </div>
-      
-      <div class="vehicle-selector__group">
-        <label class="vehicle-selector__label" for="select-make">Make</label>
-        <select class="vehicle-selector__select" id="select-make" name="make" disabled>
-          <option value="">Select Make</option>
-        </select>
+
+      <form class="vehicle-selector__form" ref="form">
+        <div class="vehicle-selector__fields">
+          <div class="vehicle-selector__field">
+            <label for="vs-make" class="vehicle-selector__label">MAKE</label>
+            <select id="vs-make" name="make" ref="makeSelect" class="vehicle-selector__select">
+              <option value="">— Select Make —</option>
+            </select>
+          </div>
+          <div class="vehicle-selector__field">
+            <label for="vs-model" class="vehicle-selector__label">MODEL</label>
+            <select id="vs-model" name="model" ref="modelSelect" class="vehicle-selector__select" disabled>
+              <option value="">— Select Model —</option>
+            </select>
+          </div>
+          <div class="vehicle-selector__field">
+            <label for="vs-year" class="vehicle-selector__label">YEAR</label>
+            <select id="vs-year" name="year" ref="yearSelect" class="vehicle-selector__select" disabled>
+              <option value="">— Select Year —</option>
+            </select>
+          </div>
+          <div class="vehicle-selector__field vehicle-selector__field--action">
+            <button type="submit" class="vehicle-selector__go" ref="goButton" disabled>GO</button>
+          </div>
+        </div>
+      </form>
+
+      <div class="vehicle-selector__saved" ref="savedVehicle" style="display: none;">
+        <div class="vehicle-selector__saved-info">
+          <span class="vehicle-selector__saved-icon">&#10003;</span>
+          <span ref="savedText"></span>
+        </div>
+        <button type="button" class="vehicle-selector__clear" ref="clearButton">Clear Vehicle</button>
       </div>
-      
-      <div class="vehicle-selector__group">
-        <label class="vehicle-selector__label" for="select-model">Model</label>
-        <select class="vehicle-selector__select" id="select-model" name="model" disabled>
-          <option value="">Select Model</option>
-        </select>
-      </div>
-      
-      <button type="submit" class="vehicle-selector__button" id="find-parts-btn" disabled>
-        Find Parts
-      </button>
-      
-      <button type="button" class="vehicle-selector__clear" id="clear-vehicle" style="display: none;">
-        Clear
-      </button>
-    </form>
-    
-    <div class="vehicle-selector__current" id="current-vehicle" style="display: none;"></div>
-  </div>
-</div>
+    </div>
+  </dialog>
+</vehicle-selector>
 
-<script>
-(function() {
-  // Toggle functionality
-  const wrapper = document.getElementById('vehicle-selector-wrapper');
-  const toggle = document.getElementById('vehicle-toggle');
-  const toggleCurrent = document.getElementById('toggle-current');
-  
-  toggle.addEventListener('click', function() {
-    wrapper.classList.toggle('is-open');
-  });
-  
-  // Vehicle fitment database
-  const vehicleData = {
-    'Ford': {
-      'F-150': [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
-      'F-250': [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
-      'F-350': [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
-      'Ranger': [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2019, 2020, 2021, 2022, 2023, 2024],
-      'Bronco': [2021, 2022, 2023, 2024]
-    },
-    'Chevy': {
-      'Silverado 1500': [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
-      'Silverado 2500': [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
-      'Colorado': [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
-    },
-    'GMC': {
-      'Sierra 1500': [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
-      'Sierra 2500': [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
-      'Canyon': [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
-    },
-    'Dodge': {
-      'Ram 1500': [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
-      'Ram 2500': [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
-      'Charger': [2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
-    },
-    'Toyota': {
-      'Tundra': [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
-      'Tacoma': [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
-      '4Runner': [2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
-    }
-  };
-
-  const yearSelect = document.getElementById('select-year');
-  const makeSelect = document.getElementById('select-make');
-  const modelSelect = document.getElementById('select-model');
-  const findBtn = document.getElementById('find-parts-btn');
-  const clearBtn = document.getElementById('clear-vehicle');
-  const currentVehicle = document.getElementById('current-vehicle');
-  const form = document.getElementById('vehicle-form');
-
-  function getAllYears() {
-    const years = new Set();
-    Object.values(vehicleData).forEach(makes => {
-      Object.values(makes).forEach(yearList => {
-        yearList.forEach(y => years.add(y));
-      });
-    });
-    return Array.from(years).sort((a, b) => b - a);
-  }
-
-  function getMakesForYear(year) {
-    const makes = [];
-    Object.entries(vehicleData).forEach(([make, models]) => {
-      const hasYear = Object.values(models).some(years => years.includes(parseInt(year)));
-      if (hasYear) makes.push(make);
-    });
-    return makes.sort();
-  }
-
-  function getModelsForYearMake(year, make) {
-    const models = [];
-    if (vehicleData[make]) {
-      Object.entries(vehicleData[make]).forEach(([model, years]) => {
-        if (years.includes(parseInt(year))) {
-          models.push(model);
-        }
-      });
-    }
-    return models.sort();
-  }
-
-  function initYears() {
-    const years = getAllYears();
-    yearSelect.innerHTML = '<option value="">Select Year</option>';
-    years.forEach(year => {
-      yearSelect.innerHTML += `<option value="${year}">${year}</option>`;
-    });
-  }
-
-  yearSelect.addEventListener('change', function() {
-    const year = this.value;
-    makeSelect.innerHTML = '<option value="">Select Make</option>';
-    modelSelect.innerHTML = '<option value="">Select Model</option>';
-    modelSelect.disabled = true;
-    findBtn.disabled = true;
-
-    if (year) {
-      const makes = getMakesForYear(year);
-      makes.forEach(make => {
-        makeSelect.innerHTML += `<option value="${make}">${make}</option>`;
-      });
-      makeSelect.disabled = false;
-    } else {
-      makeSelect.disabled = true;
-    }
-    updateCurrentVehicleDisplay();
-  });
-
-  makeSelect.addEventListener('change', function() {
-    const year = yearSelect.value;
-    const make = this.value;
-    modelSelect.innerHTML = '<option value="">Select Model</option>';
-    findBtn.disabled = true;
-
-    if (make) {
-      const models = getModelsForYearMake(year, make);
-      models.forEach(model => {
-        modelSelect.innerHTML += `<option value="${model}">${model}</option>`;
-      });
-      modelSelect.disabled = false;
-    } else {
-      modelSelect.disabled = true;
-    }
-    updateCurrentVehicleDisplay();
-  });
-
-  modelSelect.addEventListener('change', function() {
-    findBtn.disabled = !this.value;
-    updateCurrentVehicleDisplay();
-  });
-  
-  // Update the display when any selection changes
-  function updateCurrentVehicleDisplay() {
-    const year = yearSelect.value;
-    const make = makeSelect.value;
-    const model = modelSelect.value;
-    
-    if (year && make && model) {
-      currentVehicle.innerHTML = `Currently viewing parts for: <strong>${year} ${make} ${model}</strong>`;
-      currentVehicle.style.display = 'block';
-      toggleCurrent.textContent = `(${year} ${make} ${model})`;
-    } else if (year && make) {
-      currentVehicle.innerHTML = `Select model to continue...`;
-      currentVehicle.style.display = 'block';
-      toggleCurrent.textContent = `(${year} ${make}...)`;
-    } else if (year) {
-      currentVehicle.innerHTML = `Select make and model to continue...`;
-      currentVehicle.style.display = 'block';
-      toggleCurrent.textContent = '';
-    } else {
-      // Check for saved vehicle
-      const saved = localStorage.getItem('selectedVehicle');
-      if (saved) {
-        const v = JSON.parse(saved);
-        currentVehicle.innerHTML = `Currently viewing parts for: <strong>${v.year} ${v.make} ${v.model}</strong>`;
-        currentVehicle.style.display = 'block';
-        toggleCurrent.textContent = `(${v.year} ${v.make} ${v.model})`;
-      } else {
-        currentVehicle.style.display = 'none';
-        toggleCurrent.textContent = '';
-      }
-    }
-  }
-
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    const year = yearSelect.value;
-    const make = makeSelect.value;
-    const model = modelSelect.value;
-
-    if (year && make && model) {
-      localStorage.setItem('selectedVehicle', JSON.stringify({ year, make, model }));
-      const searchTerms = `${year} ${make} ${model}`;
-      window.location.href = `/search?q=${encodeURIComponent(searchTerms)}&type=product`;
-    }
-  });
-
-  clearBtn.addEventListener('click', function() {
-    localStorage.removeItem('selectedVehicle');
-    yearSelect.value = '';
-    makeSelect.innerHTML = '<option value="">Select Make</option>';
-    makeSelect.disabled = true;
-    modelSelect.innerHTML = '<option value="">Select Model</option>';
-    modelSelect.disabled = true;
-    findBtn.disabled = true;
-    clearBtn.style.display = 'none';
-    currentVehicle.style.display = 'none';
-    toggleCurrent.textContent = '';
-  });
-
-  function checkSavedVehicle() {
-    const saved = localStorage.getItem('selectedVehicle');
-    if (saved) {
-      const { year, make, model } = JSON.parse(saved);
-      
-      // Restore dropdowns so selection persists across pages
-      yearSelect.value = year;
-      
-      // Populate and set make
-      const makes = getMakesForYear(year);
-      makeSelect.innerHTML = '<option value="">Select Make</option>';
-      makes.forEach(m => {
-        makeSelect.innerHTML += `<option value="${m}">${m}</option>`;
-      });
-      makeSelect.disabled = false;
-      makeSelect.value = make;
-      
-      // Populate and set model
-      const models = getModelsForYearMake(year, make);
-      modelSelect.innerHTML = '<option value="">Select Model</option>';
-      models.forEach(m => {
-        modelSelect.innerHTML += `<option value="${m}">${m}</option>`;
-      });
-      modelSelect.disabled = false;
-      modelSelect.value = model;
-      
-      findBtn.disabled = false;
-      currentVehicle.innerHTML = `Currently viewing parts for: <strong>${year} ${make} ${model}</strong>`;
-      currentVehicle.style.display = 'block';
-      clearBtn.style.display = 'inline-block';
-      toggleCurrent.textContent = `(${year} ${make} ${model})`;
-    }
-  }
-
-  initYears();
-  checkSavedVehicle();
-})();
-</script>
+<script src="{{ 'vehicle-selector.js' | asset_url }}" type="module"></script>

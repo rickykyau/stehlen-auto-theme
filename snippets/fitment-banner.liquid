@@ -1,0 +1,36 @@
+{% comment %}
+  Fitment Banner - Shows active vehicle filter on collection pages
+  Reads from filter.p.tag URL params and displays a banner with clear option
+{% endcomment %}
+
+<fitment-banner class="fitment-banner" style="display: none;">
+  <div class="fitment-banner__inner">
+    <div class="fitment-banner__info">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 17h2m10 0h2M2 9l2-4h4l2 4h8l2 4H2zM7 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM17 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg>
+      <span>Showing parts for: <strong class="fitment-banner__vehicle"></strong></span>
+    </div>
+    <a href="/collections/all" class="fitment-banner__clear">Clear Filter &times;</a>
+  </div>
+</fitment-banner>
+
+<script>
+  // Fitment banner - reads vehicle from localStorage
+  (function() {
+    const saved = localStorage.getItem('stehlen-vehicle');
+    if (!saved) return;
+    try {
+      const vehicle = JSON.parse(saved);
+      const params = new URLSearchParams(window.location.search);
+      const tags = params.getAll('filter.p.tag');
+      const hasFitment = tags.some(t => t.startsWith('make:'));
+      if (!hasFitment) return;
+
+      const label = [vehicle.year, vehicle.make, vehicle.model].filter(Boolean).join(' ');
+      const banner = document.querySelector('fitment-banner');
+      if (banner) {
+        banner.querySelector('.fitment-banner__vehicle').textContent = label;
+        banner.style.display = '';
+      }
+    } catch(e) {}
+  })();
+</script>

@@ -23,163 +23,61 @@
 {% endjavascript %}
 
 {% comment %} We always render this full-width, as the child blocks have width: page/full settings {% endcomment %}
+{% render 'fitment-banner' %}
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
 <results-list
   class="section product-grid-container color-{{ section.settings.color_scheme }}"
-  style="display:block !important; --padding-block-start: {{ section.settings.padding-block-start }}px; --padding-block-end: {{ section.settings.padding-block-end }}px;"
+  style="--padding-block-start: {{ section.settings.padding-block-start }}px; --padding-block-end: {{ section.settings.padding-block-end }}px;"
   section-id="{{ section.id }}"
   infinite-scroll="{{ section.settings.enable_infinite_scroll }}"
 >
   {% render 'skip-to-content-link', href: '#ResultsList', text: 'accessibility.skip_to_results_list' %}
 
-  {%- comment -%} Top Bar {%- endcomment -%}
-  <div class="stehlen-collection-topbar-wrap">
-    <div class="collection-topbar" id="collection-topbar">
-      <div>
-        <h1 class="collection-topbar__title">{{ collection.title | default: 'All Products' }}</h1>
-        <div class="collection-topbar__count" id="product-count">{{ collection.products_count }} products</div>
-      </div>
-      <div style="display:flex;align-items:center;gap:12px;">
-        <div class="collection-topbar__mobile-filter" id="mobile-filter-toggle">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M6 12h12M8 18h8"/></svg>
-          Filter
-        </div>
-      </div>
-    </div>
-  </div>
+  <div
+    class="collection-wrapper grid gap-style"
+  >
+    {% content_for 'block',
+      type: 'filters',
+      id: 'filters',
+      results: collection,
+      results_size: collection.products_count
+    %}
 
-  <div class="stehlen-collection-layout">
-    {%- comment -%} Left Sidebar {%- endcomment -%}
-    {% render 'collection-sidebar' %}
+    {% assign products_per_page = 24 %}
 
-    {%- comment -%} Right: Product Grid {%- endcomment -%}
-    <div class="stehlen-collection-main">
-      <div
-        class="collection-wrapper gap-style"
-      >
-        {% content_for 'block',
-          type: 'filters',
-          id: 'filters',
-          results: collection,
-          results_size: collection.products_count
-        %}
+    {% if section.settings.enable_infinite_scroll == false %}
+      {% assign products_per_page = section.settings.products_per_page %}
+    {% endif %}
 
-        {%- comment -%} Load all products for client-side filtering (max 250) {%- endcomment -%}
-        {% assign products_per_page = 250 %}
+    {% paginate collection.products by products_per_page %}
+      {% capture children %}
+        {% for product in collection.products %}
+          <li
+            id="{{ section.id }}-{{ product.id }}"
+            class="product-grid__item product-grid__item--{{ forloop.index0 }}"
+            data-page="{{ paginate.current_page }}"
+            data-product-id="{{ product.id }}"
+            ref="cards[]"
+          >
+            {% # theme-check-disable %}
+            {% content_for 'block', type: '_product-card', id: 'product-card', closest.product: product %}
+            {% # theme-check-enable %}
+          </li>
+        {% endfor %}
+      {% endcapture %}
 
-        {% paginate collection.products by products_per_page %}
-          {% capture children %}
-            {% for product in collection.products %}
-              <li
-                id="{{ section.id }}-{{ product.id }}"
-                class="product-grid__item product-grid__item--{{ forloop.index0 }}"
-                data-page="{{ paginate.current_page }}"
-                data-product-id="{{ product.id }}"
-                ref="cards[]"
-              >
-                {% # theme-check-disable %}
-                {% content_for 'block', type: '_product-card', id: 'product-card', closest.product: product %}
-                {% # theme-check-enable %}
-              </li>
-            {% endfor %}
-          {% endcapture %}
-
-          {% render 'product-grid',
-            section: section,
-            children: children,
-            products: collection.products,
-            paginate: paginate,
-            enable_infinite_scroll: false
-          %}
-        {% endpaginate %}
-      </div>
-    </div>
+      {% render 'product-grid',
+        section: section,
+        children: children,
+        products: collection.products,
+        paginate: paginate,
+        enable_infinite_scroll: section.settings.enable_infinite_scroll
+      %}
+    {% endpaginate %}
   </div>
 </results-list>
 
 {% stylesheet %}
-  /* === STEHLEN TOPBAR + SIDEBAR LAYOUT === */
-  .stehlen-collection-topbar-wrap {
-    max-width: 1400px !important;
-    margin: 0 auto !important;
-    padding: 16px 16px 0 !important;
-  }
-  .collection-topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 8px;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-  .collection-topbar__title {
-    font-size: 1.4rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    margin: 0;
-  }
-  .collection-topbar__count {
-    font-size: 0.85rem;
-    color: #888;
-    margin-top: 2px;
-  }
-  .collection-topbar__vehicle-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-    border: 1.5px solid #F39C12;
-    border-radius: 8px;
-    font-size: 0.85rem;
-    font-weight: 600;
-  }
-  .collection-topbar__mobile-filter {
-    display: none;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 16px;
-    border: 1.5px solid #ddd;
-    border-radius: 6px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  .collection-topbar__mobile-filter:hover { border-color: #F39C12; }
-  @media screen and (max-width: 749px) {
-    .collection-topbar__mobile-filter { display: inline-flex !important; }
-  }
-  /* === STEHLEN SIDEBAR LAYOUT OVERRIDES === */
-  .stehlen-collection-layout {
-    display: flex !important;
-    gap: 24px !important;
-    max-width: 1400px !important;
-    margin: 0 auto !important;
-    padding: 16px !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-  }
-  .stehlen-collection-main {
-    flex: 1 1 auto !important;
-    min-width: 0 !important;
-  }
-  .stehlen-collection-main .collection-wrapper {
-    display: block !important;
-    grid-template-columns: none !important;
-  }
-  .stehlen-collection-main .facets-block-wrapper {
-    display: none !important;
-  }
-  @media screen and (max-width: 749px) {
-    .stehlen-collection-layout {
-      flex-direction: column !important;
-      padding: 8px !important;
-    }
-  }
-  results-list.product-grid-container:has(.stehlen-collection-layout) {
-    display: block !important;
-  }
-  /* === END OVERRIDES === */
-
   .main-collection-grid {
     grid-column: var(--grid-column--mobile);
 
