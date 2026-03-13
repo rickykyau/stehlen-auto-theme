@@ -591,9 +591,15 @@ a.button-secondary:hover {
     grid-template-columns: 260px 1fr !important;
     gap: 24px !important;
   }
-  /* Make product grid take remaining space */
+  /* Force sidebar into first column */
+  .facets-block-wrapper.facets-block-wrapper--sidebar {
+    grid-column: 1 / 2 !important;
+    grid-row: 1 / 99 !important;
+  }
+  /* Make product grid take second column */
   .main-collection-grid {
-    grid-column: 2 / -1 !important;
+    grid-column: 2 / 3 !important;
+    grid-row: 1 / 99 !important;
   }
   /* Hide the drawer/toggle variants when sidebar is showing */
   .facets-toggle { display: none !important; }
@@ -796,30 +802,30 @@ a.button-secondary:hover {
 })();
 
 /* Force-show filter sidebar on collection pages */
+{% if template.name == 'collection' %}
 (function() {
-  if (!document.querySelector('results-list')) return;
   function showFilters() {
     var sidebar = document.querySelector('.facets-block-wrapper--sidebar');
-    if (sidebar) {
-      sidebar.style.display = 'block';
-      var facets = sidebar.querySelector('.facets--sidebar');
-      if (facets) facets.style.display = 'block';
-      var form = sidebar.querySelector('.facets__form');
-      if (form) form.style.display = 'block';
-      var wrapper = sidebar.querySelector('.facets__filters-wrapper');
-      if (wrapper) wrapper.style.display = 'block';
-      var formWrapper = sidebar.querySelector('.facets__form-wrapper');
-      if (formWrapper) formWrapper.style.display = 'block';
-      /* Open first few filter panels by default */
-      var panels = sidebar.querySelectorAll('.facets__panel');
-      panels.forEach(function(p, i) {
-        if (i < 3) p.setAttribute('open', '');
-      });
+    if (!sidebar) return;
+    sidebar.style.display = 'block';
+    var facets = sidebar.querySelector('.facets--sidebar');
+    if (facets) facets.style.display = 'block';
+    var form = sidebar.querySelector('.facets__form');
+    if (form) form.style.display = 'block';
+    var wrapper = sidebar.querySelector('.facets__filters-wrapper');
+    if (wrapper) wrapper.style.display = 'block';
+    var formWrapper = sidebar.querySelector('.facets__form-wrapper');
+    if (formWrapper) formWrapper.style.display = 'block';
+    /* Open first 3 filter panels by default */
+    var details = sidebar.querySelectorAll('details.facets__panel');
+    for (var i = 0; i < details.length && i < 3; i++) {
+      details[i].setAttribute('open', 'open');
     }
   }
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', showFilters);
-  } else { showFilters(); }
-  window.addEventListener('load', function() { setTimeout(showFilters, 300); });
+    document.addEventListener('DOMContentLoaded', function() { setTimeout(showFilters, 100); });
+  } else { setTimeout(showFilters, 100); }
+  window.addEventListener('load', function() { setTimeout(showFilters, 500); });
 })();
+{% endif %}
 </script>
