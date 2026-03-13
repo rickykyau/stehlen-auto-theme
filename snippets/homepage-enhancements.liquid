@@ -1,12 +1,38 @@
 <style>
-/* ===== Logo replacement ===== */
+/* ==========================================================================
+   STEHLEN AUTO — Global UI Overrides
+   Professional storefront styling for trust, usability, and conversions
+   ========================================================================== */
+
+/* ===== 1. ANNOUNCEMENT + HEADER UNIFICATION ===== */
+.stehlen-announcements {
+  background: #111 !important;
+  border-bottom: none !important;
+}
+#header-group { margin-top: 0; }
+#header-group > .shopify-section { background: transparent !important; }
+.header,
+.header-main,
+[data-section-type="header"] {
+  background: #1a1a1a !important;
+}
+.header__wrapper,
+.header-main__wrapper {
+  display: flex !important;
+  align-items: center !important;
+  min-height: 60px;
+}
+
+/* ===== 2. LOGO REPLACEMENT + CENTERING ===== */
 .header-logo__image-container {
-  position: relative;
+  display: flex !important;
+  align-items: center !important;
 }
 .header-logo__image {
   visibility: hidden !important;
   width: 0 !important;
   height: 0 !important;
+  position: absolute !important;
 }
 .header-logo__image-container--inverse::before,
 .header-logo__image-container--original::before {
@@ -18,9 +44,24 @@
   background-size: contain;
   background-repeat: no-repeat;
   background-position: left center;
+  flex-shrink: 0;
+}
+.header-logo {
+  display: flex !important;
+  align-items: center !important;
 }
 
-/* ===== GLOBAL: Button fixes (button-primary has no bg in color-scheme-5) ===== */
+/* ===== 3. INNER PAGE — prevent sticky header from covering content ===== */
+/* The header is sticky/fixed ~80px. On non-homepage pages, push content down. */
+body:not(.template-index) #MainContent {
+  padding-top: 80px !important;
+}
+/* Homepage doesn't need extra padding (hero is full-width under header) */
+body.template-index #MainContent {
+  padding-top: 0;
+}
+
+/* ===== 4. BUTTONS — global fix for missing button styles ===== */
 .button-primary,
 a.button-primary {
   display: inline-flex !important;
@@ -44,7 +85,7 @@ a.button-primary {
 }
 .button-primary:hover,
 a.button-primary:hover {
-  background-color: #f0a030 !important;
+  background-color: #e09a35 !important;
   transform: translateY(-1px);
 }
 .button-secondary,
@@ -55,7 +96,7 @@ a.button-secondary {
   padding: 12px 28px !important;
   background-color: transparent !important;
   color: var(--color-foreground, #1A1A1A) !important;
-  border: 2px solid var(--color-foreground, #1A3F22) !important;
+  border: 2px solid currentColor !important;
   border-radius: 4px !important;
   font-family: var(--font-heading--family, Oswald, sans-serif);
   font-weight: 600 !important;
@@ -64,7 +105,7 @@ a.button-secondary {
   text-transform: uppercase;
   text-decoration: none !important;
   cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: all 0.2s ease;
   line-height: 1 !important;
 }
 .button-secondary:hover,
@@ -73,18 +114,16 @@ a.button-secondary:hover {
   color: #fff !important;
 }
 
-/* ===== Hero section fixes ===== */
-/* Stronger gradient overlay */
+/* ===== 5. HERO SECTION ===== */
 .hero .overlay--gradient {
   background: linear-gradient(
     to right,
-    rgba(0,0,0,0.7) 0%,
+    rgba(0,0,0,0.72) 0%,
     rgba(0,0,0,0.45) 35%,
-    rgba(0,0,0,0.15) 65%,
+    rgba(0,0,0,0.12) 65%,
     rgba(0,0,0,0) 100%
   ) !important;
 }
-/* Hero heading — much larger */
 .hero__content-wrapper .text-block h1 {
   font-size: clamp(36px, 4vw, 56px) !important;
   font-weight: 700 !important;
@@ -93,7 +132,6 @@ a.button-secondary:hover {
   text-shadow: 0 2px 12px rgba(0,0,0,0.6);
   color: #fff !important;
 }
-/* Hero subtitle */
 .hero__content-wrapper rte-formatter p,
 .hero__content-wrapper .rte p {
   font-size: clamp(14px, 1.2vw, 18px) !important;
@@ -102,43 +140,49 @@ a.button-secondary:hover {
   color: rgba(255,255,255,0.92) !important;
   max-width: 480px;
 }
-/* Hero content vertical centering and padding */
 .hero__content-wrapper {
   padding: 60px 48px !important;
 }
 
-/* ===== Vehicle Selector styling ===== */
+/* ===== 6. VEHICLE SELECTOR — clean dropdown below trigger ===== */
 .vehicle-selector {
   position: relative;
+}
+.vehicle-selector__trigger {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px;
+  white-space: nowrap;
 }
 .vehicle-selector__dialog {
   position: fixed;
   left: auto !important;
   bottom: auto !important;
   margin: 0 !important;
-  width: 480px !important;
-  max-width: calc(100vw - 40px) !important;
+  width: 520px !important;
+  max-width: calc(100vw - 20px) !important;
   border: none !important;
-  border-radius: 0 0 8px 8px !important;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.2) !important;
+  border-radius: 0 0 10px 10px !important;
+  box-shadow: 0 12px 48px rgba(0,0,0,0.25) !important;
   padding: 0 !important;
   overflow: visible !important;
   background: #fff !important;
-  z-index: 999 !important;
+  z-index: 9999 !important;
 }
 .vehicle-selector__dialog[open] {
   display: block;
+  animation: vsSlideDown 0.2s ease-out;
+}
+@keyframes vsSlideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 .vehicle-selector__dialog::backdrop {
-  background: transparent;
+  background: rgba(0,0,0,0.15);
 }
 .vehicle-selector__content {
-  padding: 20px !important;
+  padding: 24px 28px !important;
   overflow: visible !important;
-}
-/* Ensure dialog doesn't overflow viewport */
-.vehicle-selector__dialog[open] {
-  max-width: calc(100vw - 20px) !important;
 }
 .vehicle-selector__header {
   display: flex !important;
@@ -148,91 +192,136 @@ a.button-secondary:hover {
 }
 .vehicle-selector__title {
   font-family: var(--font-heading--family, Oswald, sans-serif) !important;
-  font-size: 20px !important;
+  font-size: 18px !important;
   font-weight: 700 !important;
   text-transform: uppercase;
   color: #1A1A1A !important;
   margin: 0 !important;
+  letter-spacing: 0.03em;
 }
 .vehicle-selector__subtitle {
   font-size: 13px !important;
-  color: #666 !important;
+  color: #888 !important;
   margin: 4px 0 0 !important;
 }
 .vehicle-selector__close {
   background: none !important;
   border: none !important;
-  font-size: 24px !important;
+  font-size: 22px !important;
   cursor: pointer;
-  color: #999;
-  padding: 4px 8px !important;
+  color: #aaa !important;
+  padding: 0 !important;
   line-height: 1;
+  width: 32px;
+  height: 32px;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.15s ease;
 }
 .vehicle-selector__close:hover {
-  color: #333;
+  color: #333 !important;
+  background: #f0f0f0 !important;
 }
 .vehicle-selector__fields {
   display: grid !important;
-  grid-template-columns: 1fr 1fr 1fr !important;
-  gap: 12px !important;
+  grid-template-columns: 1fr 1fr 1fr auto !important;
+  gap: 14px !important;
+  align-items: end;
+}
+.vehicle-selector__field--action {
+  padding-bottom: 0;
 }
 .vehicle-selector__label {
   display: block !important;
   font-family: var(--font-heading--family, Oswald, sans-serif) !important;
-  font-size: 12px !important;
+  font-size: 11px !important;
   font-weight: 700 !important;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #1A1A1A !important;
+  color: #666 !important;
   margin-bottom: 6px !important;
 }
 .vehicle-selector__select {
   width: 100% !important;
-  padding: 10px 12px !important;
-  border: 1px solid #ddd !important;
-  border-radius: 4px !important;
+  padding: 10px 30px 10px 12px !important;
+  border: 1.5px solid #ddd !important;
+  border-radius: 6px !important;
   font-size: 14px !important;
   font-family: var(--font-body--family, sans-serif) !important;
   background: #fff !important;
   color: #333 !important;
   appearance: auto !important;
   cursor: pointer;
+  transition: border-color 0.15s ease;
 }
 .vehicle-selector__select:focus {
   border-color: #FFB74F !important;
   outline: none !important;
-  box-shadow: 0 0 0 2px rgba(255,183,79,0.3) !important;
+  box-shadow: 0 0 0 3px rgba(255,183,79,0.2) !important;
 }
 .vehicle-selector__select:disabled {
-  background: #f5f5f5 !important;
-  color: #999 !important;
+  background: #f8f8f8 !important;
+  color: #bbb !important;
   cursor: not-allowed;
+  border-color: #eee !important;
 }
-.vehicle-selector__form button[type="submit"],
-.vehicle-selector__submit {
-  width: 100% !important;
-  margin-top: 16px !important;
-  padding: 14px !important;
+.vehicle-selector__go {
+  padding: 10px 28px !important;
   background: #FFB74F !important;
   color: #1A1A1A !important;
   border: none !important;
-  border-radius: 4px !important;
+  border-radius: 6px !important;
   font-family: var(--font-heading--family, Oswald, sans-serif) !important;
   font-weight: 700 !important;
   font-size: 14px !important;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   cursor: pointer;
+  transition: background 0.15s ease;
+  white-space: nowrap;
 }
-/* Hide horizontal scrollbar on vehicle selector */
-.vehicle-selector__dialog *::-webkit-scrollbar {
-  display: none;
+.vehicle-selector__go:hover:not(:disabled) {
+  background: #e09a35 !important;
 }
-.vehicle-selector__dialog * {
-  scrollbar-width: none;
+.vehicle-selector__go:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
+.vehicle-selector__saved {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: #f0faf3;
+  border: 1px solid #c8e6c9;
+  border-radius: 6px;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+.vehicle-selector__saved-icon {
+  color: #1A3F22;
+  font-weight: 700;
+  margin-right: 8px;
+}
+.vehicle-selector__clear {
+  background: none !important;
+  border: 1px solid #ccc !important;
+  border-radius: 4px !important;
+  padding: 6px 14px !important;
+  font-size: 12px !important;
+  color: #666 !important;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.vehicle-selector__clear:hover {
+  border-color: #999 !important;
+  color: #333 !important;
+}
+.vehicle-selector__dialog *::-webkit-scrollbar { display: none; }
+.vehicle-selector__dialog * { scrollbar-width: none; }
 
-/* ===== Collection card enhancements ===== */
+/* ===== 7. COLLECTION CARDS ===== */
 .collection-card {
   border-radius: 8px !important;
   overflow: hidden;
@@ -253,9 +342,7 @@ a.button-secondary:hover {
 .collection-card .collection-card__inner::after {
   content: '';
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  bottom: 0; left: 0; right: 0;
   height: 55%;
   background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0) 100%);
   pointer-events: none;
@@ -264,9 +351,7 @@ a.button-secondary:hover {
 }
 .stehlen-card-title {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  bottom: 0; left: 0; right: 0;
   padding: 20px;
   z-index: 3;
   color: #fff;
@@ -292,21 +377,35 @@ a.button-secondary:hover {
   gap: 6px;
   transition: color 0.2s ease;
 }
-.stehlen-card-title__link:hover {
-  color: #ffc978;
+.stehlen-card-title__link:hover { color: #ffc978; }
+
+/* ===== 8. HOMEPAGE SECTION SPACING — breathing room ===== */
+body.template-index #MainContent > .shopify-section {
+  margin-bottom: 0;
+}
+/* Divider lines between major sections */
+body.template-index #MainContent > .shopify-section + .shopify-section {
+  border-top: 1px solid rgba(0,0,0,0.06);
+}
+/* Value props bar spacing */
+#stehlen-value-props {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+/* Collection list and featured products need more internal padding */
+body.template-index .section-resource-list {
+  padding-top: 56px !important;
+  padding-bottom: 56px !important;
+}
+body.template-index .section-resource-list .section-resource-list__content {
+  margin-bottom: 28px;
+}
+/* Popular models section spacing */
+#stehlen-popular-models {
+  margin-top: 0;
 }
 
-/* ===== Section spacing fixes ===== */
-.section-resource-list {
-  padding-top: 48px;
-  padding-bottom: 48px;
-}
-/* More gap between Shop by Category heading and cards */
-.section-resource-list .section-resource-list__content {
-  margin-bottom: 12px;
-}
-
-/* ===== Featured Products polish ===== */
+/* ===== 9. PRODUCT CARD POLISH ===== */
 .ui-test-product-list .product-card {
   border-radius: 8px;
   overflow: hidden;
@@ -317,11 +416,12 @@ a.button-secondary:hover {
   box-shadow: 0 6px 20px rgba(0,0,0,0.12);
 }
 
-/* ===== Value props bar ===== */
+/* ===== 10. VALUE PROPS BAR ===== */
 #stehlen-value-props {
   background: #fff;
   border-top: 1px solid rgba(0,0,0,0.06);
   border-bottom: 1px solid rgba(0,0,0,0.06);
+  padding: 6px 0;
 }
 #stehlen-value-props .vp-grid {
   display: grid;
@@ -338,9 +438,7 @@ a.button-secondary:hover {
   padding: 18px 12px;
   border-right: 1px solid #e0e0e0;
 }
-#stehlen-value-props .vp-item:last-child {
-  border-right: none;
-}
+#stehlen-value-props .vp-item:last-child { border-right: none; }
 #stehlen-value-props .vp-title {
   font-family: var(--font-heading--family, Oswald, sans-serif);
   font-weight: 600;
@@ -355,59 +453,258 @@ a.button-secondary:hover {
   color: #666;
 }
 
-/* ===== Mobile ===== */
-@media (max-width: 989px) {
-  .hero__content-wrapper {
-    padding: 40px 24px !important;
+/* ===== 11. SHOP BY POPULAR MODELS ===== */
+#stehlen-popular-models {
+  background: #f8f8f8;
+  padding: 56px 0;
+  border-top: 1px solid rgba(0,0,0,0.06);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+#stehlen-popular-models .pm-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+#stehlen-popular-models .pm-header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+#stehlen-popular-models .pm-header h2 {
+  font-family: var(--font-heading--family, Oswald, sans-serif);
+  font-weight: 700;
+  font-size: 28px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #1A1A1A;
+  margin: 0 0 8px;
+}
+#stehlen-popular-models .pm-header p {
+  font-family: var(--font-body--family, sans-serif);
+  font-size: 15px;
+  color: #666;
+  margin: 0;
+}
+#stehlen-popular-models .pm-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+#stehlen-popular-models .pm-card {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #1a1a1a;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-decoration: none;
+  color: #fff;
+}
+#stehlen-popular-models .pm-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.2);
+}
+#stehlen-popular-models .pm-card-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+#stehlen-popular-models .pm-card:hover .pm-card-img {
+  opacity: 0.85;
+}
+#stehlen-popular-models .pm-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%);
+}
+#stehlen-popular-models .pm-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: #FFB74F;
+  color: #1A1A1A;
+  font-family: var(--font-heading--family, Oswald, sans-serif);
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 3px;
+  z-index: 3;
+}
+#stehlen-popular-models .pm-card-info {
+  position: relative;
+  z-index: 3;
+  padding: 24px 20px;
+}
+#stehlen-popular-models .pm-card-name {
+  font-family: var(--font-heading--family, Oswald, sans-serif);
+  font-weight: 700;
+  font-size: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin: 0 0 4px;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+}
+#stehlen-popular-models .pm-card-count {
+  font-family: var(--font-body--family, sans-serif);
+  font-size: 13px;
+  color: rgba(255,255,255,0.7);
+  margin: 0 0 12px;
+}
+#stehlen-popular-models .pm-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-heading--family, Oswald, sans-serif);
+  font-weight: 600;
+  font-size: 13px;
+  color: #FFB74F;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+#stehlen-popular-models .pm-card-link:hover { color: #ffc978; }
+
+/* ===== 12. COLLECTION PAGE — FORCE SHOW FILTER SIDEBAR ===== */
+/* The Horizon theme hides the sidebar filter variant via CSS. Override it. */
+@media (min-width: 750px) {
+  .facets-block-wrapper.facets-block-wrapper--sidebar {
+    display: block !important;
+    min-width: 240px;
+    max-width: 260px;
+    padding-right: 24px;
   }
-  .vehicle-selector__dialog {
-    width: calc(100vw - 32px) !important;
-    right: 16px !important;
+  .facets.facets--sidebar {
+    display: block !important;
   }
-  .vehicle-selector__fields {
+  .facets__form-wrapper {
+    display: block !important;
+  }
+  .facets__form {
+    display: block !important;
+  }
+  .facets__filters-wrapper {
+    display: block !important;
+  }
+  /* Fix the grid layout to accommodate sidebar */
+  .collection-wrapper.grid {
+    display: grid !important;
+    grid-template-columns: 260px 1fr !important;
+    gap: 24px !important;
+  }
+  /* Make product grid take remaining space */
+  .main-collection-grid {
+    grid-column: 2 / -1 !important;
+  }
+  /* Hide the drawer/toggle variants when sidebar is showing */
+  .facets-toggle { display: none !important; }
+  .facets-block-wrapper--drawer { display: none !important; }
+}
+/* Mobile: hide sidebar, show toggle for drawer */
+@media (max-width: 749px) {
+  .facets-block-wrapper.facets-block-wrapper--sidebar {
+    display: none !important;
+  }
+  .facets-toggle {
+    display: flex !important;
+    justify-content: flex-end;
+    padding: 12px 16px;
+  }
+  .collection-wrapper.grid {
     grid-template-columns: 1fr !important;
   }
-  #stehlen-value-props .vp-grid {
-    grid-template-columns: repeat(2, 1fr);
+}
+/* Style the sidebar filters */
+.facets--sidebar .facets__panel {
+  border-bottom: 1px solid #eee;
+}
+.facets--sidebar .facets__summary {
+  padding: 14px 0;
+  font-family: var(--font-heading--family, Oswald, sans-serif);
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+.facets--sidebar .facets__inputs-list {
+  padding: 0 0 14px;
+  margin: 0;
+  list-style: none;
+  flex-direction: column !important;
+  gap: 8px;
+}
+.facets--sidebar .facets__inputs-list-item {
+  font-size: 14px;
+  color: #444;
+}
+.facets--sidebar .facets__inputs-list-item label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+/* Collection page: tighter product grid */
+.product-grid-container .product-grid__card {
+  padding: 8px !important;
+}
+/* Reduce white space in collection heading */
+body:not(.template-index) .spacing-style {
+  --padding-block-start: 24px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 989px) {
+  .hero__content-wrapper { padding: 40px 24px !important; }
+  .vehicle-selector__dialog {
+    width: calc(100vw - 20px) !important;
+    right: 10px !important;
   }
-  #stehlen-value-props .vp-item:nth-child(2) {
-    border-right: none;
+  .vehicle-selector__fields {
+    grid-template-columns: 1fr 1fr 1fr !important;
   }
+  .vehicle-selector__field--action {
+    grid-column: 1 / -1;
+  }
+  .vehicle-selector__go {
+    width: 100% !important;
+    padding: 12px !important;
+  }
+  #stehlen-value-props .vp-grid { grid-template-columns: repeat(2, 1fr); }
+  #stehlen-value-props .vp-item:nth-child(2) { border-right: none; }
   #stehlen-value-props .vp-item:nth-child(1),
-  #stehlen-value-props .vp-item:nth-child(2) {
-    border-bottom: 1px solid #e0e0e0;
-  }
+  #stehlen-value-props .vp-item:nth-child(2) { border-bottom: 1px solid #e0e0e0; }
+  #stehlen-popular-models .pm-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 749px) {
-  .hero__content-wrapper {
-    padding: 24px 16px !important;
-  }
-  .stehlen-card-title__name {
-    font-size: 13px;
-  }
-  .stehlen-card-title__link {
-    font-size: 11px;
-  }
-  .stehlen-card-title {
-    padding: 12px;
-  }
-  #stehlen-value-props .vp-item {
-    padding: 12px 8px;
-    gap: 8px;
-  }
-  #stehlen-value-props svg {
-    width: 22px;
-    height: 22px;
-  }
-  #stehlen-value-props .vp-sub {
-    display: none;
-  }
+  .hero__content-wrapper { padding: 24px 16px !important; }
+  .vehicle-selector__fields { grid-template-columns: 1fr !important; }
+  .stehlen-card-title__name { font-size: 13px; }
+  .stehlen-card-title__link { font-size: 11px; }
+  .stehlen-card-title { padding: 12px; }
+  #stehlen-value-props .vp-item { padding: 12px 8px; gap: 8px; }
+  #stehlen-value-props svg { width: 22px; height: 22px; }
+  #stehlen-value-props .vp-sub { display: none; }
+  #stehlen-popular-models { padding: 40px 0; }
+  #stehlen-popular-models .pm-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+  #stehlen-popular-models .pm-card { min-height: 200px; }
+  #stehlen-popular-models .pm-card-name { font-size: 16px; }
+  #stehlen-popular-models .pm-card-info { padding: 16px 14px; }
 }
 </style>
 
 <script>
-/* Inject value props bar after first section in MainContent */
+/* Inject value props bar after first section in MainContent (homepage only) */
 (function() {
+  if (!document.body.classList.contains('template-index')) return;
   function injectValueProps() {
     if (document.getElementById('stehlen-value-props')) return;
     var mainContent = document.getElementById('MainContent');
@@ -415,30 +712,16 @@ a.button-secondary:hover {
     var firstSection = mainContent.querySelector('.shopify-section');
     if (!firstSection) return;
     var vpHTML = '<div id="stehlen-value-props"><div class="vp-grid">' +
-      '<div class="vp-item">' +
-        '<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFB74F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>' +
-        '<div style="display:flex;flex-direction:column;gap:2px"><span class="vp-title">Free Shipping</span><span class="vp-sub">On all orders</span></div>' +
-      '</div>' +
-      '<div class="vp-item">' +
-        '<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFB74F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg>' +
-        '<div style="display:flex;flex-direction:column;gap:2px"><span class="vp-title">Guaranteed Fitment</span><span class="vp-sub">Fits your vehicle or money back</span></div>' +
-      '</div>' +
-      '<div class="vp-item">' +
-        '<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFB74F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M12 8v4l2 2"></path></svg>' +
-        '<div style="display:flex;flex-direction:column;gap:2px"><span class="vp-title">Manufacturer Warranty</span><span class="vp-sub">On every product</span></div>' +
-      '</div>' +
-      '<div class="vp-item">' +
-        '<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFB74F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>' +
-        '<div style="display:flex;flex-direction:column;gap:2px"><span class="vp-title">Easy Returns</span><span class="vp-sub">30-day hassle-free returns</span></div>' +
-      '</div>' +
+      '<div class="vp-item"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFB74F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg><div style="display:flex;flex-direction:column;gap:2px"><span class="vp-title">Free Shipping</span><span class="vp-sub">On all orders</span></div></div>' +
+      '<div class="vp-item"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFB74F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg><div style="display:flex;flex-direction:column;gap:2px"><span class="vp-title">Guaranteed Fitment</span><span class="vp-sub">Fits your vehicle or money back</span></div></div>' +
+      '<div class="vp-item"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFB74F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M12 8v4l2 2"></path></svg><div style="display:flex;flex-direction:column;gap:2px"><span class="vp-title">Manufacturer Warranty</span><span class="vp-sub">On every product</span></div></div>' +
+      '<div class="vp-item"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFB74F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg><div style="display:flex;flex-direction:column;gap:2px"><span class="vp-title">Easy Returns</span><span class="vp-sub">30-day hassle-free returns</span></div></div>' +
     '</div></div>';
     firstSection.insertAdjacentHTML('afterend', vpHTML);
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', injectValueProps);
-  } else {
-    injectValueProps();
-  }
+  } else { injectValueProps(); }
   window.addEventListener('load', function() { setTimeout(injectValueProps, 300); });
 })();
 
@@ -455,28 +738,95 @@ a.button-secondary:hover {
       var title = hidden.textContent.trim();
       var href = link.getAttribute('href');
       if (!title || !href) return;
-
       var overlay = document.createElement('div');
       overlay.className = 'stehlen-card-title';
-      overlay.innerHTML =
-        '<div class="stehlen-card-title__name">' + title + '</div>' +
+      overlay.innerHTML = '<div class="stehlen-card-title__name">' + title + '</div>' +
         '<a href="' + href + '" class="stehlen-card-title__link">View All Parts <span style="font-size:15px">&rarr;</span></a>';
-
       var inner = card.querySelector('.collection-card__inner');
-      if (inner) {
-        inner.style.position = 'relative';
-        inner.appendChild(overlay);
-      }
+      if (inner) { inner.style.position = 'relative'; inner.appendChild(overlay); }
     });
   }
-
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', enhanceCollectionCards);
-  } else {
-    enhanceCollectionCards();
+  } else { enhanceCollectionCards(); }
+  window.addEventListener('load', function() { setTimeout(enhanceCollectionCards, 500); });
+})();
+
+/* Inject "Shop by Popular Models" section on homepage */
+(function() {
+  if (!document.body.classList.contains('template-index')) return;
+  function injectPopularModels() {
+    if (document.getElementById('stehlen-popular-models')) return;
+    var mainContent = document.getElementById('MainContent');
+    if (!mainContent) return;
+    /* Insert after the collection-list section (Shop by Category) */
+    var collListSection = mainContent.querySelector('.ui-test-collection-list');
+    if (!collListSection) {
+      /* Fallback: insert before featured products */
+      var sections = mainContent.querySelectorAll('.shopify-section');
+      if (sections.length < 2) return;
+      collListSection = sections[sections.length - 1];
+    }
+
+    var models = [
+      { name: 'Ford F-150', badge: 'MOST POPULAR', img: '/cdn/shop/files/ford-f150.jpg', slug: 'ford-f-150', color: '#1a3f22' },
+      { name: 'Toyota Tundra', badge: 'TRENDING', img: '/cdn/shop/files/toyota-tundra.jpg', slug: 'toyota-tundra', color: '#1a2a4a' },
+      { name: 'Chevy Silverado', badge: 'BEST SELLERS', img: '/cdn/shop/files/chevy-silverado.jpg', slug: 'chevy-silverado', color: '#2a1a1a' },
+      { name: 'Dodge Charger', badge: 'OFF-ROAD', img: '/cdn/shop/files/dodge-charger.jpg', slug: 'dodge-charger', color: '#1a1a2a' }
+    ];
+
+    var cardsHTML = models.map(function(m) {
+      return '<a href="/collections/all?filter.p.m.custom.make=' + encodeURIComponent(m.name.split(' ')[0]) + '&filter.p.m.custom.model=' + encodeURIComponent(m.name.split(' ').slice(1).join(' ')) + '" class="pm-card" style="background-color:' + m.color + '">' +
+        '<div class="pm-card-overlay"></div>' +
+        '<div class="pm-badge">' + m.badge + '</div>' +
+        '<div class="pm-card-info">' +
+          '<div class="pm-card-name">' + m.name + '</div>' +
+          '<div class="pm-card-count">Truck & SUV Parts</div>' +
+          '<span class="pm-card-link">View All Parts <span style="font-size:14px">&rarr;</span></span>' +
+        '</div>' +
+      '</a>';
+    }).join('');
+
+    var html = '<div id="stehlen-popular-models"><div class="pm-inner">' +
+      '<div class="pm-header"><h2>Shop by Popular Models</h2><p>Find parts specifically designed for your vehicle</p></div>' +
+      '<div class="pm-grid">' + cardsHTML + '</div>' +
+    '</div></div>';
+
+    /* Insert after collection list section */
+    var parentSection = collListSection.closest('.shopify-section') || collListSection;
+    parentSection.insertAdjacentHTML('afterend', html);
   }
-  window.addEventListener('load', function() {
-    setTimeout(enhanceCollectionCards, 500);
-  });
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', injectPopularModels);
+  } else { injectPopularModels(); }
+  window.addEventListener('load', function() { setTimeout(injectPopularModels, 500); });
+})();
+
+/* Force-show filter sidebar on collection pages */
+(function() {
+  if (!document.querySelector('results-list')) return;
+  function showFilters() {
+    var sidebar = document.querySelector('.facets-block-wrapper--sidebar');
+    if (sidebar) {
+      sidebar.style.display = 'block';
+      var facets = sidebar.querySelector('.facets--sidebar');
+      if (facets) facets.style.display = 'block';
+      var form = sidebar.querySelector('.facets__form');
+      if (form) form.style.display = 'block';
+      var wrapper = sidebar.querySelector('.facets__filters-wrapper');
+      if (wrapper) wrapper.style.display = 'block';
+      var formWrapper = sidebar.querySelector('.facets__form-wrapper');
+      if (formWrapper) formWrapper.style.display = 'block';
+      /* Open first few filter panels by default */
+      var panels = sidebar.querySelectorAll('.facets__panel');
+      panels.forEach(function(p, i) {
+        if (i < 3) p.setAttribute('open', '');
+      });
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', showFilters);
+  } else { showFilters(); }
+  window.addEventListener('load', function() { setTimeout(showFilters, 300); });
 })();
 </script>
