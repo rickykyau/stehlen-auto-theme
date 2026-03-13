@@ -52,14 +52,17 @@
 }
 
 /* ===== 3. INNER PAGE — prevent sticky header from covering content ===== */
-/* The header is sticky/fixed ~80px. On non-homepage pages, push content down. */
-body:not(.template-index) #MainContent {
+/* The header is sticky/fixed ~80px. On non-homepage pages, push content down.
+   We use Liquid to conditionally output these rules. */
+{% if template.name != 'index' %}
+#MainContent {
   padding-top: 80px !important;
 }
-/* Homepage doesn't need extra padding (hero is full-width under header) */
-body.template-index #MainContent {
+{% else %}
+#MainContent {
   padding-top: 0;
 }
+{% endif %}
 
 /* ===== 4. BUTTONS — global fix for missing button styles ===== */
 .button-primary,
@@ -380,30 +383,18 @@ a.button-secondary:hover {
 .stehlen-card-title__link:hover { color: #ffc978; }
 
 /* ===== 8. HOMEPAGE SECTION SPACING — breathing room ===== */
-body.template-index #MainContent > .shopify-section {
-  margin-bottom: 0;
-}
-/* Divider lines between major sections */
-body.template-index #MainContent > .shopify-section + .shopify-section {
+{% if template.name == 'index' %}
+#MainContent > .shopify-section + .shopify-section {
   border-top: 1px solid rgba(0,0,0,0.06);
 }
-/* Value props bar spacing */
-#stehlen-value-props {
-  margin-top: 0;
-  margin-bottom: 0;
-}
-/* Collection list and featured products need more internal padding */
-body.template-index .section-resource-list {
+.section-resource-list {
   padding-top: 56px !important;
   padding-bottom: 56px !important;
 }
-body.template-index .section-resource-list .section-resource-list__content {
+.section-resource-list .section-resource-list__content {
   margin-bottom: 28px;
 }
-/* Popular models section spacing */
-#stehlen-popular-models {
-  margin-top: 0;
-}
+{% endif %}
 
 /* ===== 9. PRODUCT CARD POLISH ===== */
 .ui-test-product-list .product-card {
@@ -657,9 +648,11 @@ body.template-index .section-resource-list .section-resource-list__content {
   padding: 8px !important;
 }
 /* Reduce white space in collection heading */
-body:not(.template-index) .spacing-style {
+{% if template.name == 'collection' %}
+.spacing-style {
   --padding-block-start: 24px;
 }
+{% endif %}
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 989px) {
@@ -704,7 +697,7 @@ body:not(.template-index) .spacing-style {
 <script>
 /* Inject value props bar after first section in MainContent (homepage only) */
 (function() {
-  if (!document.body.classList.contains('template-index')) return;
+  {% if template.name != 'index' %}return;{% endif %}
   function injectValueProps() {
     if (document.getElementById('stehlen-value-props')) return;
     var mainContent = document.getElementById('MainContent');
@@ -754,7 +747,7 @@ body:not(.template-index) .spacing-style {
 
 /* Inject "Shop by Popular Models" section on homepage */
 (function() {
-  if (!document.body.classList.contains('template-index')) return;
+  {% if template.name != 'index' %}return;{% endif %}
   function injectPopularModels() {
     if (document.getElementById('stehlen-popular-models')) return;
     var mainContent = document.getElementById('MainContent');
