@@ -807,7 +807,8 @@ a.button-secondary:hover {
   function showFilters() {
     var sidebar = document.querySelector('.facets-block-wrapper--sidebar');
     if (!sidebar) return;
-    sidebar.style.display = 'block';
+    /* Force sidebar visible */
+    sidebar.style.cssText += 'display:block !important; grid-column:1/2 !important; grid-row:1/99 !important;';
     var facets = sidebar.querySelector('.facets--sidebar');
     if (facets) facets.style.display = 'block';
     var form = sidebar.querySelector('.facets__form');
@@ -816,16 +817,27 @@ a.button-secondary:hover {
     if (wrapper) wrapper.style.display = 'block';
     var formWrapper = sidebar.querySelector('.facets__form-wrapper');
     if (formWrapper) formWrapper.style.display = 'block';
+
+    /* Fix grid: sidebar col 1, products col 2 */
+    var collWrapper = document.querySelector('.collection-wrapper.grid');
+    if (collWrapper) {
+      collWrapper.style.cssText += 'display:grid !important; grid-template-columns:260px 1fr !important; gap:24px !important;';
+    }
+    var productGrid = document.querySelector('.main-collection-grid');
+    if (productGrid) {
+      productGrid.style.cssText += 'grid-column:2/3 !important; grid-row:1/99 !important;';
+    }
+
     /* Open first 3 filter panels by default */
-    var details = sidebar.querySelectorAll('details.facets__panel');
+    var details = sidebar.querySelectorAll('details');
     for (var i = 0; i < details.length && i < 3; i++) {
-      details[i].setAttribute('open', 'open');
+      details[i].open = true;
     }
   }
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function() { setTimeout(showFilters, 100); });
-  } else { setTimeout(showFilters, 100); }
-  window.addEventListener('load', function() { setTimeout(showFilters, 500); });
+    document.addEventListener('DOMContentLoaded', function() { setTimeout(showFilters, 200); });
+  } else { setTimeout(showFilters, 200); }
+  window.addEventListener('load', function() { setTimeout(showFilters, 600); });
 })();
 {% endif %}
 </script>
