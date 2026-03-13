@@ -1,6 +1,7 @@
 {% comment %}
   Rotating Announcement Bar + Value Props Bar
-  Trust messages that cycle every 4 seconds, plus a value props bar below the header
+  Trust messages that cycle every 4 seconds
+  Value props bar injected via JS after the first content section
 {% endcomment %}
 
 <style>
@@ -43,6 +44,8 @@
   #stehlen-value-props {
     background: #fff;
     border-bottom: 1px solid #e0e0e0;
+    position: relative;
+    z-index: 1;
   }
   #stehlen-value-props .vp-grid {
     display: grid;
@@ -110,11 +113,16 @@
     }, 4000);
   }
 
-  // Inject Value Props Bar after header-group
+  // Inject Value Props Bar after the first section in MainContent (after hero)
   function injectValueProps() {
-    var headerGroup = document.getElementById('header-group');
-    if (!headerGroup) return;
     if (document.getElementById('stehlen-value-props')) return;
+
+    var mainContent = document.getElementById('MainContent');
+    if (!mainContent) return;
+
+    // Find the first section inside MainContent (the hero)
+    var firstSection = mainContent.querySelector('.shopify-section');
+    if (!firstSection) return;
 
     var vpHTML = '<div id="stehlen-value-props">'
       + '<div class="vp-grid">'
@@ -136,7 +144,8 @@
       + '</div>'
       + '</div></div>';
 
-    headerGroup.insertAdjacentHTML('afterend', vpHTML);
+    // Insert after the first section (hero)
+    firstSection.insertAdjacentHTML('afterend', vpHTML);
   }
 
   if (document.readyState === 'loading') {
