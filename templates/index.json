@@ -79,6 +79,12 @@
         "header_text"
       ],
       "settings": {
+        "collection_list": [
+          "tonneau-covers",
+          "bull-guards-grille-guards",
+          "side-steps-nerf-bars",
+          "trailer-hitches"
+        ],
         "layout_type": "grid",
         "columns": 4,
         "mobile_columns": "2",
