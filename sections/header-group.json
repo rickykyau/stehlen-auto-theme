@@ -17,13 +17,13 @@
         "announcement_BxgCk9": {
           "type": "_announcement",
           "settings": {
-            "text": "Free Shipping on All Orders | Fitment Guaranteed",
+            "text": "Free Shipping on Orders Over $150 | Fitment Guaranteed",
             "link": "",
             "font": "var(--font-subheading--family)",
             "font_size": "0.75rem",
-            "weight": "600",
-            "letter_spacing": "loose",
-            "case": "uppercase"
+            "weight": "",
+            "letter_spacing": "normal",
+            "case": "none"
           },
           "blocks": {}
         }
@@ -33,16 +33,12 @@
       ],
       "name": "t:names.announcement_bar",
       "settings": {
-        "message_1": "Free Shipping on All Orders | Fitment Guaranteed",
-        "message_2": "Easy 30-Day Returns | No Hassle, No Questions Asked",
-        "message_3": "Guaranteed Fitment for Your Vehicle | Shop with Confidence",
-        "message_4": "Manufacturer Warranty on Every Product | Trusted Since Day One",
-        "speed": 4,
-        "section_width": "full-width",
-        "color_scheme": "scheme-4",
+        "speed": 5,
+        "section_width": "page-width",
+        "color_scheme": "scheme-1",
         "divider_width": 1,
-        "padding-block-start": 10,
-        "padding-block-end": 10
+        "padding-block-start": 15,
+        "padding-block-end": 15
       }
     },
     "header_section": {
