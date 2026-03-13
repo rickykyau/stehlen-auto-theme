@@ -1,108 +1,43 @@
 {% comment %}
-  Rotating Announcement Bar — uses section settings for messages
-  Falls back to theme blocks if no custom messages are set
+  Rotating Announcement Bar with trust messages
+  Messages are hardcoded for reliability; edit them here directly.
 {% endcomment %}
 
-{% liquid
-  assign messages = '' | split: '|'
-  if section.settings.message_1 != blank
-    assign messages = messages | append: section.settings.message_1 | append: '|||'
-  endif
-  if section.settings.message_2 != blank
-    assign messages = messages | append: section.settings.message_2 | append: '|||'
-  endif
-  if section.settings.message_3 != blank
-    assign messages = messages | append: section.settings.message_3 | append: '|||'
-  endif
-  if section.settings.message_4 != blank
-    assign messages = messages | append: section.settings.message_4 | append: '|||'
-  endif
-  assign messages = messages | split: '|||'
-  assign message_count = messages.size
-  assign has_custom_messages = false
-  if message_count > 0
-    assign has_custom_messages = true
-  endif
-%}
+{%- assign stehlen_messages = "Free Shipping on All Orders | Fitment Guaranteed|||Easy 30-Day Returns | No Hassle, No Questions Asked|||Guaranteed Fitment for Your Vehicle | Shop with Confidence|||Manufacturer Warranty on Every Product | Trusted Since Day One" | split: '|||' -%}
 
-{% if has_custom_messages %}
-  <div class="section-background color-{{ section.settings.color_scheme }}"></div>
-  <aside
-    class="announcement-bar spacing-style section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }}"
-    style="{% render 'spacing-padding', settings: section.settings %}; --border-bottom-width: {{ section.settings.divider_width }}px;"
-  >
-    <div class="announcement-bar__slider" aria-live="polite">
-      <div class="announcement-bar__slides">
-        {% for message in messages %}
-          <div
-            class="announcement-bar__slide announcement-bar__slide--custom"
-            aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}"
-          >
-            <p class="announcement-bar__text" style="font-family: var(--font-subheading--family); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; text-align: center; line-height: 1; margin: 0;">
-              {{ message }}
-            </p>
-          </div>
-        {% endfor %}
-      </div>
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<aside
+  class="announcement-bar spacing-style section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }}"
+  style="{% render 'spacing-padding', settings: section.settings %}; --border-bottom-width: {{ section.settings.divider_width }}px;"
+>
+  <div class="announcement-bar__slider" aria-live="polite">
+    <div class="announcement-bar__slides">
+      {% for message in stehlen_messages %}
+        <div
+          class="announcement-bar__slide announcement-bar__slide--custom"
+          aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}"
+        >
+          <p class="announcement-bar__text" style="font-family: var(--font-subheading--family); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; text-align: center; line-height: 1; margin: 0;">
+            {{ message }}
+          </p>
+        </div>
+      {% endfor %}
     </div>
-  </aside>
+  </div>
+</aside>
 
-  {% if message_count > 1 %}
-    <script>
-      (function() {
-        const slides = document.querySelectorAll('.announcement-bar__slide--custom');
-        if (slides.length < 2) return;
-        let current = 0;
-        const speed = {{ section.settings.speed | default: 4 }} * 1000;
-        setInterval(function() {
-          slides[current].setAttribute('aria-hidden', 'true');
-          current = (current + 1) % slides.length;
-          slides[current].setAttribute('aria-hidden', 'false');
-        }, speed);
-      })();
-    </script>
-  {% endif %}
-
-{% else %}
-  {%- comment -%}Fallback to original theme block rendering{%- endcomment -%}
-  {% if section.blocks.size > 1 %}
-    <script
-      src="{{ 'announcement-bar.js' | asset_url }}"
-      type="module"
-      fetchpriority="low"
-    ></script>
-  {% endif %}
-
-  <div class="section-background color-{{ section.settings.color_scheme }}"></div>
-  <aside
-    class="announcement-bar spacing-style section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }}"
-    style="{% render 'spacing-padding', settings: section.settings %}; --border-bottom-width: {{ section.settings.divider_width }}px;"
-  >
-    {% liquid
-      assign autoplay = false
-      assign show_arrows = false
-      if section.blocks.size > 1
-        assign autoplay = true
-        assign show_arrows = true
-      endif
-    %}
-
-    <announcement-bar-component
-      class="announcement-bar__slider"
-      {% if autoplay == true %}
-        autoplay="{{ section.settings.speed }}" aria-live="polite"
-      {% endif %}
-    >
-      {% if show_arrows %}
-        {% render 'slideshow-arrows', icon_style: 'chevron' %}
-      {% endif %}
-
-      <div class="announcement-bar__slides">
-        {% content_for 'blocks' %}
-      </div>
-    </announcement-bar-component>
-  </aside>
-{% endif %}
+<script>
+  (function() {
+    var slides = document.querySelectorAll('.announcement-bar__slide--custom');
+    if (slides.length < 2) return;
+    var current = 0;
+    setInterval(function() {
+      slides[current].setAttribute('aria-hidden', 'true');
+      current = (current + 1) % slides.length;
+      slides[current].setAttribute('aria-hidden', 'false');
+    }, 4000);
+  })();
+</script>
 
 {% stylesheet %}
   .announcement-bar {
@@ -123,7 +58,7 @@
   .announcement-bar__slides {
     display: grid;
     grid: [stack] auto / [stack] auto;
-    width: calc(100% - var(--button-size) * 2);
+    width: 100%;
     max-width: 680px;
     margin-inline: auto;
   }
@@ -134,57 +69,16 @@
 
   .announcement-bar__slide {
     transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
-
-    &[aria-hidden='true'] {
-      opacity: 0;
-      visibility: hidden;
-    }
-  }
-
-  .announcement-bar__slider slideshow-arrows {
-    padding: 0;
-    mix-blend-mode: normal;
-  }
-
-  .announcement-bar__slider slideshow-arrows .slideshow-control {
-    color: var(--color-foreground);
-  }
-
-  .announcement-bar__slider .slideshow-control {
-    display: flex;
-    padding: 0;
-    width: var(--button-size);
-    height: var(--button-size);
-    align-items: center;
-    justify-content: center;
-    opacity: 1;
-    animation: none;
-
-    @media screen and (min-width: 750px) {
-      --slideshow-control-offset: calc((var(--button-size) - var(--icon-size-xs)) / 2);
-
-      .section--page-width &.slideshow-control--previous {
-        transform: translateX(var(--slideshow-control-offset));
-      }
-    }
-  }
-
-  .announcement-bar__slider .slideshow-control .svg-wrapper {
-    width: var(--icon-size-xs);
-    height: var(--icon-size-xs);
-  }
-
-  .announcement-bar__slide {
     place-content: center;
+  }
+
+  .announcement-bar__slide[aria-hidden='true'] {
+    opacity: 0;
+    visibility: hidden;
   }
 
   .announcement-bar__text:first-child {
     margin: 0;
-  }
-
-  .announcement-bar__link {
-    position: absolute;
-    inset: 0;
   }
 {% endstylesheet %}
 
@@ -200,34 +94,6 @@
     "groups": ["header"]
   },
   "settings": [
-    {
-      "type": "header",
-      "content": "Rotating messages"
-    },
-    {
-      "type": "text",
-      "id": "message_1",
-      "label": "Message 1",
-      "default": "Free Shipping on All Orders | Fitment Guaranteed"
-    },
-    {
-      "type": "text",
-      "id": "message_2",
-      "label": "Message 2",
-      "default": "Easy 30-Day Returns | No Hassle, No Questions Asked"
-    },
-    {
-      "type": "text",
-      "id": "message_3",
-      "label": "Message 3",
-      "default": "Guaranteed Fitment for Your Vehicle | Shop with Confidence"
-    },
-    {
-      "type": "text",
-      "id": "message_4",
-      "label": "Message 4",
-      "default": "Manufacturer Warranty on Every Product | Trusted Since Day One"
-    },
     {
       "type": "range",
       "id": "speed",
@@ -255,7 +121,7 @@
           "label": "t:options.full"
         }
       ],
-      "default": "page-width"
+      "default": "full-width"
     },
     {
       "type": "color_scheme",
@@ -271,7 +137,7 @@
       "max": 5,
       "step": 0.5,
       "unit": "px",
-      "default": 0
+      "default": 1
     },
     {
       "type": "header",
@@ -285,7 +151,7 @@
       "max": 100,
       "step": 1,
       "unit": "px",
-      "default": 15
+      "default": 10
     },
     {
       "type": "range",
@@ -295,7 +161,7 @@
       "max": 100,
       "step": 1,
       "unit": "px",
-      "default": 15
+      "default": 10
     }
   ],
   "presets": [
