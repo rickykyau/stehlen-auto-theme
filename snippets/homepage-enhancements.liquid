@@ -87,25 +87,29 @@ a.button-secondary:hover {
 }
 
 /* ===== Vehicle Selector styling ===== */
+.vehicle-selector {
+  position: relative;
+}
 .vehicle-selector__dialog {
-  position: fixed !important;
-  top: 60px !important;
-  right: 20px !important;
+  position: fixed;
   left: auto !important;
   bottom: auto !important;
   margin: 0 !important;
   width: 420px !important;
   max-width: calc(100vw - 40px) !important;
   border: none !important;
-  border-radius: 8px !important;
+  border-radius: 0 0 8px 8px !important;
   box-shadow: 0 8px 40px rgba(0,0,0,0.2) !important;
   padding: 0 !important;
   overflow: visible !important;
   background: #fff !important;
   z-index: 999 !important;
 }
+.vehicle-selector__dialog[open] {
+  display: block;
+}
 .vehicle-selector__dialog::backdrop {
-  background: rgba(0,0,0,0.3);
+  background: transparent;
 }
 .vehicle-selector__content {
   padding: 24px !important;
@@ -334,7 +338,6 @@ a.button-secondary:hover {
   .vehicle-selector__dialog {
     width: calc(100vw - 32px) !important;
     right: 16px !important;
-    top: 56px !important;
   }
   .vehicle-selector__fields {
     grid-template-columns: 1fr !important;
@@ -378,6 +381,28 @@ a.button-secondary:hover {
 </style>
 
 <script>
+/* Replace header logo with correct Stehlen logo */
+(function() {
+  function replaceLogo() {
+    var logos = document.querySelectorAll('.header-logo__image');
+    if (logos.length === 0) return;
+    var newSrc = '{{ "stehlen-logo.png" | asset_url }}';
+    logos.forEach(function(img) {
+      img.src = newSrc;
+      img.srcset = '';
+      img.alt = 'Stehlen Auto';
+      img.style.height = '36px';
+      img.style.width = 'auto';
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', replaceLogo);
+  } else {
+    replaceLogo();
+  }
+  window.addEventListener('load', replaceLogo);
+})();
+
 /* Inject value props bar after first section in MainContent */
 (function() {
   function injectValueProps() {

@@ -80,7 +80,7 @@ class VehicleSelector extends HTMLElement {
         }
 
         for (const product of data.products) {
-          const tags = product.tags.split(',').map(t => t.trim());
+          const tags = Array.isArray(product.tags) ? product.tags.map(t => t.trim()) : product.tags.split(',').map(t => t.trim());
           const makes = [];
           const models = [];
           const years = [];
@@ -262,7 +262,16 @@ class VehicleSelector extends HTMLElement {
   }
 
   _openDialog() {
-    this._refs.dialog.showModal();
+    const dialog = this._refs.dialog;
+    const trigger = this._refs.trigger;
+    // Position below trigger button
+    const rect = trigger.getBoundingClientRect();
+    dialog.style.position = 'fixed';
+    dialog.style.top = (rect.bottom + 4) + 'px';
+    dialog.style.right = (window.innerWidth - rect.right) + 'px';
+    dialog.style.left = 'auto';
+    dialog.style.margin = '0';
+    dialog.show();
   }
 
   _closeDialog() {
