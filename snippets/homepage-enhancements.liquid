@@ -1,4 +1,25 @@
 <style>
+/* ===== Logo replacement ===== */
+.header-logo__image-container {
+  position: relative;
+}
+.header-logo__image {
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+.header-logo__image-container--inverse::before,
+.header-logo__image-container--original::before {
+  content: '';
+  display: block;
+  width: 180px;
+  height: 36px;
+  background-image: url({{ 'stehlen-logo.png' | asset_url }});
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left center;
+}
+
 /* ===== GLOBAL: Button fixes (button-primary has no bg in color-scheme-5) ===== */
 .button-primary,
 a.button-primary {
@@ -95,7 +116,7 @@ a.button-secondary:hover {
   left: auto !important;
   bottom: auto !important;
   margin: 0 !important;
-  width: 420px !important;
+  width: 480px !important;
   max-width: calc(100vw - 40px) !important;
   border: none !important;
   border-radius: 0 0 8px 8px !important;
@@ -381,28 +402,6 @@ a.button-secondary:hover {
 </style>
 
 <script>
-/* Replace header logo with correct Stehlen logo */
-(function() {
-  function replaceLogo() {
-    var logos = document.querySelectorAll('.header-logo__image');
-    if (logos.length === 0) return;
-    var newSrc = '{{ "stehlen-logo.png" | asset_url }}';
-    logos.forEach(function(img) {
-      img.src = newSrc;
-      img.srcset = '';
-      img.alt = 'Stehlen Auto';
-      img.style.height = '36px';
-      img.style.width = 'auto';
-    });
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', replaceLogo);
-  } else {
-    replaceLogo();
-  }
-  window.addEventListener('load', replaceLogo);
-})();
-
 /* Inject value props bar after first section in MainContent */
 (function() {
   function injectValueProps() {
