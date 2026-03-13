@@ -149,7 +149,7 @@ a.button-secondary:hover {
   padding: 60px 48px !important;
 }
 
-/* ===== 6. VEHICLE SELECTOR — clean dropdown below trigger ===== */
+/* ===== 6. VEHICLE SELECTOR — dark theme dropdown ===== */
 .vehicle-selector {
   position: relative;
   display: flex !important;
@@ -166,65 +166,74 @@ header-actions {
   white-space: nowrap;
   align-self: center !important;
 }
-.vehicle-selector__dialog {
+
+/* --- Dialog container --- */
+.vehicle-selector__dialog,
+dialog.vehicle-selector__dialog {
   position: fixed;
   left: auto !important;
   bottom: auto !important;
   margin: 0 !important;
-  width: 520px !important;
+  width: 540px !important;
   max-width: calc(100vw - 20px) !important;
   border: none !important;
-  border-radius: 0 0 10px 10px !important;
-  box-shadow: 0 12px 48px rgba(0,0,0,0.25) !important;
+  border-radius: 0 0 12px 12px !important;
+  box-shadow: 0 16px 56px rgba(0,0,0,0.5) !important;
   padding: 0 !important;
   overflow: visible !important;
-  background: #fff !important;
+  background: #1a1a1a !important;
   z-index: 9999 !important;
 }
 .vehicle-selector__dialog[open] {
   display: block;
-  animation: vsSlideDown 0.2s ease-out;
+  animation: vsSlideDown 0.22s ease-out;
 }
 @keyframes vsSlideDown {
   from { opacity: 0; transform: translateY(-8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 .vehicle-selector__dialog::backdrop {
-  background: rgba(0,0,0,0.15);
+  background: rgba(0,0,0,0.3);
 }
+
+/* --- Inner content --- */
 .vehicle-selector__content {
-  padding: 24px 28px !important;
+  padding: 28px 32px 32px !important;
   overflow: visible !important;
 }
+
+/* --- Header row --- */
 .vehicle-selector__header {
   display: flex !important;
   justify-content: space-between !important;
   align-items: flex-start !important;
-  margin-bottom: 20px !important;
+  margin-bottom: 24px !important;
 }
 .vehicle-selector__title {
-  font-family: var(--font-heading--family, Oswald, sans-serif) !important;
-  font-size: 18px !important;
+  font-family: var(--font-heading--family, Montserrat, sans-serif) !important;
+  font-size: 16px !important;
   font-weight: 700 !important;
   text-transform: uppercase;
-  color: #1A1A1A !important;
+  color: #fff !important;
   margin: 0 !important;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.06em;
 }
 .vehicle-selector__subtitle {
   font-size: 13px !important;
-  color: #888 !important;
-  margin: 4px 0 0 !important;
+  color: rgba(255,255,255,0.45) !important;
+  margin: 6px 0 0 !important;
 }
+
+/* --- Close button --- */
 .vehicle-selector__close,
 .vehicle-selector__dialog .vehicle-selector__close,
 button.vehicle-selector__close {
   background: none !important;
   background-color: transparent !important;
   border: none !important;
-  font-size: 22px !important;
+  font-size: 24px !important;
   cursor: pointer;
-  color: #999 !important;
+  color: rgba(255,255,255,0.4) !important;
   padding: 0 !important;
   line-height: 1;
   width: 32px;
@@ -239,69 +248,84 @@ button.vehicle-selector__close {
 }
 .vehicle-selector__close:hover,
 button.vehicle-selector__close:hover {
-  color: #333 !important;
-  background: #f0f0f0 !important;
-  background-color: #f0f0f0 !important;
+  color: #fff !important;
+  background: rgba(255,255,255,0.1) !important;
+  background-color: rgba(255,255,255,0.1) !important;
 }
+
+/* --- Hide labels — placeholders are enough --- */
+.vehicle-selector__label {
+  display: none !important;
+}
+
+/* --- Fields grid --- */
 .vehicle-selector__fields {
   display: grid !important;
-  grid-template-columns: 1fr 1fr 1fr auto !important;
-  gap: 14px !important;
+  grid-template-columns: 1fr 1fr 1fr !important;
+  gap: 16px !important;
   align-items: end;
+  margin-bottom: 20px !important;
 }
 .vehicle-selector__field--action {
-  padding-bottom: 0;
+  grid-column: 1 / -1;
 }
-.vehicle-selector__label {
-  display: block !important;
-  font-family: var(--font-heading--family, Oswald, sans-serif) !important;
-  font-size: 11px !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #666 !important;
-  margin-bottom: 6px !important;
-}
-.vehicle-selector__select {
+
+/* --- Select dropdowns — dark style --- */
+.vehicle-selector__select,
+.vehicle-selector__dialog select {
   width: 100% !important;
-  padding: 10px 30px 10px 12px !important;
-  border: 1.5px solid #ddd !important;
-  border-radius: 6px !important;
+  padding: 14px 36px 14px 16px !important;
+  border: 1.5px solid rgba(255,255,255,0.15) !important;
+  border-radius: 8px !important;
   font-size: 14px !important;
   font-family: var(--font-body--family, sans-serif) !important;
-  background: #fff !important;
-  color: #333 !important;
+  background: #2a2a2a !important;
+  color: #fff !important;
   appearance: auto !important;
   cursor: pointer;
-  transition: border-color 0.15s ease;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
 }
-.vehicle-selector__select:focus {
+.vehicle-selector__select:focus,
+.vehicle-selector__dialog select:focus {
   border-color: #FFB74F !important;
   outline: none !important;
-  box-shadow: 0 0 0 3px rgba(255,183,79,0.2) !important;
+  box-shadow: 0 0 0 3px rgba(255,183,79,0.15) !important;
+  background: #333 !important;
 }
-.vehicle-selector__select:disabled {
-  background: #f8f8f8 !important;
-  color: #bbb !important;
+.vehicle-selector__select:disabled,
+.vehicle-selector__dialog select:disabled {
+  background: #222 !important;
+  color: rgba(255,255,255,0.25) !important;
   cursor: not-allowed;
-  border-color: #eee !important;
+  border-color: rgba(255,255,255,0.06) !important;
 }
+/* Make placeholder option lighter */
+.vehicle-selector__select option[value=""] {
+  color: rgba(255,255,255,0.4);
+}
+.vehicle-selector__select option {
+  background: #2a2a2a;
+  color: #fff;
+}
+
+/* --- GO button — full width, prominent --- */
 button.vehicle-selector__go,
 .vehicle-selector__dialog button.vehicle-selector__go,
 .vehicle-selector__dialog .vehicle-selector__go {
-  padding: 10px 28px !important;
+  width: 100% !important;
+  padding: 14px 28px !important;
   background-color: #FFB74F !important;
   background: #FFB74F !important;
   color: #1A1A1A !important;
   border: none !important;
-  border-radius: 6px !important;
-  font-family: var(--font-heading--family, Oswald, sans-serif) !important;
+  border-radius: 8px !important;
+  font-family: var(--font-heading--family, Montserrat, sans-serif) !important;
   font-weight: 700 !important;
-  font-size: 14px !important;
+  font-size: 15px !important;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   cursor: pointer;
-  transition: background 0.15s ease;
+  transition: background 0.15s ease, transform 0.1s ease;
   white-space: nowrap;
   -webkit-appearance: none !important;
   appearance: none !important;
@@ -310,40 +334,57 @@ button.vehicle-selector__go:hover:not(:disabled),
 .vehicle-selector__dialog button.vehicle-selector__go:hover:not(:disabled) {
   background-color: #e09a35 !important;
   background: #e09a35 !important;
+  transform: translateY(-1px);
 }
 button.vehicle-selector__go:disabled,
 .vehicle-selector__dialog button.vehicle-selector__go:disabled {
-  opacity: 0.5;
+  opacity: 0.35;
   cursor: not-allowed;
+  transform: none;
 }
+
+/* --- Saved vehicle bar --- */
 .vehicle-selector__saved {
-  margin-top: 16px;
-  padding: 12px 16px;
-  background: #f0faf3;
-  border: 1px solid #c8e6c9;
-  border-radius: 6px;
+  margin-top: 20px;
+  padding: 14px 18px;
+  background: rgba(76,175,80,0.1);
+  border: 1px solid rgba(76,175,80,0.25);
+  border-radius: 8px;
   display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;
 }
-.vehicle-selector__saved-icon {
-  color: #1A3F22;
-  font-weight: 700;
-  margin-right: 8px;
+.vehicle-selector__saved-info {
+  color: #fff !important;
+  font-size: 14px;
 }
-.vehicle-selector__clear {
+.vehicle-selector__saved-icon {
+  color: #4CAF50;
+  font-weight: 700;
+  margin-right: 10px;
+}
+.vehicle-selector__clear,
+button.vehicle-selector__clear {
   background: none !important;
-  border: 1px solid #ccc !important;
-  border-radius: 4px !important;
-  padding: 6px 14px !important;
+  background-color: transparent !important;
+  border: 1px solid rgba(255,255,255,0.2) !important;
+  border-radius: 6px !important;
+  padding: 8px 16px !important;
   font-size: 12px !important;
-  color: #666 !important;
+  font-weight: 600 !important;
+  color: rgba(255,255,255,0.6) !important;
   cursor: pointer;
   transition: all 0.15s ease;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
-.vehicle-selector__clear:hover {
-  border-color: #999 !important;
-  color: #333 !important;
+.vehicle-selector__clear:hover,
+button.vehicle-selector__clear:hover {
+  border-color: rgba(255,255,255,0.4) !important;
+  color: #fff !important;
+  background-color: rgba(255,255,255,0.05) !important;
 }
 .vehicle-selector__dialog *::-webkit-scrollbar { display: none; }
 .vehicle-selector__dialog * { scrollbar-width: none; }
@@ -699,19 +740,10 @@ button.vehicle-selector__go:disabled,
 /* ===== RESPONSIVE ===== */
 @media (max-width: 989px) {
   .hero__content-wrapper { padding: 40px 24px !important; }
-  .vehicle-selector__dialog {
+  .vehicle-selector__dialog,
+  dialog.vehicle-selector__dialog {
     width: calc(100vw - 20px) !important;
     right: 10px !important;
-  }
-  .vehicle-selector__fields {
-    grid-template-columns: 1fr 1fr 1fr !important;
-  }
-  .vehicle-selector__field--action {
-    grid-column: 1 / -1;
-  }
-  .vehicle-selector__go {
-    width: 100% !important;
-    padding: 12px !important;
   }
   #stehlen-value-props .vp-grid { grid-template-columns: repeat(2, 1fr); }
   #stehlen-value-props .vp-item:nth-child(2) { border-right: none; }
@@ -721,7 +753,13 @@ button.vehicle-selector__go:disabled,
 }
 @media (max-width: 749px) {
   .hero__content-wrapper { padding: 24px 16px !important; }
-  .vehicle-selector__fields { grid-template-columns: 1fr !important; }
+  .vehicle-selector__dialog,
+  dialog.vehicle-selector__dialog {
+    width: calc(100vw - 16px) !important;
+    right: 8px !important;
+  }
+  .vehicle-selector__content { padding: 24px 20px 28px !important; }
+  .vehicle-selector__fields { grid-template-columns: 1fr !important; gap: 12px !important; }
   .stehlen-card-title__name { font-size: 13px; }
   .stehlen-card-title__link { font-size: 11px; }
   .stehlen-card-title { padding: 12px; }
