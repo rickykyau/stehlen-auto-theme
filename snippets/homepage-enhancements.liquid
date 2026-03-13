@@ -344,15 +344,17 @@ button.vehicle-selector__go:disabled,
 }
 
 /* --- Saved vehicle bar --- */
+/* Saved vehicle bar: hidden by default via inline style="display:none" from JS.
+   When JS removes inline style, CSS display:flex takes over. NO !important here. */
 .vehicle-selector__saved {
   margin-top: 20px;
   padding: 14px 18px;
   background: rgba(76,175,80,0.1);
   border: 1px solid rgba(76,175,80,0.25);
   border-radius: 8px;
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: center !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .vehicle-selector__saved-info {
   color: #fff !important;
