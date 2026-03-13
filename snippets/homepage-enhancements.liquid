@@ -52,17 +52,10 @@
 }
 
 /* ===== 3. INNER PAGE — prevent sticky header from covering content ===== */
-/* The header is sticky/fixed ~80px. On non-homepage pages, push content down.
-   We use Liquid to conditionally output these rules. */
-{% if template.name != 'index' %}
-#MainContent {
+/* JS will add .stehlen-inner class to body on non-homepage pages */
+body.stehlen-inner #MainContent {
   padding-top: 80px !important;
 }
-{% else %}
-#MainContent {
-  padding-top: 0;
-}
-{% endif %}
 
 /* ===== 4. BUTTONS — global fix for missing button styles ===== */
 .button-primary,
@@ -383,18 +376,16 @@ a.button-secondary:hover {
 .stehlen-card-title__link:hover { color: #ffc978; }
 
 /* ===== 8. HOMEPAGE SECTION SPACING — breathing room ===== */
-{% if template.name == 'index' %}
-#MainContent > .shopify-section + .shopify-section {
+body.stehlen-home #MainContent > .shopify-section + .shopify-section {
   border-top: 1px solid rgba(0,0,0,0.06);
 }
-.section-resource-list {
+body.stehlen-home .section-resource-list {
   padding-top: 56px !important;
   padding-bottom: 56px !important;
 }
-.section-resource-list .section-resource-list__content {
+body.stehlen-home .section-resource-list .section-resource-list__content {
   margin-bottom: 28px;
 }
-{% endif %}
 
 /* ===== 9. PRODUCT CARD POLISH ===== */
 .ui-test-product-list .product-card {
@@ -654,11 +645,9 @@ a.button-secondary:hover {
   padding: 8px !important;
 }
 /* Reduce white space in collection heading */
-{% if template.name == 'collection' %}
-.spacing-style {
+body.stehlen-collection .spacing-style {
   --padding-block-start: 24px;
 }
-{% endif %}
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 989px) {
@@ -701,9 +690,21 @@ a.button-secondary:hover {
 </style>
 
 <script>
+/* Page detection: add body classes based on URL */
+(function() {
+  var p = window.location.pathname;
+  if (p === '/' || p === '') {
+    document.body.classList.add('stehlen-home');
+  } else {
+    document.body.classList.add('stehlen-inner');
+    if (p.indexOf('/collections') === 0) document.body.classList.add('stehlen-collection');
+    if (p.indexOf('/products') === 0) document.body.classList.add('stehlen-pdp');
+  }
+})();
+
 /* Inject value props bar after first section in MainContent (homepage only) */
 (function() {
-  {% if template.name != 'index' %}return;{% endif %}
+  if (!document.body.classList.contains('stehlen-home')) return;
   function injectValueProps() {
     if (document.getElementById('stehlen-value-props')) return;
     var mainContent = document.getElementById('MainContent');
@@ -753,7 +754,7 @@ a.button-secondary:hover {
 
 /* Inject "Shop by Popular Models" section on homepage */
 (function() {
-  {% if template.name != 'index' %}return;{% endif %}
+  if (!document.body.classList.contains('stehlen-home')) return;
   function injectPopularModels() {
     if (document.getElementById('stehlen-popular-models')) return;
     var mainContent = document.getElementById('MainContent');
@@ -801,31 +802,36 @@ a.button-secondary:hover {
   window.addEventListener('load', function() { setTimeout(injectPopularModels, 500); });
 })();
 
-/* Force-show filter sidebar — template: {{ template.name }} | {{ template }} */
-{% if template.name == 'collection' %}
+/* Force-show filter sidebar on collection pages */
 (function() {
+  if (window.location.pathname.indexOf('/collections') !== 0) return;
   function showFilters() {
     var sidebar = document.querySelector('.facets-block-wrapper--sidebar');
     if (!sidebar) return;
     /* Force sidebar visible */
-    sidebar.style.cssText += 'display:block !important; grid-column:1/2 !important; grid-row:1/99 !important;';
+    sidebar.style.setProperty('display', 'block', 'important');
+    sidebar.style.setProperty('grid-column', '1/2', 'important');
+    sidebar.style.setProperty('grid-row', '1/99', 'important');
     var facets = sidebar.querySelector('.facets--sidebar');
-    if (facets) facets.style.display = 'block';
+    if (facets) facets.style.setProperty('display', 'block', 'important');
     var form = sidebar.querySelector('.facets__form');
-    if (form) form.style.display = 'block';
+    if (form) form.style.setProperty('display', 'block', 'important');
     var wrapper = sidebar.querySelector('.facets__filters-wrapper');
-    if (wrapper) wrapper.style.display = 'block';
+    if (wrapper) wrapper.style.setProperty('display', 'block', 'important');
     var formWrapper = sidebar.querySelector('.facets__form-wrapper');
-    if (formWrapper) formWrapper.style.display = 'block';
+    if (formWrapper) formWrapper.style.setProperty('display', 'block', 'important');
 
     /* Fix grid: sidebar col 1, products col 2 */
     var collWrapper = document.querySelector('.collection-wrapper.grid');
     if (collWrapper) {
-      collWrapper.style.cssText += 'display:grid !important; grid-template-columns:260px 1fr !important; gap:24px !important;';
+      collWrapper.style.setProperty('display', 'grid', 'important');
+      collWrapper.style.setProperty('grid-template-columns', '260px 1fr', 'important');
+      collWrapper.style.setProperty('gap', '24px', 'important');
     }
     var productGrid = document.querySelector('.main-collection-grid');
     if (productGrid) {
-      productGrid.style.cssText += 'grid-column:2/3 !important; grid-row:1/99 !important;';
+      productGrid.style.setProperty('grid-column', '2/3', 'important');
+      productGrid.style.setProperty('grid-row', '1/99', 'important');
     }
 
     /* Open first 3 filter panels by default */
@@ -839,5 +845,4 @@ a.button-secondary:hover {
   } else { setTimeout(showFilters, 200); }
   window.addEventListener('load', function() { setTimeout(showFilters, 600); });
 })();
-{% endif %}
 </script>
