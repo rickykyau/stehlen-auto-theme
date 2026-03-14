@@ -224,38 +224,62 @@ dialog.vehicle-selector__dialog {
   margin: 6px 0 0 !important;
 }
 
-/* --- Close button --- */
+/* --- Close button — override theme's orange circle --- */
+.vehicle-selector__close,
+.vehicle-selector__dialog .vehicle-selector__close,
+button.vehicle-selector__close,
+.vehicle-selector__dialog button {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
 .vehicle-selector__close,
 .vehicle-selector__dialog .vehicle-selector__close,
 button.vehicle-selector__close {
   background: none !important;
   background-color: transparent !important;
+  background-image: none !important;
   border: none !important;
-  font-size: 24px !important;
+  border-color: transparent !important;
+  outline: none !important;
+  box-shadow: none !important;
+  font-size: 26px !important;
   cursor: pointer;
-  color: rgba(255,255,255,0.4) !important;
+  color: rgba(255,255,255,0.5) !important;
   padding: 0 !important;
+  margin: 0 !important;
   line-height: 1;
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
+  min-width: 0 !important;
+  min-height: 0 !important;
   display: flex !important;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
+  border-radius: 6px !important;
   transition: all 0.15s ease;
-  -webkit-appearance: none !important;
-  appearance: none !important;
 }
 .vehicle-selector__close:hover,
-button.vehicle-selector__close:hover {
+.vehicle-selector__close:focus,
+button.vehicle-selector__close:hover,
+button.vehicle-selector__close:focus {
   color: #fff !important;
-  background: rgba(255,255,255,0.1) !important;
-  background-color: rgba(255,255,255,0.1) !important;
+  background: rgba(255,255,255,0.08) !important;
+  background-color: rgba(255,255,255,0.08) !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
-/* --- Hide labels — placeholders are enough --- */
+/* --- Labels — show them for clarity --- */
 .vehicle-selector__label {
-  display: none !important;
+  display: block !important;
+  font-family: var(--font-heading--family, Montserrat, sans-serif) !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5) !important;
+  margin-bottom: 8px !important;
 }
 
 /* --- Fields grid --- */
@@ -270,17 +294,17 @@ button.vehicle-selector__close:hover {
   grid-column: 1 / -1;
 }
 
-/* --- Select dropdowns — dark style --- */
+/* --- Select dropdowns — dark style with visible text --- */
 .vehicle-selector__select,
 .vehicle-selector__dialog select {
   width: 100% !important;
-  padding: 14px 36px 14px 16px !important;
-  border: 1.5px solid rgba(255,255,255,0.15) !important;
+  padding: 13px 36px 13px 14px !important;
+  border: 1.5px solid rgba(255,255,255,0.18) !important;
   border-radius: 8px !important;
   font-size: 14px !important;
   font-family: var(--font-body--family, sans-serif) !important;
-  background: #2a2a2a !important;
-  color: #fff !important;
+  background: #2c2c2c !important;
+  color: rgba(255,255,255,0.85) !important;
   appearance: auto !important;
   cursor: pointer;
   transition: border-color 0.15s ease, background-color 0.15s ease;
@@ -290,21 +314,17 @@ button.vehicle-selector__close:hover {
   border-color: #FFB74F !important;
   outline: none !important;
   box-shadow: 0 0 0 3px rgba(255,183,79,0.15) !important;
-  background: #333 !important;
+  background: #363636 !important;
 }
 .vehicle-selector__select:disabled,
 .vehicle-selector__dialog select:disabled {
-  background: #222 !important;
-  color: rgba(255,255,255,0.25) !important;
+  background: #232323 !important;
+  color: rgba(255,255,255,0.3) !important;
   cursor: not-allowed;
-  border-color: rgba(255,255,255,0.06) !important;
-}
-/* Make placeholder option lighter */
-.vehicle-selector__select option[value=""] {
-  color: rgba(255,255,255,0.4);
+  border-color: rgba(255,255,255,0.08) !important;
 }
 .vehicle-selector__select option {
-  background: #2a2a2a;
+  background: #2c2c2c;
   color: #fff;
 }
 
@@ -329,6 +349,7 @@ button.vehicle-selector__go,
   white-space: nowrap;
   -webkit-appearance: none !important;
   appearance: none !important;
+  box-shadow: none !important;
 }
 button.vehicle-selector__go:hover:not(:disabled),
 .vehicle-selector__dialog button.vehicle-selector__go:hover:not(:disabled) {
@@ -343,50 +364,54 @@ button.vehicle-selector__go:disabled,
   transform: none;
 }
 
-/* --- Saved vehicle bar --- */
-/* Saved vehicle bar: hidden by default via inline style="display:none" from JS.
-   When JS removes inline style, CSS display:flex takes over. NO !important here. */
+/* --- Saved vehicle bar — gold accent, not green --- */
 .vehicle-selector__saved {
   margin-top: 20px;
-  padding: 14px 18px;
-  background: rgba(76,175,80,0.1);
-  border: 1px solid rgba(76,175,80,0.25);
+  padding: 16px 18px;
+  background: rgba(255,183,79,0.08);
+  border: 1px solid rgba(255,183,79,0.25);
   border-radius: 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 .vehicle-selector__saved-info {
+  display: flex;
+  align-items: center;
   color: #fff !important;
   font-size: 14px;
+  font-weight: 600;
 }
 .vehicle-selector__saved-icon {
-  color: #4CAF50;
+  color: #FFB74F !important;
   font-weight: 700;
   margin-right: 10px;
+  font-size: 16px;
 }
 .vehicle-selector__clear,
 button.vehicle-selector__clear {
   background: none !important;
   background-color: transparent !important;
-  border: 1px solid rgba(255,255,255,0.2) !important;
+  border: 1px solid rgba(255,255,255,0.25) !important;
   border-radius: 6px !important;
   padding: 8px 16px !important;
   font-size: 12px !important;
   font-weight: 600 !important;
-  color: rgba(255,255,255,0.6) !important;
+  color: rgba(255,255,255,0.7) !important;
   cursor: pointer;
   transition: all 0.15s ease;
   -webkit-appearance: none !important;
   appearance: none !important;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  box-shadow: none !important;
+  flex-shrink: 0;
 }
 .vehicle-selector__clear:hover,
 button.vehicle-selector__clear:hover {
-  border-color: rgba(255,255,255,0.4) !important;
+  border-color: rgba(255,255,255,0.5) !important;
   color: #fff !important;
-  background-color: rgba(255,255,255,0.05) !important;
+  background-color: rgba(255,255,255,0.06) !important;
 }
 .vehicle-selector__dialog *::-webkit-scrollbar { display: none; }
 .vehicle-selector__dialog * { scrollbar-width: none; }

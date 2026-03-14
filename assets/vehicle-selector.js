@@ -228,7 +228,7 @@ class VehicleSelector extends HTMLElement {
 
     try {
       const vehicle = JSON.parse(saved);
-      const { triggerText, savedVehicle, savedText } = this._refs;
+      const { triggerText, savedVehicle, savedText, makeSelect, modelSelect, yearSelect } = this._refs;
 
       // Update trigger button text
       const label = [vehicle.year, vehicle.make, vehicle.model].filter(Boolean).join(' ');
@@ -238,6 +238,20 @@ class VehicleSelector extends HTMLElement {
       // Show saved vehicle in dialog
       savedText.textContent = label;
       savedVehicle.style.display = '';
+
+      // Pre-populate dropdowns with saved values
+      if (vehicle.make && this._fitmentData) {
+        makeSelect.value = vehicle.make;
+        this._onMakeChange();
+        if (vehicle.model) {
+          modelSelect.value = vehicle.model;
+          this._onModelChange();
+          if (vehicle.year) {
+            yearSelect.value = vehicle.year;
+            this._updateGoButton();
+          }
+        }
+      }
     } catch(e) { /* ignore */ }
   }
 
