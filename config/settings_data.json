@@ -352,7 +352,9 @@
           "selected_variant_hover_border_color": "#F5A623"
         }
       }
-    }
+    },
+    "quick_add": true,
+    "mobile_quick_add": true
   },
   "presets": {
     "Horizon": {
