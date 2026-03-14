@@ -1347,8 +1347,14 @@ document.addEventListener('DOMContentLoaded', function() {
         pg.style.setProperty('grid-template-columns', 'repeat(3, 1fr)', 'important');
         pg.style.setProperty('gap', '16px', 'important');
         pg.style.setProperty('box-sizing', 'border-box', 'important');
-        /* Fix individual items */
-        var items = pg.querySelectorAll(':scope > li, :scope > div');
+        /* The product list is wrapped in a nested div — make it transparent
+           so <li> items become direct grid participants */
+        var innerWrap = pg.querySelector(':scope > div');
+        if (innerWrap) {
+          innerWrap.style.setProperty('display', 'contents', 'important');
+        }
+        /* Fix individual product items */
+        var items = pg.querySelectorAll('.product-grid__item');
         for (var ii = 0; ii < items.length; ii++) {
           items[ii].style.setProperty('grid-column', 'auto', 'important');
           items[ii].style.setProperty('grid-row', 'auto', 'important');
