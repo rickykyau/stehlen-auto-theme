@@ -1360,11 +1360,14 @@ document.addEventListener('DOMContentLoaded', function() {
         /* Fix individual product items — 3 per row */
         var items = pg.querySelectorAll('.product-grid__item');
         for (var ii = 0; ii < items.length; ii++) {
+          items[ii].style.setProperty('display', 'block', 'important');
           items[ii].style.setProperty('width', 'calc(33.333% - 11px)', 'important');
           items[ii].style.setProperty('flex', '0 0 calc(33.333% - 11px)', 'important');
           items[ii].style.setProperty('max-width', 'calc(33.333% - 11px)', 'important');
+          items[ii].style.setProperty('min-width', '0', 'important');
           items[ii].style.setProperty('box-sizing', 'border-box', 'important');
           items[ii].style.setProperty('list-style', 'none', 'important');
+          items[ii].style.setProperty('overflow', 'hidden', 'important');
         }
       }
       /* Open first 3 filter panels */
