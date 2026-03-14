@@ -210,6 +210,49 @@ vehicle-selector *,
 }
 
 /* ============================================================
+   Collection page — product grid fix (force multi-column)
+   ============================================================ */
+.product-grid,
+[class*="product-grid"]:not(.product-grid__item):not(.product-grid__card) {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+  gap: 12px !important;
+}
+
+/* ============================================================
+   Collection page — dark product cards
+   ============================================================ */
+.card-wrapper,
+.card,
+[class*="card--product"],
+.product-grid__card {
+  background: #111111 !important;
+  border: 1px solid #1E1E1E !important;
+  border-radius: 0 !important;
+}
+
+/* ============================================================
+   Collection page — filter sidebar label visibility
+   ============================================================ */
+.facets__summary,
+.facet-filters__summary,
+[class*="facet"] summary,
+[class*="facet"] label,
+[class*="filter"] label {
+  color: #E8E6E0 !important;
+}
+
+/* ============================================================
+   Collection page — checkbox fix
+   ============================================================ */
+input[type="checkbox"] {
+  appearance: auto !important;
+  -webkit-appearance: auto !important;
+  accent-color: #F5A623;
+  background: transparent !important;
+}
+
+/* ============================================================
    Responsive
    ============================================================ */
 @media (max-width: 680px) {
