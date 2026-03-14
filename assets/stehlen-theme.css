@@ -177,3 +177,91 @@ product-card [class*="product-card__info"] {
   letter-spacing: 0.06em !important;
   line-height: 1 !important;
 }
+
+/* ── SIDEBAR: Mockup styling ── */
+
+/* "REFINE RESULTS" header */
+.facets__refine-header {
+  font-family: 'Barlow Condensed', sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
+  color: #F5A623 !important;
+  margin: 0 0 16px 0 !important;
+  padding: 0 !important;
+}
+
+/* Filter group label (CATEGORY, VEHICLE TYPE) */
+.facets__summary {
+  padding: 14px 0 !important;
+  border-bottom: 1px solid #2A2A2A !important;
+}
+
+.facets__label {
+  font-family: 'Barlow Condensed', sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  color: #888888 !important;
+}
+
+/* Checkbox row layout — label left, count right */
+.checkbox {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.checkbox__label {
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  gap: 8px !important;
+}
+
+.checkbox__label-text {
+  flex: 1 !important;
+  font-size: 13px !important;
+  color: #888888 !important;
+}
+
+/* Count badge — right-aligned, muted */
+.checkbox__count {
+  font-size: 12px !important;
+  color: #555555 !important;
+  font-family: 'Barlow', sans-serif !important;
+  margin-left: auto !important;
+}
+
+/* Checked state — bold white text, orange count */
+.checkbox__input:checked + .checkbox__label .checkbox__label-text {
+  color: #E8E6E0 !important;
+  font-weight: 700 !important;
+}
+
+.checkbox__input:checked + .checkbox__label .checkbox__count {
+  color: #F5A623 !important;
+}
+
+/* Checkbox input styling */
+.checkbox__input {
+  accent-color: #F5A623 !important;
+  width: 16px !important;
+  height: 16px !important;
+  flex-shrink: 0 !important;
+}
+
+/* Hide the SVG checkmark — use native checkbox */
+.checkbox__label svg.icon-checkmark {
+  display: none !important;
+}
+
+/* Filter panel borders */
+.facets__item {
+  border-bottom: 1px solid #1E1E1E !important;
+}
+
+.facets__item::before {
+  display: none !important;
+}
