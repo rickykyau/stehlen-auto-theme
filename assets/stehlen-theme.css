@@ -30,10 +30,14 @@ ul[class*="product-grid"] {
   box-sizing: border-box !important;
 }
 
-li[class*="product-grid__item"] {
-  width: auto !important;
-  max-width: none !important;
+li[class*="product-grid__item"],
+li.product-grid__item {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
   flex: none !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
 }
 
 /* ── FIX: Remove white group container ── */
@@ -67,6 +71,9 @@ product-card > div {
 product-card:hover .product-card__content,
 product-card:hover > div {
   border-color: #F5A623 !important;
+  outline: none !important;
+  box-shadow: none !important;
+  transform: none !important;
 }
 
 /* ── FIX: Card image area — white bg so product photos blend ── */
