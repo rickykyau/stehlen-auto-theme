@@ -170,9 +170,12 @@ product-card .border-style {
 
 /* Gallery goes edge-to-edge, cancel out all parent padding */
 .product-card__content > .card-gallery,
-.product-card__content > [class*="card-gallery"] {
+.product-card__content > [class*="card-gallery"],
+product-card .card-gallery,
+product-card [class*="card-gallery"] {
   margin: -12px -12px 0 -12px !important;
   width: calc(100% + 24px) !important;
+  padding: 0 !important;
 }
 
 /* Collection header title */
