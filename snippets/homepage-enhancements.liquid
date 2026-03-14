@@ -834,22 +834,8 @@ h1.collection-heading,
 }
 
 /* --- Sidebar + grid layout — override Horizon theme's complex grid --- */
+/* CSS sets basic layout; JS applies precise overrides after DOM load */
 @media (min-width: 750px) {
-  /* Nuclear override: Horizon uses a multi-column subgrid on .grid class.
-     We need to override it completely for the collection wrapper. */
-  .collection-wrapper,
-  .collection-wrapper.grid,
-  div.collection-wrapper,
-  div.collection-wrapper.grid {
-    display: flex !important;
-    flex-wrap: nowrap !important;
-    gap: 28px !important;
-    max-width: 1360px !important;
-    margin: 0 auto !important;
-    padding: 0 40px !important;
-    /* Kill all grid properties that Horizon sets */
-    grid-template-columns: none !important;
-  }
   .facets-block-wrapper.facets-block-wrapper--sidebar {
     display: block !important;
     width: 220px !important;
@@ -857,41 +843,6 @@ h1.collection-heading,
     flex-shrink: 0 !important;
     padding: 0 !important;
     margin: 0 !important;
-  }
-  .main-collection-grid,
-  .main-collection-grid.grid {
-    flex: 1 1 0% !important;
-    min-width: 0 !important;
-    width: 0 !important;
-    max-width: 100% !important;
-    /* Kill Horizon's grid on this element (it HAS class .grid) */
-    display: block !important;
-  }
-  /* Force 3 product columns in the product grid inside */
-  .main-collection-grid .product-grid,
-  .main-collection-grid [class*="product-grid"],
-  .main-collection-grid .resource-list--grid {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 16px !important;
-  }
-  /* If .main-collection-grid IS the product grid (no nested grid) */
-  .main-collection-grid.grid > li,
-  .main-collection-grid.grid > div {
-    display: inline-block;
-  }
-  .main-collection-grid.grid {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 16px !important;
-  }
-  /* Ensure individual product items don't have weird grid placement */
-  .main-collection-grid .product-grid > *,
-  .main-collection-grid.grid > li,
-  .main-collection-grid.grid > div {
-    grid-column: auto !important;
-    grid-row: auto !important;
-    width: auto !important;
   }
 }
 
@@ -1343,23 +1294,47 @@ document.addEventListener('DOMContentLoaded', function() {
         var el = sidebar.querySelector('.' + cls);
         if (el) el.style.setProperty('display', 'block', 'important');
       });
-      /* Override Horizon's grid with flex layout */
+      /* Override Horizon's grid — use two-column CSS grid on wrapper instead of flex
+         because flex with 7 children doesn't work reliably */
       var cw = document.querySelector('.collection-wrapper');
       if (cw) {
-        cw.style.setProperty('display', 'flex', 'important');
-        cw.style.setProperty('flex-wrap', 'nowrap', 'important');
+        cw.style.setProperty('display', 'grid', 'important');
+        cw.style.setProperty('grid-template-columns', '220px 1fr', 'important');
         cw.style.setProperty('gap', '28px', 'important');
         cw.style.setProperty('max-width', '1360px', 'important');
         cw.style.setProperty('margin', '0 auto', 'important');
         cw.style.setProperty('padding', '0 40px', 'important');
-        cw.style.setProperty('grid-template-columns', 'none', 'important');
+        /* Hide extra children — only sidebar and product grid should be visible */
+        for (var ci = 0; ci < cw.children.length; ci++) {
+          var child = cw.children[ci];
+          var isSidebar = child.classList.contains('facets-block-wrapper--sidebar');
+          var isGrid = child.classList.contains('main-collection-grid');
+          if (!isSidebar && !isGrid) {
+            child.style.setProperty('display', 'none', 'important');
+          }
+        }
+        /* Place sidebar in column 1, product grid in column 2 */
+        sidebar.style.setProperty('grid-column', '1', 'important');
+        sidebar.style.setProperty('grid-row', '1', 'important');
       }
       var pg = document.querySelector('.main-collection-grid');
       if (pg) {
-        pg.style.setProperty('flex', '1 1 0%', 'important');
-        pg.style.setProperty('min-width', '0', 'important');
-        pg.style.setProperty('width', '0', 'important');
+        pg.style.setProperty('grid-column', '2', 'important');
+        pg.style.setProperty('grid-row', '1', 'important');
+        pg.style.setProperty('width', 'auto', 'important');
         pg.style.setProperty('max-width', '100%', 'important');
+        pg.style.setProperty('min-width', '0', 'important');
+        /* Override Horizon's 14-col subgrid with 3 product columns */
+        pg.style.setProperty('display', 'grid', 'important');
+        pg.style.setProperty('grid-template-columns', 'repeat(3, 1fr)', 'important');
+        pg.style.setProperty('gap', '16px', 'important');
+        /* Fix individual items */
+        var items = pg.querySelectorAll(':scope > li, :scope > div');
+        for (var ii = 0; ii < items.length; ii++) {
+          items[ii].style.setProperty('grid-column', 'auto', 'important');
+          items[ii].style.setProperty('grid-row', 'auto', 'important');
+          items[ii].style.setProperty('width', 'auto', 'important');
+        }
       }
       /* Open first 3 filter panels */
       var details = sidebar.querySelectorAll('details');
