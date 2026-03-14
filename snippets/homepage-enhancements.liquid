@@ -738,47 +738,7 @@ button.vehicle-selector__clear:hover {
     grid-template-columns: 1fr !important;
   }
 }
-/* Style the sidebar filters */
-.facets--sidebar .facets__panel {
-  border-bottom: 1px solid #eee;
-}
-.facets--sidebar .facets__summary {
-  padding: 14px 0;
-  font-family: var(--font-heading--family, Oswald, sans-serif);
-  font-weight: 600;
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  cursor: pointer;
-}
-.facets--sidebar .facets__inputs-list {
-  padding: 0 0 14px;
-  margin: 0;
-  list-style: none;
-  flex-direction: column !important;
-  gap: 8px;
-}
-.facets--sidebar .facets__inputs-list-item {
-  font-size: 14px;
-  color: #444;
-}
-.facets--sidebar .facets__inputs-list-item label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-}
-/* Collection page: tighter product grid */
-.product-grid-container .product-grid__card {
-  padding: 8px !important;
-}
-/* Reduce white space in collection heading */
-{% if template.name == 'collection' %}
-.spacing-style {
-  --padding-block-start: 24px;
-}
-{% endif %}
-
+/* Sidebar filter styles moved to collection-specific section below */
 /* ===== 13. VIEW ALL BUTTON — brand styling ===== */
 {% if template.name == 'index' %}
 .section-resource-list .button-outline,
@@ -808,11 +768,231 @@ button.vehicle-selector__clear:hover {
 }
 {% endif %}
 
-/* ===== 14. PDP — trust badges + "You may also like" polish ===== */
+/* ==========================================================================
+   14. COLLECTION PAGE — professional layout
+   ========================================================================== */
+{% if template.name == 'collection' %}
+/* --- Reduce heading whitespace --- */
+.spacing-style {
+  --padding-block-start: 16px !important;
+  --padding-block-end: 16px !important;
+}
+/* Compact collection title */
+.section > .header {
+  padding: 16px 0 8px !important;
+}
+.section > .header h1,
+.section .text-block h1 {
+  font-size: 28px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+  margin: 0 !important;
+}
+
+/* --- Page-width container with proper margins --- */
+.main-collection,
+[class*="main-collection"] {
+  max-width: 1360px !important;
+  margin: 0 auto !important;
+  padding: 0 40px !important;
+}
+
+/* --- Sidebar + grid layout with proper spacing --- */
+@media (min-width: 750px) {
+  .collection-wrapper.grid {
+    display: grid !important;
+    grid-template-columns: 240px 1fr !important;
+    gap: 32px !important;
+    max-width: 1360px !important;
+    margin: 0 auto !important;
+    padding: 0 40px !important;
+  }
+  .facets-block-wrapper.facets-block-wrapper--sidebar {
+    display: block !important;
+    min-width: 220px;
+    max-width: 240px;
+    padding: 0 16px 0 0 !important;
+    grid-column: 1 / 2 !important;
+    grid-row: 1 / 99 !important;
+  }
+  .main-collection-grid {
+    grid-column: 2 / 3 !important;
+    grid-row: 1 / 99 !important;
+  }
+}
+
+/* --- Sidebar filter styling --- */
+.facets--sidebar {
+  background: #fafafa;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 16px !important;
+}
+.facets--sidebar .facets__panel {
+  border-bottom: 1px solid #e8e8e8;
+}
+.facets--sidebar .facets__panel:last-child {
+  border-bottom: none;
+}
+.facets--sidebar .facets__summary {
+  padding: 14px 0;
+  font-family: var(--font-heading--family, Montserrat, sans-serif);
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  color: #1a1a1a;
+}
+.facets--sidebar .facets__inputs-list {
+  padding: 0 0 14px;
+  margin: 0;
+  list-style: none;
+  flex-direction: column !important;
+  gap: 8px;
+}
+.facets--sidebar .facets__inputs-list-item {
+  font-size: 14px;
+  color: #444;
+}
+.facets--sidebar .facets__inputs-list-item label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+/* Apply button styling */
+.facets--sidebar button[type="submit"],
+.facets--sidebar .facets__submit {
+  background: #FFB74F !important;
+  color: #1a1a1a !important;
+  border: none !important;
+  border-radius: 6px !important;
+  padding: 10px 24px !important;
+  font-family: var(--font-heading--family, Montserrat, sans-serif) !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  cursor: pointer;
+  width: 100%;
+}
+/* Product grid within collection */
+.product-grid {
+  gap: 16px 16px !important;
+}
+/* Fitment banner styling */
+.fitment-banner {
+  max-width: 1360px;
+  margin: 0 auto 16px !important;
+  padding: 0 40px;
+}
+{% endif %}
+
+/* ==========================================================================
+   15. PRODUCT DETAIL PAGE — tighter layout, better proportions
+   ========================================================================== */
 {% if template.name == 'product' %}
-.product-recommendations .product-card img[src=""],
-.product-recommendations .product-card img:not([src]) {
-  display: none;
+/* --- Reduce top whitespace --- */
+#MainContent {
+  padding-top: 20px !important;
+}
+
+/* --- Better grid proportions: 55% media, 45% details --- */
+.product-information__grid {
+  max-width: 1360px !important;
+  margin: 0 auto !important;
+  padding: 0 40px !important;
+  gap: 40px !important;
+}
+.product-information__grid.product-information--media-left {
+  grid-template-columns: 1fr minmax(400px, 480px) !important;
+}
+
+/* --- Product title styling --- */
+.product-details h1 {
+  font-family: var(--font-heading--family, Montserrat, sans-serif) !important;
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+  margin-bottom: 8px !important;
+}
+
+/* --- Price styling --- */
+.product-details .price__current,
+.product-details [class*="price"] .money {
+  font-size: 22px !important;
+  font-weight: 700 !important;
+  color: #FFB74F !important;
+}
+
+/* --- Fitment badge in product details — cleaner styling --- */
+#stehlen-fitment-badge {
+  margin: 12px 0 !important;
+}
+.fitment-badge--check {
+  background: #f9f3e5 !important;
+  border: 1px solid #FFB74F !important;
+  color: #7a5a1e !important;
+  border-radius: 6px !important;
+  font-size: 13px !important;
+  padding: 10px 14px !important;
+}
+.stehlen-fitment__badge--check {
+  background: #f9f3e5 !important;
+  border: 1px solid #FFB74F !important;
+  color: #7a5a1e !important;
+  border-radius: 6px !important;
+}
+
+/* --- Add to Cart button --- */
+.product-details .add-to-cart-component button,
+.product-details [class*="add-to-cart"] button {
+  background: #FFB74F !important;
+  color: #1a1a1a !important;
+  border: none !important;
+  border-radius: 6px !important;
+  font-family: var(--font-heading--family, Montserrat, sans-serif) !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+}
+
+/* --- Tabs section — better styling --- */
+.stehlen-tabs {
+  max-width: 1360px !important;
+  margin: 32px auto !important;
+  padding: 0 40px !important;
+}
+.stehlen-tabs__nav {
+  border-bottom: 2px solid #e0e0e0;
+}
+.stehlen-tabs__btn--active {
+  color: #1a1a1a !important;
+  border-bottom-color: #FFB74F !important;
+}
+
+/* --- "You may also like" section --- */
+.product-recommendations {
+  max-width: 1360px !important;
+  margin: 0 auto !important;
+  padding: 0 40px 40px !important;
+}
+
+/* --- Trust badges row --- */
+.stehlen-policy {
+  margin: 16px 0 !important;
+}
+.stehlen-policy__item {
+  background: #f5f5f5 !important;
+  border-radius: 6px !important;
+  padding: 10px 12px !important;
+  font-size: 12px !important;
+}
+.stehlen-policy__item svg {
+  color: #FFB74F !important;
 }
 {% endif %}
 
@@ -970,8 +1150,11 @@ document.addEventListener('DOMContentLoaded', function() {
       var cw = document.querySelector('.collection-wrapper.grid');
       if (cw) {
         cw.style.setProperty('display', 'grid', 'important');
-        cw.style.setProperty('grid-template-columns', '260px 1fr', 'important');
-        cw.style.setProperty('gap', '24px', 'important');
+        cw.style.setProperty('grid-template-columns', '240px 1fr', 'important');
+        cw.style.setProperty('gap', '32px', 'important');
+        cw.style.setProperty('max-width', '1360px', 'important');
+        cw.style.setProperty('margin', '0 auto', 'important');
+        cw.style.setProperty('padding', '0 40px', 'important');
       }
       var pg = document.querySelector('.main-collection-grid');
       if (pg) {
