@@ -178,6 +178,23 @@ body .facets--sidebar {
 }
 
 /* ── Year filter decade groups ── */
+
+/* Hide original checkboxes in year filter when decade pills are present */
+[data-filter-param-name="filter-p-m-custom-year"] .facets__inputs-list,
+[data-filter-param-name="filter-p-m-custom-year"] show-more-component > button,
+[data-filter-param-name="filter-p-m-custom-year"] .show-more__button {
+  display: none !important;
+}
+
+/* But keep the list in DOM (for form submission) — just visually hidden */
+[data-filter-param-name="filter-p-m-custom-year"] .facets__inputs-list {
+  position: absolute !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
 .year-decade-group {
   margin-bottom: 16px;
 }
