@@ -400,6 +400,25 @@ product-card .product-card__content .quick-add {
 
 .quick-add__button--add,
 .quick-add__button--choose,
+.quick-add button,
+product-card .quick-add button,
+.product-card__content .quick-add button,
+.card-gallery .quick-add button,
+quick-add-component button,
+product-card quick-add-component,
+.quick-add add-to-cart-component,
+.quick-add add-to-cart-component button,
+.quick-add .quick-add__product-form-component {
+  display: grid !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  height: auto !important;
+  pointer-events: auto !important;
+}
+
+.quick-add__button--add,
+.quick-add__button--choose,
 .quick-add button {
   background: #F5A623 !important;
   color: #111111 !important;
