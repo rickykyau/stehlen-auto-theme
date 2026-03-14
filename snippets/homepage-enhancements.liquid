@@ -858,24 +858,37 @@ h1.collection-heading,
     padding: 0 !important;
     margin: 0 !important;
   }
-  .main-collection-grid {
+  .main-collection-grid,
+  .main-collection-grid.grid {
     flex: 1 1 0% !important;
     min-width: 0 !important;
-    width: auto !important;
+    width: 0 !important;
+    max-width: 100% !important;
+    /* Kill Horizon's grid on this element (it HAS class .grid) */
+    display: block !important;
   }
-  /* Force 3 product columns in the main grid area */
+  /* Force 3 product columns in the product grid inside */
   .main-collection-grid .product-grid,
-  .main-collection-grid .grid,
   .main-collection-grid [class*="product-grid"],
   .main-collection-grid .resource-list--grid {
     display: grid !important;
     grid-template-columns: repeat(3, 1fr) !important;
     gap: 16px !important;
   }
+  /* If .main-collection-grid IS the product grid (no nested grid) */
+  .main-collection-grid.grid > li,
+  .main-collection-grid.grid > div {
+    display: inline-block;
+  }
+  .main-collection-grid.grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 16px !important;
+  }
   /* Ensure individual product items don't have weird grid placement */
   .main-collection-grid .product-grid > *,
-  .main-collection-grid .grid > li,
-  .main-collection-grid .grid > div {
+  .main-collection-grid.grid > li,
+  .main-collection-grid.grid > div {
     grid-column: auto !important;
     grid-row: auto !important;
     width: auto !important;
@@ -970,17 +983,21 @@ h1.collection-heading,
 [class*="product-grid"] {
   gap: 16px 16px !important;
 }
-/* Product cards — clean styling */
-.product-card,
-[class*="product-card"] {
+/* Product cards — clean styling (target top-level card only, not inner elements) */
+.product-grid > .product-card,
+.product-grid > li > .product-card,
+.product-grid__item,
+.main-collection-grid.grid > li {
   border: 1px solid #eee !important;
   border-radius: 8px !important;
   overflow: hidden;
   transition: box-shadow 0.2s ease, transform 0.2s ease;
   background: #fff;
 }
-.product-card:hover,
-[class*="product-card"]:hover {
+.product-grid > .product-card:hover,
+.product-grid > li > .product-card:hover,
+.product-grid__item:hover,
+.main-collection-grid.grid > li:hover {
   box-shadow: 0 4px 16px rgba(0,0,0,0.1) !important;
   transform: translateY(-2px);
 }
@@ -1341,6 +1358,8 @@ document.addEventListener('DOMContentLoaded', function() {
       if (pg) {
         pg.style.setProperty('flex', '1 1 0%', 'important');
         pg.style.setProperty('min-width', '0', 'important');
+        pg.style.setProperty('width', '0', 'important');
+        pg.style.setProperty('max-width', '100%', 'important');
       }
       /* Open first 3 filter panels */
       var details = sidebar.querySelectorAll('details');
