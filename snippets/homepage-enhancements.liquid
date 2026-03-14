@@ -779,6 +779,43 @@ button.vehicle-selector__clear:hover {
 }
 {% endif %}
 
+/* ===== 13. VIEW ALL BUTTON — brand styling ===== */
+{% if template.name == 'index' %}
+.section-resource-list .button-outline,
+.section-resource-list a[class*="button"],
+.section-resource-list .view-all-button {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 32px !important;
+  background: transparent !important;
+  color: #1A1A1A !important;
+  border: 2px solid #1A1A1A !important;
+  border-radius: 6px !important;
+  font-family: var(--font-heading--family, Montserrat, sans-serif);
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none !important;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.section-resource-list .button-outline:hover,
+.section-resource-list a[class*="button"]:hover {
+  background: #1A1A1A !important;
+  color: #fff !important;
+}
+{% endif %}
+
+/* ===== 14. PDP — trust badges + "You may also like" polish ===== */
+{% if template.name == 'product' %}
+.product-recommendations .product-card img[src=""],
+.product-recommendations .product-card img:not([src]) {
+  display: none;
+}
+{% endif %}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 989px) {
   .hero__content-wrapper { padding: 40px 24px !important; }
