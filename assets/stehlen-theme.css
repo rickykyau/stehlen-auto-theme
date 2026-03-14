@@ -1,0 +1,219 @@
+/* ============================================================
+   Stehlen Auto — Supplementary Theme CSS
+   Works WITH Horizon's native color scheme system.
+   Colors are set in settings_data.json, not here.
+   ============================================================ */
+
+/* Design token aliases (for use in custom Stehlen snippets) */
+:root {
+  --stehlen-orange: #F5A623;
+  --stehlen-bg: #0E0E0E;
+  --stehlen-surface: #111111;
+  --stehlen-surface-2: #0C0C0C;
+  --stehlen-border: #1E1E1E;
+  --stehlen-border-2: #2A2A2A;
+  --stehlen-text: #E8E6E0;
+  --stehlen-muted: #666666;
+  --stehlen-dim: #3A3A3A;
+  --stehlen-orange-dark: #1A1200;
+  --stehlen-orange-border: #3A2800;
+}
+
+/* ============================================================
+   Font override — Barlow family
+   ============================================================ */
+body {
+  font-family: 'Barlow', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6,
+.section-title {
+  font-family: 'Barlow Condensed', sans-serif;
+}
+
+/* ============================================================
+   Border-radius reset — brand requires hard edges
+   Horizon settings handle most of this (all set to 0),
+   but this catches any stragglers or app embeds.
+   ============================================================ */
+button, .btn, a.btn, input, select, textarea,
+.card, .product-card, .collection-card,
+.modal, .badge, .pill, .tag, .filter-option,
+[class*="card"], [class*="modal"], [class*="badge"],
+[class*="btn"], [class*="button"] {
+  border-radius: 0 !important;
+}
+
+/* ============================================================
+   Section heading utilities (used in custom Stehlen snippets)
+   ============================================================ */
+.section-title {
+  font-size: 28px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.section-label {
+  border-left: 3px solid var(--stehlen-orange);
+  padding-left: 10px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ============================================================
+   Trust bar (custom Stehlen snippet)
+   ============================================================ */
+.trust-bar {
+  background: var(--stehlen-surface);
+  border-top: 1px solid var(--stehlen-border);
+  border-bottom: 1px solid var(--stehlen-border);
+  padding: 14px 24px;
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+
+.trust-bar-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--stehlen-text);
+}
+
+.trust-bar-item span {
+  font-weight: 400;
+  color: var(--stehlen-muted);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* ============================================================
+   Product card enhancements (orange hover, price color)
+   ============================================================ */
+.product-card:hover,
+.product-grid__item:hover {
+  border-color: var(--stehlen-orange);
+}
+
+/* Price styling — orange accent */
+.price .money,
+.price-item,
+.price-item--regular {
+  color: var(--stehlen-orange) !important;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+}
+
+/* Compare-at price */
+.price-item--compare,
+.price s,
+.price del {
+  color: var(--stehlen-dim) !important;
+}
+
+/* Fitment tag on card */
+.product-card__fitment {
+  display: inline-block;
+  background: #191919;
+  border: 1px solid #232323;
+  padding: 2px 6px;
+  font-size: 10px;
+  color: var(--stehlen-muted);
+  margin-bottom: 8px;
+}
+
+/* ============================================================
+   Collection page — sidebar facets styling
+   ============================================================ */
+.facets details summary,
+.facets summary {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.facets input[type="checkbox"] {
+  accent-color: var(--stehlen-orange);
+}
+
+/* ============================================================
+   Vehicle selector — override third-party app rounded corners
+   ============================================================ */
+.vehicle-selector__dialog,
+.vehicle-selector__dialog *,
+.vehicle-selector__content,
+.vehicle-selector__select,
+.vehicle-selector__trigger,
+vehicle-selector *,
+[class*="vehicle-selector"] * {
+  border-radius: 0 !important;
+}
+
+/* ============================================================
+   PDP — Stehlen custom enhancements
+   ============================================================ */
+
+/* PDP tabs (custom snippet) */
+.stehlen-tabs {
+  background: var(--stehlen-bg);
+}
+
+.stehlen-tabs__btn {
+  color: var(--stehlen-muted);
+  border-radius: 0 !important;
+}
+
+.stehlen-tabs__btn--active {
+  color: var(--stehlen-text);
+  border-bottom-color: var(--stehlen-orange);
+}
+
+/* PDP fitment badge (custom snippet) */
+.fitment-badge--check,
+.stehlen-fitment__badge--check {
+  background: var(--stehlen-orange-dark);
+  border: 1px solid var(--stehlen-orange-border);
+  color: var(--stehlen-orange);
+  border-radius: 0 !important;
+}
+
+/* PDP policy icons (custom snippet) */
+.stehlen-policy__item {
+  background: var(--stehlen-surface);
+  border: 1px solid var(--stehlen-border);
+  border-radius: 0 !important;
+  color: var(--stehlen-text);
+}
+
+.stehlen-policy__item svg {
+  color: var(--stehlen-orange);
+}
+
+/* ============================================================
+   Pagination — orange active page
+   ============================================================ */
+.pagination .current,
+.pagination [aria-current="page"] {
+  background: var(--stehlen-orange) !important;
+  color: #111 !important;
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width: 680px) {
+  .facets-block-wrapper--sidebar {
+    display: none !important;
+  }
+}
