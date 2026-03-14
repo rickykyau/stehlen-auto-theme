@@ -198,32 +198,37 @@ body .facets--sidebar {
   gap: 4px;
 }
 
-.year-pill {
-  background: var(--lov-input);
-  border: 1px solid var(--lov-border);
-  border-radius: 0;
-  color: var(--lov-muted-fg);
-  font-family: var(--lov-font-display);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  padding: 5px 4px;
-  cursor: pointer;
-  text-align: center;
-  transition: all 150ms;
-  width: 100%;
+.year-pill,
+.facets__form button.year-pill,
+.facets button.year-pill {
+  background: var(--lov-input) !important;
+  border: 1px solid var(--lov-border) !important;
+  border-radius: 0 !important;
+  color: var(--lov-muted-fg) !important;
+  font-family: var(--lov-font-display) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.04em !important;
+  padding: 5px 4px !important;
+  cursor: pointer !important;
+  text-align: center !important;
+  transition: all 150ms !important;
+  width: 100% !important;
 }
 
-.year-pill:hover {
-  border-color: hsl(38 91% 55% / 0.5);
-  color: var(--lov-fg);
+.year-pill:hover,
+.facets__form button.year-pill:hover {
+  border-color: hsl(38 91% 55% / 0.5) !important;
+  color: var(--lov-fg) !important;
 }
 
-.year-pill--active {
-  background: hsl(38 91% 55% / 0.15);
-  border-color: var(--lov-primary);
-  color: var(--lov-primary);
-  font-weight: 700;
+.year-pill--active,
+.year-pill.year-pill--active,
+.facets__form button.year-pill--active {
+  background: hsl(38 91% 55% / 0.15) !important;
+  border-color: var(--lov-primary) !important;
+  color: var(--lov-primary) !important;
+  font-weight: 700 !important;
 }
 
 /* Filter panel borders */

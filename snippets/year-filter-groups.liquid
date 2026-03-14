@@ -73,15 +73,13 @@
       html += '</div></div>';
     });
 
-    // Hide original checkboxes (keep in DOM for form submission)
-    var listEl = inputsWrapper.querySelector('.facets__inputs-list');
-    if (listEl) {
-      listEl.style.display = 'none';
+    // Hide ALL original content (checkboxes, show-more, etc.) — keep in DOM for form submission
+    var allOriginal = inputsWrapper.children;
+    for (var j = 0; j < allOriginal.length; j++) {
+      if (!allOriginal[j].classList.contains('year-decade-groups')) {
+        allOriginal[j].style.display = 'none';
+      }
     }
-
-    // Also hide show-more button if present
-    var showMore = inputsWrapper.querySelector('.show-more__button');
-    if (showMore) showMore.style.display = 'none';
 
     // Insert decade groups
     var groupContainer = document.createElement('div');
