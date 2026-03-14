@@ -365,10 +365,19 @@ button.vehicle-selector__go:disabled,
 }
 
 /* --- Saved vehicle bar — gold accent, not green --- */
+/* Kill ALL theme defaults inside saved bar */
+.vehicle-selector__saved *,
+.vehicle-selector__dialog .vehicle-selector__saved * {
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+  box-sizing: border-box !important;
+}
 .vehicle-selector__saved,
 .vehicle-selector__dialog .vehicle-selector__saved {
-  margin-top: 20px;
-  padding: 14px 18px;
+  margin-top: 20px !important;
+  margin-bottom: 0 !important;
+  padding: 0 18px !important;
   background: rgba(255,183,79,0.08);
   border: 1px solid rgba(255,183,79,0.25);
   border-radius: 8px;
@@ -376,7 +385,7 @@ button.vehicle-selector__go:disabled,
   flex-direction: row !important;
   justify-content: space-between;
   align-items: center !important;
-  min-height: 48px;
+  height: 52px;
 }
 .vehicle-selector__saved-info,
 .vehicle-selector__dialog .vehicle-selector__saved-info {
@@ -384,21 +393,18 @@ button.vehicle-selector__go:disabled,
   flex-direction: row !important;
   align-items: center !important;
   color: #fff !important;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 1;
+  font-size: 14px !important;
+  font-weight: 600 !important;
 }
 .vehicle-selector__saved-icon {
   color: #FFB74F !important;
-  font-weight: 700;
-  margin-right: 10px;
-  font-size: 16px;
-  line-height: 1;
-  display: inline-flex !important;
-  align-items: center !important;
+  font-weight: 700 !important;
+  margin-right: 10px !important;
+  font-size: 16px !important;
 }
 .vehicle-selector__clear,
-button.vehicle-selector__clear {
+button.vehicle-selector__clear,
+.vehicle-selector__saved button.vehicle-selector__clear {
   background: none !important;
   background-color: transparent !important;
   border: 1px solid rgba(255,255,255,0.25) !important;
