@@ -711,7 +711,13 @@ button.vehicle-selector__clear:hover {
   .facets__filters-wrapper {
     display: block !important;
   }
-  /* Layout handled by stehlen-theme.css grid rules */
+  /* Layout — grid takes precedence via stehlen-theme.css */
+  .collection-wrapper.grid,
+  .collection-wrapper {
+    display: grid !important;
+    grid-template-columns: 260px 1fr !important;
+    gap: 0 !important;
+  }
   .main-collection-grid {
     min-width: 0 !important;
     width: 100% !important;

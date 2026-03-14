@@ -296,8 +296,8 @@ button.facets__see-results,
 }
 
 ul[class*="product-grid"] {
-  gap: 2px !important;
-  padding: 0 !important;
+  gap: 12px !important;
+  padding: 16px !important;
 }
 
 /* ── FIX: Cards fill grid cells completely ── */
@@ -332,6 +332,6 @@ product-card-link {
   }
   ul[class*="product-grid"] {
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 2px !important;
+    gap: 8px !important;
   }
 }
