@@ -1356,14 +1356,19 @@ document.addEventListener('DOMContentLoaded', function() {
           innerWrap.style.setProperty('gap', '16px', 'important');
           innerWrap.style.setProperty('width', '100%', 'important');
           innerWrap.style.setProperty('box-sizing', 'border-box', 'important');
+          innerWrap.style.setProperty('padding', '0', 'important');
+          innerWrap.style.setProperty('margin', '0', 'important');
         }
+        /* Calculate item width based on actual container width */
+        var containerW = innerWrap ? innerWrap.offsetWidth : pg.offsetWidth;
+        var itemW = Math.floor((containerW - 32) / 3);
         /* Fix individual product items — 3 per row */
         var items = pg.querySelectorAll('.product-grid__item');
         for (var ii = 0; ii < items.length; ii++) {
           items[ii].style.setProperty('display', 'block', 'important');
-          items[ii].style.setProperty('width', 'calc(33.333% - 11px)', 'important');
-          items[ii].style.setProperty('flex', '0 0 calc(33.333% - 11px)', 'important');
-          items[ii].style.setProperty('max-width', 'calc(33.333% - 11px)', 'important');
+          items[ii].style.setProperty('width', itemW + 'px', 'important');
+          items[ii].style.setProperty('flex', '0 0 ' + itemW + 'px', 'important');
+          items[ii].style.setProperty('max-width', itemW + 'px', 'important');
           items[ii].style.setProperty('min-width', '0', 'important');
           items[ii].style.setProperty('box-sizing', 'border-box', 'important');
           items[ii].style.setProperty('list-style', 'none', 'important');
