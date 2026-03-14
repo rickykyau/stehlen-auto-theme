@@ -800,3 +800,94 @@ product-card .gap-style {
 [class*="vehicle-selector"] * {
   border-radius: var(--lov-radius) !important;
 }
+
+/* ── HERO TWO-COLUMN LAYOUT ── */
+.hero__two-col {
+  display: grid !important;
+  grid-template-columns: 55% 45% !important;
+  align-items: center !important;
+}
+
+.hero__content-wrapper {
+  padding: 64px 48px 64px 64px !important;
+}
+
+.hero__col-right {
+  padding: 64px 64px 64px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── HERO FITMENT CARD ── */
+.hero-fitment {
+  background: hsl(220 12% 12%);
+  border: 1px solid hsl(220 8% 25%);
+  border-radius: 0;
+  padding: 28px;
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+}
+
+.hero-fitment__label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: hsl(220 8% 55%);
+}
+
+.hero-fitment__sub {
+  font-size: 13px;
+  color: hsl(220 8% 55%);
+  line-height: 1.5;
+}
+
+.hero-fitment__btn {
+  width: 100%;
+  background: #F5A623;
+  color: #111;
+  border: none;
+  border-radius: 0;
+  padding: 12px 20px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 150ms;
+}
+
+.hero-fitment__btn:hover {
+  background: #FFB93A;
+}
+
+.hero-fitment__guarantee {
+  font-size: 11px;
+  color: hsl(142 72% 40%);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+/* ── HERO MOBILE ── */
+@media (max-width: 768px) {
+  .hero__two-col {
+    grid-template-columns: 1fr !important;
+  }
+  .hero__content-wrapper {
+    padding: 48px 24px 32px !important;
+  }
+  .hero__col-right {
+    padding: 0 24px 48px;
+  }
+  .hero-fitment {
+    max-width: 100%;
+  }
+}
