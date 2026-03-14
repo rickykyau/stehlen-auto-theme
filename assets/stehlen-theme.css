@@ -36,11 +36,21 @@ li[class*="product-grid__item"] {
   flex: none !important;
 }
 
-/* ── FIX: White background on grid wrapper ── */
+/* ── FIX: Remove white group container ── */
+.product-grid__item,
+li[class*="product-grid__item"] {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+}
+
 ul[class*="product-grid"],
-[class*="product-grid--grid"],
 .product-grid {
-  background: var(--stehlen-bg, #0E0E0E) !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 20px !important;
 }
 
 /* ── FIX: Dark card backgrounds ── */
@@ -77,6 +87,12 @@ product-card:hover > div {
   border-radius: 0 !important;
 }
 
+body .facets-block-wrapper--sidebar,
+body .facets--sidebar {
+  background: #111111 !important;
+  border-radius: 0 !important;
+}
+
 /* ── FIX: Sidebar label styling ── */
 [class*="facets__label"] {
   color: #555555 !important;
@@ -91,16 +107,9 @@ product-card:hover > div {
   color: #888888 !important;
 }
 
-/* ── FIX: Black checkbox squares ── */
+/* ── FIX: Checkbox accent ── */
 input[type="checkbox"] {
   accent-color: #F5A623 !important;
-  opacity: 1 !important;
-  background-color: transparent !important;
-}
-
-.checkbox svg,
-[class*="checkbox"] svg {
-  display: none !important;
 }
 
 /* ── FIX: Card title color ── */
