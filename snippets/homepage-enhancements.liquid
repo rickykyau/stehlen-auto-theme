@@ -1342,16 +1342,19 @@ document.addEventListener('DOMContentLoaded', function() {
         pg.style.setProperty('min-width', '0', 'important');
         pg.style.setProperty('justify-self', 'stretch', 'important');
         pg.style.setProperty('align-self', 'start', 'important');
-        /* Set 3-column product grid */
-        pg.style.setProperty('display', 'grid', 'important');
-        pg.style.setProperty('grid-template-columns', 'repeat(3, 1fr)', 'important');
-        pg.style.setProperty('gap', '16px', 'important');
+        /* Don't set grid on pg — it has Horizon baggage.
+           Instead, use block display and let the inner div be the grid. */
+        pg.style.setProperty('display', 'block', 'important');
         pg.style.setProperty('box-sizing', 'border-box', 'important');
-        /* The product list is wrapped in a nested div — make it transparent
-           so <li> items become direct grid participants */
+        pg.style.setProperty('padding', '0', 'important');
+        /* The product list is in a nested div — make THAT the 3-column grid */
         var innerWrap = pg.querySelector(':scope > div');
         if (innerWrap) {
-          innerWrap.style.setProperty('display', 'contents', 'important');
+          innerWrap.style.setProperty('display', 'grid', 'important');
+          innerWrap.style.setProperty('grid-template-columns', 'repeat(3, 1fr)', 'important');
+          innerWrap.style.setProperty('gap', '16px', 'important');
+          innerWrap.style.setProperty('width', '100%', 'important');
+          innerWrap.style.setProperty('box-sizing', 'border-box', 'important');
         }
         /* Fix individual product items */
         var items = pg.querySelectorAll('.product-grid__item');
