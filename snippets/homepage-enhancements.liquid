@@ -64,6 +64,13 @@
 #MainContent {
   padding-top: 80px !important;
 }
+/* Hide value props bar on all non-homepage pages */
+.value-props-section,
+.value-props-bar,
+#stehlen-value-props,
+.shopify-section:has(.value-props-bar) {
+  display: none !important;
+}
 {% endif %}
 
 /* ===== 4. BUTTONS — global fix for missing button styles ===== */
@@ -771,14 +778,6 @@ button.vehicle-selector__clear:hover {
 /* --- Override inner-page padding for collection --- */
 #MainContent {
   padding-top: 0 !important;
-}
-
-/* --- HIDE value props bar on collection pages (homepage-only element) --- */
-.value-props-section,
-.value-props-bar,
-#stehlen-value-props,
-.shopify-section:has(.value-props-bar) {
-  display: none !important;
 }
 
 /* --- Kill ALL heading section whitespace --- */
