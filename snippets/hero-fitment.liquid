@@ -21,3 +21,20 @@
     ✓ Guaranteed fitment on every part
   </p>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded',
+  function() {
+    var h1 = document.querySelector(
+      '.hero__content-wrapper h1, ' +
+      '.hero h1, ' +
+      '.hero__heading'
+    );
+    if (!h1) return;
+    h1.innerHTML = h1.innerHTML.replace(
+      'LONG HAUL',
+      '<span style="color:#F5A623">LONG HAUL</span>'
+    );
+  }
+);
+</script>
