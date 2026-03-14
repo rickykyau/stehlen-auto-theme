@@ -131,21 +131,6 @@ button, .btn, a.btn, input, select, textarea,
   margin-bottom: 8px;
 }
 
-/* ============================================================
-   Collection page — sidebar facets styling
-   ============================================================ */
-.facets details summary,
-.facets summary {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 700;
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-.facets input[type="checkbox"] {
-  accent-color: var(--stehlen-orange);
-}
 
 /* ============================================================
    Vehicle selector — override third-party app rounded corners
@@ -209,54 +194,115 @@ vehicle-selector *,
   color: #111 !important;
 }
 
-/* ============================================================
-   Collection page — product grid fix (force multi-column)
-   ============================================================ */
-.product-grid,
-[class*="product-grid"]:not(.product-grid__item):not(.product-grid__card) {
+/* ── COLLECTION LAYOUT ── */
+.collection-wrapper.grid {
+  display: grid !important;
+  grid-template-columns: 240px 1fr !important;
+  gap: 0 !important;
+  align-items: start !important;
+}
+
+/* ── SIDEBAR ── */
+.facets-block-wrapper--sidebar {
+  background: #0C0C0C !important;
+  border-right: 1px solid #1E1E1E !important;
+  min-height: 100vh;
+}
+
+.facets--sidebar {
+  padding: 20px !important;
+}
+
+/* ── FILTER LABELS ── */
+.facets__label {
+  font-family: 'Barlow Condensed', sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  color: #555555 !important;
+}
+
+/* ── FILTER CHECKBOXES ── */
+.checkbox__label-text {
+  font-size: 13px !important;
+  color: #888888 !important;
+}
+
+.checkbox__input:checked + .checkbox__label .checkbox__label-text {
+  color: #E8E6E0 !important;
+}
+
+.checkbox__input {
+  accent-color: #F5A623 !important;
+}
+
+/* ── PRODUCT GRID ── */
+ul.product-grid--grid {
   display: grid !important;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
   gap: 12px !important;
+  padding: 20px !important;
+  list-style: none !important;
+  margin: 0 !important;
+  width: 100% !important;
+  min-width: 0 !important;
 }
 
-/* ============================================================
-   Collection page — dark product cards
-   ============================================================ */
-.card-wrapper,
-.card,
-[class*="card--product"],
-.product-grid__card {
+.product-grid__item {
+  width: auto !important;
+  max-width: none !important;
+  flex: none !important;
+}
+
+/* ── PRODUCT CARD ── */
+.product-card__content {
   background: #111111 !important;
   border: 1px solid #1E1E1E !important;
   border-radius: 0 !important;
 }
 
-/* ============================================================
-   Collection page — filter sidebar label visibility
-   ============================================================ */
-.facets__summary,
-.facet-filters__summary,
-[class*="facet"] summary,
-[class*="facet"] label,
-[class*="filter"] label {
-  color: #E8E6E0 !important;
+product-card:hover .product-card__content {
+  border-color: #F5A623 !important;
 }
 
-/* ============================================================
-   Collection page — checkbox fix
-   ============================================================ */
-input[type="checkbox"] {
-  appearance: auto !important;
-  -webkit-appearance: auto !important;
-  accent-color: #F5A623;
-  background: transparent !important;
+/* ── FIX DUPLICATE TITLE ── */
+.product-card__content .product-card__title:last-of-type,
+.product-card__content [class*="card__title"] + [class*="card__title"] {
+  display: none !important;
 }
 
-/* ============================================================
-   Responsive
-   ============================================================ */
+/* ── CARD IMAGE ── */
+.card-gallery {
+  background: #151515 !important;
+  border-bottom: 1px solid #1E1E1E !important;
+  border-radius: 0 !important;
+}
+
+.card-gallery img {
+  object-fit: contain !important;
+  padding: 8px !important;
+}
+
+/* ── CARD PRICE ── */
+.product-card .price,
+.product-card [class*="price"] {
+  font-family: 'Barlow Condensed', sans-serif !important;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  color: #F5A623 !important;
+}
+
+/* ── MOBILE ── */
 @media (max-width: 680px) {
+  .collection-wrapper.grid {
+    grid-template-columns: 1fr !important;
+  }
   .facets-block-wrapper--sidebar {
     display: none !important;
+  }
+  ul.product-grid--grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    padding: 12px !important;
   }
 }
