@@ -1300,6 +1300,8 @@ document.addEventListener('DOMContentLoaded', function() {
       if (cw) {
         /* Remove Horizon's 'grid' class from wrapper too — it forces 14-col subgrid */
         cw.classList.remove('grid');
+        /* Also remove gap-style which may add Horizon grid behaviors */
+        cw.classList.remove('gap-style');
         cw.style.setProperty('display', 'grid', 'important');
         cw.style.setProperty('grid-template-columns', '220px 1fr', 'important');
         cw.style.setProperty('gap', '28px', 'important');
@@ -1324,15 +1326,27 @@ document.addEventListener('DOMContentLoaded', function() {
         /* Remove Horizon's 'grid' class — it forces a 14-col subgrid that
            overrides even inline styles. Without it, we have full control. */
         pg.classList.remove('grid');
+        /* Remove Horizon layout classes that constrain the grid */
+        pg.classList.remove('spacing-style');
+        pg.classList.remove('collection-wrapper--full-width-on-mobile');
+        /* Clear all Horizon CSS custom properties */
+        pg.style.removeProperty('--grid-column--desktop');
+        pg.style.removeProperty('--grid-column--mobile');
+        pg.style.removeProperty('--grid--margin--mobile');
+        pg.style.removeProperty('--padding-inline-start');
+        pg.style.removeProperty('--padding-inline-end');
         pg.style.setProperty('grid-column', '2', 'important');
         pg.style.setProperty('grid-row', '1', 'important');
-        pg.style.setProperty('width', 'auto', 'important');
+        pg.style.setProperty('width', '100%', 'important');
         pg.style.setProperty('max-width', '100%', 'important');
         pg.style.setProperty('min-width', '0', 'important');
+        pg.style.setProperty('justify-self', 'stretch', 'important');
+        pg.style.setProperty('align-self', 'start', 'important');
         /* Set 3-column product grid */
         pg.style.setProperty('display', 'grid', 'important');
         pg.style.setProperty('grid-template-columns', 'repeat(3, 1fr)', 'important');
         pg.style.setProperty('gap', '16px', 'important');
+        pg.style.setProperty('box-sizing', 'border-box', 'important');
         /* Fix individual items */
         var items = pg.querySelectorAll(':scope > li, :scope > div');
         for (var ii = 0; ii < items.length; ii++) {
