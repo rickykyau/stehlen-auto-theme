@@ -1347,21 +1347,24 @@ document.addEventListener('DOMContentLoaded', function() {
         pg.style.setProperty('display', 'block', 'important');
         pg.style.setProperty('box-sizing', 'border-box', 'important');
         pg.style.setProperty('padding', '0', 'important');
-        /* The product list is in a nested div — make THAT the 3-column grid */
+        /* The product list is in a nested div — use flexbox (not grid)
+           to avoid all Horizon grid specificity battles */
         var innerWrap = pg.querySelector(':scope > div');
         if (innerWrap) {
-          innerWrap.style.setProperty('display', 'grid', 'important');
-          innerWrap.style.setProperty('grid-template-columns', 'repeat(3, 1fr)', 'important');
+          innerWrap.style.setProperty('display', 'flex', 'important');
+          innerWrap.style.setProperty('flex-wrap', 'wrap', 'important');
           innerWrap.style.setProperty('gap', '16px', 'important');
           innerWrap.style.setProperty('width', '100%', 'important');
           innerWrap.style.setProperty('box-sizing', 'border-box', 'important');
         }
-        /* Fix individual product items */
+        /* Fix individual product items — 3 per row */
         var items = pg.querySelectorAll('.product-grid__item');
         for (var ii = 0; ii < items.length; ii++) {
-          items[ii].style.setProperty('grid-column', 'auto', 'important');
-          items[ii].style.setProperty('grid-row', 'auto', 'important');
-          items[ii].style.setProperty('width', 'auto', 'important');
+          items[ii].style.setProperty('width', 'calc(33.333% - 11px)', 'important');
+          items[ii].style.setProperty('flex', '0 0 calc(33.333% - 11px)', 'important');
+          items[ii].style.setProperty('max-width', 'calc(33.333% - 11px)', 'important');
+          items[ii].style.setProperty('box-sizing', 'border-box', 'important');
+          items[ii].style.setProperty('list-style', 'none', 'important');
         }
       }
       /* Open first 3 filter panels */
