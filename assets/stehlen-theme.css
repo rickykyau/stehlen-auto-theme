@@ -138,3 +138,42 @@ input[type="checkbox"] {
   align-items: start !important;
   gap: 0 !important;
 }
+
+/* Override Horizon CSS custom property for card bg */
+product-card .border-style {
+  --color-background-primary: #111111 !important;
+  background: #111111 !important;
+  border-color: #1E1E1E !important;
+  border-radius: 0 !important;
+}
+
+product-card .card-gallery,
+product-card [class*="gallery"] {
+  --color-background-primary: #151515 !important;
+  background: #151515 !important;
+  border-radius: 0 !important;
+}
+
+/* Override spacing utility padding on cards */
+product-card .spacing-style {
+  padding: 0 !important;
+}
+
+/* Card info area padding restored */
+product-card .product-card__info,
+product-card [class*="product-card__info"] {
+  padding: 10px 12px 12px !important;
+  background: #111111 !important;
+}
+
+/* Collection header title */
+.collection-header h1,
+[class*="collection"] h1,
+#MainContent h1 {
+  font-family: 'Barlow Condensed', sans-serif !important;
+  font-size: 42px !important;
+  font-weight: 800 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  line-height: 1 !important;
+}
