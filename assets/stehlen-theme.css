@@ -244,15 +244,18 @@ product-card [class*="product-card__info"] {
   color: #F5A623 !important;
 }
 
-/* Checkbox input styling */
+/* Checkbox input styling — override Horizon's hidden native checkbox */
 .checkbox__input {
+  position: relative !important;
+  opacity: 1 !important;
   accent-color: #F5A623 !important;
   width: 16px !important;
   height: 16px !important;
   flex-shrink: 0 !important;
+  cursor: pointer !important;
 }
 
-/* Hide the SVG checkmark — use native checkbox */
+/* Hide the SVG checkmark — using native checkbox instead */
 .checkbox__label svg.icon-checkmark {
   display: none !important;
 }
