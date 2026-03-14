@@ -36,44 +36,89 @@ li[class*="product-grid__item"] {
   flex: none !important;
 }
 
-/* ── FIX 2: Dark product cards ── */
+/* ── FIX: White background on grid wrapper ── */
+ul[class*="product-grid"],
+[class*="product-grid--grid"],
+.product-grid {
+  background: var(--stehlen-bg, #0E0E0E) !important;
+}
+
+/* ── FIX: Dark card backgrounds ── */
 .product-card__content,
-[class*="product-card__content"] {
+[class*="product-card__content"],
+.product-card .card,
+product-card > div {
   background: #111111 !important;
   border: 1px solid #1E1E1E !important;
   border-radius: 0 !important;
-  color: #E8E6E0 !important;
+  overflow: hidden !important;
 }
 
+product-card:hover .product-card__content,
+product-card:hover > div {
+  border-color: #F5A623 !important;
+}
+
+/* ── FIX: Dark image area ── */
+[class*="card-gallery"],
 .card-gallery,
-[class*="card-gallery"] {
+.product-card [class*="media"],
+.product-card [class*="image"] {
   background: #151515 !important;
   border-radius: 0 !important;
-  border-bottom: 1px solid #1E1E1E !important;
 }
 
-/* ── FIX 3: Sidebar dark background ── */
-.facets-block-wrapper--sidebar,
-.facets--sidebar,
-[class*="facets-block-wrapper"] {
+/* ── FIX: Dark sidebar ── */
+[class*="facets-block-wrapper"],
+[class*="facets--sidebar"],
+.facets-block-wrapper--sidebar {
   background: #111111 !important;
   border-right: 1px solid #1E1E1E !important;
+  border-radius: 0 !important;
 }
 
-/* ── FIX 4: Fix checkbox black squares ── */
-input[type="checkbox"][class*="checkbox__input"] {
-  appearance: checkbox !important;
-  -webkit-appearance: checkbox !important;
-  background: transparent !important;
-  accent-color: #F5A623 !important;
-  width: 14px !important;
-  height: 14px !important;
+/* ── FIX: Sidebar label styling ── */
+[class*="facets__label"] {
+  color: #555555 !important;
+  font-family: 'Barlow Condensed', sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
 }
 
-/* ── FIX 5: Fix filter text visibility ── */
-[class*="facets__label"],
 [class*="checkbox__label-text"] {
   color: #888888 !important;
+}
+
+/* ── FIX: Black checkbox squares ── */
+input[type="checkbox"] {
+  accent-color: #F5A623 !important;
+  opacity: 1 !important;
+  background-color: transparent !important;
+}
+
+.checkbox svg,
+[class*="checkbox"] svg {
+  display: none !important;
+}
+
+/* ── FIX: Card title color ── */
+[class*="product-card__title"],
+.product-card h3,
+.product-card [class*="title"] {
+  color: #CCCCCC !important;
+  font-size: 13px !important;
+  line-height: 1.35 !important;
+}
+
+/* ── FIX: Price color ── */
+.product-card [class*="price"],
+.product-card [class*="Price"] {
+  color: #F5A623 !important;
+  font-family: 'Barlow Condensed', sans-serif !important;
+  font-size: 20px !important;
+  font-weight: 700 !important;
 }
 
 /* ── FIX 6: Sidebar wrapper layout ── */
