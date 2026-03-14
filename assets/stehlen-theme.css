@@ -307,6 +307,59 @@ product-card-link {
   border-color: var(--lov-primary-40);
 }
 
+/* ── FIX: Card link overlay — don't cover the CTA row ── */
+product-card .product-card__link {
+  z-index: 1 !important;
+}
+
+.stehlen-card-cta {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+.stehlen-card-cta__view {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+.stehlen-card-cta__cart {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+/* ── FIX: Announcement bar — gold text on dark bg ── */
+.stehlen-announcements {
+  background: var(--lov-bg) !important;
+  border-bottom: 1px solid hsl(38 91% 55% / 0.2) !important;
+}
+
+.stehlen-announcements__slide {
+  color: var(--lov-primary) !important;
+  font-family: var(--lov-font-display) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+}
+
+/* Horizon announcement bar */
+.announcement-bar {
+  background: var(--lov-bg) !important;
+}
+
+.announcement-bar__message,
+.announcement-bar__slides,
+.announcement-bar a,
+.announcement-bar p,
+.announcement-bar span {
+  color: var(--lov-primary) !important;
+  font-family: var(--lov-font-display) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  font-size: 12px !important;
+  text-transform: uppercase !important;
+}
+
 /* ── SECTION 6: Product Card (CRITICAL — variable override pattern) ── */
 
 /* Card container */
