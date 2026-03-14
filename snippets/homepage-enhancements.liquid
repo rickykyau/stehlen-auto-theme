@@ -1298,6 +1298,8 @@ document.addEventListener('DOMContentLoaded', function() {
          because flex with 7 children doesn't work reliably */
       var cw = document.querySelector('.collection-wrapper');
       if (cw) {
+        /* Remove Horizon's 'grid' class from wrapper too — it forces 14-col subgrid */
+        cw.classList.remove('grid');
         cw.style.setProperty('display', 'grid', 'important');
         cw.style.setProperty('grid-template-columns', '220px 1fr', 'important');
         cw.style.setProperty('gap', '28px', 'important');
