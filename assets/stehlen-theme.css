@@ -803,16 +803,37 @@ product-card .gap-style {
 
 /* ── HERO TWO-COLUMN LAYOUT ── */
 .hero__two-col {
+  position: relative !important;
   display: grid !important;
   grid-template-columns: 55% 45% !important;
+  grid-template-rows: 1fr !important;
   align-items: center !important;
 }
 
-.hero__content-wrapper {
+/* Media wrapper stays as absolute background — span full area */
+.hero__two-col .hero__media-wrapper {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 0 !important;
+  grid-column: 1 / -1 !important;
+  grid-row: 1 / -1 !important;
+}
+
+/* Content wrapper — left column, above background */
+.hero__two-col .hero__content-wrapper {
+  position: relative !important;
+  z-index: 1 !important;
+  grid-column: 1 !important;
+  grid-row: 1 !important;
   padding: 64px 48px 64px 64px !important;
 }
 
+/* Fitment card — right column, above background */
 .hero__col-right {
+  position: relative !important;
+  z-index: 1 !important;
+  grid-column: 2 !important;
+  grid-row: 1 !important;
   padding: 64px 64px 64px 24px;
   display: flex;
   align-items: center;
