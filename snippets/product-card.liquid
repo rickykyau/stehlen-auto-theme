@@ -146,6 +146,25 @@
     "
   >
     {{ children }}
+
+    {%- comment -%} Stehlen: Split CTA row (VIEW PRODUCT + Add to Cart) {%- endcomment -%}
+    {% unless onboarding %}
+      <div class="stehlen-card-cta">
+        <a href="{{ variant_to_link.url }}" class="stehlen-card-cta__view">VIEW PRODUCT</a>
+        {% if product.available %}
+          <form method="post" action="/cart/add" class="stehlen-card-cta__form">
+            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+            <button type="submit" class="stehlen-card-cta__cart" aria-label="Add to cart">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+                <line x1="3" y1="6" x2="21" y2="6"/>
+                <path d="M16 10a4 4 0 01-8 0"/>
+              </svg>
+            </button>
+          </form>
+        {% endif %}
+      </div>
+    {% endunless %}
   </div>
 </product-card>
 {%- if settings.transition_to_main_product -%}

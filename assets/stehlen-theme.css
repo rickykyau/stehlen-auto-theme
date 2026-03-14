@@ -421,32 +421,68 @@ product-card .gap-style {
   --product-card-gap: 0px !important;
 }
 
-/* CTA row — "VIEW PRODUCT" via ::after pseudo-element */
+/* Hide Horizon's built-in quick-add (replaced by stehlen-card-cta) */
 .card-gallery .quick-add,
-.card-gallery quick-add-component {
+.card-gallery quick-add-component,
+.quick-add {
   display: none !important;
 }
 
-product-card .product-card__content::after {
-  content: 'VIEW PRODUCT';
+/* Split CTA row: VIEW PRODUCT + Cart icon */
+.stehlen-card-cta {
+  display: flex !important;
+  align-items: stretch !important;
+  border-top: 1px solid var(--lov-border) !important;
+  height: 44px !important;
+  margin-top: auto !important;
+}
+
+.stehlen-card-cta__view {
+  flex: 1 !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  height: 44px !important;
-  border-top: 1px solid var(--lov-border) !important;
   font-family: var(--lov-font-display) !important;
-  font-weight: 600 !important;
   font-size: 10px !important;
+  font-weight: 600 !important;
   letter-spacing: 0.15em !important;
   text-transform: uppercase !important;
   color: var(--lov-muted-fg) !important;
-  background: transparent !important;
-  margin-top: auto !important;
-  transition: color 150ms !important;
+  text-decoration: none !important;
+  transition: color 150ms, background 150ms !important;
 }
 
-product-card:hover .product-card__content::after {
+.stehlen-card-cta__view:hover {
   color: var(--lov-fg) !important;
+  background: var(--lov-accent) !important;
+}
+
+.stehlen-card-cta__form {
+  display: flex !important;
+  margin: 0 !important;
+}
+
+.stehlen-card-cta__cart {
+  width: 48px !important;
+  background: var(--lov-primary) !important;
+  border: none !important;
+  border-left: 1px solid var(--lov-border) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: var(--lov-primary-fg) !important;
+  cursor: pointer !important;
+  border-radius: 0 !important;
+  transition: filter 150ms !important;
+}
+
+.stehlen-card-cta__cart:hover {
+  filter: brightness(1.15) !important;
+}
+
+.stehlen-card-cta__cart svg {
+  width: 16px !important;
+  height: 16px !important;
 }
 
 /* ── SECTION 7: Collection Header ── */
