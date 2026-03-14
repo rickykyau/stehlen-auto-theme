@@ -365,28 +365,37 @@ button.vehicle-selector__go:disabled,
 }
 
 /* --- Saved vehicle bar — gold accent, not green --- */
-.vehicle-selector__saved {
+.vehicle-selector__saved,
+.vehicle-selector__dialog .vehicle-selector__saved {
   margin-top: 20px;
-  padding: 16px 18px;
+  padding: 14px 18px;
   background: rgba(255,183,79,0.08);
   border: 1px solid rgba(255,183,79,0.25);
   border-radius: 8px;
   display: flex;
+  flex-direction: row !important;
   justify-content: space-between;
-  align-items: center;
+  align-items: center !important;
+  min-height: 48px;
 }
-.vehicle-selector__saved-info {
-  display: flex;
-  align-items: center;
+.vehicle-selector__saved-info,
+.vehicle-selector__dialog .vehicle-selector__saved-info {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
   color: #fff !important;
   font-size: 14px;
   font-weight: 600;
+  line-height: 1;
 }
 .vehicle-selector__saved-icon {
   color: #FFB74F !important;
   font-weight: 700;
   margin-right: 10px;
   font-size: 16px;
+  line-height: 1;
+  display: inline-flex !important;
+  align-items: center !important;
 }
 .vehicle-selector__clear,
 button.vehicle-selector__clear {
