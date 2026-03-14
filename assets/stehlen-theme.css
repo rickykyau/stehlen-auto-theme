@@ -914,3 +914,33 @@ product-card .gap-style {
 }
 
 .hero__gold { color: #F5A623 !important; }
+
+/* Hero eyebrow */
+.hero__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #F5A623;
+  margin-bottom: 8px;
+}
+.hero__eyebrow::before {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 2px;
+  background: #F5A623;
+  flex-shrink: 0;
+}
+
+/* Hero heading size */
+.hero__two-col h1,
+.hero__content-wrapper h1 {
+  font-size: clamp(48px, 6vw, 80px) !important;
+  line-height: 0.95 !important;
+  letter-spacing: -0.01em !important;
+}
