@@ -328,18 +328,28 @@ li[class*="product-grid__item"] {
 product-card,
 product-card-link {
   width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
   display: block !important;
 }
 
 .product-card__content {
   height: 100% !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
   display: flex !important;
   flex-direction: column !important;
+  box-sizing: border-box !important;
 }
 
 /* Card gallery fills top of card */
 .card-gallery {
   flex-shrink: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
 }
 
 /* Card text area fills remaining space */
