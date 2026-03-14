@@ -711,17 +711,10 @@ button.vehicle-selector__clear:hover {
   .facets__filters-wrapper {
     display: block !important;
   }
-  /* Fix the layout to accommodate sidebar — use flex instead of grid
-     because Horizon's .grid class uses a complex multi-column subgrid */
-  .collection-wrapper.grid,
-  .collection-wrapper {
-    display: flex !important;
-    flex-wrap: nowrap !important;
-    gap: 28px !important;
-  }
+  /* Layout handled by stehlen-theme.css grid rules */
   .main-collection-grid {
-    flex: 1 1 0% !important;
     min-width: 0 !important;
+    width: 100% !important;
   }
   /* Hide the drawer/toggle variants when sidebar is showing */
   .facets-toggle { display: none !important; }
