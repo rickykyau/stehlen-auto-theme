@@ -15,7 +15,7 @@
         "heading": {
           "type": "text",
           "settings": {
-            "text": "<h1>BUILT FOR YOUR TRUCK</h1>",
+            "text": "<h1>ENGINEERED FOR THE<br>LONG HAUL</h1>",
             "alignment": "left",
             "type_preset": "h1"
           }
@@ -58,6 +58,53 @@
         "padding-block-end": 40
       }
     },
+    "value_props": {
+      "type": "value-props",
+      "blocks": {
+        "prop1": {
+          "type": "prop",
+          "settings": {
+            "icon": "shipping",
+            "title": "Free Shipping",
+            "subtitle": "On all orders"
+          }
+        },
+        "prop2": {
+          "type": "prop",
+          "settings": {
+            "icon": "shield",
+            "title": "Guaranteed Fitment",
+            "subtitle": "Fits your vehicle or money back"
+          }
+        },
+        "prop3": {
+          "type": "prop",
+          "settings": {
+            "icon": "warranty",
+            "title": "Manufacturer Warranty",
+            "subtitle": "On every product"
+          }
+        },
+        "prop4": {
+          "type": "prop",
+          "settings": {
+            "icon": "return",
+            "title": "Easy Returns",
+            "subtitle": "30-day hassle-free returns"
+          }
+        }
+      },
+      "block_order": [
+        "prop1",
+        "prop2",
+        "prop3",
+        "prop4"
+      ],
+      "settings": {
+        "section_width": "page-width",
+        "color_scheme": "scheme-1"
+      }
+    },
     "collection_list": {
       "type": "collection-list",
       "blocks": {
@@ -79,14 +126,8 @@
         "header_text"
       ],
       "settings": {
-        "collection_list": [
-          "tonneau-covers",
-          "bull-guards-grille-guards",
-          "side-steps-nerf-bars",
-          "trailer-hitches"
-        ],
         "layout_type": "grid",
-        "columns": 4,
+        "columns": 3,
         "mobile_columns": "2",
         "gap": 20,
         "section_width": "page-width",
@@ -180,6 +221,7 @@
   },
   "order": [
     "hero",
+    "value_props",
     "collection_list",
     "featured_products"
   ]
