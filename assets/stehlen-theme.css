@@ -998,6 +998,12 @@ product-card .gap-style {
   color: var(--lov-muted-fg) !important;
 }
 
+/* Hide the second/duplicate value props injection */
+#stehlen-value-props ~ #stehlen-value-props,
+#stehlen-value-props + #stehlen-value-props {
+  display: none !important;
+}
+
 /* Hero eyebrow */
 .hero__eyebrow {
   display: flex;
