@@ -53,13 +53,13 @@ ul[class*="product-grid"],
   padding: 20px !important;
 }
 
-/* ── FIX: Dark card backgrounds ── */
+/* ── FIX: Product card containers — visible on dark bg ── */
 .product-card__content,
 [class*="product-card__content"],
 .product-card .card,
 product-card > div {
-  background: #111111 !important;
-  border: 1px solid #1E1E1E !important;
+  background: #161616 !important;
+  border: 1px solid #2A2A2A !important;
   border-radius: 0 !important;
   overflow: hidden !important;
 }
@@ -69,12 +69,12 @@ product-card:hover > div {
   border-color: #F5A623 !important;
 }
 
-/* ── FIX: Dark image area ── */
+/* ── FIX: Card image area — white bg so product photos blend ── */
 [class*="card-gallery"],
 .card-gallery,
 .product-card [class*="media"],
 .product-card [class*="image"] {
-  background: #151515 !important;
+  background: #ffffff !important;
   border-radius: 0 !important;
 }
 
@@ -141,16 +141,16 @@ input[type="checkbox"] {
 
 /* Override Horizon CSS custom property for card bg */
 product-card .border-style {
-  --color-background-primary: #111111 !important;
-  background: #111111 !important;
-  border-color: #1E1E1E !important;
+  --color-background-primary: #161616 !important;
+  background: #161616 !important;
+  border-color: #2A2A2A !important;
   border-radius: 0 !important;
 }
 
 product-card .card-gallery,
 product-card [class*="gallery"] {
-  --color-background-primary: #151515 !important;
-  background: #151515 !important;
+  --color-background-primary: #ffffff !important;
+  background: #ffffff !important;
   border-radius: 0 !important;
 }
 
