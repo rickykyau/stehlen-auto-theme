@@ -1319,12 +1319,15 @@ document.addEventListener('DOMContentLoaded', function() {
       }
       var pg = document.querySelector('.main-collection-grid');
       if (pg) {
+        /* Remove Horizon's 'grid' class — it forces a 14-col subgrid that
+           overrides even inline styles. Without it, we have full control. */
+        pg.classList.remove('grid');
         pg.style.setProperty('grid-column', '2', 'important');
         pg.style.setProperty('grid-row', '1', 'important');
         pg.style.setProperty('width', 'auto', 'important');
         pg.style.setProperty('max-width', '100%', 'important');
         pg.style.setProperty('min-width', '0', 'important');
-        /* Override Horizon's 14-col subgrid with 3 product columns */
+        /* Set 3-column product grid */
         pg.style.setProperty('display', 'grid', 'important');
         pg.style.setProperty('grid-template-columns', 'repeat(3, 1fr)', 'important');
         pg.style.setProperty('gap', '16px', 'important');
