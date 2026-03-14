@@ -915,6 +915,40 @@ product-card .gap-style {
 
 .hero__gold { color: #F5A623 !important; }
 
+/* ── Trust bar / Value props ── */
+#stehlen-value-props {
+  background: var(--lov-card) !important;
+  border-top: 1px solid var(--lov-border) !important;
+  border-bottom: 1px solid var(--lov-border) !important;
+  padding: 20px 32px !important;
+}
+
+#stehlen-value-props .vp-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 24px !important;
+}
+
+#stehlen-value-props .vp-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+#stehlen-value-props .vp-title {
+  font-family: var(--lov-font-display) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  color: var(--lov-fg) !important;
+}
+
+#stehlen-value-props .vp-sub {
+  font-size: 10px !important;
+  color: var(--lov-muted-fg) !important;
+}
+
 /* Hero eyebrow */
 .hero__eyebrow {
   display: flex;
