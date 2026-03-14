@@ -269,25 +269,37 @@ product-card [class*="product-card__info"] {
   display: none !important;
 }
 
-/* ── FIX: "SEE X ITEMS" button styling ── */
-.facets__see-results,
-button.facets__see-results,
-.button-primary.facets__see-results {
-  background: #F5A623 !important;
-  color: #111111 !important;
-  border: none !important;
-  border-radius: 0 !important;
-  font-family: 'Barlow Condensed', sans-serif !important;
-  font-weight: 800 !important;
-  font-size: 12px !important;
-  letter-spacing: 0.08em !important;
-  text-transform: uppercase !important;
-  padding: 10px 16px !important;
-  width: 100% !important;
-  cursor: pointer !important;
+/* ── FIX: "SEE X ITEMS" button — hide from sidebar, it belongs in drawer only ── */
+.facets--sidebar .facets__see-results,
+.facets-block-wrapper--sidebar .facets__see-results {
+  display: none !important;
 }
 
-/* ── FIX: Product grid tighter gap, fill width ── */
+/* ── FIX: Collection header — full width, no narrow constraint ── */
+.section-content-wrapper {
+  max-width: 100% !important;
+}
+
+.section-content-wrapper .text-block {
+  --width: 100% !important;
+  --max-width: 100% !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.section-content-wrapper .text-block h1 {
+  width: 100% !important;
+}
+
+.section-content-wrapper rte-formatter,
+.section-content-wrapper .rte {
+  --width: 100% !important;
+  --max-width: 100% !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* ── FIX: Product grid — proper spacing ── */
 #ResultsList,
 .main-collection-grid {
   width: 100% !important;
@@ -296,11 +308,11 @@ button.facets__see-results,
 }
 
 ul[class*="product-grid"] {
-  gap: 12px !important;
+  gap: 16px !important;
   padding: 16px !important;
 }
 
-/* ── FIX: Cards fill grid cells completely ── */
+/* ── FIX: Product cards — visible dark containers with borders ── */
 li[class*="product-grid__item"] {
   padding: 0 !important;
   margin: 0 !important;
@@ -314,11 +326,18 @@ product-card-link {
 
 .product-card__content {
   height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
-/* ── FIX: Collection header spans full width above grid ── */
-.section.product-grid-container {
-  width: 100% !important;
+/* Card gallery fills top of card */
+.card-gallery {
+  flex-shrink: 0 !important;
+}
+
+/* Card text area fills remaining space */
+product-card .gap-style {
+  --product-card-gap: 0px !important;
 }
 
 /* ── MOBILE ── */
