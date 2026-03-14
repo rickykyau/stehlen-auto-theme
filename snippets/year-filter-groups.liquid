@@ -1,0 +1,142 @@
+{% comment %}
+  Year Filter — Decade Groups
+  Transforms the flat year checkbox list into decade-grouped button pills.
+  Only affects the year filter (data-filter-param-name="filter-p-m-custom-year").
+{% endcomment %}
+
+<script defer>
+(function() {
+  function initYearGroups() {
+    var container = document.querySelector('[data-filter-param-name="filter-p-m-custom-year"]');
+    if (!container) return;
+
+    // Find the inputs wrapper (contains all checkboxes)
+    var inputsWrapper = container.querySelector('.facets__inputs-wrapper');
+    if (!inputsWrapper) return;
+
+    // Already transformed?
+    if (container.querySelector('.year-decade-group')) return;
+
+    // Collect all year checkboxes
+    var checkboxes = inputsWrapper.querySelectorAll('.checkbox');
+    if (!checkboxes.length) return;
+
+    var decades = {};
+
+    checkboxes.forEach(function(cb) {
+      var input = cb.querySelector('.checkbox__input');
+      var labelText = cb.querySelector('.checkbox__label-text');
+      if (!input || !labelText) return;
+
+      var year = parseInt(input.value);
+      if (isNaN(year)) return;
+
+      var decadeKey = Math.floor(year / 10) * 10;
+      var decadeLabel = decadeKey + 's';
+
+      if (!decades[decadeKey]) {
+        decades[decadeKey] = { label: decadeLabel, years: [] };
+      }
+
+      decades[decadeKey].years.push({
+        year: year,
+        inputId: input.id,
+        checked: input.checked
+      });
+    });
+
+    // Sort decades newest first
+    var sortedDecades = Object.keys(decades)
+      .map(Number)
+      .sort(function(a, b) { return b - a; });
+
+    // Build new HTML
+    var html = '';
+    sortedDecades.forEach(function(decadeKey) {
+      var decade = decades[decadeKey];
+      // Sort years within decade newest first
+      decade.years.sort(function(a, b) { return b.year - a.year; });
+
+      html += '<div class="year-decade-group">';
+      html += '<div class="year-decade-label">' + decade.label + '</div>';
+      html += '<div class="year-decade-pills">';
+
+      decade.years.forEach(function(y) {
+        var activeClass = y.checked ? ' year-pill--active' : '';
+        html += '<button type="button" class="year-pill' + activeClass + '" '
+              + 'data-year="' + y.year + '" '
+              + 'data-input-id="' + y.inputId + '">'
+              + y.year
+              + '</button>';
+      });
+
+      html += '</div></div>';
+    });
+
+    // Hide original checkboxes (keep in DOM for form submission)
+    var listEl = inputsWrapper.querySelector('.facets__inputs-list');
+    if (listEl) {
+      listEl.style.display = 'none';
+    }
+
+    // Also hide show-more button if present
+    var showMore = inputsWrapper.querySelector('.show-more__button');
+    if (showMore) showMore.style.display = 'none';
+
+    // Insert decade groups
+    var groupContainer = document.createElement('div');
+    groupContainer.className = 'year-decade-groups';
+    groupContainer.innerHTML = html;
+    inputsWrapper.insertBefore(groupContainer, inputsWrapper.firstChild);
+
+    // Click handler for pills
+    groupContainer.addEventListener('click', function(e) {
+      var pill = e.target.closest('.year-pill');
+      if (!pill) return;
+
+      var inputId = pill.getAttribute('data-input-id');
+      var input = document.getElementById(inputId);
+      if (!input) return;
+
+      // Toggle
+      input.checked = !input.checked;
+      pill.classList.toggle('year-pill--active', input.checked);
+
+      // Dispatch change event for Shopify's filter JS
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+  }
+
+  // Run on DOM ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initYearGroups);
+  } else {
+    initYearGroups();
+  }
+
+  // Re-run if filters are re-rendered via AJAX (MutationObserver)
+  var facetsObserver = new MutationObserver(function(mutations) {
+    for (var i = 0; i < mutations.length; i++) {
+      if (mutations[i].addedNodes.length > 0) {
+        // Debounce — wait for DOM to settle
+        clearTimeout(window._yearGroupTimeout);
+        window._yearGroupTimeout = setTimeout(initYearGroups, 200);
+        break;
+      }
+    }
+  });
+
+  var facetsRoot = document.querySelector('.facets-block-wrapper--sidebar');
+  if (facetsRoot) {
+    facetsObserver.observe(facetsRoot, { childList: true, subtree: true });
+  } else {
+    // Sidebar might load later
+    document.addEventListener('DOMContentLoaded', function() {
+      var root = document.querySelector('.facets-block-wrapper--sidebar');
+      if (root) {
+        facetsObserver.observe(root, { childList: true, subtree: true });
+      }
+    });
+  }
+})();
+</script>

@@ -177,6 +177,55 @@ body .facets--sidebar {
   display: none !important;
 }
 
+/* ── Year filter decade groups ── */
+.year-decade-group {
+  margin-bottom: 16px;
+}
+
+.year-decade-label {
+  font-family: var(--lov-font-display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--lov-muted-fg);
+  margin-bottom: 8px;
+}
+
+.year-decade-pills {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+}
+
+.year-pill {
+  background: var(--lov-input);
+  border: 1px solid var(--lov-border);
+  border-radius: 0;
+  color: var(--lov-muted-fg);
+  font-family: var(--lov-font-display);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 5px 4px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 150ms;
+  width: 100%;
+}
+
+.year-pill:hover {
+  border-color: hsl(38 91% 55% / 0.5);
+  color: var(--lov-fg);
+}
+
+.year-pill--active {
+  background: hsl(38 91% 55% / 0.15);
+  border-color: var(--lov-primary);
+  color: var(--lov-primary);
+  font-weight: 700;
+}
+
 /* Filter panel borders */
 .facets__item {
   border-bottom: 1px solid var(--lov-border) !important;
