@@ -704,21 +704,17 @@ button.vehicle-selector__clear:hover {
   .facets__filters-wrapper {
     display: block !important;
   }
-  /* Fix the grid layout to accommodate sidebar */
-  .collection-wrapper.grid {
-    display: grid !important;
-    grid-template-columns: 260px 1fr !important;
-    gap: 24px !important;
+  /* Fix the layout to accommodate sidebar — use flex instead of grid
+     because Horizon's .grid class uses a complex multi-column subgrid */
+  .collection-wrapper.grid,
+  .collection-wrapper {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    gap: 28px !important;
   }
-  /* Force sidebar into first column */
-  .facets-block-wrapper.facets-block-wrapper--sidebar {
-    grid-column: 1 / 2 !important;
-    grid-row: 1 / 99 !important;
-  }
-  /* Make product grid take second column */
   .main-collection-grid {
-    grid-column: 2 / 3 !important;
-    grid-row: 1 / 99 !important;
+    flex: 1 1 0% !important;
+    min-width: 0 !important;
   }
   /* Hide the drawer/toggle variants when sidebar is showing */
   .facets-toggle { display: none !important; }
@@ -838,30 +834,37 @@ h1.collection-heading,
   padding: 0 40px !important;
 }
 
-/* --- Sidebar + grid layout with proper spacing --- */
+/* --- Sidebar + grid layout — override Horizon theme's complex grid --- */
 @media (min-width: 750px) {
-  .collection-wrapper.grid {
-    display: grid !important;
-    grid-template-columns: 220px 1fr !important;
+  /* Nuclear override: Horizon uses a multi-column subgrid on .grid class.
+     We need to override it completely for the collection wrapper. */
+  .collection-wrapper,
+  .collection-wrapper.grid,
+  div.collection-wrapper,
+  div.collection-wrapper.grid {
+    display: flex !important;
+    flex-wrap: nowrap !important;
     gap: 28px !important;
     max-width: 1360px !important;
     margin: 0 auto !important;
     padding: 0 40px !important;
+    /* Kill all grid properties that Horizon sets */
+    grid-template-columns: none !important;
   }
   .facets-block-wrapper.facets-block-wrapper--sidebar {
     display: block !important;
-    min-width: 200px;
-    max-width: 220px;
+    width: 220px !important;
+    min-width: 220px !important;
+    flex-shrink: 0 !important;
     padding: 0 !important;
     margin: 0 !important;
-    grid-column: 1 / 2 !important;
-    grid-row: 1 / 99 !important;
   }
   .main-collection-grid {
-    grid-column: 2 / 3 !important;
-    grid-row: 1 / 99 !important;
+    flex: 1 1 0% !important;
+    min-width: 0 !important;
+    width: auto !important;
   }
-  /* Force 3 product columns in the grid area */
+  /* Force 3 product columns in the main grid area */
   .main-collection-grid .product-grid,
   .main-collection-grid .grid,
   .main-collection-grid [class*="product-grid"],
@@ -869,6 +872,14 @@ h1.collection-heading,
     display: grid !important;
     grid-template-columns: repeat(3, 1fr) !important;
     gap: 16px !important;
+  }
+  /* Ensure individual product items don't have weird grid placement */
+  .main-collection-grid .product-grid > *,
+  .main-collection-grid .grid > li,
+  .main-collection-grid .grid > div {
+    grid-column: auto !important;
+    grid-row: auto !important;
+    width: auto !important;
   }
 }
 
@@ -1303,31 +1314,34 @@ document.addEventListener('DOMContentLoaded', function() {
     })();
   }
 
-  /* --- COLLECTION PAGES — force filter sidebar (desktop only) --- */
+  /* --- COLLECTION PAGES — force filter sidebar + flex layout (desktop only) --- */
   if (isCollection && window.innerWidth >= 750) {
     setTimeout(function() {
       var sidebar = document.querySelector('.facets-block-wrapper--sidebar');
       if (!sidebar) return;
       sidebar.style.setProperty('display', 'block', 'important');
-      sidebar.style.setProperty('grid-column', '1/2', 'important');
-      sidebar.style.setProperty('grid-row', '1/99', 'important');
+      sidebar.style.setProperty('width', '220px', 'important');
+      sidebar.style.setProperty('min-width', '220px', 'important');
+      sidebar.style.setProperty('flex-shrink', '0', 'important');
       ['facets--sidebar', 'facets__form', 'facets__filters-wrapper', 'facets__form-wrapper'].forEach(function(cls) {
         var el = sidebar.querySelector('.' + cls);
         if (el) el.style.setProperty('display', 'block', 'important');
       });
-      var cw = document.querySelector('.collection-wrapper.grid');
+      /* Override Horizon's grid with flex layout */
+      var cw = document.querySelector('.collection-wrapper');
       if (cw) {
-        cw.style.setProperty('display', 'grid', 'important');
-        cw.style.setProperty('grid-template-columns', '240px 1fr', 'important');
-        cw.style.setProperty('gap', '32px', 'important');
+        cw.style.setProperty('display', 'flex', 'important');
+        cw.style.setProperty('flex-wrap', 'nowrap', 'important');
+        cw.style.setProperty('gap', '28px', 'important');
         cw.style.setProperty('max-width', '1360px', 'important');
         cw.style.setProperty('margin', '0 auto', 'important');
         cw.style.setProperty('padding', '0 40px', 'important');
+        cw.style.setProperty('grid-template-columns', 'none', 'important');
       }
       var pg = document.querySelector('.main-collection-grid');
       if (pg) {
-        pg.style.setProperty('grid-column', '2/3', 'important');
-        pg.style.setProperty('grid-row', '1/99', 'important');
+        pg.style.setProperty('flex', '1 1 0%', 'important');
+        pg.style.setProperty('min-width', '0', 'important');
       }
       /* Open first 3 filter panels */
       var details = sidebar.querySelectorAll('details');
