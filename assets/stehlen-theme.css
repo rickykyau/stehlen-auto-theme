@@ -17,3 +17,70 @@ button, .btn, .button, input, select {
   font-weight: 800 !important;
   letter-spacing: 0.08em !important;
 }
+
+/* ── FIX 1: Collection grid ── */
+ul[class*="product-grid"] {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important;
+  gap: 16px !important;
+  padding: 20px !important;
+  list-style: none !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+}
+
+li[class*="product-grid__item"] {
+  width: auto !important;
+  max-width: none !important;
+  flex: none !important;
+}
+
+/* ── FIX 2: Dark product cards ── */
+.product-card__content,
+[class*="product-card__content"] {
+  background: #111111 !important;
+  border: 1px solid #1E1E1E !important;
+  border-radius: 0 !important;
+  color: #E8E6E0 !important;
+}
+
+.card-gallery,
+[class*="card-gallery"] {
+  background: #151515 !important;
+  border-radius: 0 !important;
+  border-bottom: 1px solid #1E1E1E !important;
+}
+
+/* ── FIX 3: Sidebar dark background ── */
+.facets-block-wrapper--sidebar,
+.facets--sidebar,
+[class*="facets-block-wrapper"] {
+  background: #111111 !important;
+  border-right: 1px solid #1E1E1E !important;
+}
+
+/* ── FIX 4: Fix checkbox black squares ── */
+input[type="checkbox"][class*="checkbox__input"] {
+  appearance: checkbox !important;
+  -webkit-appearance: checkbox !important;
+  background: transparent !important;
+  accent-color: #F5A623 !important;
+  width: 14px !important;
+  height: 14px !important;
+}
+
+/* ── FIX 5: Fix filter text visibility ── */
+[class*="facets__label"],
+[class*="checkbox__label-text"] {
+  color: #888888 !important;
+}
+
+/* ── FIX 6: Sidebar wrapper layout ── */
+.collection-wrapper.grid,
+[class*="collection-wrapper"] {
+  display: grid !important;
+  grid-template-columns: 260px 1fr !important;
+  align-items: start !important;
+  gap: 0 !important;
+}
