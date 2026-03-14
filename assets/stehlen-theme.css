@@ -385,9 +385,17 @@ product-card .gap-style {
 
 /* ── Quick Add button — always visible, orange CTA ── */
 .quick-add,
-product-card .quick-add {
+product-card .quick-add,
+.product-card__content .quick-add,
+.product-grid__card .quick-add,
+product-card .product-card__content .quick-add {
   display: flex !important;
   padding: 0 12px 12px !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  position: relative !important;
+  height: auto !important;
+  overflow: visible !important;
 }
 
 .quick-add__button--add,
