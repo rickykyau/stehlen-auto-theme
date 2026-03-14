@@ -50,8 +50,14 @@
       .map(Number)
       .sort(function(a, b) { return b - a; });
 
-    // Build new HTML
-    var html = '';
+    // Build new HTML — start with "All Years" button
+    var anyChecked = false;
+    Object.keys(decades).forEach(function(k) {
+      decades[k].years.forEach(function(y) { if (y.checked) anyChecked = true; });
+    });
+
+    var html = '<button type="button" class="year-pill year-pill--all' + (anyChecked ? '' : ' year-pill--active') + '" data-all="true">All Years</button>';
+
     sortedDecades.forEach(function(decadeKey) {
       var decade = decades[decadeKey];
       // Sort years within decade newest first
@@ -92,6 +98,24 @@
       var pill = e.target.closest('.year-pill');
       if (!pill) return;
 
+      var allBtn = groupContainer.querySelector('.year-pill--all');
+
+      // "All Years" button clicked — clear all year selections
+      if (pill.getAttribute('data-all') === 'true') {
+        var allPills = groupContainer.querySelectorAll('.year-pill:not(.year-pill--all)');
+        allPills.forEach(function(p) {
+          p.classList.remove('year-pill--active');
+          var inp = document.getElementById(p.getAttribute('data-input-id'));
+          if (inp && inp.checked) {
+            inp.checked = false;
+            inp.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+        });
+        pill.classList.add('year-pill--active');
+        return;
+      }
+
+      // Regular year pill clicked
       var inputId = pill.getAttribute('data-input-id');
       var input = document.getElementById(inputId);
       if (!input) return;
@@ -99,6 +123,10 @@
       // Toggle
       input.checked = !input.checked;
       pill.classList.toggle('year-pill--active', input.checked);
+
+      // Update "All Years" button — active only if nothing is checked
+      var anyActive = groupContainer.querySelector('.year-pill--active:not(.year-pill--all)');
+      if (allBtn) allBtn.classList.toggle('year-pill--active', !anyActive);
 
       // Dispatch change event for Shopify's filter JS
       input.dispatchEvent(new Event('change', { bubbles: true }));

@@ -248,6 +248,32 @@ body .facets--sidebar {
   font-weight: 700 !important;
 }
 
+/* "All Years" button — spans full width */
+.year-pill--all,
+.facets__form button.year-pill--all {
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
+  margin-bottom: 8px !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  font-size: 11px !important;
+}
+
+/* ── Make filter active state ── */
+[data-filter-param-name*="make"] .checkbox__input:checked + .checkbox__label,
+[data-filter-param-name*="Make"] .checkbox__input:checked + .checkbox__label {
+  border-left: 2px solid var(--lov-primary) !important;
+  padding-left: 8px !important;
+  color: var(--lov-primary) !important;
+  background: var(--lov-primary-5) !important;
+}
+
+[data-filter-param-name*="make"] .checkbox__input:checked + .checkbox__label .checkbox__label-text,
+[data-filter-param-name*="Make"] .checkbox__input:checked + .checkbox__label .checkbox__label-text {
+  color: var(--lov-primary) !important;
+  font-weight: 600 !important;
+}
+
 /* Filter panel borders */
 .facets__item {
   border-bottom: 1px solid var(--lov-border) !important;
@@ -567,17 +593,17 @@ product-card .gap-style {
   align-items: center !important;
   justify-content: center !important;
   font-family: var(--lov-font-display) !important;
-  font-size: 10px !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.15em !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.1em !important;
   text-transform: uppercase !important;
-  color: var(--lov-muted-fg) !important;
+  color: var(--lov-fg) !important;
   text-decoration: none !important;
   transition: color 150ms, background 150ms !important;
 }
 
 .stehlen-card-cta__view:hover {
-  color: var(--lov-fg) !important;
+  color: var(--lov-primary) !important;
   background: var(--lov-accent) !important;
 }
 
