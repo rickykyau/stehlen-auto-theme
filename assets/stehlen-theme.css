@@ -937,9 +937,11 @@ product-card .gap-style {
   flex-shrink: 0;
 }
 
-/* Hero heading size */
-.hero__two-col h1,
-.hero__content-wrapper h1 {
+/* Hero heading size — high specificity to beat Horizon */
+.hero .hero__content-wrapper h1,
+.hero__two-col .hero__content-wrapper h1,
+.hero .hero__content-wrapper .text-block h1,
+#MainContent .hero h1 {
   font-size: clamp(48px, 6vw, 80px) !important;
   line-height: 0.95 !important;
   letter-spacing: -0.01em !important;
