@@ -308,9 +308,14 @@ product-card .product-card__content [class*="product-price"] {
   display: none !important;
 }
 
-/* ── FIX: Collection header — full width, no narrow constraint ── */
+/* ── Collection header — compact, minimal vertical space ── */
 .section-content-wrapper {
   max-width: 100% !important;
+  --padding-block-start: 20px !important;
+  --padding-block-end: 12px !important;
+  padding-top: 20px !important;
+  padding-bottom: 12px !important;
+  gap: 6px !important;
 }
 
 .section-content-wrapper .text-block {
@@ -322,6 +327,7 @@ product-card .product-card__content [class*="product-price"] {
 
 .section-content-wrapper .text-block h1 {
   width: 100% !important;
+  margin-bottom: 4px !important;
 }
 
 .section-content-wrapper rte-formatter,
@@ -330,6 +336,13 @@ product-card .product-card__content [class*="product-price"] {
   --max-width: 100% !important;
   width: 100% !important;
   max-width: 100% !important;
+}
+
+.section-content-wrapper rte-formatter p,
+.section-content-wrapper .rte p {
+  margin: 0 !important;
+  font-size: 13px !important;
+  line-height: 1.5 !important;
 }
 
 /* ── FIX: Product grid — proper spacing ── */
