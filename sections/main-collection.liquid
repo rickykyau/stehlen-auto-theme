@@ -24,6 +24,33 @@
 
 {% comment %} We always render this full-width, as the child blocks have width: page/full settings {% endcomment %}
 {% render 'fitment-banner' %}
+
+{%- comment -%} Stehlen: Breadcrumb {%- endcomment -%}
+<nav class="stehlen-breadcrumb">
+  <a href="/">HOME</a>
+  <span>›</span>
+  <span>{{ collection.title | upcase }}</span>
+</nav>
+
+{%- comment -%} Stehlen: Toolbar (product count + sort) {%- endcomment -%}
+<div class="stehlen-toolbar">
+  <span class="stehlen-toolbar__count">
+    {{ collection.products_count }} PRODUCTS
+  </span>
+  <div class="stehlen-toolbar__sort">
+    <label>SORT:</label>
+    <select name="sort_by"
+      onchange="window.location.search='?sort_by='+this.value">
+      {% for option in collection.sort_options %}
+        <option value="{{ option.value }}"
+          {% if option.value == collection.sort_by %}selected{% endif %}>
+          {{ option.name | upcase }}
+        </option>
+      {% endfor %}
+    </select>
+  </div>
+</div>
+
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
 <results-list
   class="section product-grid-container color-{{ section.settings.color_scheme }}"
