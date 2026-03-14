@@ -161,17 +161,17 @@ product-card [class*="gallery"] {
   border-radius: 0 !important;
 }
 
-/* Card text area — padding so text doesn't stick to edges */
+/* Card inner padding — uniform 12px on all sides */
 .product-card__content,
 product-card .product-card__content,
 product-card .border-style {
-  padding: 0 12px 12px 12px !important;
+  padding: 12px !important;
 }
 
-/* Gallery goes edge-to-edge, cancel out the parent padding */
+/* Gallery goes edge-to-edge, cancel out all parent padding */
 .product-card__content > .card-gallery,
 .product-card__content > [class*="card-gallery"] {
-  margin: 0 -12px !important;
+  margin: -12px -12px 0 -12px !important;
   width: calc(100% + 24px) !important;
 }
 
