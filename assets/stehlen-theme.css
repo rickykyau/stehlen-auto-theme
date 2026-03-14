@@ -1,246 +1,121 @@
+/* ============================================================
+   STEHLEN AUTO — Master Theme CSS
+   Implements Lovable design (stehlenauto repo) on Horizon theme.
+   Fonts: Barlow Condensed (display) + Barlow (body)
+   ============================================================ */
+
+/* ── SECTION 1: Design Tokens ── */
 :root {
-  --stehlen-orange: #F5A623;
+  --lov-bg: hsl(220 15% 8%);
+  --lov-card: hsl(220 12% 12%);
+  --lov-primary: #F5A623;
+  --lov-primary-fg: hsl(0 0% 5%);
+  --lov-primary-hover: hsl(40 100% 61%);
+  --lov-primary-40: hsl(38 91% 55% / 0.4);
+  --lov-primary-10: hsl(38 91% 55% / 0.1);
+  --lov-primary-5: hsl(38 91% 55% / 0.05);
+  --lov-border: hsl(220 8% 25%);
+  --lov-muted: hsl(220 10% 18%);
+  --lov-muted-fg: hsl(220 8% 55%);
+  --lov-fg: hsl(220 10% 96%);
+  --lov-fg-90: hsl(220 10% 86%);
+  --lov-input: hsl(220 8% 20%);
+  --lov-accent: hsl(220 10% 22%);
+  --lov-sidebar: hsl(220 15% 6%);
+  --lov-destructive: hsl(0 72% 51%);
+  --lov-success: hsl(142 72% 40%);
+  --lov-font-display: 'Barlow Condensed', sans-serif;
+  --lov-font-body: 'Barlow', sans-serif;
+  --lov-radius: 0px;
 }
 
-/* Brand color overrides only */
-.header { border-bottom: 2px solid var(--stehlen-orange) !important; }
-
-button, .btn, .button, input, select {
-  border-radius: 0 !important;
+/* ── SECTION 2: Global Resets ── */
+body {
+  background: var(--lov-bg) !important;
+  color: var(--lov-fg) !important;
+  font-family: var(--lov-font-body) !important;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--lov-font-display) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+button, .btn, .button, input, select, textarea,
+[class*="card"], [class*="modal"], [class*="badge"],
+[class*="btn"], [class*="button"] {
+  border-radius: var(--lov-radius) !important;
+}
+
+/* Primary button */
 [class*="button--primary"], .button--primary {
-  background: var(--stehlen-orange) !important;
-  color: #111 !important;
-  border-radius: 0 !important;
-  font-family: 'Barlow Condensed', sans-serif !important;
+  background: var(--lov-primary) !important;
+  color: var(--lov-primary-fg) !important;
+  border-radius: var(--lov-radius) !important;
+  font-family: var(--lov-font-display) !important;
   font-weight: 800 !important;
   letter-spacing: 0.08em !important;
-}
-
-/* ── FIX 1: Collection grid ── */
-ul[class*="product-grid"] {
-  display: grid !important;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important;
-  gap: 16px !important;
-  padding: 20px !important;
-  list-style: none !important;
-  width: 100% !important;
-  min-width: 0 !important;
-  box-sizing: border-box !important;
-}
-
-li[class*="product-grid__item"],
-li.product-grid__item {
-  width: 100% !important;
-  max-width: 100% !important;
-  min-width: 0 !important;
-  flex: none !important;
-  overflow: hidden !important;
-  box-sizing: border-box !important;
-}
-
-/* ── FIX: Remove white group container ── */
-.product-grid__item,
-li[class*="product-grid__item"] {
-  background: transparent !important;
-  border: none !important;
-  border-radius: 0 !important;
-  padding: 0 !important;
-}
-
-ul[class*="product-grid"],
-.product-grid {
-  background: transparent !important;
-  border: none !important;
-  border-radius: 0 !important;
-  padding: 20px !important;
-}
-
-/* ── FIX: Product card containers — visible on dark bg ── */
-.product-card__content,
-[class*="product-card__content"],
-.product-card .card,
-product-card > div {
-  background: #161616 !important;
-  border: 1px solid #2A2A2A !important;
-  border-radius: 0 !important;
-  overflow: hidden !important;
-}
-
-product-card:hover .product-card__content,
-product-card:hover > div {
-  border-color: #F5A623 !important;
-  outline: none !important;
-  box-shadow: none !important;
-  transform: none !important;
-}
-
-/* ── FIX: Card image area — white bg so product photos blend ── */
-[class*="card-gallery"],
-.card-gallery,
-.product-card [class*="media"],
-.product-card [class*="image"] {
-  background: #ffffff !important;
-  border-radius: 0 !important;
-}
-
-/* ── FIX: Dark sidebar ── */
-[class*="facets-block-wrapper"],
-[class*="facets--sidebar"],
-.facets-block-wrapper--sidebar {
-  background: #111111 !important;
-  border-right: 1px solid #1E1E1E !important;
-  border-radius: 0 !important;
-}
-
-body .facets-block-wrapper--sidebar,
-body .facets--sidebar {
-  background: #111111 !important;
-  border-radius: 0 !important;
-}
-
-/* ── FIX: Sidebar label styling ── */
-[class*="facets__label"] {
-  color: #555555 !important;
-  font-family: 'Barlow Condensed', sans-serif !important;
-  font-size: 11px !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.12em !important;
   text-transform: uppercase !important;
 }
 
-[class*="checkbox__label-text"] {
-  color: #888888 !important;
+[class*="button--primary"]:hover, .button--primary:hover {
+  filter: brightness(1.15) !important;
 }
 
-/* ── FIX: Checkbox accent ── */
-input[type="checkbox"] {
-  accent-color: #F5A623 !important;
-}
-
-/* ── FIX: Card title color ── */
-[class*="product-card__title"],
-.product-card h3,
-.product-card [class*="title"] {
-  color: #CCCCCC !important;
-  font-size: 13px !important;
-  line-height: 1.35 !important;
-}
-
-/* ── FIX: Price color ── */
-.product-card [class*="price"],
-.product-card [class*="Price"] {
-  color: #F5A623 !important;
-  font-family: 'Barlow Condensed', sans-serif !important;
-  font-size: 20px !important;
-  font-weight: 700 !important;
-}
-
-/* ── FIX 6: Sidebar wrapper layout ── */
+/* ── SECTION 3: Collection Layout Wrapper ── */
 .collection-wrapper.grid,
 [class*="collection-wrapper"] {
   display: grid !important;
-  grid-template-columns: 260px 1fr !important;
+  grid-template-columns: 256px 1fr !important;
   align-items: start !important;
   gap: 0 !important;
 }
 
-/* Override Horizon CSS custom property for card bg */
-product-card .border-style {
-  --color-background-primary: #161616 !important;
-  background: #161616 !important;
-  border-color: #2A2A2A !important;
-  border-radius: 0 !important;
+/* ── SECTION 4: Sidebar + Filter Styles ── */
+.facets-block-wrapper--sidebar {
+  --color-background-primary: var(--lov-sidebar) !important;
+  background: var(--lov-sidebar) !important;
+  border-right: 1px solid var(--lov-border) !important;
+  width: 256px !important;
+  min-width: 256px !important;
 }
 
-product-card .card-gallery,
-product-card [class*="gallery"] {
-  --color-background-primary: #ffffff !important;
-  background: #ffffff !important;
-  border-radius: 0 !important;
+body .facets-block-wrapper--sidebar,
+body .facets--sidebar {
+  --color-background-primary: var(--lov-sidebar) !important;
+  background: var(--lov-sidebar) !important;
+  border-radius: var(--lov-radius) !important;
 }
-
-/* Card — no padding on container, gallery goes edge-to-edge */
-.product-card__content,
-product-card .product-card__content,
-product-card .border-style {
-  padding: 0 !important;
-}
-
-/* Gallery — no padding, full width */
-product-card .card-gallery,
-product-card [class*="card-gallery"] {
-  padding: 0 !important;
-  margin: 0 !important;
-  width: 100% !important;
-}
-
-/* Text elements inside card — the <a> has display:contents so target its children and price */
-product-card .product-card__content .typography-style,
-product-card .product-card__content [class*="text-block"],
-product-card .product-card__content product-price,
-product-card .product-card__content [class*="product-price"],
-product-card .product-card__content .price {
-  padding-left: 12px !important;
-  padding-right: 12px !important;
-}
-
-/* Top spacing after gallery */
-product-card .product-card__content .typography-style:first-of-type,
-product-card .product-card__content a.contents + product-price,
-product-card .product-card__content [data-testid="product-title"] {
-  padding-top: 10px !important;
-}
-
-/* Bottom spacing on last price element */
-product-card .product-card__content product-price,
-product-card .product-card__content [class*="product-price"] {
-  padding-bottom: 12px !important;
-}
-
-/* Collection header title */
-.collection-header h1,
-[class*="collection"] h1,
-#MainContent h1 {
-  font-family: 'Barlow Condensed', sans-serif !important;
-  font-size: 42px !important;
-  font-weight: 800 !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.06em !important;
-  line-height: 1 !important;
-}
-
-/* ── SIDEBAR: Mockup styling ── */
 
 /* "REFINE RESULTS" header */
 .facets__refine-header {
-  font-family: 'Barlow Condensed', sans-serif !important;
-  font-size: 14px !important;
-  font-weight: 800 !important;
+  font-family: var(--lov-font-display) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.1em !important;
-  color: #F5A623 !important;
+  letter-spacing: 0.15em !important;
+  color: var(--lov-primary) !important;
   margin: 0 0 16px 0 !important;
   padding: 0 !important;
 }
 
-/* Filter group label (CATEGORY, VEHICLE TYPE) */
+/* Filter group labels (CATEGORY, YEAR, MAKE etc) */
 .facets__summary {
   padding: 14px 0 !important;
-  border-bottom: 1px solid #2A2A2A !important;
+  border-bottom: 1px solid var(--lov-border) !important;
 }
 
 .facets__label {
-  font-family: 'Barlow Condensed', sans-serif !important;
-  font-size: 12px !important;
-  font-weight: 700 !important;
+  font-family: var(--lov-font-display) !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.08em !important;
-  color: #888888 !important;
+  letter-spacing: 0.15em !important;
+  color: var(--lov-muted-fg) !important;
 }
 
-/* Checkbox row layout — label left, count right */
+/* Checkbox row */
 .checkbox {
   display: flex !important;
   align-items: center !important;
@@ -251,90 +126,97 @@ product-card .product-card__content [class*="product-price"] {
   align-items: center !important;
   width: 100% !important;
   gap: 8px !important;
+  padding: 6px 12px !important;
+  transition: color 150ms, background-color 150ms !important;
 }
 
 .checkbox__label-text {
   flex: 1 !important;
-  font-size: 13px !important;
-  color: #888888 !important;
+  font-family: var(--lov-font-body) !important;
+  font-size: 14px !important;
+  color: var(--lov-muted-fg) !important;
 }
 
-/* Count badge — right-aligned, muted */
 .checkbox__count {
   font-size: 12px !important;
-  color: #555555 !important;
-  font-family: 'Barlow', sans-serif !important;
+  color: var(--lov-muted-fg) !important;
+  font-family: var(--lov-font-body) !important;
   margin-left: auto !important;
 }
 
-/* Checked state — bold white text, orange count */
+/* Checked state — Lovable: left orange border + primary text */
+.checkbox__input:checked + .checkbox__label {
+  color: var(--lov-primary) !important;
+  background: var(--lov-primary-5) !important;
+  border-left: 2px solid var(--lov-primary) !important;
+  padding-left: 10px !important;
+}
+
 .checkbox__input:checked + .checkbox__label .checkbox__label-text {
-  color: #E8E6E0 !important;
-  font-weight: 700 !important;
+  color: var(--lov-primary) !important;
+  font-weight: 600 !important;
 }
 
 .checkbox__input:checked + .checkbox__label .checkbox__count {
-  color: #F5A623 !important;
+  color: var(--lov-primary) !important;
 }
 
-/* Checkbox input styling — override Horizon's hidden native checkbox */
+/* Native checkbox override */
 .checkbox__input {
   position: relative !important;
   opacity: 1 !important;
-  accent-color: #F5A623 !important;
+  accent-color: var(--lov-primary) !important;
   width: 16px !important;
   height: 16px !important;
   flex-shrink: 0 !important;
   cursor: pointer !important;
 }
 
-/* Hide the SVG checkmark — using native checkbox instead */
+/* Hide Horizon SVG checkmark — using native checkbox */
 .checkbox__label svg.icon-checkmark {
   display: none !important;
 }
 
 /* Filter panel borders */
 .facets__item {
-  border-bottom: 1px solid #1E1E1E !important;
+  border-bottom: 1px solid var(--lov-border) !important;
 }
 
 .facets__item::before {
   display: none !important;
 }
 
-/* ── FIX: "SEE X ITEMS" button — hide from sidebar, it belongs in drawer only ── */
+/* Hide "SEE X ITEMS" from sidebar (drawer only) */
 .facets--sidebar .facets__see-results,
 .facets-block-wrapper--sidebar .facets__see-results {
   display: none !important;
 }
 
-/* ── Collection header — full width text ── */
-.section-content-wrapper .text-block,
-.section-content-wrapper rte-formatter,
-.section-content-wrapper .rte {
-  --width: 100% !important;
-  --max-width: 100% !important;
-  width: 100% !important;
-  max-width: 100% !important;
-}
-
-/* ── FIX: Product grid — proper spacing ── */
-#ResultsList,
-.main-collection-grid {
+/* ── SECTION 5: Product Grid ── */
+ul[class*="product-grid"] {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important;
+  gap: 16px !important;
+  padding: 16px 24px !important;
+  list-style: none !important;
   width: 100% !important;
   min-width: 0 !important;
-  padding: 0 !important;
+  box-sizing: border-box !important;
+  background: transparent !important;
+  border: none !important;
 }
 
-ul[class*="product-grid"] {
-  gap: 16px !important;
-  padding: 16px !important;
-}
-
-/* ── FIX: Product cards — visible dark containers with borders ── */
-li[class*="product-grid__item"] {
+li[class*="product-grid__item"],
+li.product-grid__item {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  flex: none !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+  background: transparent !important;
+  border: none !important;
   padding: 0 !important;
-  margin: 0 !important;
 }
 
 product-card,
@@ -345,93 +227,317 @@ product-card-link {
   display: block !important;
 }
 
-.product-card__content {
+#ResultsList,
+.main-collection-grid {
+  width: 100% !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+}
+
+/* ── SECTION 6: Product Card (CRITICAL — variable override pattern) ── */
+
+/* Card container */
+product-card .product-card__content.border-style,
+product-card .product-card__content.spacing-style,
+product-card .product-card__content {
+  --color-background-primary: hsl(220 12% 12%) !important;
+  background: hsl(220 12% 12%) !important;
+  border: 1px solid hsl(220 8% 25%) !important;
+  border-radius: var(--lov-radius) !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
   height: 100% !important;
   width: 100% !important;
   max-width: 100% !important;
   min-width: 0 !important;
-  display: flex !important;
-  flex-direction: column !important;
   box-sizing: border-box !important;
+  transition: border-color 150ms !important;
 }
 
-/* Card gallery fills top of card */
-.card-gallery {
-  flex-shrink: 0 !important;
+product-card:hover .product-card__content.border-style,
+product-card:hover .product-card__content {
+  border-color: hsl(38 91% 55% / 0.4) !important;
+}
+
+/* Card gallery / image area */
+product-card .card-gallery.border-style,
+product-card .card-gallery.spacing-style,
+product-card .card-gallery,
+product-card [class*="card-gallery"] {
+  --color-background-primary: hsl(220 10% 18%) !important;
+  background: hsl(220 10% 18%) !important;
+  border-radius: var(--lov-radius) !important;
+  padding: 0 !important;
+  margin: 0 !important;
   width: 100% !important;
-  max-width: 100% !important;
-  min-width: 0 !important;
+  aspect-ratio: 1 / 1 !important;
+  overflow: hidden !important;
+  flex-shrink: 0 !important;
+}
+
+/* Image hover zoom */
+product-card .card-gallery img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  transition: transform 500ms !important;
+}
+
+product-card:hover .card-gallery img {
+  transform: scale(1.05) !important;
+}
+
+/* Card text area — padding for title and price */
+product-card .product-card__content .typography-style,
+product-card .product-card__content [class*="text-block"],
+product-card .product-card__content product-price,
+product-card .product-card__content [class*="product-price"],
+product-card .product-card__content .price {
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+}
+
+/* Title styling */
+product-card .product-card__content [class*="text-block"] {
+  padding-top: 12px !important;
+}
+
+product-card .product-card__content [class*="text-block"] a,
+product-card .product-card__content [data-testid="product-title"] {
+  font-family: var(--lov-font-body) !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
+  color: var(--lov-fg-90) !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
   overflow: hidden !important;
 }
 
-/* Card text area fills remaining space */
+/* Price styling */
+product-card .product-card__content product-price {
+  padding-top: 8px !important;
+  padding-bottom: 12px !important;
+}
+
+product-card .product-card__content product-price .price,
+product-card .product-card__content .price .money,
+product-card .product-card__content .price-item--regular {
+  font-family: var(--lov-font-display) !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  color: var(--lov-primary) !important;
+}
+
+product-card .product-card__content .price-item--compare,
+product-card .product-card__content .price s,
+product-card .product-card__content .price del {
+  font-family: var(--lov-font-display) !important;
+  font-size: 12px !important;
+  color: var(--lov-muted-fg) !important;
+  text-decoration: line-through !important;
+}
+
+/* Card gap override */
 product-card .gap-style {
   --product-card-gap: 0px !important;
 }
 
-/* ── Quick Add — move out of gallery, show as card footer button ── */
-/* Hide the hover-only quick-add inside gallery */
+/* CTA row — "VIEW PRODUCT" via ::after pseudo-element */
 .card-gallery .quick-add,
 .card-gallery quick-add-component {
   display: none !important;
 }
 
-/* Show a "View Product" link instead — added via CSS */
 product-card .product-card__content::after {
   content: 'VIEW PRODUCT';
-  display: block !important;
-  background: #F5A623 !important;
-  color: #111111 !important;
-  text-align: center !important;
-  font-family: 'Barlow Condensed', sans-serif !important;
-  font-weight: 800 !important;
-  font-size: 11px !important;
-  letter-spacing: 0.08em !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 44px !important;
+  border-top: 1px solid var(--lov-border) !important;
+  font-family: var(--lov-font-display) !important;
+  font-weight: 600 !important;
+  font-size: 10px !important;
+  letter-spacing: 0.15em !important;
   text-transform: uppercase !important;
-  padding: 10px 12px !important;
-  margin: auto 12px 12px 12px !important;
-  cursor: pointer !important;
-  text-decoration: none !important;
+  color: var(--lov-muted-fg) !important;
+  background: transparent !important;
+  margin-top: auto !important;
+  transition: color 150ms !important;
 }
 
 product-card:hover .product-card__content::after {
-  background: #FFB93A !important;
+  color: var(--lov-fg) !important;
 }
 
-.quick-add__button--add,
-.quick-add__button--choose,
-.quick-add button {
-  background: #F5A623 !important;
-  color: #111111 !important;
-  border: none !important;
-  border-radius: 0 !important;
-  font-family: 'Barlow Condensed', sans-serif !important;
-  font-weight: 800 !important;
-  font-size: 11px !important;
-  letter-spacing: 0.08em !important;
-  text-transform: uppercase !important;
+/* ── SECTION 7: Collection Header ── */
+
+/* Compact header padding */
+.section-content-wrapper .text-block,
+.section-content-wrapper rte-formatter,
+.section-content-wrapper .rte {
+  --width: 100% !important;
+  --max-width: 100% !important;
   width: 100% !important;
-  padding: 8px 12px !important;
-  cursor: pointer !important;
+  max-width: 100% !important;
 }
 
-.quick-add__button--add:hover,
-.quick-add__button--choose:hover,
-.quick-add button:hover {
-  background: #FFB93A !important;
+/* Collection title */
+.collection-header h1,
+[class*="collection"] h1,
+#MainContent h1 {
+  font-family: var(--lov-font-display) !important;
+  font-size: 36px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  line-height: 1 !important;
+  color: var(--lov-fg) !important;
 }
 
-/* ── MOBILE ── */
-@media (max-width: 749px) {
+/* Collection description */
+.section-content-wrapper rte-formatter p,
+.section-content-wrapper .rte p {
+  font-family: var(--lov-font-body) !important;
+  font-size: 14px !important;
+  color: var(--lov-muted-fg) !important;
+  line-height: 1.6 !important;
+}
+
+/* ── SECTION 8: Mobile Breakpoints ── */
+@media (max-width: 1023px) {
   .collection-wrapper.grid,
   [class*="collection-wrapper"] {
     grid-template-columns: 1fr !important;
   }
+
   .facets-block-wrapper--sidebar {
     display: none !important;
   }
+}
+
+@media (max-width: 639px) {
+  ul[class*="product-grid"] {
+    grid-template-columns: repeat(1, 1fr) !important;
+    gap: 12px !important;
+    padding: 12px !important;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
   ul[class*="product-grid"] {
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 8px !important;
+    gap: 12px !important;
+    padding: 16px !important;
   }
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  ul[class*="product-grid"] {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  ul[class*="product-grid"] {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+}
+
+/* ── SECTION 9: Homepage Sections ── */
+
+/* Trust bar */
+.trust-bar {
+  background: var(--lov-card) !important;
+  border-top: 1px solid var(--lov-border) !important;
+  border-bottom: 1px solid var(--lov-border) !important;
+}
+
+/* Category cards */
+.collection-list__item:hover,
+[class*="collection-card"]:hover {
+  border-color: var(--lov-primary-40) !important;
+}
+
+/* Pagination */
+.pagination .current,
+.pagination [aria-current="page"] {
+  background: var(--lov-primary) !important;
+  color: var(--lov-primary-fg) !important;
+  border-color: var(--lov-primary) !important;
+}
+
+.pagination a,
+.pagination span,
+.pagination button {
+  border-color: var(--lov-border) !important;
+  color: var(--lov-muted-fg) !important;
+  border-radius: var(--lov-radius) !important;
+}
+
+.pagination a:hover,
+.pagination button:hover {
+  border-color: var(--lov-primary-40) !important;
+  color: var(--lov-fg) !important;
+}
+
+/* ── SECTION 10: PDP Styles ── */
+
+/* Product information section */
+.product-information {
+  --color-background-primary: var(--lov-bg) !important;
+  background: var(--lov-bg) !important;
+}
+
+/* PDP title */
+.product-information h1 {
+  font-family: var(--lov-font-display) !important;
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: var(--lov-fg) !important;
+}
+
+/* PDP price */
+.product-information .price .money,
+.product-information .price-item--regular {
+  font-family: var(--lov-font-display) !important;
+  font-size: 28px !important;
+  font-weight: 700 !important;
+  color: var(--lov-primary) !important;
+}
+
+/* Add to Cart button */
+.product-information form[action="/cart/add"] button[type="submit"],
+.product-information [class*="add-to-cart"] button {
+  background: var(--lov-primary) !important;
+  color: var(--lov-primary-fg) !important;
+  border: none !important;
+  border-radius: var(--lov-radius) !important;
+  font-family: var(--lov-font-display) !important;
+  font-weight: 800 !important;
+  font-size: 14px !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  width: 100% !important;
+  padding: 14px 20px !important;
+}
+
+/* Product recommendations */
+.product-recommendations {
+  background: var(--lov-bg) !important;
+}
+
+/* ── Vehicle selector overrides ── */
+.vehicle-selector__dialog,
+.vehicle-selector__dialog *,
+[class*="vehicle-selector"] * {
+  border-radius: var(--lov-radius) !important;
 }
