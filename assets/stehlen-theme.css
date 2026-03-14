@@ -915,38 +915,54 @@ product-card .gap-style {
 
 .hero__gold { color: #F5A623 !important; }
 
-/* ── Trust bar / Value props ── */
-#stehlen-value-props {
+/* ── Trust bar / Value props (Horizon section) ── */
+.value-props-bar {
   background: var(--lov-card) !important;
   border-top: 1px solid var(--lov-border) !important;
   border-bottom: 1px solid var(--lov-border) !important;
-  padding: 20px 32px !important;
+  padding: 20px 0 !important;
 }
 
-#stehlen-value-props .vp-grid {
+.value-props-bar__inner {
   display: grid !important;
   grid-template-columns: repeat(4, 1fr) !important;
   gap: 24px !important;
 }
 
-#stehlen-value-props .vp-item {
+.value-props-bar__item {
   display: flex !important;
   align-items: center !important;
   gap: 12px !important;
 }
 
-#stehlen-value-props .vp-title {
+.value-props-bar__icon {
+  flex-shrink: 0 !important;
+  color: var(--lov-primary) !important;
+}
+
+.value-props-bar__icon svg {
+  stroke: var(--lov-primary) !important;
+}
+
+.value-props-bar__title {
   font-family: var(--lov-font-display) !important;
   font-size: 12px !important;
   font-weight: 700 !important;
   letter-spacing: 0.06em !important;
   text-transform: uppercase !important;
   color: var(--lov-fg) !important;
+  display: block !important;
 }
 
-#stehlen-value-props .vp-sub {
+.value-props-bar__subtitle {
   font-size: 10px !important;
   color: var(--lov-muted-fg) !important;
+  display: block !important;
+}
+
+/* Hide the JS-injected duplicate trust bar */
+#stehlen-value-props {
+  display: none !important;
 }
 
 /* Hero eyebrow */
