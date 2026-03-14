@@ -78,7 +78,7 @@
     // Get saved vehicle from localStorage
     var savedVehicle = null;
     try {
-      var sv = localStorage.getItem('stehlen_vehicle');
+      var sv = localStorage.getItem('stehlen-vehicle') || localStorage.getItem('stehlen_vehicle');
       if (sv) savedVehicle = JSON.parse(sv);
     } catch(e) {}
 

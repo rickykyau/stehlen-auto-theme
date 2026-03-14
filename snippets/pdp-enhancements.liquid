@@ -51,8 +51,8 @@
   }
   .stehlen-tabs__btn:hover { color: #1A1A1A; }
   .stehlen-tabs__btn--active {
-    color: #1A3F22;
-    border-bottom-color: #1A3F22;
+    color: #1A1A1A;
+    border-bottom-color: #FFB74F;
   }
   .stehlen-tabs__panel { display: none; }
   .stehlen-tabs__panel--active { display: block; }
@@ -120,7 +120,7 @@
     // Get saved vehicle
     var savedVehicle = null;
     try {
-      var sv = localStorage.getItem('stehlen_vehicle');
+      var sv = localStorage.getItem('stehlen-vehicle') || localStorage.getItem('stehlen_vehicle');
       if (sv) savedVehicle = JSON.parse(sv);
     } catch(e) {}
 
@@ -184,22 +184,78 @@
     // ==========================================
     var productSection = document.querySelector('.product-information');
     if (productSection) {
-      var descEl = productDetails.querySelector('[data-testid="product-description"]');
+      // Get description from Liquid-injected data (most reliable)
       var descContent = '';
-      if (!descEl) {
-        // Try to find description text in product details
-        var textBlocks = productDetails.querySelectorAll('.typography-style');
-        textBlocks.forEach(function(tb) {
-          if (tb.innerHTML.length > 100 && !tb.closest('[data-testid]')) {
-            descContent = tb.innerHTML;
-          }
-        });
-      } else {
-        descContent = descEl.innerHTML;
+      var descDataEl = document.getElementById('stehlen-product-desc-data');
+      if (descDataEl) {
+        try { descContent = JSON.parse(descDataEl.textContent) || ''; } catch(e) {}
+      }
+      // Fallback: try to find description in DOM
+      if (!descContent) {
+        var descEl = productDetails.querySelector('[data-testid="product-description"], .product-description, .typography-style, .rte');
+        if (descEl && descEl.innerHTML.length > 50) {
+          descContent = descEl.innerHTML;
+        }
+      }
+      // If we found description content in the DOM, hide the original to avoid duplication
+      if (descContent) {
+        var origDesc = productDetails.querySelector('.product-description, [data-testid="product-description"], .typography-style');
+        if (origDesc && origDesc.innerHTML.length > 50) {
+          origDesc.style.display = 'none';
+        }
       }
 
-      // Only add tabs if we have description content
-      if (descContent || productTags.length > 0) {
+      // Always add tabs
+      {
+        // Parse description into sections if it has headers
+        var overviewContent = descContent || '<p>Product details coming soon.</p>';
+        var specsContent = '<h3>Product Specifications</h3><ul><li>Brand: Stehlen Auto</li><li>Condition: Brand New</li><li>Direct Fit - No Modification Required</li></ul>';
+
+        // Try to extract structured sections from description
+        if (descContent) {
+          var tempDiv = document.createElement('div');
+          tempDiv.innerHTML = descContent;
+          var sections = {};
+          var currentSection = 'overview';
+          var currentContent = [];
+
+          // Walk through child nodes looking for headers that indicate sections
+          Array.from(tempDiv.children).forEach(function(el) {
+            var text = (el.textContent || '').trim().toUpperCase();
+            if (text.match(/^(PRODUCT\s+)?OVERVIEW/) || text.match(/^DESCRIPTION/)) {
+              if (currentContent.length) sections[currentSection] = currentContent.join('');
+              currentSection = 'overview';
+              currentContent = [];
+            } else if (text.match(/^FEATURES?/) || text.match(/^KEY\s+FEATURES/)) {
+              if (currentContent.length) sections[currentSection] = currentContent.join('');
+              currentSection = 'features';
+              currentContent = [];
+            } else if (text.match(/^SPECIFICATIONS?/) || text.match(/^SPECS?/) || text.match(/^TECHNICAL/)) {
+              if (currentContent.length) sections[currentSection] = currentContent.join('');
+              currentSection = 'specs';
+              currentContent = [];
+            } else if (text.match(/^VEHICLE\s+FITMENT/) || text.match(/^COMPATIBILITY/) || text.match(/^FITS/)) {
+              if (currentContent.length) sections[currentSection] = currentContent.join('');
+              currentSection = 'fitment';
+              currentContent = [];
+            } else {
+              currentContent.push(el.outerHTML);
+            }
+          });
+          if (currentContent.length) sections[currentSection] = currentContent.join('');
+
+          // Build overview from overview + features + fitment
+          if (sections.overview || sections.features || sections.fitment) {
+            overviewContent = '';
+            if (sections.overview) overviewContent += sections.overview;
+            if (sections.features) overviewContent += '<h3>Features</h3>' + sections.features;
+            if (sections.fitment) overviewContent += '<h3>Vehicle Fitment</h3>' + sections.fitment;
+          }
+          if (sections.specs) {
+            specsContent = '<h3>Product Specifications</h3>' + sections.specs;
+          }
+        }
+
         var tabsHtml = '<div class="stehlen-tabs">' +
           '<div class="stehlen-tabs__nav">' +
           '<button class="stehlen-tabs__btn stehlen-tabs__btn--active" data-tab="overview">Overview</button>' +
@@ -208,15 +264,10 @@
           '<button class="stehlen-tabs__btn" data-tab="warranty">Warranty</button>' +
           '</div>' +
           '<div class="stehlen-tabs__panel stehlen-tabs__panel--active" data-panel="overview">' +
-          (descContent || '<p>Product details coming soon.</p>') +
+          overviewContent +
           '</div>' +
           '<div class="stehlen-tabs__panel" data-panel="specs">' +
-          '<h3>Product Specifications</h3>' +
-          '<ul>' +
-          '<li>Brand: Stehlen Auto</li>' +
-          '<li>Condition: Brand New</li>' +
-          '<li>Direct Fit - No Modification Required</li>' +
-          '</ul>' +
+          specsContent +
           '</div>' +
           '<div class="stehlen-tabs__panel" data-panel="shipping">' +
           '<h3>Shipping Information</h3>' +
@@ -268,4 +319,6 @@
 
 <!-- Product tags data for fitment check -->
 <script id="stehlen-product-tags-data" type="application/json">{{ product.tags | json }}</script>
+<!-- Product description for tabs -->
+<script id="stehlen-product-desc-data" type="application/json">{{ product.description | json }}</script>
 {% endif %}

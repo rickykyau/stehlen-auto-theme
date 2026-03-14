@@ -772,27 +772,57 @@ button.vehicle-selector__clear:hover {
    14. COLLECTION PAGE — professional layout
    ========================================================================== */
 {% if template.name == 'collection' %}
-/* --- Reduce heading whitespace --- */
-.spacing-style {
-  --padding-block-start: 16px !important;
-  --padding-block-end: 16px !important;
+/* --- Override inner-page padding for collection --- */
+#MainContent {
+  padding-top: 0 !important;
 }
+
+/* --- Kill ALL heading section whitespace --- */
+.spacing-style {
+  --padding-block-start: 12px !important;
+  --padding-block-end: 8px !important;
+}
+#MainContent > .shopify-section:first-child {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+#MainContent > .shopify-section:first-child .section {
+  padding: 12px 0 8px !important;
+}
+
 /* Compact collection title */
-.section > .header {
-  padding: 16px 0 8px !important;
+.section > .header,
+.section-heading,
+[class*="heading"] .section {
+  padding: 12px 0 8px !important;
 }
 .section > .header h1,
-.section .text-block h1 {
+.section .text-block h1,
+h1.collection-heading,
+[class*="heading"] h1 {
+  font-family: var(--font-heading--family, Oswald, sans-serif) !important;
   font-size: 28px !important;
   font-weight: 700 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.04em !important;
   margin: 0 !important;
+  padding: 0 !important;
+}
+/* Collection description */
+.section .text-block p,
+[class*="heading"] p,
+.collection-description {
+  font-size: 14px !important;
+  color: #666 !important;
+  margin: 4px 0 0 !important;
+  max-width: 600px;
 }
 
-/* --- Page-width container with proper margins --- */
+/* --- Page-width containers with proper margins --- */
 .main-collection,
-[class*="main-collection"] {
+[class*="main-collection"],
+#MainContent > .shopify-section:first-child .page-width,
+#MainContent > .shopify-section .page-width {
   max-width: 1360px !important;
   margin: 0 auto !important;
   padding: 0 40px !important;
@@ -812,7 +842,8 @@ button.vehicle-selector__clear:hover {
     display: block !important;
     min-width: 220px;
     max-width: 240px;
-    padding: 0 16px 0 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
     grid-column: 1 / 2 !important;
     grid-row: 1 / 99 !important;
   }
@@ -828,6 +859,7 @@ button.vehicle-selector__clear:hover {
   border: 1px solid #eee;
   border-radius: 8px;
   padding: 16px !important;
+  margin-top: 4px;
 }
 .facets--sidebar .facets__panel {
   border-bottom: 1px solid #e8e8e8;
@@ -896,18 +928,59 @@ button.vehicle-selector__clear:hover {
 {% if template.name == 'product' %}
 /* --- Reduce top whitespace --- */
 #MainContent {
-  padding-top: 20px !important;
+  padding-top: 16px !important;
 }
 
-/* --- Better grid proportions: 55% media, 45% details --- */
-.product-information__grid {
+/* --- Make product section full-width, then constrain --- */
+.product-information {
   max-width: 1360px !important;
   margin: 0 auto !important;
   padding: 0 40px !important;
-  gap: 40px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+/* Ensure Shopify section wrapper doesn't constrain */
+#MainContent > .shopify-section:first-child {
+  max-width: 100% !important;
+  width: 100% !important;
+  padding: 0 !important;
+}
+#MainContent > .shopify-section:first-child > .section,
+#MainContent > .shopify-section:first-child > div {
+  max-width: 100% !important;
+  width: 100% !important;
+}
+.page-width:has(.product-information__grid) {
+  max-width: 100% !important;
+  padding: 0 !important;
+}
+
+/* --- Better grid proportions using fr units --- */
+.product-information__grid {
+  width: 100% !important;
+  max-width: none !important;
+  gap: 32px !important;
 }
 .product-information__grid.product-information--media-left {
-  grid-template-columns: 1fr minmax(400px, 480px) !important;
+  grid-template-columns: 1.3fr 1fr !important;
+}
+/* Fallback if no media-left class */
+.product-information__grid:not(.product-information--media-left) {
+  grid-template-columns: 1.3fr 1fr !important;
+}
+/* Ensure media fills its column */
+.product-information__grid .product__media-wrapper,
+.product-information__grid .product-gallery,
+.product-information__grid [class*="media-gallery"],
+.product-information__grid > *:first-child {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+.product-information__grid .product__media-wrapper img,
+.product-information__grid .product-gallery img {
+  width: 100% !important;
+  height: auto !important;
+  object-fit: contain;
 }
 
 /* --- Product title styling --- */
@@ -1009,6 +1082,13 @@ button.vehicle-selector__clear:hover {
   #stehlen-value-props .vp-item:nth-child(1),
   #stehlen-value-props .vp-item:nth-child(2) { border-bottom: 1px solid #e0e0e0; }
   #stehlen-popular-models .pm-grid { grid-template-columns: repeat(2, 1fr); }
+  /* PDP grid on tablet */
+  .product-information__grid.product-information--media-left,
+  .product-information__grid:not(.product-information--media-left) {
+    grid-template-columns: 1.2fr 1fr !important;
+    gap: 24px !important;
+  }
+  .product-information { padding: 0 24px !important; }
 }
 @media (max-width: 749px) {
   .hero__content-wrapper { padding: 24px 16px !important; }
@@ -1030,6 +1110,20 @@ button.vehicle-selector__clear:hover {
   #stehlen-popular-models .pm-card { min-height: 200px; }
   #stehlen-popular-models .pm-card-name { font-size: 16px; }
   #stehlen-popular-models .pm-card-info { padding: 16px 14px; }
+  /* PDP single column on mobile */
+  .product-information__grid.product-information--media-left,
+  .product-information__grid:not(.product-information--media-left) {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  .product-information { padding: 0 16px !important; }
+  .stehlen-tabs { padding: 0 16px !important; }
+  /* Collection mobile padding */
+  .main-collection,
+  [class*="main-collection"],
+  .page-width {
+    padding: 0 16px !important;
+  }
 }
 </style>
 
