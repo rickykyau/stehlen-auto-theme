@@ -824,6 +824,18 @@ product-card .gap-style {
   background: var(--lov-bg) !important;
 }
 
+/* ── PDP: Related products heading ALL CAPS ── */
+.product-recommendations h2,
+.product-recommendations h3,
+.product-recommendations [class*="text-block"] {
+  text-transform: uppercase !important;
+  letter-spacing: 0.15em !important;
+  font-family: var(--lov-font-display) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  color: var(--lov-muted-fg) !important;
+}
+
 /* ── Vehicle selector overrides ── */
 .vehicle-selector__dialog,
 .vehicle-selector__dialog *,
