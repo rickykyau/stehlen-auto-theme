@@ -1203,12 +1203,36 @@ header-actions {
 }
 
 /* #11 — Compact search icon: prevent flex-grow expansion */
+/* Theme compiled CSS sets .header__column--right .search-action { flex-grow:1 }
+   which stretches the search-button wrapper across the header.
+   Override with high specificity + reset all expansion properties. */
 .header__column--right .search-action,
 .header__column--left .search-action,
+.header__column--center .search-action,
+header-component .search-action,
 .search-action {
   flex-grow: 0 !important;
+  flex-shrink: 0 !important;
+  flex-basis: auto !important;
   width: auto !important;
+  min-width: 0 !important;
+  max-width: fit-content !important;
   margin-inline: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* On mobile grid, the search-action occupies a named grid area (leftB)
+   which has a fixed 44px column. On desktop, it's inside header__column--right
+   which is a 1fr column — prevent it from stretching there. */
+@media screen and (min-width: 750px) {
+  :is(.header__column--left, .header__column--center, .header__column--right) .search-action {
+    flex-grow: 0 !important;
+    width: auto !important;
+    max-width: fit-content !important;
+    margin-inline: 0 !important;
+  }
 }
 
 /* #12 — Search modal: dark theme to match Lovable */
