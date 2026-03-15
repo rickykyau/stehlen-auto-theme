@@ -1202,6 +1202,82 @@ header-actions {
   margin-inline-start: 0 !important;
 }
 
+/* #11 — Compact search icon: prevent flex-grow expansion */
+.header__column--right .search-action,
+.header__column--left .search-action,
+.search-action {
+  flex-grow: 0 !important;
+  width: auto !important;
+  margin-inline: 0 !important;
+}
+
+/* #12 — Search modal: dark theme to match Lovable */
+.search-modal__content.dialog-modal {
+  background: var(--lov-bg) !important;
+  border: none !important;
+  border-bottom: 1px solid var(--lov-border) !important;
+}
+
+.predictive-search {
+  --color-background: var(--lov-bg) !important;
+  --color-background-primary: var(--lov-bg) !important;
+  --color-foreground: var(--lov-fg) !important;
+  --color-border: var(--lov-border) !important;
+  background: var(--lov-bg) !important;
+}
+
+.predictive-search-form__header,
+.predictive-search-form__header-inner {
+  background: var(--lov-bg) !important;
+  border-color: var(--lov-border) !important;
+}
+
+.predictive-search-form__header-inner {
+  border: 1px solid var(--lov-border) !important;
+  border-radius: 0 !important;
+}
+
+.search-input,
+.predictive-search .search-input {
+  background: var(--lov-input) !important;
+  color: var(--lov-fg) !important;
+  border: 1px solid var(--lov-border) !important;
+  border-radius: 0 !important;
+  font-family: var(--lov-font-body) !important;
+}
+
+.search-input::placeholder {
+  color: var(--lov-muted-fg) !important;
+}
+
+.predictive-search__icon svg {
+  color: var(--lov-muted-fg) !important;
+  stroke: var(--lov-muted-fg) !important;
+}
+
+.predictive-search-form__content,
+.predictive-search-form__content-wrapper,
+.predictive-search-dropdown {
+  background: var(--lov-bg) !important;
+  border-color: var(--lov-border) !important;
+}
+
+.predictive-search__search-button,
+.predictive-search-form__footer .button-primary {
+  background: var(--lov-primary) !important;
+  color: var(--lov-primary-fg) !important;
+  border-radius: 0 !important;
+  font-family: var(--lov-font-display) !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+}
+
+.predictive-search__close-modal-button {
+  color: var(--lov-fg) !important;
+  background: transparent !important;
+}
+
 /* #10 — Force white color on header icons/SVGs */
 .header-actions__action svg,
 .header-actions__action .svg-wrapper,
