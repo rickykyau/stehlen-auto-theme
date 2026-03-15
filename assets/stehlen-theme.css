@@ -798,6 +798,59 @@ product-card .gap-style {
   pointer-events: none !important;
 }
 
+/* ── Featured Products section heading + View All ── */
+.ui-test-product-list .section-resource-list__content {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 24px 48px 16px !important;
+  width: 100% !important;
+}
+.ui-test-product-list .section-resource-list__content .text-block,
+.ui-test-product-list .section-resource-list__content div[class*="text-block"],
+.ui-test-product-list .section-resource-list__content h2,
+.ui-test-product-list .section-resource-list__content h3 {
+  font-size: 20px !important;
+  font-family: 'Barlow Condensed', sans-serif !important;
+  font-weight: 800 !important;
+  letter-spacing: 2px !important;
+  text-transform: uppercase !important;
+  color: var(--lov-fg) !important;
+  text-align: left !important;
+  margin: 0 !important;
+}
+/* View All / Shop All link */
+.ui-test-product-list .button-secondary,
+.ui-test-product-list a[class*="button-secondary"] {
+  color: var(--lov-primary) !important;
+  font-family: 'Barlow Condensed', sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+  border-radius: 0 !important;
+  border-color: transparent !important;
+  background: transparent !important;
+}
+/* Featured products grid gap */
+.ui-test-product-list .resource-list--grid,
+.ui-test-product-list ul[class*="product-grid"] {
+  gap: 8px !important;
+}
+/* Cart button border-radius — force 0 with higher specificity */
+button.stehlen-card-cta__cart,
+.stehlen-card-cta .stehlen-card-cta__cart,
+.product-card button.stehlen-card-cta__cart,
+.card-gallery button.stehlen-card-cta__cart {
+  border-radius: 0 !important;
+}
+/* Quick-add button border-radius */
+.quick-add__button,
+button.quick-add__button,
+.quick-add__button--add {
+  border-radius: 0 !important;
+}
+
 /* Pagination */
 .pagination .current,
 .pagination [aria-current="page"] {
