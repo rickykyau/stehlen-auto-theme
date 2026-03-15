@@ -134,7 +134,10 @@ button.quick-add__button,
 .quick-add__button,
 .quick-add__button--add,
 button[name="add"],
-.product-form__submit {
+.product-form__submit,
+form[action*="cart"] button[type="submit"],
+form[action*="cart"] button.stehlen-card-cta__cart,
+.stehlen-card-cta form button[type="submit"] {
   border-radius: 0 !important;
 }
 
