@@ -534,7 +534,7 @@ product-card .product-card__content [data-testid="product-title"] {
   font-weight: 400 !important;
   line-height: 1.5 !important;
   color: var(--lov-fg-90) !important;
-  text-transform: none !important;
+  text-transform: uppercase !important;
   letter-spacing: normal !important;
   display: -webkit-box !important;
   -webkit-line-clamp: 2 !important;
