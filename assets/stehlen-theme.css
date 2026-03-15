@@ -921,6 +921,12 @@ product-card .gap-style {
 /* ── Hide footer trust badges (not in Lovable design) ── */
 .stehlen-footer-trust { display: none !important; }
 
+/* ── Hide account icon in nav (not in Lovable design) ── */
+.account-popover,
+.account-button {
+  display: none !important;
+}
+
 /* ── Hide Horizon value-props section (duplicate — JS version is styled) ── */
 .value-props-bar {
   display: none !important;
