@@ -426,7 +426,7 @@ product-card .product-card__link {
 
 /* ── FIX: Announcement bar — gold text on dark bg ── */
 .stehlen-announcements {
-  background: var(--lov-bg) !important;
+  background: #1A1200 !important;
   border-bottom: 1px solid hsl(38 91% 55% / 0.25) !important;
 }
 
@@ -441,7 +441,12 @@ product-card .product-card__link {
 
 /* Horizon announcement bar */
 .announcement-bar {
-  background: var(--lov-bg) !important;
+  background: #1A1200 !important;
+}
+
+/* Hide duplicate native Horizon announcement bar */
+.announcement-bar.spacing-style {
+  display: none !important;
 }
 
 .announcement-bar__message,
@@ -1173,6 +1178,7 @@ header-component.header {
 
 /* D) Announcement bar gold bottom border */
 .stehlen-announcements {
+  background: #1A1200 !important;
   border-bottom: 1px solid hsl(38 91% 55% / 0.25) !important;
 }
 
