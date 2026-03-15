@@ -1175,7 +1175,27 @@ footer h3,
 #stehlen-popular-models { display: none !important; }
 
 /* ── Hide footer trust badges (not in Lovable design) ── */
-.stehlen-footer-trust { display: none !important; }
+.stehlen-footer-trust,
+#stehlen-footer-trust {
+  display: none !important;
+}
+
+/* ── Footer border-radius fixes ── */
+.stehlen-footer__social a,
+.stehlen-footer a[class*="social"],
+footer a[class*="social"] {
+  border-radius: 0 !important;
+}
+.stehlen-footer__input,
+.stehlen-footer input,
+footer input[type="email"] {
+  border-radius: 0 !important;
+}
+.stehlen-footer__signup-btn,
+.stehlen-footer button,
+footer button[type="submit"] {
+  border-radius: 0 !important;
+}
 
 /* ── Hide account icon in nav (not in Lovable design) ── */
 .account-popover,
