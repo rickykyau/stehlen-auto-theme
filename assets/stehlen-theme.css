@@ -1334,12 +1334,20 @@ header-actions {
 }
 
 .search-input,
-.predictive-search .search-input {
+.predictive-search .search-input,
+input.search-input,
+.predictive-search-form__header-inner .search-input,
+dialog .search-input,
+.search-modal input.search-input {
   background: var(--lov-input) !important;
   color: var(--lov-fg) !important;
   border: 1px solid var(--lov-border) !important;
   border-radius: 0 !important;
   font-family: var(--lov-font-body) !important;
+}
+.search-modal__content.dialog-modal,
+dialog.search-modal__content {
+  border-radius: 0 !important;
 }
 
 .search-input::placeholder {
