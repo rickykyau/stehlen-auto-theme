@@ -111,7 +111,7 @@
         "header_text": {
           "type": "text",
           "settings": {
-            "text": "<h2>Shop by Category</h2>",
+            "text": "<h2>SHOP BY CATEGORY</h2>",
             "alignment": "center",
             "type_preset": "h2"
           }
@@ -127,13 +127,19 @@
       ],
       "settings": {
         "layout_type": "grid",
-        "columns": 3,
+        "columns": 4,
         "mobile_columns": "2",
         "gap": 20,
         "section_width": "page-width",
         "color_scheme": "scheme-2",
         "padding-block-start": 48,
-        "padding-block-end": 48
+        "padding-block-end": 48,
+        "collection_list": [
+          "bull-guards-grille-guards",
+          "tonneau-covers",
+          "trailer-hitches",
+          "side-steps-nerf-bars"
+        ]
       }
     },
     "featured_products": {
