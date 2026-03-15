@@ -1311,7 +1311,9 @@ document.addEventListener('DOMContentLoaded', function() {
       if (document.getElementById('stehlen-value-props')) return;
       var mc = document.getElementById('MainContent');
       if (!mc) return;
-      var fs = mc.querySelector('.shopify-section');
+      /* Insert after LAST section (before footer), not first (after hero) */
+      var sections = mc.querySelectorAll('.shopify-section');
+      var fs = sections[sections.length - 1];
       if (!fs) return;
       var h = '<div id="stehlen-value-props"><div class="vp-grid">' +
         '<div class="vp-item"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFB74F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg><div style="display:flex;flex-direction:column;gap:2px"><span class="vp-title">Free Shipping</span><span class="vp-sub">On all orders</span></div></div>' +
