@@ -1403,12 +1403,25 @@ header-component .header__column svg {
   flex-shrink: 0;
 }
 
-/* Hero heading size — high specificity to beat Horizon */
+/* Hero heading — match Lovable typography */
 .hero .hero__content-wrapper h1,
 .hero__two-col .hero__content-wrapper h1,
 .hero .hero__content-wrapper .text-block h1,
 #MainContent .hero h1 {
-  font-size: clamp(48px, 6vw, 80px) !important;
-  line-height: 0.95 !important;
+  font-family: 'Barlow Condensed', sans-serif !important;
+  font-size: 72px !important;
+  font-weight: 800 !important;
+  font-style: normal !important;
+  text-transform: uppercase !important;
+  line-height: 1 !important;
   letter-spacing: -0.01em !important;
+  color: #fff !important;
+}
+
+/* Hero "LONG HAUL" orange text — JS injects span with inline color */
+.hero .hero__content-wrapper h1 span,
+.hero__content-wrapper .text-block h1 span {
+  color: #F5A623 !important;
+  font-style: normal !important;
+  text-transform: uppercase !important;
 }
