@@ -803,6 +803,63 @@ product-card .gap-style {
   color: var(--lov-primary) !important;
 }
 
+/* PDP quantity stepper */
+.quantity-selector {
+  background: #1A1A1A !important;
+  border: 1px solid #2A2A2A !important;
+  border-radius: 0 !important;
+}
+
+.quantity-selector input {
+  background: #1A1A1A !important;
+  color: var(--lov-fg) !important;
+  border: none !important;
+}
+
+.quantity-minus,
+.quantity-plus {
+  background: transparent !important;
+  color: var(--lov-muted-fg) !important;
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+.quantity-minus:hover,
+.quantity-plus:hover {
+  color: var(--lov-fg) !important;
+}
+
+/* PDP thumbnails */
+.slideshow-controls__thumbnail {
+  background: #111111 !important;
+  border: 1px solid #1E1E1E !important;
+  border-radius: 0 !important;
+}
+
+.slideshow-controls__thumbnail[aria-current="true"],
+.slideshow-controls__thumbnail.active,
+.slideshow-controls__thumbnail:focus {
+  border-color: var(--lov-primary) !important;
+}
+
+.slideshow-controls__thumbnail img {
+  border-radius: 0 !important;
+}
+
+/* PDP variant buttons */
+.variant-option__button-label {
+  background: #111111 !important;
+  border: 1px solid #2A2A2A !important;
+  border-radius: 0 !important;
+  color: #888888 !important;
+}
+
+.variant-option__button-label:has(input:checked),
+.variant-option__button-label[aria-checked="true"] {
+  border-color: var(--lov-primary) !important;
+  color: var(--lov-fg) !important;
+}
+
 /* Add to Cart button */
 .product-information form[action="/cart/add"] button[type="submit"],
 .product-information [class*="add-to-cart"] button {
@@ -956,6 +1013,27 @@ product-card .gap-style {
 }
 
 .hero__gold { color: #F5A623 !important; }
+
+/* ── Sidebar SHOW MORE button — ghost style per SKILL.md ── */
+.show-more__button,
+.facets .show-more__button {
+  background: transparent !important;
+  border: 1px solid #2A2A2A !important;
+  color: #888888 !important;
+  border-radius: 0 !important;
+  font-family: var(--lov-font-display) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  padding: 8px 16px !important;
+  transition: color 150ms, border-color 150ms !important;
+}
+
+.show-more__button:hover {
+  color: var(--lov-primary) !important;
+  border-color: var(--lov-primary) !important;
+}
 
 /* ── Hide "Shop by Popular Models" (not in Lovable design) ── */
 #stehlen-popular-models { display: none !important; }
