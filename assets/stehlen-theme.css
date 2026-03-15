@@ -901,8 +901,20 @@ product-card .gap-style {
 /* ── Vehicle selector overrides ── */
 .vehicle-selector__dialog,
 .vehicle-selector__dialog *,
-[class*="vehicle-selector"] * {
-  border-radius: var(--lov-radius) !important;
+[class*="vehicle-selector"] *,
+.vehicle-selector__select,
+.vehicle-selector__go,
+.vehicle-selector__close,
+.vehicle-selector__clear {
+  border-radius: 0 !important;
+}
+
+/* ── Drawer link overrides ── */
+.stehlen-drawer-link,
+a.stehlen-drawer-link,
+.stehlen-drawer-link.stehlen-drawer-toggle,
+[class*="stehlen-drawer"] {
+  border-radius: 0 !important;
 }
 
 /* ── HERO TWO-COLUMN LAYOUT ── */
