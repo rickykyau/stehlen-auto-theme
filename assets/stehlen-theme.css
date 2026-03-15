@@ -1222,12 +1222,17 @@ body:has(> #header-group > header) {
 
 /* H) Vehicle selector trigger — orange-bordered button with visible text
    The compiled theme sets .vehicle-selector__trigger-text{display:none}.
-   Override to show the full "SELECT YOUR VEHICLE" text. */
-.vehicle-selector__trigger {
+   Override to show the full "SELECT YOUR VEHICLE" text.
+   SPECIFICITY: Must beat custom-hero.css ".header-actions button" (0,1,1).
+   Using "button.vehicle-selector__trigger" (0,1,1) + later load order wins. */
+button.vehicle-selector__trigger,
+.vehicle-selector button.vehicle-selector__trigger,
+header-actions button.vehicle-selector__trigger {
   background: transparent !important;
   color: var(--lov-primary) !important;
   padding: 8px 16px !important;
   border: 2px solid var(--lov-primary) !important;
+  border-color: var(--lov-primary) !important;
   border-radius: 0 !important;
   font-family: var(--lov-font-display) !important;
   font-size: 11px !important;
@@ -1242,17 +1247,19 @@ body:has(> #header-group > header) {
   transition: all 150ms !important;
 }
 
-.vehicle-selector__trigger:hover {
+button.vehicle-selector__trigger:hover,
+header-actions button.vehicle-selector__trigger:hover {
   background: var(--lov-primary) !important;
   color: #111 !important;
 }
 
-.vehicle-selector__trigger:hover svg {
+button.vehicle-selector__trigger:hover svg {
   color: #111 !important;
   stroke: #111 !important;
 }
 
-.vehicle-selector__trigger svg {
+button.vehicle-selector__trigger svg,
+header-actions button.vehicle-selector__trigger svg {
   color: var(--lov-primary) !important;
   stroke: var(--lov-primary) !important;
   width: 16px !important;
@@ -1274,7 +1281,8 @@ span.vehicle-selector__trigger-text {
   span.vehicle-selector__trigger-text {
     display: none !important;
   }
-  .vehicle-selector__trigger {
+  button.vehicle-selector__trigger,
+  header-actions button.vehicle-selector__trigger {
     padding: 6px !important;
     border-width: 1px !important;
   }
@@ -1372,6 +1380,7 @@ header-component .header__column svg {
 }
 
 /* Exclude vehicle selector trigger icons from white override */
+button.vehicle-selector__trigger svg,
 .vehicle-selector__trigger svg {
   color: var(--lov-primary) !important;
   stroke: var(--lov-primary) !important;
