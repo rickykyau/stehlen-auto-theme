@@ -1197,12 +1197,11 @@ body:has(> #header-group > header) {
 
 /* G) Search icon — compact, no stretching */
 /* The compiled theme sets .header__column--right .search-action { flex-grow:1 }
-   which stretches the search button across the header. Kill it. */
-.header__column--right .search-action,
-.header__column--left .search-action,
-.header__column--center .search-action,
-header-component .search-action,
-.search-action {
+   which stretches the search button across the header. Kill it.
+   IMPORTANT: Do NOT target .header__column--left .search-action here —
+   the left column search has desktop:hidden and must stay hidden on desktop.
+   Only the right column search (mobile:hidden) should show on desktop. */
+.header__column--right .search-action {
   flex-grow: 0 !important;
   flex-shrink: 0 !important;
   flex-basis: auto !important;
@@ -1210,13 +1209,10 @@ header-component .search-action,
   min-width: 0 !important;
   max-width: fit-content !important;
   margin-inline: 0 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
 }
 
 @media screen and (min-width: 750px) {
-  :is(.header__column--left, .header__column--center, .header__column--right) .search-action {
+  .header__column--right .search-action {
     flex-grow: 0 !important;
     width: auto !important;
     max-width: fit-content !important;
