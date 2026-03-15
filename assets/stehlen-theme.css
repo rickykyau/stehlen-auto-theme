@@ -1014,6 +1014,18 @@ product-card .gap-style {
 
 .hero__gold { color: #F5A623 !important; }
 
+/* ── Footer column headings — orange per SKILL.md ── */
+.stehlen-footer__heading,
+footer h3,
+.footer h3 {
+  color: var(--lov-primary) !important;
+  font-family: var(--lov-font-display) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+}
+
 /* ── Sidebar SHOW MORE button — ghost style per SKILL.md ── */
 .show-more__button,
 .facets .show-more__button {
