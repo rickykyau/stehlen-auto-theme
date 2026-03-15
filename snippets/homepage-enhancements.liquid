@@ -1321,8 +1321,8 @@ document.addEventListener('DOMContentLoaded', function() {
         var href = link.getAttribute('href');
         if (!title || !href) return;
         /* Try to get products_count from the collection card data */
-        var countEl = card.querySelector('[data-products-count]');
-        var count = countEl ? countEl.getAttribute('data-products-count') : '';
+        var parentItem = card.closest('[data-products-count]') || card.parentElement;
+        var count = parentItem && parentItem.getAttribute('data-products-count') ? parentItem.getAttribute('data-products-count') : '';
         var countText = count ? count + ' PARTS' : 'VIEW ALL';
         var overlay = document.createElement('div');
         overlay.className = 'stehlen-card-title';
