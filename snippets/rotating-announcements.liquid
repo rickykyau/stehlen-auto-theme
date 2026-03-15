@@ -40,55 +40,7 @@
     position: relative;
   }
 
-  /* Value Props Bar */
-  #stehlen-value-props {
-    background: #fff;
-    border-bottom: 1px solid #e0e0e0;
-    position: relative;
-    z-index: 1;
-  }
-  #stehlen-value-props .vp-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-  }
-  #stehlen-value-props .vp-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    padding: 18px 12px;
-    border-right: 1px solid #e0e0e0;
-  }
-  #stehlen-value-props .vp-item:last-child {
-    border-right: none;
-  }
-  #stehlen-value-props .vp-title {
-    font-family: var(--font-heading--family, Oswald, sans-serif);
-    font-weight: 600;
-    font-size: .8125rem;
-    letter-spacing: .03em;
-    text-transform: uppercase;
-    color: #1A1A1A;
-  }
-  #stehlen-value-props .vp-sub {
-    font-family: var(--font-body--family, sans-serif);
-    font-size: .75rem;
-    color: #666;
-  }
-  @media screen and (max-width: 989px) {
-    #stehlen-value-props .vp-grid { grid-template-columns: repeat(2, 1fr); }
-    #stehlen-value-props .vp-item:nth-child(2) { border-right: none; }
-    #stehlen-value-props .vp-item:nth-child(1),
-    #stehlen-value-props .vp-item:nth-child(2) { border-bottom: 1px solid #e0e0e0; }
-  }
-  @media screen and (max-width: 749px) {
-    #stehlen-value-props .vp-item { padding: 12px 8px; gap: 8px; }
-    #stehlen-value-props svg { width: 22px; height: 22px; }
-    #stehlen-value-props .vp-sub { display: none; }
-  }
+  /* Value Props Bar — styles in stehlen-theme.css */
 </style>
 
 <div class="stehlen-announcements">
@@ -113,45 +65,6 @@
     }, 4000);
   }
 
-  // Inject Value Props Bar after the first section in MainContent (after hero)
-  function injectValueProps() {
-    if (document.getElementById('stehlen-value-props')) return;
-
-    var mainContent = document.getElementById('MainContent');
-    if (!mainContent) return;
-
-    // Find the first section inside MainContent (the hero)
-    var firstSection = mainContent.querySelector('.shopify-section');
-    if (!firstSection) return;
-
-    var vpHTML = '<div id="stehlen-value-props">'
-      + '<div class="vp-grid">'
-      + '<div class="vp-item">'
-      + '<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFB74F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>'
-      + '<div style="display:flex;flex-direction:column;gap:2px;"><span class="vp-title">Free Shipping</span><span class="vp-sub">On all orders</span></div>'
-      + '</div>'
-      + '<div class="vp-item">'
-      + '<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFB74F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg>'
-      + '<div style="display:flex;flex-direction:column;gap:2px;"><span class="vp-title">Guaranteed Fitment</span><span class="vp-sub">Fits your vehicle or money back</span></div>'
-      + '</div>'
-      + '<div class="vp-item">'
-      + '<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFB74F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M12 8v4l2 2"></path></svg>'
-      + '<div style="display:flex;flex-direction:column;gap:2px;"><span class="vp-title">Manufacturer Warranty</span><span class="vp-sub">On every product</span></div>'
-      + '</div>'
-      + '<div class="vp-item">'
-      + '<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFB74F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>'
-      + '<div style="display:flex;flex-direction:column;gap:2px;"><span class="vp-title">Easy Returns</span><span class="vp-sub">30-day hassle-free returns</span></div>'
-      + '</div>'
-      + '</div></div>';
-
-    // Insert after the first section (hero)
-    firstSection.insertAdjacentHTML('afterend', vpHTML);
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', injectValueProps);
-  } else {
-    injectValueProps();
-  }
+  /* Value props injection removed — handled by homepage-enhancements.liquid */
 })();
 </script>
