@@ -1110,42 +1110,50 @@ footer h3,
 
 /* ── SECTION 11: Nav Bar Fixes (Lovable match) ── */
 
-/* #2 — Vehicle selector trigger: solid amber button */
-.vehicle-selector__trigger {
-  background: var(--lov-primary) !important;
-  color: #111 !important;
-  padding: 8px 16px !important;
-  border: none !important;
-  border-radius: 0 !important;
-  font-family: var(--lov-font-display) !important;
-  font-size: 11px !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.08em !important;
-  text-transform: uppercase !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 8px !important;
-  cursor: pointer !important;
-  white-space: nowrap !important;
-  transition: filter 150ms !important;
+/* ===================================================================
+   MASTER LAYOUT FIX — Lovable LEFT-LOGO single-row header
+   Target: [hamburger] [logo] [search] [SELECT YOUR VEHICLE] [cart]
+
+   Horizon theme uses a 2-column grid:
+     .header__column--left  (1fr) = hamburger, search(mobile), logo, menu
+     .header__column--right (1fr) = search(desktop), vehicle-sel, account, cart
+
+   Problem: equal 1fr columns push logo toward center.
+   Fix: make left column shrink-to-fit, right column gets the space.
+   =================================================================== */
+
+/* A) Override the header grid to left-logo layout (desktop) */
+@media screen and (min-width: 750px) {
+  /* Left column: shrink to content (logo + hamburger) */
+  header-component .header__columns.spacing-style {
+    --header-left: max-content !important;
+    --header-right: 1fr !important;
+    grid-gap: 16px !important;
+  }
+
+  /* Left column: left-align, no stretching */
+  .header__column.header__column--left {
+    justify-content: flex-start !important;
+    gap: 12px !important;
+  }
+
+  /* Right column: spread items across available space */
+  .header__column.header__column--right {
+    justify-content: flex-end !important;
+    gap: 12px !important;
+    align-items: center !important;
+  }
+
+  /* Show hamburger on desktop — Lovable has it visible always.
+     The theme uses .desktop\:hidden { display:none!important } at >=750px.
+     Override with higher specificity. */
+  .header__column--left .header__drawer.desktop\:hidden,
+  header-component .header__drawer.desktop\:hidden {
+    display: block !important;
+  }
 }
 
-.vehicle-selector__trigger:hover {
-  filter: brightness(1.15) !important;
-}
-
-.vehicle-selector__trigger svg {
-  color: #111 !important;
-  stroke: #111 !important;
-  width: 16px !important;
-  height: 16px !important;
-}
-
-.vehicle-selector__trigger-text {
-  color: #111 !important;
-}
-
-/* #3 — Hide nav menu links (Home, Catalog, Contact) */
+/* B) Hide nav menu links (Home, Catalog, Contact) — not in Lovable */
 header-component header-menu,
 header-component [header-menu],
 header-component nav[header-menu],
@@ -1153,7 +1161,7 @@ header-component nav[header-menu],
   display: none !important;
 }
 
-/* #4 — Darken header background to match Lovable */
+/* C) Darken header background to match Lovable */
 .header__row,
 .header__row--top {
   background-color: var(--lov-bg) !important;
@@ -1163,14 +1171,12 @@ header-component.header {
   background-color: var(--lov-bg) !important;
 }
 
-/* #5 + #6 — Announcement bar: gold text + gold bottom border
-   (main rules already in Section "FIX: Announcement bar" above;
-    border-bottom strengthened here to 0.25 opacity) */
+/* D) Announcement bar gold bottom border */
 .stehlen-announcements {
   border-bottom: 1px solid hsl(38 91% 55% / 0.25) !important;
 }
 
-/* #7 — Logo size increase */
+/* E) Logo size */
 .header-logo img,
 .header-logo svg,
 header-component .header-logo img {
@@ -1179,7 +1185,7 @@ header-component .header-logo img {
   height: auto !important;
 }
 
-/* #8 — Compact nav bar height */
+/* F) Compact nav bar height */
 header-component .header__columns {
   --padding-block-start: 6px !important;
   --padding-block-end: 6px !important;
@@ -1189,23 +1195,9 @@ body:has(> #header-group > header) {
   --header-height: 52px !important;
 }
 
-/* #9 — Tighter right-side spacing */
-.header__column--right {
-  gap: 4px !important;
-}
-
-header-actions {
-  gap: 4px !important;
-}
-
-.header__column--right header-actions {
-  margin-inline-start: 0 !important;
-}
-
-/* #11 — Compact search icon: prevent flex-grow expansion */
-/* Theme compiled CSS sets .header__column--right .search-action { flex-grow:1 }
-   which stretches the search-button wrapper across the header.
-   Override with high specificity + reset all expansion properties. */
+/* G) Search icon — compact, no stretching */
+/* The compiled theme sets .header__column--right .search-action { flex-grow:1 }
+   which stretches the search button across the header. Kill it. */
 .header__column--right .search-action,
 .header__column--left .search-action,
 .header__column--center .search-action,
@@ -1223,9 +1215,6 @@ header-component .search-action,
   justify-content: center !important;
 }
 
-/* On mobile grid, the search-action occupies a named grid area (leftB)
-   which has a fixed 44px column. On desktop, it's inside header__column--right
-   which is a 1fr column — prevent it from stretching there. */
 @media screen and (min-width: 750px) {
   :is(.header__column--left, .header__column--center, .header__column--right) .search-action {
     flex-grow: 0 !important;
@@ -1235,7 +1224,80 @@ header-component .search-action,
   }
 }
 
-/* #12 — Search modal: dark theme to match Lovable */
+/* H) Vehicle selector trigger — orange-bordered button with visible text
+   The compiled theme sets .vehicle-selector__trigger-text{display:none}.
+   Override to show the full "SELECT YOUR VEHICLE" text. */
+.vehicle-selector__trigger {
+  background: transparent !important;
+  color: var(--lov-primary) !important;
+  padding: 8px 16px !important;
+  border: 2px solid var(--lov-primary) !important;
+  border-radius: 0 !important;
+  font-family: var(--lov-font-display) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  transition: all 150ms !important;
+}
+
+.vehicle-selector__trigger:hover {
+  background: var(--lov-primary) !important;
+  color: #111 !important;
+}
+
+.vehicle-selector__trigger:hover svg {
+  color: #111 !important;
+  stroke: #111 !important;
+}
+
+.vehicle-selector__trigger svg {
+  color: var(--lov-primary) !important;
+  stroke: var(--lov-primary) !important;
+  width: 16px !important;
+  height: 16px !important;
+}
+
+/* Force the trigger text visible — overrides compiled theme display:none */
+.vehicle-selector__trigger-text,
+.vehicle-selector .vehicle-selector__trigger-text,
+span.vehicle-selector__trigger-text {
+  display: inline !important;
+  color: inherit !important;
+}
+
+/* On mobile, hide the text and show only the icon */
+@media screen and (max-width: 749px) {
+  .vehicle-selector__trigger-text,
+  .vehicle-selector .vehicle-selector__trigger-text,
+  span.vehicle-selector__trigger-text {
+    display: none !important;
+  }
+  .vehicle-selector__trigger {
+    padding: 6px !important;
+    border-width: 1px !important;
+  }
+}
+
+/* I) Right-side spacing */
+.header__column--right {
+  gap: 12px !important;
+}
+
+header-actions {
+  gap: 8px !important;
+}
+
+.header__column--right header-actions {
+  margin-inline-start: 0 !important;
+}
+
+/* J) Search modal: dark theme to match Lovable */
 .search-modal__content.dialog-modal {
   background: var(--lov-bg) !important;
   border: none !important;
@@ -1302,7 +1364,7 @@ header-component .search-action,
   background: transparent !important;
 }
 
-/* #10 — Force white color on header icons/SVGs */
+/* K) Force white color on header icons/SVGs */
 .header-actions__action svg,
 .header-actions__action .svg-wrapper,
 header-actions svg,
@@ -1315,8 +1377,8 @@ header-component .header__column svg {
 
 /* Exclude vehicle selector trigger icons from white override */
 .vehicle-selector__trigger svg {
-  color: #111 !important;
-  stroke: #111 !important;
+  color: var(--lov-primary) !important;
+  stroke: var(--lov-primary) !important;
 }
 
 /* Hero eyebrow */
