@@ -1,10 +1,10 @@
 /* ============================================================
-   STEHLEN AUTO — Master Theme CSS
+   STEHLEN AUTO â€” Master Theme CSS
    Implements Lovable design (stehlenauto repo) on Horizon theme.
    Fonts: Barlow Condensed (display) + Barlow (body)
    ============================================================ */
 
-/* ── SECTION 1: Design Tokens ── */
+/* â”€â”€ SECTION 1: Design Tokens â”€â”€ */
 :root {
   --lov-bg: hsl(220 15% 8%);
   --lov-card: hsl(220 12% 12%);
@@ -29,7 +29,7 @@
   --lov-radius: 0px;
 }
 
-/* ── SECTION 2: Global Resets ── */
+/* â”€â”€ SECTION 2: Global Resets â”€â”€ */
 body {
   background: var(--lov-bg) !important;
   color: var(--lov-fg) !important;
@@ -63,7 +63,7 @@ button, .btn, .button, input, select, textarea,
   filter: brightness(1.15) !important;
 }
 
-/* ── SECTION 3: Collection Layout Wrapper ── */
+/* â”€â”€ SECTION 3: Collection Layout Wrapper â”€â”€ */
 .collection-wrapper.grid,
 [class*="collection-wrapper"] {
   display: grid !important;
@@ -72,7 +72,7 @@ button, .btn, .button, input, select, textarea,
   gap: 0 !important;
 }
 
-/* ── SECTION 4: Sidebar + Filter Styles ── */
+/* â”€â”€ SECTION 4: Sidebar + Filter Styles â”€â”€ */
 .facets-block-wrapper--sidebar {
   --color-background-primary: var(--lov-sidebar) !important;
   background: var(--lov-sidebar) !important;
@@ -144,7 +144,7 @@ body .facets--sidebar {
   margin-left: auto !important;
 }
 
-/* Checked state — Lovable: left orange border + primary text */
+/* Checked state â€” Lovable: left orange border + primary text */
 .checkbox__input:checked + .checkbox__label {
   color: var(--lov-primary) !important;
   background: var(--lov-primary-5) !important;
@@ -172,12 +172,12 @@ body .facets--sidebar {
   cursor: pointer !important;
 }
 
-/* Hide Horizon SVG checkmark — using native checkbox */
+/* Hide Horizon SVG checkmark â€” using native checkbox */
 .checkbox__label svg.icon-checkmark {
   display: none !important;
 }
 
-/* ── Year filter decade groups ── */
+/* â”€â”€ Year filter decade groups â”€â”€ */
 
 /* Hide original checkboxes in year filter when decade pills are present */
 [data-filter-param-name="filter-p-m-custom-year"] .facets__inputs-list,
@@ -186,7 +186,7 @@ body .facets--sidebar {
   display: none !important;
 }
 
-/* But keep the list in DOM (for form submission) — just visually hidden */
+/* But keep the list in DOM (for form submission) â€” just visually hidden */
 [data-filter-param-name="filter-p-m-custom-year"] .facets__inputs-list {
   position: absolute !important;
   width: 0 !important;
@@ -248,7 +248,7 @@ body .facets--sidebar {
   font-weight: 700 !important;
 }
 
-/* "All Years" button — spans full width */
+/* "All Years" button â€” spans full width */
 .year-pill--all,
 .facets__form button.year-pill--all {
   grid-column: 1 / -1 !important;
@@ -259,7 +259,7 @@ body .facets--sidebar {
   font-size: 11px !important;
 }
 
-/* ── Make filter active state ── */
+/* â”€â”€ Make filter active state â”€â”€ */
 [data-filter-param-name*="make"] .checkbox__input:checked + .checkbox__label,
 [data-filter-param-name*="Make"] .checkbox__input:checked + .checkbox__label {
   border-left: 2px solid var(--lov-primary) !important;
@@ -289,7 +289,7 @@ body .facets--sidebar {
   display: none !important;
 }
 
-/* ── SECTION 5: Product Grid ── */
+/* â”€â”€ SECTION 5: Product Grid â”€â”€ */
 ul[class*="product-grid"] {
   display: grid !important;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important;
@@ -331,7 +331,7 @@ product-card-link {
   padding: 0 !important;
 }
 
-/* ── SECTION 5b: Breadcrumb + Toolbar ── */
+/* â”€â”€ SECTION 5b: Breadcrumb + Toolbar â”€â”€ */
 .stehlen-breadcrumb {
   padding: 12px 32px;
   border-bottom: 1px solid var(--lov-border);
@@ -404,7 +404,7 @@ product-card-link {
   border-color: var(--lov-primary-40);
 }
 
-/* ── FIX: Card link overlay — don't cover the CTA row ── */
+/* â”€â”€ FIX: Card link overlay â€” don't cover the CTA row â”€â”€ */
 product-card .product-card__link {
   z-index: 1 !important;
 }
@@ -424,7 +424,7 @@ product-card .product-card__link {
   z-index: 2 !important;
 }
 
-/* ── FIX: Announcement bar — gold text on dark bg ── */
+/* â”€â”€ FIX: Announcement bar â€” gold text on dark bg â”€â”€ */
 .stehlen-announcements {
   background: var(--lov-bg) !important;
   border-bottom: 1px solid hsl(38 91% 55% / 0.2) !important;
@@ -457,7 +457,7 @@ product-card .product-card__link {
   text-transform: uppercase !important;
 }
 
-/* ── SECTION 6: Product Card (CRITICAL — variable override pattern) ── */
+/* â”€â”€ SECTION 6: Product Card (CRITICAL â€” variable override pattern) â”€â”€ */
 
 /* Card container */
 product-card .product-card__content.border-style,
@@ -512,7 +512,7 @@ product-card:hover .card-gallery img {
   transform: scale(1.05) !important;
 }
 
-/* Card text area — padding for title and price */
+/* Card text area â€” padding for title and price */
 product-card .product-card__content .typography-style,
 product-card .product-card__content [class*="text-block"],
 product-card .product-card__content product-price,
@@ -635,7 +635,7 @@ product-card .gap-style {
   height: 16px !important;
 }
 
-/* ── SECTION 7: Collection Header ── */
+/* â”€â”€ SECTION 7: Collection Header â”€â”€ */
 
 /* Compact header padding */
 .section-content-wrapper .text-block,
@@ -669,7 +669,7 @@ product-card .gap-style {
   line-height: 1.6 !important;
 }
 
-/* ── SECTION 8: Mobile Breakpoints ── */
+/* â”€â”€ SECTION 8: Mobile Breakpoints â”€â”€ */
 @media (max-width: 1023px) {
   .collection-wrapper.grid,
   [class*="collection-wrapper"] {
@@ -709,7 +709,7 @@ product-card .gap-style {
   }
 }
 
-/* ── SECTION 9: Homepage Sections ── */
+/* â”€â”€ SECTION 9: Homepage Sections â”€â”€ */
 
 /* Trust bar */
 .trust-bar {
@@ -746,7 +746,7 @@ product-card .gap-style {
   color: var(--lov-fg) !important;
 }
 
-/* ── SECTION 10: PDP Styles ── */
+/* â”€â”€ SECTION 10: PDP Styles â”€â”€ */
 
 /* Product information section */
 .product-information {
@@ -794,14 +794,14 @@ product-card .gap-style {
   background: var(--lov-bg) !important;
 }
 
-/* ── Vehicle selector overrides ── */
+/* â”€â”€ Vehicle selector overrides â”€â”€ */
 .vehicle-selector__dialog,
 .vehicle-selector__dialog *,
 [class*="vehicle-selector"] * {
   border-radius: var(--lov-radius) !important;
 }
 
-/* ── HERO TWO-COLUMN LAYOUT ── */
+/* â”€â”€ HERO TWO-COLUMN LAYOUT â”€â”€ */
 .hero__two-col {
   position: relative !important;
   display: grid !important;
@@ -810,7 +810,7 @@ product-card .gap-style {
   align-items: center !important;
 }
 
-/* Media wrapper stays as absolute background — span full area */
+/* Media wrapper stays as absolute background â€” span full area */
 .hero__two-col .hero__media-wrapper {
   position: absolute !important;
   inset: 0 !important;
@@ -819,7 +819,7 @@ product-card .gap-style {
   grid-row: 1 / -1 !important;
 }
 
-/* Content wrapper — left column, above background */
+/* Content wrapper â€” left column, above background */
 .hero__two-col .hero__content-wrapper {
   position: relative !important;
   z-index: 1 !important;
@@ -828,7 +828,7 @@ product-card .gap-style {
   padding: 64px 48px 64px 64px !important;
 }
 
-/* Fitment card — right column, above background */
+/* Fitment card â€” right column, above background */
 .hero__col-right {
   position: relative !important;
   z-index: 1 !important;
@@ -840,7 +840,7 @@ product-card .gap-style {
   justify-content: center;
 }
 
-/* ── HERO FITMENT CARD ── */
+/* â”€â”€ HERO FITMENT CARD â”€â”€ */
 .hero-fitment {
   background: hsl(220 12% 12%);
   border: 1px solid hsl(220 8% 25%);
@@ -897,7 +897,7 @@ product-card .gap-style {
   letter-spacing: 0.04em;
 }
 
-/* ── HERO MOBILE ── */
+/* â”€â”€ HERO MOBILE â”€â”€ */
 @media (max-width: 768px) {
   .hero__two-col {
     grid-template-columns: 1fr !important;
@@ -915,7 +915,10 @@ product-card .gap-style {
 
 .hero__gold { color: #F5A623 !important; }
 
-/* ── Hide Horizon value-props section (duplicate — JS version is styled) ── */
+/* â”€â”€ Hide "Shop by Popular Models" (not in Lovable design) â”€â”€ */
+#stehlen-popular-models { display: none !important; }
+
+/* â”€â”€ Hide Horizon value-props section (duplicate â€” JS version is styled) â”€â”€ */
 .value-props-bar {
   display: none !important;
 }
@@ -986,7 +989,7 @@ product-card .gap-style {
   flex-shrink: 0;
 }
 
-/* Hero heading size — high specificity to beat Horizon */
+/* Hero heading size â€” high specificity to beat Horizon */
 .hero .hero__content-wrapper h1,
 .hero__two-col .hero__content-wrapper h1,
 .hero .hero__content-wrapper .text-block h1,
