@@ -759,16 +759,20 @@ product-card .gap-style {
   border-color: transparent !important;
 }
 
-/* Category section heading — left-aligned, larger */
+/* Category section heading — left-aligned, Barlow Condensed */
 .ui-test-collection-list .section-resource-list__content {
   display: flex !important;
+  flex-direction: row !important;
   justify-content: space-between !important;
   align-items: center !important;
   padding: 24px 48px 16px !important;
   width: 100% !important;
 }
 .ui-test-collection-list .section-resource-list__content h2,
-.ui-test-collection-list .section-resource-list__content [class*="heading"] {
+.ui-test-collection-list .section-resource-list__content [class*="heading"],
+.ui-test-collection-list .section-resource-list__content .text-block,
+.ui-test-collection-list .section-resource-list__content .text-block.h2,
+.ui-test-collection-list .section-resource-list__content div[class*="text-block"] {
   font-size: 20px !important;
   font-family: 'Barlow Condensed', sans-serif !important;
   font-weight: 700 !important;
