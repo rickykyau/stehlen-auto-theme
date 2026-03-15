@@ -915,49 +915,9 @@ product-card .gap-style {
 
 .hero__gold { color: #F5A623 !important; }
 
-/* ── Trust bar / Value props (Horizon section) ── */
+/* ── Hide Horizon value-props section (duplicate — JS version is styled) ── */
 .value-props-bar {
-  background: var(--lov-card) !important;
-  border-top: 1px solid var(--lov-border) !important;
-  border-bottom: 1px solid var(--lov-border) !important;
-  padding: 20px 0 !important;
-}
-
-.value-props-bar__inner {
-  display: grid !important;
-  grid-template-columns: repeat(4, 1fr) !important;
-  gap: 24px !important;
-}
-
-.value-props-bar__item {
-  display: flex !important;
-  align-items: center !important;
-  gap: 12px !important;
-}
-
-.value-props-bar__icon {
-  flex-shrink: 0 !important;
-  color: var(--lov-primary) !important;
-}
-
-.value-props-bar__icon svg {
-  stroke: var(--lov-primary) !important;
-}
-
-.value-props-bar__title {
-  font-family: var(--lov-font-display) !important;
-  font-size: 12px !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.06em !important;
-  text-transform: uppercase !important;
-  color: var(--lov-fg) !important;
-  display: block !important;
-}
-
-.value-props-bar__subtitle {
-  font-size: 10px !important;
-  color: var(--lov-muted-fg) !important;
-  display: block !important;
+  display: none !important;
 }
 
 /* Style the JS-injected trust bar */
