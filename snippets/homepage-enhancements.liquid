@@ -108,11 +108,11 @@ a.button-secondary {
   justify-content: center;
   padding: 12px 28px !important;
   background-color: transparent !important;
-  color: var(--color-foreground, #1A1A1A) !important;
-  border: 2px solid currentColor !important;
-  border-radius: 4px !important;
-  font-family: var(--font-heading--family, Oswald, sans-serif);
-  font-weight: 600 !important;
+  color: #F5A623 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  font-family: 'Barlow Condensed', sans-serif !important;
+  font-weight: 700 !important;
   font-size: 13px !important;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -125,6 +125,17 @@ a.button-secondary {
 a.button-secondary:hover {
   background-color: var(--color-foreground, #1A3F22) !important;
   color: #fff !important;
+}
+
+/* ===== 4b. ZERO BORDER RADIUS ON ALL BUTTONS ===== */
+button.stehlen-card-cta__cart,
+.stehlen-card-cta__cart,
+button.quick-add__button,
+.quick-add__button,
+.quick-add__button--add,
+button[name="add"],
+.product-form__submit {
+  border-radius: 0 !important;
 }
 
 /* ===== 5. HERO SECTION ===== */
@@ -441,7 +452,7 @@ button.vehicle-selector__clear:hover {
 
 /* ===== 6b. COLLECTION CARD GRID SPACING ===== */
 .resource-list.resource-list--grid {
-  gap: 20px !important;
+  gap: 8px !important;
 }
 
 /* ===== 6c. CONSISTENT SECTION HEADINGS ===== */
@@ -632,12 +643,15 @@ button.vehicle-selector__clear:hover {
 /* Featured Products section heading — light on dark */
 .ui-test-product-list .section-resource-list__header .text-block,
 .ui-test-product-list .section-resource-list__header h2,
-.ui-test-product-list .section-resource-list__header h3 {
-  color: hsl(220 8% 55%) !important;
+.ui-test-product-list .section-resource-list__header h3,
+.ui-test-product-list .section-resource-list__content .text-block,
+.ui-test-product-list .section-resource-list__content h2,
+.ui-test-product-list .section-resource-list__content h3 {
+  color: #f4f4f6 !important;
   font-family: 'Barlow Condensed', sans-serif !important;
-  font-size: 12px !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.15em !important;
+  font-size: 20px !important;
+  font-weight: 800 !important;
+  letter-spacing: 2px !important;
   text-transform: uppercase !important;
 }
 
