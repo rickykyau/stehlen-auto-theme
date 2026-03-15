@@ -427,7 +427,7 @@ product-card .product-card__link {
 /* ── FIX: Announcement bar — gold text on dark bg ── */
 .stehlen-announcements {
   background: var(--lov-bg) !important;
-  border-bottom: 1px solid hsl(38 91% 55% / 0.2) !important;
+  border-bottom: 1px solid hsl(38 91% 55% / 0.25) !important;
 }
 
 .stehlen-announcements__slide {
@@ -1106,6 +1106,117 @@ footer h3,
 #stehlen-value-props ~ #stehlen-value-props,
 #stehlen-value-props + #stehlen-value-props {
   display: none !important;
+}
+
+/* ── SECTION 11: Nav Bar Fixes (Lovable match) ── */
+
+/* #2 — Vehicle selector trigger: solid amber button */
+.vehicle-selector__trigger {
+  background: var(--lov-primary) !important;
+  color: #111 !important;
+  padding: 8px 16px !important;
+  border: none !important;
+  border-radius: 0 !important;
+  font-family: var(--lov-font-display) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  transition: filter 150ms !important;
+}
+
+.vehicle-selector__trigger:hover {
+  filter: brightness(1.15) !important;
+}
+
+.vehicle-selector__trigger svg {
+  color: #111 !important;
+  stroke: #111 !important;
+  width: 16px !important;
+  height: 16px !important;
+}
+
+.vehicle-selector__trigger-text {
+  color: #111 !important;
+}
+
+/* #3 — Hide nav menu links (Home, Catalog, Contact) */
+header-component header-menu,
+header-component [header-menu],
+header-component nav[header-menu],
+.header__column header-menu {
+  display: none !important;
+}
+
+/* #4 — Darken header background to match Lovable */
+.header__row,
+.header__row--top {
+  background-color: var(--lov-bg) !important;
+}
+
+header-component.header {
+  background-color: var(--lov-bg) !important;
+}
+
+/* #5 + #6 — Announcement bar: gold text + gold bottom border
+   (main rules already in Section "FIX: Announcement bar" above;
+    border-bottom strengthened here to 0.25 opacity) */
+.stehlen-announcements {
+  border-bottom: 1px solid hsl(38 91% 55% / 0.25) !important;
+}
+
+/* #7 — Logo size increase */
+.header-logo img,
+.header-logo svg,
+header-component .header-logo img {
+  width: 200px !important;
+  max-width: 200px !important;
+  height: auto !important;
+}
+
+/* #8 — Compact nav bar height */
+header-component .header__columns {
+  --padding-block-start: 6px !important;
+  --padding-block-end: 6px !important;
+}
+
+body:has(> #header-group > header) {
+  --header-height: 52px !important;
+}
+
+/* #9 — Tighter right-side spacing */
+.header__column--right {
+  gap: 4px !important;
+}
+
+header-actions {
+  gap: 4px !important;
+}
+
+.header__column--right header-actions {
+  margin-inline-start: 0 !important;
+}
+
+/* #10 — Force white color on header icons/SVGs */
+.header-actions__action svg,
+.header-actions__action .svg-wrapper,
+header-actions svg,
+.search-action svg,
+header-component .header__column svg {
+  color: #fff !important;
+  fill: none !important;
+  stroke: #fff !important;
+}
+
+/* Exclude vehicle selector trigger icons from white override */
+.vehicle-selector__trigger svg {
+  color: #111 !important;
+  stroke: #111 !important;
 }
 
 /* Hero eyebrow */
