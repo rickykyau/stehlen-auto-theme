@@ -109,7 +109,7 @@
                   "type": "text",
                   "name": "Product title",
                   "settings": {
-                    "text": "<h1>{{ closest.product.title }}<\/h1>",
+                    "text": "<h1>{{ closest.product.title }}</h1>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "left",
@@ -152,11 +152,38 @@
                     "padding-inline-end": 0
                   },
                   "blocks": {}
+                },
+                "text_trustline": {
+                  "type": "text",
+                  "name": "Trust line (ChatGPT/AI shoppers)",
+                  "settings": {
+                    "text": "<p>\u2713 Free shipping (lower 48) \u00b7 Ships within 1 business day \u00b7 30-day free returns \u00b7 Fitment guaranteed</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
                 }
               },
               "block_order": [
                 "text_xrnftG",
-                "price_tVjtKg"
+                "price_tVjtKg",
+                "text_trustline"
               ]
             },
             "divider_VJhene": {
@@ -272,7 +299,7 @@
           "type": "text",
           "name": "t:names.header",
           "settings": {
-            "text": "<h3>You may also like <\/h3>",
+            "text": "<h3>You may also like </h3>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
@@ -413,7 +440,7 @@
     "product_trust_badges": {
       "type": "custom-liquid",
       "settings": {
-        "custom_liquid": "<div class=\"product-trust-badges\">\n  <div class=\"product-trust-badge\">\n    <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#F39C12\" stroke-width=\"2\"><path d=\"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z\"/><\/svg>\n    <span>Lifetime Warranty<\/span>\n  <\/div>\n  <div class=\"product-trust-badge\">\n    <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#F39C12\" stroke-width=\"2\"><rect x=\"1\" y=\"3\" width=\"15\" height=\"13\" rx=\"2\"/><polygon points=\"16 8 20 8 23 11 23 16 16 16 16 8\"/><circle cx=\"5.5\" cy=\"18.5\" r=\"2.5\"/><circle cx=\"18.5\" cy=\"18.5\" r=\"2.5\"/><\/svg>\n    <span>Free Shipping<\/span>\n  <\/div>\n  <div class=\"product-trust-badge\">\n    <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#F39C12\" stroke-width=\"2\"><polyline points=\"1 4 1 10 7 10\"/><path d=\"M3.51 15a9 9 0 1 0 2.13-9.36L1 10\"/><\/svg>\n    <span>Easy Returns<\/span>\n  <\/div>\n  <div class=\"product-trust-badge\">\n    <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#F39C12\" stroke-width=\"2\"><path d=\"M22 11.08V12a10 10 0 1 1-5.93-9.14\"/><polyline points=\"22 4 12 14.01 9 11.01\"/><\/svg>\n    <span>Guaranteed Fit<\/span>\n  <\/div>\n<\/div>",
+        "custom_liquid": "<div class=\"product-trust-badges\">\n  <div class=\"product-trust-badge\">\n    <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#F39C12\" stroke-width=\"2\"><path d=\"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z\"/></svg>\n    <span>Lifetime Warranty</span>\n  </div>\n  <div class=\"product-trust-badge\">\n    <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#F39C12\" stroke-width=\"2\"><rect x=\"1\" y=\"3\" width=\"15\" height=\"13\" rx=\"2\"/><polygon points=\"16 8 20 8 23 11 23 16 16 16 16 8\"/><circle cx=\"5.5\" cy=\"18.5\" r=\"2.5\"/><circle cx=\"18.5\" cy=\"18.5\" r=\"2.5\"/></svg>\n    <span>Free Shipping</span>\n  </div>\n  <div class=\"product-trust-badge\">\n    <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#F39C12\" stroke-width=\"2\"><polyline points=\"1 4 1 10 7 10\"/><path d=\"M3.51 15a9 9 0 1 0 2.13-9.36L1 10\"/></svg>\n    <span>Easy Returns</span>\n  </div>\n  <div class=\"product-trust-badge\">\n    <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#F39C12\" stroke-width=\"2\"><path d=\"M22 11.08V12a10 10 0 1 1-5.93-9.14\"/><polyline points=\"22 4 12 14.01 9 11.01\"/></svg>\n    <span>Guaranteed Fit</span>\n  </div>\n</div>",
         "section_width": "page-width",
         "color_scheme": "scheme-1",
         "padding-block-start": 0,
