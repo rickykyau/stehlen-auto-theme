@@ -61,7 +61,7 @@
   .product-details > * { width: 100% !important; max-width: 100% !important; flex: 0 0 auto !important; }
   .product-details > .stehlen-fitment { display: none !important; }
   .product-information__grid { gap: 12px !important; }
-  .product-details h1 { font-size: 22px !important; line-height: 1.15 !important; }
+  #MainContent .product-details h1, .product-details h1 { font-size: 22px !important; line-height: 1.15 !important; }
   .stehlen-policy { grid-template-columns: repeat(3, 1fr) !important; gap: 6px !important; }
   .stehlen-policy__item { flex-direction: column; text-align: center; font-size: 11px !important; padding: 8px 4px !important; }
   .stehlen-tabs { padding: 0 16px !important; margin: 24px 0 !important; }
@@ -102,6 +102,15 @@
   html, body { overflow-x: hidden; }
 }
 </style>
+<script>
+  // Phones: open the cart drawer after Add to Cart so Checkout is one tap away
+  // (desktop keeps the theme setting).
+  document.addEventListener('DOMContentLoaded', function () {
+    if (window.matchMedia('(max-width: 749px)').matches) {
+      document.querySelectorAll('cart-drawer-component').forEach(function (d) { d.setAttribute('auto-open', ''); });
+    }
+  });
+</script>
 {% if template.name == 'product' %}
 <script>
 (function () {
