@@ -63,12 +63,6 @@
   /* Logo: smaller so it clears the garage button; show it on pages without the inverse logo */
   .header-logo__image-container--inverse::before,
   .header-logo__image-container--original::before { width: 132px !important; height: 27px !important; }
-  .header-logo:not(:has(.header-logo__image-container--inverse)) .header-logo__image-container--original {
-    display: flex !important; width: auto !important; height: auto !important; overflow: visible !important; align-items: center;
-  }
-  .header-logo:not(:has(.header-logo__image-container--inverse)) .header-logo__image-container--original::before {
-    content: ''; display: block; background: url({{ 'stehlen-logo.png' | asset_url }}) left center / contain no-repeat;
-  }
 
   /* Product page: one full-width column (the fitment box was making a second column) */
   .product-details { flex-direction: column !important; flex-wrap: nowrap !important; }
@@ -135,6 +129,15 @@
 }
 
 /* ===== UX audit fixes (2026-10-14 PM) ===== */
+/* Logo on pages without the inverse logo (cart, search, and now product/collection since
+   the floating header is off there): the theme hides the plain logo, so draw the brand logo */
+.header-logo:not(:has(.header-logo__image-container--inverse)) .header-logo__image-container--original {
+  display: flex !important; width: auto !important; height: auto !important; overflow: visible !important; align-items: center;
+}
+.header-logo:not(:has(.header-logo__image-container--inverse)) .header-logo__image-container--original img { display: none !important; }
+.header-logo:not(:has(.header-logo__image-container--inverse)) .header-logo__image-container--original::before {
+  content: ''; display: block; width: 180px; height: 36px; background: url({{ 'stehlen-logo.png' | asset_url }}) left center / contain no-repeat;
+}
 /* Fit card with exceptions ("Will not fit …"): amber, not a flat green "fits" */
 .sx-fit--check { border-color: #8a6a1f; background: #221c10; }
 .sx-fit--check .sx-fit__verdict { color: #fcd34d; }
