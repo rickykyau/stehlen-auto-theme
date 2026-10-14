@@ -129,6 +129,10 @@
 }
 
 /* ===== UX audit fixes (2026-10-14 PM) ===== */
+/* Product photos: no white box around the photo / thumbnail strip on the dark page */
+.product-information__media slideshow-component,
+.product-information__media .product-media-container,
+.product-information__media .product-media { background: transparent !important; }
 /* Logo on pages without the inverse logo (cart, search, and now product/collection since
    the floating header is off there): the theme hides the plain logo, so draw the brand logo */
 .header-logo:not(:has(.header-logo__image-container--inverse)) .header-logo__image-container--original {
