@@ -155,7 +155,7 @@
             "header_text": {
               "type": "_product-list-text",
               "settings": {
-                "text": "<h2>Featured Products</h2>",
+                "text": "<h2>Best Sellers</h2>",
                 "type_preset": "h3",
                 "alignment": "left"
               }
@@ -208,7 +208,7 @@
         }
       },
       "settings": {
-        "collection": "all",
+        "collection": "best-sellers",
         "layout_type": "grid",
         "max_products": 8,
         "columns": 4,
