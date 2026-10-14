@@ -115,6 +115,20 @@
   .stehlen-card-title__link { font-size: 12px !important; }
   html, body { overflow-x: hidden; }
 }
+
+/* Phone sticky Add to Cart bar (built by the product-page script) */
+.sx-bar { display: none; }
+@media screen and (max-width: 749px) {
+  .sx-bar { display: flex; align-items: center; gap: 12px; position: fixed; left: 0; right: 0; bottom: 0; z-index: 90;
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); background: #121417; border-top: 1px solid #2c2f34;
+    box-shadow: 0 -6px 18px rgba(0,0,0,.45); transform: translateY(110%); transition: transform .2s ease; }
+  .sx-bar.is-on { transform: none; }
+  .sx-bar__price { flex: 0 0 auto; color: #f5a823; font: 700 22px/1 'Barlow Condensed', var(--font-heading--family), sans-serif; white-space: nowrap; }
+  .sx-bar__btn { flex: 1 1 auto; min-height: 48px; border: 0; border-radius: 4px; background: #f5a823; color: #111;
+    font: 800 15px/1 'Barlow Condensed', var(--font-heading--family), sans-serif; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
+  .sx-bar__btn:disabled { background: #3a3d42; color: #aaa; }
+  body.sx-bar-on { padding-bottom: calc(70px + env(safe-area-inset-bottom)); }
+}
 </style>
 <script>
   // Phones: open the cart drawer after Add to Cart so Checkout is one tap away
@@ -210,6 +224,47 @@
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { setTimeout(run, 50); });
   else setTimeout(run, 50);
+})();
+
+(function () {
+  // Phones: price + Add to Cart bar fixed to the bottom of the screen while the
+  // page's own Add to Cart button is off screen. Taps the real button, so variant,
+  // quantity, sold-out state and the cart drawer all behave exactly as normal.
+  function init() {
+    if (!window.matchMedia('(max-width: 749px)').matches || document.querySelector('.sx-bar')) return;
+    var pd = document.querySelector('.product-details');
+    var block = pd && pd.querySelector('.buy-buttons-block');
+    if (!block) return;
+    var realBtn = function () {
+      return [].slice.call(block.querySelectorAll('button')).filter(function (b) {
+        return /add to cart|sold out|unavailable/i.test(b.textContent);
+      })[0];
+    };
+    if (!realBtn()) return;
+    var bar = document.createElement('div');
+    bar.className = 'sx-bar';
+    bar.setAttribute('aria-hidden', 'true');
+    bar.innerHTML = '<span class="sx-bar__price"></span><button type="button" class="sx-bar__btn" tabindex="-1"></button>';
+    document.body.appendChild(bar);
+    var priceEl = bar.querySelector('.sx-bar__price'), btn = bar.querySelector('.sx-bar__btn');
+    function sync() {
+      var p = pd.querySelector('product-price .price, .price');
+      priceEl.textContent = p ? p.textContent.replace(/\s+/g, ' ').trim() : '';
+      var b = realBtn(); var sold = !b || b.disabled;
+      btn.disabled = sold;
+      btn.textContent = sold ? 'Sold out' : 'Add to cart';
+    }
+    sync();
+    new MutationObserver(sync).observe(pd, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ['disabled'] });
+    btn.addEventListener('click', function () { var b = realBtn(); if (b && !b.disabled) b.click(); });
+    new IntersectionObserver(function (es) {
+      var show = !es[0].isIntersecting;
+      bar.classList.toggle('is-on', show);
+      document.body.classList.toggle('sx-bar-on', show);
+    }).observe(block);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { setTimeout(init, 120); });
+  else setTimeout(init, 120);
 })();
 </script>
 {% endif %}
