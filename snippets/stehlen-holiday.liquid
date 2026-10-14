@@ -11,7 +11,7 @@
   assign now = 'now' | date: '%s' | plus: 0
   assign bf_start = '2026-11-20 08:05:00 +0000' | date: '%s' | plus: 0
   assign bf_end = '2026-12-02 08:05:00 +0000' | date: '%s' | plus: 0
-  assign gifts_end = '2026-12-17 08:00:00 +0000' | date: '%s' | plus: 0
+  assign gifts_end = '2026-12-15 08:00:00 +0000' | date: '%s' | plus: 0
   assign mode = ''
   if now >= bf_start and now < bf_end
     assign mode = 'bf'
@@ -35,7 +35,7 @@
       {%- if mode == 'bf' -%}
         <a class="sx-holiday-bar" href="/collections/black-friday-deals">Black Friday: up to 15% off truck parts · ends Dec 1 · <span>Shop deals</span></a>
       {%- else -%}
-        <a class="sx-holiday-bar" href="/collections/gifts-for-truck-owners">Order by Dec 16 for Christmas delivery · <span>Gifts that fit any truck</span></a>
+        <a class="sx-holiday-bar" href="/collections/gifts-for-truck-owners">Order by Dec 14 for Christmas delivery · <span>Gifts that fit any truck</span></a>
       {%- endif -%}
     {%- when 'drawer' -%}
       {%- if mode == 'bf' -%}
@@ -58,7 +58,7 @@
           <div><h2>Black Friday: up to 15% off</h2><p>Tonneau covers, bed mats, grilles, bull guards, headlights, running boards and more. Ends December 1.</p></div>
           <a href="/collections/black-friday-deals">Shop the deals</a>
         {%- else -%}
-          <div><h2>Gifts that fit any truck</h2><p>Hitch steps, cargo carriers and more that need no vehicle info. Order by December 16 for Christmas delivery (lower 48).</p></div>
+          <div><h2>Gifts that fit any truck</h2><p>Hitch steps, cargo carriers and more that need no vehicle info. Order by December 14 for Christmas delivery (lower 48).</p></div>
           <a href="/collections/gifts-for-truck-owners">Shop gifts</a>
         {%- endif -%}
       </div>
