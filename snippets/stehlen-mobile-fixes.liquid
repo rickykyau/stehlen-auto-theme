@@ -122,8 +122,8 @@
 .sx-bar { display: none; }
 @media screen and (max-width: 749px) {
   .sx-bar { display: flex; align-items: center; gap: 12px; position: fixed; left: 0; right: 0; bottom: 0; z-index: 90;
-    padding: 8px 16px calc(8px + env(safe-area-inset-bottom)); background: #121417; border-top: 1px solid #2c2f34;
-    box-shadow: 0 -6px 18px rgba(0,0,0,.45); transform: translateY(110%); transition: transform .2s ease; }
+    padding: 8px 16px calc(8px + env(safe-area-inset-bottom)); background: #121417; border: 0;
+    box-shadow: none; transform: translateY(110%); transition: transform .2s ease; }
   .sx-bar.is-on { transform: none; }
   .sx-bar__price { display: none; }
   .sx-bar--price .sx-bar__price { display: block;
