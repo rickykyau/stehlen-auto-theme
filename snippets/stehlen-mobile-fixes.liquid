@@ -104,11 +104,15 @@
 </style>
 <script>
   // Phones: open the cart drawer after Add to Cart so Checkout is one tap away
-  // (desktop keeps the theme setting).
-  document.addEventListener('DOMContentLoaded', function () {
-    if (window.matchMedia('(max-width: 749px)').matches) {
-      document.querySelectorAll('cart-drawer-component').forEach(function (d) { d.setAttribute('auto-open', ''); });
-    }
+  // (desktop keeps the theme setting). Only for product-form adds that succeeded.
+  document.addEventListener('cart:update', function (e) {
+    var d = e.detail && e.detail.data;
+    if (!d || d.didError || d.source !== 'product-form-component') return;
+    if (!window.matchMedia('(max-width: 749px)').matches || /^\/cart/.test(location.pathname)) return;
+    setTimeout(function () {
+      var drawer = document.querySelector('cart-drawer-component');
+      if (drawer && typeof drawer.open === 'function') drawer.open();
+    }, 350);
   });
 </script>
 {% if template.name == 'product' %}
