@@ -74,7 +74,9 @@
   .product-details { flex-direction: column !important; flex-wrap: nowrap !important; }
   .product-details > * { width: 100% !important; max-width: 100% !important; flex: 0 0 auto !important; }
   .product-details > .stehlen-fitment { display: none !important; }
-  .product-information__grid { gap: 12px !important; }
+  .product-information__grid { gap: 8px !important; }
+  .product-details .group-block-content { gap: 8px !important; }
+  #MainContent .product-details h1 { margin-bottom: 2px !important; }
   #MainContent .product-details h1, .product-details h1 { font-size: 20px !important; line-height: 1.15 !important; letter-spacing: 0.01em !important; }
   .stehlen-policy { grid-template-columns: repeat(3, 1fr) !important; gap: 6px !important; }
   .stehlen-policy__item { flex-direction: column; text-align: center; font-size: 11px !important; padding: 8px 4px !important; }
@@ -120,11 +122,13 @@
 .sx-bar { display: none; }
 @media screen and (max-width: 749px) {
   .sx-bar { display: flex; align-items: center; gap: 12px; position: fixed; left: 0; right: 0; bottom: 0; z-index: 90;
-    padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); background: #121417; border-top: 1px solid #2c2f34;
+    padding: 8px 16px calc(8px + env(safe-area-inset-bottom)); background: #121417; border-top: 1px solid #2c2f34;
     box-shadow: 0 -6px 18px rgba(0,0,0,.45); transform: translateY(110%); transition: transform .2s ease; }
   .sx-bar.is-on { transform: none; }
-  .sx-bar__price { flex: 0 0 auto; color: #f5a823; font: 700 22px/1 'Barlow Condensed', var(--font-heading--family), sans-serif; white-space: nowrap; }
-  .sx-bar__btn { flex: 1 1 auto; min-height: 48px; border: 0; border-radius: 4px; background: #f5a823; color: #111;
+  .sx-bar__price { display: none; }
+  .sx-bar--price .sx-bar__price { display: block;
+    flex: 0 0 auto; color: #f5a823; font: 700 22px/1 'Barlow Condensed', var(--font-heading--family), sans-serif; white-space: nowrap; }
+  .sx-bar__btn { flex: 1 1 auto; min-height: 46px; border: 0; border-radius: 4px; background: #f5a823; color: #111;
     font: 800 15px/1 'Barlow Condensed', var(--font-heading--family), sans-serif; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
   .sx-bar__btn:disabled { background: #3a3d42; color: #aaa; }
   body.sx-bar-on { padding-bottom: calc(70px + env(safe-area-inset-bottom)); }
@@ -262,6 +266,14 @@
       bar.classList.toggle('is-on', show);
       document.body.classList.toggle('sx-bar-on', show);
     }).observe(block);
+    // Show the price in the bar only once the page's own price has scrolled away,
+    // so the first screen never shows the price twice.
+    var pagePrice = pd.querySelector('product-price') || pd.querySelector('.price');
+    if (pagePrice) {
+      new IntersectionObserver(function (es) {
+        bar.classList.toggle('sx-bar--price', !es[0].isIntersecting && es[0].boundingClientRect.top < 0);
+      }).observe(pagePrice);
+    }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { setTimeout(init, 120); });
   else setTimeout(init, 120);
