@@ -184,6 +184,21 @@
   .search-page-input { padding-top: 10px !important; padding-bottom: 10px !important; }
   .filter-bar-wrapper { padding-top: 0 !important; padding-bottom: 4px !important; }
 }
+
+/* Desktop: home category tile labels were 12px / 10px */
+@media screen and (min-width: 750px) {
+  .stehlen-card-title__name { font-size: 17px !important; letter-spacing: .06em !important; }
+  .stehlen-card-title__link { font-size: 13px !important; }
+}
+/* Desktop search: "Shop by / Vehicle" chip rows were squeezed into the 260px facets column */
+@media screen and (min-width: 750px) {
+  .collection-wrapper:has(> .filter-bar-wrapper) > .filter-bar-wrapper { grid-column: 1 / -1 !important; grid-row: 1 !important; }
+  .collection-wrapper:has(> .filter-bar-wrapper) > :not(.filter-bar-wrapper):not(.skip-to-content-link) { grid-row: 2 !important; }
+}
+@media screen and (min-width: 750px) {
+  /* search has no facets column on desktop: let the results use the full width */
+  .collection-wrapper:has(> .filter-bar-wrapper) > .main-collection-grid { grid-column: 1 / -1 !important; }
+}
 </style>
 <script>
   // Phones: open the cart drawer after Add to Cart so Checkout is one tap away
