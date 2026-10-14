@@ -1311,6 +1311,12 @@ h1.collection-heading,
     grid-template-columns: 1fr !important;
     gap: 16px !important;
   }
+  /* The 1fr grid above has one column; the theme still places .product-details
+     in column 2, which squeezed the photo column to 0px wide on phones. */
+  .product-information__grid > .product-information__media,
+  .product-information__grid > .product-details {
+    grid-column: 1 / -1 !important;
+  }
   .product-information { padding: 0 16px !important; }
   .stehlen-tabs { padding: 0 16px !important; }
   /* Collection mobile padding */
