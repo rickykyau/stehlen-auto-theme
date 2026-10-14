@@ -341,12 +341,13 @@
       document.body.classList.toggle('sx-bar-on', show);
     }).observe(block);
     // Show the price in the bar only once the page's own price has scrolled away,
-    // so the first screen never shows the price twice.
+    // so the screen never shows the price twice.
     var pagePrice = pd.querySelector('product-price') || pd.querySelector('.price');
     if (pagePrice) {
+      // Bottom margin = bar height, so a price sitting behind the bar counts as hidden.
       new IntersectionObserver(function (es) {
-        bar.classList.toggle('sx-bar--price', !es[0].isIntersecting && es[0].boundingClientRect.top < 0);
-      }).observe(pagePrice);
+        bar.classList.toggle('sx-bar--price', !es[0].isIntersecting);
+      }, { rootMargin: '0px 0px -72px 0px' }).observe(pagePrice);
     }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { setTimeout(init, 120); });
