@@ -31,7 +31,7 @@
         "button": {
           "type": "button",
           "settings": {
-            "label": "SHOP ALL PARTS →",
+            "label": "SHOP ALL PARTS \u2192",
             "link": "shopify://collections/all",
             "style_class": "button-primary"
           }
@@ -136,7 +136,16 @@
         "color_scheme": "scheme-2",
         "padding-block-start": 0,
         "padding-block-end": 0,
-        "collection_list": ["tonneau-covers", "trailer-hitches", "bull-guards-grille-guards", "truck-bed-mats", "front-grilles", "headlights", "running-boards-side-steps", "roof-racks-baskets"]
+        "collection_list": [
+          "tonneau-covers",
+          "trailer-hitches",
+          "bull-guards-grille-guards",
+          "truck-bed-mats",
+          "front-grilles",
+          "headlights",
+          "running-boards-side-steps",
+          "roof-racks-baskets"
+        ]
       }
     },
     "featured_products": {
@@ -220,10 +229,21 @@
         "padding-block-start": 48,
         "padding-block-end": 48
       }
+    },
+    "holiday_promo": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "{% render 'stehlen-holiday', part: 'home' %}",
+        "color_scheme": "scheme-1",
+        "section_width": "page-width",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
     }
   },
   "order": [
     "hero",
+    "holiday_promo",
     "value_props",
     "collection_list",
     "featured_products"

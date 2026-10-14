@@ -1,0 +1,66 @@
+{% comment %}
+  Holiday promos, switched by date (no edits needed when they start/end).
+  render 'stehlen-holiday', part: 'bar'     top strip on every page (layout/theme.liquid)
+  render 'stehlen-holiday', part: 'drawer'  phone menu link (snippets/header-drawer.liquid)
+  render 'stehlen-holiday', part: 'home'    home-page banner (templates/index.json custom-liquid)
+  Windows are Pacific time, written in UTC. Prices + the black-friday-deals collection
+  are switched by JL-SQL tasks "Holiday Sale START/END" (scripts/catalog/holiday-sale.py).
+  To preview, pass force: 'bf' or 'gifts' in a copy of the theme (never on the live theme).
+{% endcomment %}
+{%- liquid
+  assign now = 'now' | date: '%s' | plus: 0
+  assign bf_start = '2026-11-20 08:05:00 +0000' | date: '%s' | plus: 0
+  assign bf_end = '2026-12-02 08:05:00 +0000' | date: '%s' | plus: 0
+  assign gifts_end = '2026-12-17 08:00:00 +0000' | date: '%s' | plus: 0
+  assign mode = ''
+  if now >= bf_start and now < bf_end
+    assign mode = 'bf'
+  elsif now >= bf_end and now < gifts_end
+    assign mode = 'gifts'
+  endif
+  if force
+    assign mode = force
+  endif
+-%}
+{%- if mode != '' -%}
+  {%- case part -%}
+    {%- when 'bar' -%}
+      <style>
+        .sx-holiday-bar { display: block; background: #f5a823; color: #111; text-align: center; text-decoration: none;
+          font: 800 13px/1.25 'Barlow Condensed', var(--font-heading--family), sans-serif; letter-spacing: .06em; text-transform: uppercase;
+          padding: 9px 16px; }
+        .sx-holiday-bar span { text-decoration: underline; white-space: nowrap; }
+        @media screen and (min-width: 750px) { .sx-holiday-bar { font-size: 14px; padding: 10px 16px; } }
+      </style>
+      {%- if mode == 'bf' -%}
+        <a class="sx-holiday-bar" href="/collections/black-friday-deals">Black Friday: up to 15% off truck parts · ends Dec 1 · <span>Shop deals</span></a>
+      {%- else -%}
+        <a class="sx-holiday-bar" href="/collections/gifts-for-truck-owners">Order by Dec 16 for Christmas delivery · <span>Gifts that fit any truck</span></a>
+      {%- endif -%}
+    {%- when 'drawer' -%}
+      {%- if mode == 'bf' -%}
+        <li class="stehlen-drawer-item"><a href="/collections/black-friday-deals" class="stehlen-drawer-link" style="color:#f5a823 !important;font-weight:700"><span>Black Friday Deals · up to 15% off</span></a></li>
+      {%- else -%}
+        <li class="stehlen-drawer-item"><a href="/collections/gifts-for-truck-owners" class="stehlen-drawer-link" style="color:#f5a823 !important;font-weight:700"><span>Gifts for Truck Owners</span></a></li>
+      {%- endif -%}
+    {%- when 'home' -%}
+      <style>
+        .sx-holiday-home { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px;
+          margin: 24px auto; max-width: 1200px; padding: 20px; box-sizing: border-box; border: 1px solid #f5a823; border-radius: 6px; background: #1b1810; }
+        .sx-holiday-home h2 { margin: 0 0 4px; color: #f5a823; font: 800 28px/1.05 'Barlow Condensed', var(--font-heading--family), sans-serif; text-transform: uppercase; letter-spacing: .02em; }
+        .sx-holiday-home p { margin: 0; color: #e8e6e0; font-size: 15px; line-height: 1.45; }
+        .sx-holiday-home a { flex: 0 0 auto; display: inline-flex; align-items: center; min-height: 46px; padding: 0 22px; border-radius: 4px;
+          background: #f5a823; color: #111; text-decoration: none; font: 800 15px/1 'Barlow Condensed', var(--font-heading--family), sans-serif; letter-spacing: .08em; text-transform: uppercase; }
+        @media screen and (max-width: 749px) { .sx-holiday-home { margin: 16px; } .sx-holiday-home h2 { font-size: 24px; } .sx-holiday-home a { width: 100%; justify-content: center; } }
+      </style>
+      <div class="sx-holiday-home">
+        {%- if mode == 'bf' -%}
+          <div><h2>Black Friday: up to 15% off</h2><p>Tonneau covers, bed mats, grilles, bull guards, headlights, running boards and more. Ends December 1.</p></div>
+          <a href="/collections/black-friday-deals">Shop the deals</a>
+        {%- else -%}
+          <div><h2>Gifts that fit any truck</h2><p>Hitch steps, cargo carriers and more that need no vehicle info. Order by December 16 for Christmas delivery (lower 48).</p></div>
+          <a href="/collections/gifts-for-truck-owners">Shop gifts</a>
+        {%- endif -%}
+      </div>
+  {%- endcase -%}
+{%- endif -%}
