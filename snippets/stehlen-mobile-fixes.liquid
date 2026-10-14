@@ -53,6 +53,8 @@
 
 @media screen and (max-width: 749px) {
   .sx-dup-desc, .sx-hide-m { display: none !important; }
+  /* Cart drawer: item list was squeezed into a faded 200px scroll box; scroll the whole drawer instead */
+  .cart-drawer__items { flex: 0 0 auto !important; max-height: none !important; overflow: visible !important; -webkit-mask-image: none !important; mask-image: none !important; }
   /* Header: stop the floating header covering the top of product / collection pages */
   .header[transparent] { position: relative !important; }
   body:has(.header[transparent]) .content-for-layout > .shopify-section:first-child { margin-top: 0 !important; }
