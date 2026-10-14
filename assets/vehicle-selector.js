@@ -9,6 +9,7 @@
  */
 
 const STORAGE_KEY = 'stehlen-vehicle';
+const CACHE_KEY = 'stehlen-ymm-v2';
 
 class VehicleSelector extends HTMLElement {
   constructor() {
@@ -55,13 +56,27 @@ class VehicleSelector extends HTMLElement {
   async _loadFitmentData() {
     // Fetch all product tags to build make/model/year tree
     // Use a cached version if available
-    const cached = sessionStorage.getItem('stehlen-fitment-data');
+    const cached = sessionStorage.getItem(CACHE_KEY);
     if (cached) {
       try {
         this._fitmentData = JSON.parse(cached);
         this._populateMakes();
         return;
       } catch(e) { /* fall through to fetch */ }
+    }
+
+    // Prebuilt list (scripts/catalog/build-theme-ymm.py): correct make/model pairing,
+    // only vehicles that return parts, one small request instead of crawling the catalog.
+    if (window.STEHLEN_YMM_URL) {
+      try {
+        const resp = await fetch(window.STEHLEN_YMM_URL);
+        if (resp.ok) {
+          this._fitmentData = await resp.json();
+          sessionStorage.setItem(CACHE_KEY, JSON.stringify(this._fitmentData));
+          this._populateMakes();
+          return;
+        }
+      } catch (e) { /* fall back to the catalog crawl below */ }
     }
 
     try {
@@ -124,7 +139,7 @@ class VehicleSelector extends HTMLElement {
       }
 
       this._fitmentData = fitmentData;
-      sessionStorage.setItem('stehlen-fitment-data', JSON.stringify(fitmentData));
+      sessionStorage.setItem(CACHE_KEY, JSON.stringify(fitmentData));
       this._populateMakes();
     } catch (err) {
       console.error('Vehicle selector: failed to load fitment data', err);
@@ -266,7 +281,7 @@ class VehicleSelector extends HTMLElement {
 
   _clearVehicle() {
     localStorage.removeItem(STORAGE_KEY);
-    sessionStorage.removeItem('stehlen-fitment-data');
+    sessionStorage.removeItem(CACHE_KEY);
     const { triggerText, savedVehicle, makeSelect, modelSelect, yearSelect } = this._refs;
     triggerText.textContent = 'SELECT YOUR VEHICLE';
     this.classList.remove('vehicle-selector--active');
