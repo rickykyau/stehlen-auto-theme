@@ -210,8 +210,17 @@ class VehicleSelector extends HTMLElement {
     const vehicle = { make, model, year };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(vehicle));
 
-    // Build collection URL with metafield filter params
-    const url = new URL('/collections/all', window.location.origin);
+    // On a product page, stay on the product so the shopper sees whether it fits.
+    if (/\/products\//.test(window.location.pathname)) {
+      this._closeDialog();
+      window.location.reload();
+      return;
+    }
+
+    // Build collection URL with metafield filter params; inside a category,
+    // stay in that category (filtered to the vehicle) instead of jumping to all parts.
+    const inCollection = /^\/collections\/[^/]+/.exec(window.location.pathname);
+    const url = new URL(inCollection ? inCollection[0] : '/collections/all', window.location.origin);
     url.searchParams.append('filter.p.m.custom.make', make);
     url.searchParams.append('filter.p.m.custom.model', model);
     if (year) {

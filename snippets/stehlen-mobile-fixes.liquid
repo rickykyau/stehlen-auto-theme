@@ -133,6 +133,49 @@
   .sx-bar__btn:disabled { background: #3a3d42; color: #aaa; }
   body.sx-bar-on { padding-bottom: calc(70px + env(safe-area-inset-bottom)); }
 }
+
+/* ===== UX audit fixes (2026-10-14 PM) ===== */
+/* Fit card with exceptions ("Will not fit …"): amber, not a flat green "fits" */
+.sx-fit--check { border-color: #8a6a1f; background: #221c10; }
+.sx-fit--check .sx-fit__verdict { color: #fcd34d; }
+/* Desktop product page: show the fit card, drop the narrow "select your vehicle" column
+   and the long description that repeats in the tabs below */
+@media screen and (min-width: 750px) {
+  .sx-fit { display: block !important; }
+  .product-details > .stehlen-fitment { display: none !important; }
+  .sx-dup-desc { display: none !important; }
+}
+@media screen and (max-width: 749px) {
+  /* Photo gallery: the swipe dots were invisible on the dark page */
+  /* dark pill in the photo's bottom-right corner (clear of the photo's own bottom-left text) */
+  .product-information__media .media-gallery__mobile-controls { mix-blend-mode: normal !important; z-index: 10 !important; left: auto !important; right: 8px !important; bottom: 8px !important; top: auto !important; width: auto !important; }
+  .media-gallery__mobile-controls .slideshow-controls__dots { background: rgba(0, 0, 0, .62); padding: 7px 10px !important; gap: 9px !important; }
+  .media-gallery__mobile-controls .slideshow-controls__dots button { margin: 0 !important; width: 10px !important; height: 10px !important; }
+  .media-gallery__mobile-controls .slideshow-controls__dots button::after { width: 8px !important; height: 8px !important; background-color: rgba(255, 255, 255, .55) !important; }
+  .media-gallery__mobile-controls .slideshow-controls__dots button[aria-selected='true']::after { background-color: #f5a823 !important; width: 10px !important; height: 10px !important; }
+  /* Collection / vehicle results: get products onto the first screen */
+  body.stehlen-collection .content-for-layout > .shopify-section:first-child .section { padding-top: 6px !important; padding-bottom: 0 !important; }
+  body.stehlen-collection .content-for-layout > .shopify-section:first-child .layout-panel-flex { padding-top: 4px !important; padding-bottom: 0 !important; }
+  body.stehlen-collection .content-for-layout > .shopify-section:first-child .text-block { padding-top: 0 !important; padding-bottom: 0 !important; }
+  body.stehlen-collection main h1 { font-size: 26px !important; line-height: 1.1 !important; }
+  .stehlen-breadcrumb { padding: 4px 16px !important; }
+  .stehlen-toolbar { padding: 6px 96px 6px 16px !important; gap: 8px !important; min-height: 44px; box-sizing: border-box; }
+  .stehlen-toolbar__sort label { display: none !important; }
+  .stehlen-toolbar__count { font-size: 12px !important; white-space: nowrap; }
+  body.stehlen-collection .collection-wrapper { position: relative; }
+  body.stehlen-collection .collection-wrapper > .facets-toggle { position: absolute !important; top: -44px; right: 8px; width: auto !important; padding: 0 !important; z-index: 2; }
+  body.stehlen-collection .collection-wrapper > .facets-toggle .facets-toggle__button { min-height: 44px; padding: 0 8px !important; }
+  .fitment-banner { padding-top: 6px !important; padding-bottom: 6px !important; }
+  .fitment-banner__inner { flex-direction: row !important; align-items: center !important; justify-content: space-between !important; gap: 8px !important; padding: 8px 12px !important; margin: 0 12px !important; }
+  .fitment-banner__inner a, .fitment-banner__inner button { white-space: nowrap; flex: 0 0 auto; }
+  /* Search page: heading + spacing pushed every result below the first screen */
+  .search-page__header .text-block { display: none !important; }
+  .search-page__header { padding-top: 0 !important; }
+  .content-for-layout > .shopify-section:first-child .section:has(.search-page__header) { padding-top: 8px !important; padding-bottom: 8px !important; }
+  .search-page-input__parent search-page-input-component { margin-top: 0 !important; }
+  .search-page-input { padding-top: 10px !important; padding-bottom: 10px !important; }
+  .filter-bar-wrapper { padding-top: 0 !important; padding-bottom: 4px !important; }
+}
 </style>
 <script>
   // Phones: open the cart drawer after Add to Cart so Checkout is one tap away
@@ -147,6 +190,21 @@
     }, 350);
   });
 </script>
+{% if template.name == 'collection' %}
+<script>
+(function () {
+  // Vehicle results (/collections/all?filter…): title said just "Products".
+  if (location.pathname !== '/collections/all') return;
+  var q = new URLSearchParams(location.search);
+  var name = [q.get('filter.p.m.custom.year'), q.get('filter.p.m.custom.make'), q.get('filter.p.m.custom.model')].filter(Boolean).join(' ');
+  function run() {
+    var h = document.querySelector('main h1');
+    if (h) h.textContent = name ? 'Parts for ' + name : 'All Parts';
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
+})();
+</script>
+{% endif %}
 {% if template.name == 'product' %}
 <script>
 (function () {
@@ -191,24 +249,33 @@
         var hasVeh = tags.some(function (t) { return t === mm || t.indexOf(mm + ' ') === 0; });
         var hasYear = !v.year || tags.indexOf(String(v.year)) !== -1;
         var name = [v.year, v.make, v.model].filter(Boolean).join(' ');
-        if (hasVeh && hasYear) { verdict = '✓ Fits your ' + esc(name); cls = ' sx-fit--fits'; }
+        // A "Will not fit" note (engine, trim, bed…) means the year/model match alone isn't a yes.
+        if (hasVeh && hasYear && noFit) { verdict = '✓ Listed for your ' + esc(name) + ' — check the “Will not fit” note below'; cls = ' sx-fit--check'; }
+        else if (hasVeh && hasYear) { verdict = '✓ Fits your ' + esc(name); cls = ' sx-fit--fits'; }
         else { verdict = 'Check the list below for your ' + esc(name); }
       }
     } catch (e) {}
 
     var SHOW = 4;
     var li = fits.map(function (f, k) { return '<li' + (k >= SHOW ? ' class="sx-fit__more"' : '') + '>' + esc(f) + '</li>'; }).join('');
+    // No vehicle saved yet: one tap opens the header vehicle picker (it reloads this page after).
+    var checkBtn = verdict ? '' : '<button type="button" class="sx-fit__check">Check fit for my vehicle</button>';
     var card = '<div class="sx-fit' + cls + '">' +
       (verdict ? '<p class="sx-fit__verdict">' + verdict + '</p>' : '') +
       '<p class="sx-fit__title">Fits these vehicles</p><ul>' + li + '</ul>' +
       (fits.length > SHOW ? '<button type="button" class="sx-fit__toggle">Show all ' + fits.length + ' vehicles</button>' : '') +
       (noFit ? '<p class="sx-fit__no"><strong>Will not fit:</strong> ' + esc(noFit) + '</p>' : '') +
-      '</div>';
+      checkBtn + '</div>';
 
     var buy = pd.querySelector('.buy-buttons-block');
     var anchor = buy || pd.querySelector('.group-block-content > .group-block');
     if (!anchor) return;
     anchor.insertAdjacentHTML(buy ? 'beforebegin' : 'afterend', card);
+    var ck = pd.querySelector('.sx-fit__check');
+    if (ck) ck.addEventListener('click', function () {
+      var t = [].slice.call(document.querySelectorAll('.vehicle-selector__trigger')).filter(function (b) { return b.offsetParent; })[0];
+      if (t) t.click(); else window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
     var tg = pd.querySelector('.sx-fit__toggle');
     if (tg) tg.addEventListener('click', function () {
       var c = tg.closest('.sx-fit'); var open = c.classList.toggle('is-open');
