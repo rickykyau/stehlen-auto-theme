@@ -1,0 +1,49 @@
+{%- comment -%}
+  Creator program page (/pages/collab, template page.collabs). The Shopify
+  Collabs app block renders the heading + Apply button; this restyles it for
+  the dark theme (no white boxes) and adds what creators actually get.
+  Terms mirror the Collabs program "Stehlen Truck Creators" (2026-10-16):
+  10% commission on any product, 10% follower code, one use per customer,
+  code not valid on marked-down items (keeps the 15% discount cap).
+{%- endcomment -%}
+<style>
+  .collabs-page__header-logo,
+  .collabs-page__images,
+  .collabs-page__partnership { display: none !important; }
+  .collabs-page__main { padding-block: 40px 8px !important; }
+  .collabs-page__main h1 { color: #fff; }
+  .collabs-page__cta-main {
+    background: #f5a823 !important; color: #111 !important; font-weight: 700;
+    letter-spacing: .04em; text-transform: uppercase; min-height: 48px;
+    display: inline-flex !important; align-items: center; justify-content: center;
+  }
+  .collabs-page__cta-main:hover { background: #ffb938 !important; }
+  .collabs-page__cta-login-link { color: #f5a823 !important; }
+  .sx-collab { max-width: 880px; margin: 0 auto; padding: 8px 16px 56px; color: #d7d9de; }
+  .sx-collab__lead { text-align: center; font-size: 17px; line-height: 1.55; margin: 0 auto 28px; max-width: 640px; }
+  .sx-collab__grid { display: grid; gap: 12px; grid-template-columns: 1fr; margin-bottom: 28px; }
+  @media (min-width: 750px) { .sx-collab__grid { grid-template-columns: 1fr 1fr; } }
+  .sx-collab__card { background: #1a1c21; border: 1px solid #2c2f36; border-radius: 6px; padding: 16px 18px; }
+  .sx-collab__card b { display: block; color: #f5a823; font-size: 15px; letter-spacing: .03em; text-transform: uppercase; margin-bottom: 4px; }
+  .sx-collab__card p { margin: 0; font-size: 15px; line-height: 1.5; }
+  .sx-collab h2 { color: #fff; font-size: 20px; letter-spacing: .04em; text-transform: uppercase; margin: 0 0 10px; }
+  .sx-collab ul { margin: 0 0 24px; padding-left: 20px; font-size: 15px; line-height: 1.6; }
+  .sx-collab__small { font-size: 14px; color: #a3a7b0; }
+  .sx-collab__small a { color: #f5a823; }
+</style>
+<div class="sx-collab">
+  <p class="sx-collab__lead">Run a truck build, install or off-road channel? Partner with Stehlen and earn on every order you send our way: tonneau covers, running boards, headlights, bull guards, roof racks and hitches.</p>
+  <div class="sx-collab__grid">
+    <div class="sx-collab__card"><b>10% commission</b><p>On every sale through your link or code. Tracked and paid automatically through Shopify Collabs.</p></div>
+    <div class="sx-collab__card"><b>10% off for your followers</b><p>Your own discount code to share (one use per customer; not valid on items already on sale).</p></div>
+    <div class="sx-collab__card"><b>Parts for your truck</b><p>Approved creators can get a part that fits their own truck to install, film and review.</p></div>
+    <div class="sx-collab__card"><b>Easy to recommend</b><p>Free shipping on every order, fitment guaranteed, and 30-day returns with a free return label.</p></div>
+  </div>
+  <h2>Who we're looking for</h2>
+  <ul>
+    <li>You own a pickup or SUV (F-150, Silverado, Sierra, Ram, Tacoma, Tundra, Ranger, Colorado, Frontier and more).</li>
+    <li>You post installs, builds, reviews or trips on YouTube, TikTok, Instagram or Facebook.</li>
+    <li>Honest content: show the install and how it fits. Any audience size.</li>
+  </ul>
+  <p class="sx-collab__small">Questions? Email <a href="mailto:info@stehlenauto.com">info@stehlenauto.com</a> or call <a href="tel:+19513327000">(951) 332-7000</a>.</p>
+</div>

@@ -23,9 +23,20 @@
         "00f9f42d-f180-4c62-8217-71617266e105"
       ],
       "settings": {}
+    },
+    "stehlen_pitch": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "{% render 'stehlen-collabs-pitch' %}",
+        "color_scheme": "scheme-1",
+        "section_width": "page-width",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
     }
   },
   "order": [
-    "collabs"
+    "collabs",
+    "stehlen_pitch"
   ]
 }
