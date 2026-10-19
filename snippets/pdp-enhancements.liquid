@@ -84,14 +84,21 @@
     align-items: center;
     gap: 8px;
     padding: 10px;
-    background: #f8f8f8;
+    background: #1a1d22;
+    border: 1px solid #2c3038;
     border-radius: 4px;
     font-family: var(--font-body--family, sans-serif);
-    font-size: 0.75rem;
-    color: #444;
+    font-size: 0.8125rem;
+    color: #e4e6ea;
     line-height: 1.3;
   }
-  .stehlen-policy__item svg { flex-shrink: 0; color: #1A3F22; }
+  .stehlen-policy__item svg { flex-shrink: 0; color: #f5a823; }
+
+  /* Delivery estimate */
+  .stehlen-eta { display: flex; align-items: flex-start; gap: 10px; margin: 4px 0 0; font-family: var(--font-body--family, sans-serif); font-size: 0.9375rem; line-height: 1.4; color: #e4e6ea; }
+  .stehlen-eta svg { flex-shrink: 0; color: #f5a823; margin-top: 2px; }
+  .stehlen-eta strong { color: #fff; }
+  .stehlen-eta small { display: block; font-size: 0.8125rem; color: #a3a8b0; }
 
   @media screen and (max-width: 749px) {
     .stehlen-policy { grid-template-columns: 1fr; }
@@ -158,6 +165,32 @@
     if (firstGroup) {
       firstGroup.insertAdjacentHTML('afterend', fitmentHtml);
     }
+
+    // ==========================================
+    // 1b. DELIVERY ESTIMATE — under the "Free shipping · Ships within 1 business day" line.
+    // Ship = next business day (Pacific time); arrival = 2-5 business days after that.
+    // From Shopify fulfillments Jun-Oct 2026: ~9 in 10 orders arrived by the later date.
+    // ==========================================
+    var etaData = document.getElementById('stehlen-eta-data');
+    var eta = null;
+    try { eta = etaData ? JSON.parse(etaData.textContent) : null; } catch(e) {}
+    if (eta && eta.available) try {
+      var HOLIDAYS = ['2026-11-26','2026-12-25','2027-01-01','2027-05-31','2027-07-05','2027-09-06','2027-11-25','2027-12-24'];
+      var pt = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }));
+      var day = new Date(pt.getFullYear(), pt.getMonth(), pt.getDate());
+      var iso = function(d) { return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); };
+      var addBiz = function(d, n) {
+        var x = new Date(d);
+        while (n > 0) { x.setDate(x.getDate() + 1); if (x.getDay() % 6 !== 0 && HOLIDAYS.indexOf(iso(x)) < 0) n--; }
+        return x;
+      };
+      var ship = addBiz(day, 1);
+      var fmt = function(d) { return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }); };
+      var etaHtml = '<div class="stehlen-eta"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>' +
+        '<div>Free delivery: <strong>' + fmt(addBiz(ship, 2)) + ' – ' + fmt(addBiz(ship, 5)) + '</strong><small>Estimated, lower 48 via UPS Ground</small></div></div>';
+      var trustLine = Array.prototype.find.call(productDetails.querySelectorAll('p'), function(el) { return /Ships within 1 business day/.test(el.textContent); });
+      if (trustLine) trustLine.insertAdjacentHTML('afterend', etaHtml);
+    } catch(e) {}
 
     // ==========================================
     // 2. RETURN/WARRANTY POLICY ICONS — Insert after buy buttons
@@ -273,15 +306,15 @@
           '<h3>Shipping Information</h3>' +
           '<ul>' +
           '<li>Free standard shipping on all orders</li>' +
-          '<li>Processing time: 1-2 business days</li>' +
-          '<li>Estimated delivery: 3-7 business days</li>' +
+          '<li>Most orders ship within 1 business day</li>' +
+          '<li>Estimated delivery: 2-5 business days after shipping (UPS Ground, lower 48)</li>' +
           '<li>Tracking number provided via email</li>' +
           '</ul>' +
           '<h3>Return Policy</h3>' +
           '<ul>' +
-          '<li>30-day hassle-free return policy</li>' +
-          '<li>Items must be in original packaging, unused condition</li>' +
-          '<li>Free return shipping on defective items</li>' +
+          '<li>30-day returns with a free prepaid return label, for any reason</li>' +
+          '<li>Return items unused, in the original packaging with all parts</li>' +
+          '<li>Used, damaged or incomplete returns may have up to 25% deducted</li>' +
           '<li>Refund processed within 5-7 business days</li>' +
           '</ul>' +
           '</div>' +
@@ -293,7 +326,7 @@
           '<li>Warranty does not cover damage from improper installation</li>' +
           '<li>Contact our support team for warranty claims</li>' +
           '</ul>' +
-          '<p style="margin-top:16px;"><strong>Need help?</strong> Call us at (951) 332-7000 or email support.</p>' +
+          '<p style="margin-top:16px;"><strong>Need help?</strong> Call us at (951) 332-7000 or email info@stehlenauto.com.</p>' +
           '</div>' +
           '</div>';
 
@@ -317,6 +350,7 @@
   });
 </script>
 
+<script id="stehlen-eta-data" type="application/json">{"available": {{ product.selected_or_first_available_variant.available | json }}}</script>
 <!-- Product tags data for fitment check -->
 <script id="stehlen-product-tags-data" type="application/json">{{ product.tags | json }}</script>
 <!-- Product description for tabs -->
