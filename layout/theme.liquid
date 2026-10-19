@@ -1,3 +1,4 @@
+{% comment %}v20260315-s1-announcement-fix{% endcomment %}
 <!doctype html>
 <html
   class="no-js{% if request.design_mode %} shopify-design-mode{% endif %}"
@@ -22,6 +23,8 @@
 
     {%- render 'meta-tags' -%}
     {%- render 'stylesheets' -%}
+    {{ 'stehlen-theme.css' | asset_url | stylesheet_tag }}
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
     {%- render 'fonts' -%}
     {%- render 'scripts' -%}
     {%- render 'theme-styles-variables' -%}
@@ -32,13 +35,17 @@
     {% endif %}
 
     {{ content_for_header }}
+    {% render 'card-enhancements' %}
+    {% render 'homepage-enhancements' %}
   </head>
 
   <body class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }}">
     {% render 'skip-to-content-link', href: '#MainContent', text: 'accessibility.skip_to_text' %}
+    {% render 'rotating-announcements' %}
     <div id="header-group">
       {% sections 'header-group' %}
     </div>
+
 
     <script
       src="{{ 'critical.js' | asset_url }}"
@@ -58,9 +65,12 @@
       {{ content_for_layout }}
     </main>
 
+    {% render 'footer-trust' %}
     {% sections 'footer-group' %}
 
     {% render 'search-modal' %}
+    {% render 'pdp-enhancements' %}
+    {% render 'my-garage' %}
 
     {% if settings.quick_add or settings.mobile_quick_add %}
       {% render 'quick-add-modal' %}

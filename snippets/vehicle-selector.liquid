@@ -1,0 +1,66 @@
+{% comment %}
+  Vehicle Selector Modal - YMM (Year/Make/Model) fitment selector
+  Uses filter.p.tag params for server-side Shopify filtering
+{% endcomment %}
+
+<vehicle-selector class="vehicle-selector">
+  <button
+    type="button"
+    class="vehicle-selector__trigger"
+    ref="trigger"
+    aria-label="Select your vehicle"
+  >
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 17h2m10 0h2M2 9l2-4h4l2 4h8l2 4H2zM7 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM17 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
+    </svg>
+    <span ref="triggerText" class="vehicle-selector__trigger-text">SELECT YOUR VEHICLE</span>
+  </button>
+
+  <dialog ref="dialog" class="vehicle-selector__dialog">
+    <div class="vehicle-selector__content">
+      <div class="vehicle-selector__header">
+        <div>
+          <h2 class="vehicle-selector__title">Select Your Vehicle</h2>
+          <p class="vehicle-selector__subtitle">Provide vehicle details to confirm fitment</p>
+        </div>
+        <button type="button" class="vehicle-selector__close" ref="close" aria-label="Close">&times;</button>
+      </div>
+
+      <form class="vehicle-selector__form" ref="form">
+        <div class="vehicle-selector__fields">
+          <div class="vehicle-selector__field">
+            <label for="vs-make" class="vehicle-selector__label">MAKE</label>
+            <select id="vs-make" name="make" ref="makeSelect" class="vehicle-selector__select">
+              <option value="">— Select —</option>
+            </select>
+          </div>
+          <div class="vehicle-selector__field">
+            <label for="vs-model" class="vehicle-selector__label">MODEL</label>
+            <select id="vs-model" name="model" ref="modelSelect" class="vehicle-selector__select" disabled>
+              <option value="">— Select —</option>
+            </select>
+          </div>
+          <div class="vehicle-selector__field">
+            <label for="vs-year" class="vehicle-selector__label">YEAR</label>
+            <select id="vs-year" name="year" ref="yearSelect" class="vehicle-selector__select" disabled>
+              <option value="">— Select —</option>
+            </select>
+          </div>
+          <div class="vehicle-selector__field vehicle-selector__field--action">
+            <button type="submit" class="vehicle-selector__go" ref="goButton" disabled>GO</button>
+          </div>
+        </div>
+      </form>
+
+      <div class="vehicle-selector__saved" ref="savedVehicle" style="display: none;">
+        <div class="vehicle-selector__saved-info">
+          <span class="vehicle-selector__saved-icon">&#10003;</span>
+          <span ref="savedText"></span>
+        </div>
+        <button type="button" class="vehicle-selector__clear" ref="clearButton">Clear Vehicle</button>
+      </div>
+    </div>
+  </dialog>
+</vehicle-selector>
+
+<script src="{{ 'vehicle-selector.js' | asset_url }}" type="module"></script>

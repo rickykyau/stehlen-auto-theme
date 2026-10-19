@@ -1,0 +1,34 @@
+{% comment %}
+  Product Card Enhancements — styles now in stehlen-theme.css
+  This file is intentionally minimal to avoid CSS conflicts.
+{% endcomment %}
+
+<style>
+  /* Sale badge */
+  .product-card .badge--sale,
+  .product-card [data-badge-type="sale"] {
+    background: #FF4E4E !important;
+    color: #fff !important;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 0.6875rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 0;
+  }
+
+  /* Sold out badge */
+  .product-card .badge--sold-out,
+  .product-card [data-badge-type="sold_out"] {
+    background: hsl(220 8% 55%) !important;
+    color: #fff !important;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 0.6875rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 0;
+  }
+</style>

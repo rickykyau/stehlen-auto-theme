@@ -1,0 +1,1585 @@
+/* ============================================================
+   STEHLEN AUTO — Master Theme CSS
+   Implements Lovable design (stehlenauto repo) on Horizon theme.
+   Fonts: Barlow Condensed (display) + Barlow (body)
+   ============================================================ */
+
+/* ── SECTION 1: Design Tokens ── */
+:root {
+  --lov-bg: hsl(220 15% 8%);
+  --lov-card: hsl(220 12% 12%);
+  --lov-primary: #F5A623;
+  --lov-primary-fg: hsl(0 0% 5%);
+  --lov-primary-hover: hsl(40 100% 61%);
+  --lov-primary-40: hsl(38 91% 55% / 0.4);
+  --lov-primary-10: hsl(38 91% 55% / 0.1);
+  --lov-primary-5: hsl(38 91% 55% / 0.05);
+  --lov-border: hsl(220 8% 25%);
+  --lov-muted: hsl(220 10% 18%);
+  --lov-muted-fg: hsl(220 8% 55%);
+  --lov-fg: hsl(220 10% 96%);
+  --lov-fg-90: hsl(220 10% 86%);
+  --lov-input: hsl(220 8% 20%);
+  --lov-accent: hsl(220 10% 22%);
+  --lov-sidebar: hsl(220 15% 6%);
+  --lov-destructive: hsl(0 72% 51%);
+  --lov-success: hsl(142 72% 40%);
+  --lov-font-display: 'Barlow Condensed', sans-serif;
+  --lov-font-body: 'Barlow', sans-serif;
+  --lov-radius: 0px;
+}
+
+/* ── SECTION 2: Global Resets ── */
+body {
+  background: var(--lov-bg) !important;
+  color: var(--lov-fg) !important;
+  font-family: var(--lov-font-body) !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--lov-font-display) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+button, .btn, .button, input, select, textarea,
+[class*="card"], [class*="modal"], [class*="badge"],
+[class*="btn"], [class*="button"] {
+  border-radius: var(--lov-radius) !important;
+}
+
+/* Primary button */
+[class*="button--primary"], .button--primary {
+  background: var(--lov-primary) !important;
+  color: var(--lov-primary-fg) !important;
+  border-radius: var(--lov-radius) !important;
+  font-family: var(--lov-font-display) !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+}
+
+[class*="button--primary"]:hover, .button--primary:hover {
+  filter: brightness(1.15) !important;
+}
+
+/* ── SECTION 3: Collection Layout Wrapper ── */
+.collection-wrapper.grid,
+[class*="collection-wrapper"] {
+  display: grid !important;
+  grid-template-columns: 256px 1fr !important;
+  align-items: start !important;
+  gap: 0 !important;
+}
+
+/* ── SECTION 4: Sidebar + Filter Styles ── */
+.facets-block-wrapper--sidebar {
+  --color-background-primary: var(--lov-sidebar) !important;
+  background: var(--lov-sidebar) !important;
+  border-right: 1px solid var(--lov-border) !important;
+  width: 256px !important;
+  min-width: 256px !important;
+}
+
+body .facets-block-wrapper--sidebar,
+body .facets--sidebar {
+  --color-background-primary: var(--lov-sidebar) !important;
+  background: var(--lov-sidebar) !important;
+  border-radius: var(--lov-radius) !important;
+}
+
+/* "REFINE RESULTS" header */
+.facets__refine-header {
+  font-family: var(--lov-font-display) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.15em !important;
+  color: var(--lov-primary) !important;
+  margin: 0 0 16px 0 !important;
+  padding: 0 !important;
+}
+
+/* Filter group labels (CATEGORY, YEAR, MAKE etc) */
+.facets__summary {
+  padding: 14px 0 !important;
+  border-bottom: 1px solid var(--lov-border) !important;
+}
+
+.facets__label {
+  font-family: var(--lov-font-display) !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.15em !important;
+  color: var(--lov-muted-fg) !important;
+}
+
+/* Checkbox row */
+.checkbox {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.checkbox__label {
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  gap: 8px !important;
+  padding: 6px 12px !important;
+  transition: color 150ms, background-color 150ms !important;
+}
+
+.checkbox__label-text {
+  flex: 1 !important;
+  font-family: var(--lov-font-body) !important;
+  font-size: 14px !important;
+  color: var(--lov-muted-fg) !important;
+}
+
+.checkbox__count {
+  font-size: 12px !important;
+  color: var(--lov-muted-fg) !important;
+  font-family: var(--lov-font-body) !important;
+  margin-left: auto !important;
+}
+
+/* Checked state — Lovable: left orange border + primary text */
+.checkbox__input:checked + .checkbox__label {
+  color: var(--lov-primary) !important;
+  background: var(--lov-primary-5) !important;
+  border-left: 2px solid var(--lov-primary) !important;
+  padding-left: 10px !important;
+}
+
+.checkbox__input:checked + .checkbox__label .checkbox__label-text {
+  color: var(--lov-primary) !important;
+  font-weight: 600 !important;
+}
+
+.checkbox__input:checked + .checkbox__label .checkbox__count {
+  color: var(--lov-primary) !important;
+}
+
+/* Native checkbox override */
+.checkbox__input {
+  position: relative !important;
+  opacity: 1 !important;
+  accent-color: var(--lov-primary) !important;
+  width: 16px !important;
+  height: 16px !important;
+  flex-shrink: 0 !important;
+  cursor: pointer !important;
+}
+
+/* Hide Horizon SVG checkmark — using native checkbox */
+.checkbox__label svg.icon-checkmark {
+  display: none !important;
+}
+
+/* ── Year filter decade groups ── */
+
+/* Hide original checkboxes in year filter when decade pills are present */
+[data-filter-param-name="filter-p-m-custom-year"] .facets__inputs-list,
+[data-filter-param-name="filter-p-m-custom-year"] show-more-component > button,
+[data-filter-param-name="filter-p-m-custom-year"] .show-more__button {
+  display: none !important;
+}
+
+/* But keep the list in DOM (for form submission) — just visually hidden */
+[data-filter-param-name="filter-p-m-custom-year"] .facets__inputs-list {
+  position: absolute !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+.year-decade-group {
+  margin-bottom: 16px;
+}
+
+.year-decade-label {
+  font-family: var(--lov-font-display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--lov-muted-fg);
+  margin-bottom: 8px;
+}
+
+.year-decade-pills {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+}
+
+.year-pill,
+.facets__form button.year-pill,
+.facets button.year-pill {
+  background: var(--lov-input) !important;
+  border: 1px solid var(--lov-border) !important;
+  border-radius: 0 !important;
+  color: var(--lov-muted-fg) !important;
+  font-family: var(--lov-font-display) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.04em !important;
+  padding: 5px 4px !important;
+  cursor: pointer !important;
+  text-align: center !important;
+  transition: all 150ms !important;
+  width: 100% !important;
+}
+
+.year-pill:hover,
+.facets__form button.year-pill:hover {
+  border-color: hsl(38 91% 55% / 0.5) !important;
+  color: var(--lov-fg) !important;
+}
+
+.year-pill--active,
+.year-pill.year-pill--active,
+.facets__form button.year-pill--active {
+  background: hsl(38 91% 55% / 0.15) !important;
+  border-color: var(--lov-primary) !important;
+  color: var(--lov-primary) !important;
+  font-weight: 700 !important;
+}
+
+/* "All Years" button — spans full width */
+.year-pill--all,
+.facets__form button.year-pill--all {
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
+  margin-bottom: 8px !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  font-size: 11px !important;
+}
+
+/* ── Make filter active state ── */
+[data-filter-param-name*="make"] .checkbox__input:checked + .checkbox__label,
+[data-filter-param-name*="Make"] .checkbox__input:checked + .checkbox__label {
+  border-left: 2px solid var(--lov-primary) !important;
+  padding-left: 8px !important;
+  color: var(--lov-primary) !important;
+  background: var(--lov-primary-5) !important;
+}
+
+[data-filter-param-name*="make"] .checkbox__input:checked + .checkbox__label .checkbox__label-text,
+[data-filter-param-name*="Make"] .checkbox__input:checked + .checkbox__label .checkbox__label-text {
+  color: var(--lov-primary) !important;
+  font-weight: 600 !important;
+}
+
+/* Filter panel borders */
+.facets__item {
+  border-bottom: 1px solid var(--lov-border) !important;
+}
+
+.facets__item::before {
+  display: none !important;
+}
+
+/* Hide "SEE X ITEMS" from sidebar (drawer only) */
+.facets--sidebar .facets__see-results,
+.facets-block-wrapper--sidebar .facets__see-results {
+  display: none !important;
+}
+
+/* ── SECTION 5: Product Grid ── */
+ul[class*="product-grid"] {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important;
+  gap: 16px !important;
+  padding: 16px 24px !important;
+  list-style: none !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+li[class*="product-grid__item"],
+li.product-grid__item {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  flex: none !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+product-card,
+product-card-link {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  display: block !important;
+}
+
+#ResultsList,
+.main-collection-grid {
+  width: 100% !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+}
+
+/* ── SECTION 5b: Breadcrumb + Toolbar ── */
+.stehlen-breadcrumb {
+  padding: 12px 32px;
+  border-bottom: 1px solid var(--lov-border);
+  font-family: var(--lov-font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--lov-muted-fg);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stehlen-breadcrumb a {
+  color: var(--lov-muted-fg);
+  text-decoration: none;
+  transition: color 150ms;
+}
+
+.stehlen-breadcrumb a:hover {
+  color: var(--lov-primary);
+}
+
+.stehlen-breadcrumb span:last-child {
+  color: var(--lov-fg);
+}
+
+.stehlen-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 32px;
+  border-bottom: 1px solid var(--lov-border);
+}
+
+.stehlen-toolbar__count {
+  font-family: var(--lov-font-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--lov-muted-fg);
+}
+
+.stehlen-toolbar__sort {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--lov-font-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--lov-muted-fg);
+}
+
+.stehlen-toolbar__sort select {
+  background: var(--lov-input);
+  border: 1px solid var(--lov-border);
+  color: var(--lov-fg);
+  padding: 6px 10px;
+  font-family: var(--lov-font-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  border-radius: 0;
+  cursor: pointer;
+}
+
+.stehlen-toolbar__sort select:hover {
+  border-color: var(--lov-primary-40);
+}
+
+/* ── FIX: Card link overlay — don't cover the CTA row ── */
+product-card .product-card__link {
+  z-index: 1 !important;
+}
+
+.stehlen-card-cta {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+.stehlen-card-cta__view {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+.stehlen-card-cta__cart {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+/* ── FIX: Announcement bar — gold text on dark bg ── */
+.stehlen-announcements {
+  background: #1A1200 !important;
+  border-bottom: 1px solid hsl(38 91% 55% / 0.25) !important;
+}
+
+.stehlen-announcements__slide {
+  color: var(--lov-primary) !important;
+  font-family: var(--lov-font-display) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+}
+
+/* Horizon announcement bar */
+.announcement-bar {
+  background: #1A1200 !important;
+}
+
+/* Hide duplicate native Horizon announcement bar */
+.announcement-bar.spacing-style {
+  display: none !important;
+}
+
+.announcement-bar__message,
+.announcement-bar__slides,
+.announcement-bar a,
+.announcement-bar p,
+.announcement-bar span {
+  color: var(--lov-primary) !important;
+  font-family: var(--lov-font-display) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  font-size: 12px !important;
+  text-transform: uppercase !important;
+}
+
+/* ── SECTION 6: Product Card (CRITICAL — variable override pattern) ── */
+
+/* Card container */
+product-card .product-card__content.border-style,
+product-card .product-card__content.spacing-style,
+product-card .product-card__content {
+  --color-background-primary: hsl(220 12% 12%) !important;
+  background: hsl(220 12% 12%) !important;
+  border: 1px solid hsl(220 8% 25%) !important;
+  border-radius: var(--lov-radius) !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+  transition: border-color 150ms !important;
+}
+
+product-card:hover .product-card__content.border-style,
+product-card:hover .product-card__content {
+  border-color: hsl(38 91% 55% / 0.4) !important;
+}
+
+/* Card gallery / image area */
+product-card .card-gallery.border-style,
+product-card .card-gallery.spacing-style,
+product-card .card-gallery,
+product-card [class*="card-gallery"] {
+  --color-background-primary: hsl(220 10% 18%) !important;
+  background: hsl(220 10% 18%) !important;
+  border-radius: var(--lov-radius) !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  width: 100% !important;
+  aspect-ratio: 1 / 1 !important;
+  overflow: hidden !important;
+  flex-shrink: 0 !important;
+}
+
+/* Image hover zoom */
+product-card .card-gallery img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  transition: transform 500ms !important;
+}
+
+product-card:hover .card-gallery img {
+  transform: scale(1.05) !important;
+}
+
+/* Card text area — padding for title and price */
+product-card .product-card__content .typography-style,
+product-card .product-card__content [class*="text-block"],
+product-card .product-card__content product-price,
+product-card .product-card__content [class*="product-price"],
+product-card .product-card__content .price {
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+}
+
+/* Title styling */
+product-card .product-card__content [class*="text-block"] {
+  padding-top: 12px !important;
+}
+
+product-card .product-card__content [class*="text-block"] a,
+product-card .product-card__content [data-testid="product-title"] {
+  font-family: var(--lov-font-body) !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
+  color: var(--lov-fg-90) !important;
+  text-transform: uppercase !important;
+  letter-spacing: normal !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
+/* Price styling */
+product-card .product-card__content product-price {
+  padding-top: 8px !important;
+  padding-bottom: 12px !important;
+}
+
+product-card .product-card__content product-price .price,
+product-card .product-card__content .price .money,
+product-card .product-card__content .price-item--regular {
+  font-family: var(--lov-font-display) !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  color: var(--lov-primary) !important;
+}
+
+product-card .product-card__content .price-item--compare,
+product-card .product-card__content .price s,
+product-card .product-card__content .price del {
+  font-family: var(--lov-font-display) !important;
+  font-size: 12px !important;
+  color: var(--lov-muted-fg) !important;
+  text-decoration: line-through !important;
+}
+
+/* Card gap override */
+product-card .gap-style {
+  --product-card-gap: 0px !important;
+}
+
+/* Hide Horizon's built-in quick-add (replaced by stehlen-card-cta) */
+.card-gallery .quick-add,
+.card-gallery quick-add-component,
+.quick-add {
+  display: none !important;
+}
+
+/* Split CTA row: VIEW PRODUCT + Cart icon */
+.stehlen-card-cta {
+  display: flex !important;
+  align-items: stretch !important;
+  border-top: 1px solid var(--lov-border) !important;
+  height: 44px !important;
+  margin-top: auto !important;
+}
+
+.stehlen-card-cta__view {
+  flex: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-family: var(--lov-font-display) !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  color: var(--lov-fg) !important;
+  text-decoration: none !important;
+  transition: color 150ms, background 150ms !important;
+}
+
+.stehlen-card-cta__view:hover {
+  color: var(--lov-primary) !important;
+  background: var(--lov-accent) !important;
+}
+
+.stehlen-card-cta__form {
+  display: flex !important;
+  margin: 0 !important;
+}
+
+.stehlen-card-cta__cart {
+  width: 48px !important;
+  background: var(--lov-primary) !important;
+  border: none !important;
+  border-left: 1px solid var(--lov-border) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: var(--lov-primary-fg) !important;
+  cursor: pointer !important;
+  border-radius: 0 !important;
+  transition: filter 150ms !important;
+}
+
+.stehlen-card-cta__cart:hover {
+  filter: brightness(1.15) !important;
+}
+
+.stehlen-card-cta__cart svg {
+  width: 16px !important;
+  height: 16px !important;
+}
+
+/* ── SECTION 7: Collection Header ── */
+
+/* Compact header padding */
+.section-content-wrapper .text-block,
+.section-content-wrapper rte-formatter,
+.section-content-wrapper .rte {
+  --width: 100% !important;
+  --max-width: 100% !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Collection title */
+.collection-header h1,
+[class*="collection"] h1,
+#MainContent h1 {
+  font-family: var(--lov-font-display) !important;
+  font-size: 36px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  line-height: 1 !important;
+  color: var(--lov-fg) !important;
+}
+
+/* Collection description */
+.section-content-wrapper rte-formatter p,
+.section-content-wrapper .rte p {
+  font-family: var(--lov-font-body) !important;
+  font-size: 14px !important;
+  color: var(--lov-muted-fg) !important;
+  line-height: 1.6 !important;
+}
+
+/* ── SECTION 8: Mobile Breakpoints ── */
+@media (max-width: 1023px) {
+  .collection-wrapper.grid,
+  [class*="collection-wrapper"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  .facets-block-wrapper--sidebar {
+    display: none !important;
+  }
+}
+
+@media (max-width: 639px) {
+  ul[class*="product-grid"] {
+    grid-template-columns: repeat(1, 1fr) !important;
+    gap: 12px !important;
+    padding: 12px !important;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  ul[class*="product-grid"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+    padding: 16px !important;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  ul[class*="product-grid"] {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  ul[class*="product-grid"] {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+}
+
+/* ── SECTION 9: Homepage Sections ── */
+
+/* Trust bar */
+.trust-bar {
+  background: var(--lov-card) !important;
+  border-top: 1px solid var(--lov-border) !important;
+  border-bottom: 1px solid var(--lov-border) !important;
+}
+
+/* Category cards — Lovable seamless grid */
+.ui-test-collection-list {
+  border-top: 1px solid var(--lov-border) !important;
+  border-bottom: 1px solid var(--lov-border) !important;
+}
+/* Force full-width regardless of section class (page-width or full-width) */
+.ui-test-collection-list .section {
+  max-width: 100% !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  width: 100% !important;
+}
+.ui-test-collection-list .resource-list {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 0 !important;
+}
+@media (max-width: 767px) {
+  .ui-test-collection-list .resource-list {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+.collection-card,
+.collection-card .border-style {
+  --color-background-primary: transparent !important;
+  --color-border: transparent !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+}
+.collection-card:hover {
+  border-color: transparent !important;
+}
+
+/* Category section heading — left-aligned, Barlow Condensed */
+.ui-test-collection-list .section-resource-list__content {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 24px 48px 16px !important;
+  width: 100% !important;
+}
+.ui-test-collection-list .section-resource-list__content h2,
+.ui-test-collection-list .section-resource-list__content [class*="heading"],
+.ui-test-collection-list .section-resource-list__content .text-block,
+.ui-test-collection-list .section-resource-list__content .text-block.h2,
+.ui-test-collection-list .section-resource-list__content div[class*="text-block"] {
+  font-size: 20px !important;
+  font-family: 'Barlow Condensed', sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: 2px !important;
+  text-transform: uppercase !important;
+  color: var(--lov-fg) !important;
+  text-align: left !important;
+  margin: 0 !important;
+}
+
+/* Category card dark gradient overlay for text readability */
+.collection-card .collection-card__inner::after,
+.collection-card .card-gallery__main::after,
+.collection-card .card__media::after {
+  content: '' !important;
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 60% !important;
+  background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%) !important;
+  z-index: 1 !important;
+  pointer-events: none !important;
+}
+
+/* ── Featured Products section heading + View All ── */
+.ui-test-product-list .section-resource-list__content {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 24px 48px 16px !important;
+  width: 100% !important;
+}
+.ui-test-product-list .section-resource-list__content .text-block,
+.ui-test-product-list .section-resource-list__content div[class*="text-block"],
+.ui-test-product-list .section-resource-list__content h2,
+.ui-test-product-list .section-resource-list__content h3 {
+  font-size: 20px !important;
+  font-family: 'Barlow Condensed', sans-serif !important;
+  font-weight: 800 !important;
+  letter-spacing: 2px !important;
+  text-transform: uppercase !important;
+  color: var(--lov-fg) !important;
+  text-align: left !important;
+  margin: 0 !important;
+}
+/* View All / Shop All link */
+.ui-test-product-list .button-secondary,
+.ui-test-product-list a[class*="button-secondary"] {
+  color: var(--lov-primary) !important;
+  font-family: 'Barlow Condensed', sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+  border-radius: 0 !important;
+  border-color: transparent !important;
+  background: transparent !important;
+}
+/* Featured products grid gap */
+.ui-test-product-list .resource-list--grid,
+.ui-test-product-list ul[class*="product-grid"] {
+  gap: 8px !important;
+}
+/* Cart button border-radius — force 0 with higher specificity */
+button.stehlen-card-cta__cart,
+.stehlen-card-cta .stehlen-card-cta__cart,
+.product-card button.stehlen-card-cta__cart,
+.card-gallery button.stehlen-card-cta__cart {
+  border-radius: 0 !important;
+}
+/* Quick-add button border-radius */
+.quick-add__button,
+button.quick-add__button,
+.quick-add__button--add {
+  border-radius: 0 !important;
+}
+
+/* Pagination */
+.pagination .current,
+.pagination [aria-current="page"] {
+  background: var(--lov-primary) !important;
+  color: var(--lov-primary-fg) !important;
+  border-color: var(--lov-primary) !important;
+}
+
+.pagination a,
+.pagination span,
+.pagination button {
+  border-color: var(--lov-border) !important;
+  color: var(--lov-muted-fg) !important;
+  border-radius: var(--lov-radius) !important;
+}
+
+.pagination a:hover,
+.pagination button:hover {
+  border-color: var(--lov-primary-40) !important;
+  color: var(--lov-fg) !important;
+}
+
+/* ── SECTION 10: PDP Styles ── */
+
+/* Product information section */
+.product-information {
+  --color-background-primary: var(--lov-bg) !important;
+  background: var(--lov-bg) !important;
+}
+
+/* PDP title */
+.product-information h1 {
+  font-family: var(--lov-font-display) !important;
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: var(--lov-fg) !important;
+}
+
+/* PDP price */
+.product-information .price .money,
+.product-information .price-item--regular {
+  font-family: var(--lov-font-display) !important;
+  font-size: 28px !important;
+  font-weight: 700 !important;
+  color: var(--lov-primary) !important;
+}
+
+/* PDP quantity stepper */
+.quantity-selector {
+  background: #1A1A1A !important;
+  border: 1px solid #2A2A2A !important;
+  border-radius: 0 !important;
+}
+
+.quantity-selector input {
+  background: #1A1A1A !important;
+  color: var(--lov-fg) !important;
+  border: none !important;
+}
+
+.quantity-minus,
+.quantity-plus {
+  background: transparent !important;
+  color: var(--lov-muted-fg) !important;
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+.quantity-minus:hover,
+.quantity-plus:hover {
+  color: var(--lov-fg) !important;
+}
+
+/* PDP thumbnails */
+.slideshow-controls__thumbnail {
+  background: #111111 !important;
+  border: 1px solid #1E1E1E !important;
+  border-radius: 0 !important;
+}
+
+.slideshow-controls__thumbnail[aria-current="true"],
+.slideshow-controls__thumbnail.active,
+.slideshow-controls__thumbnail:focus {
+  border-color: var(--lov-primary) !important;
+}
+
+.slideshow-controls__thumbnail img {
+  border-radius: 0 !important;
+}
+
+/* PDP variant buttons */
+.variant-option__button-label {
+  background: #111111 !important;
+  border: 1px solid #2A2A2A !important;
+  border-radius: 0 !important;
+  color: #888888 !important;
+}
+
+.variant-option__button-label:has(input:checked),
+.variant-option__button-label[aria-checked="true"] {
+  border-color: var(--lov-primary) !important;
+  color: var(--lov-fg) !important;
+}
+
+/* Add to Cart button */
+.product-information form[action="/cart/add"] button[type="submit"],
+.product-information [class*="add-to-cart"] button {
+  background: var(--lov-primary) !important;
+  color: var(--lov-primary-fg) !important;
+  border: none !important;
+  border-radius: var(--lov-radius) !important;
+  font-family: var(--lov-font-display) !important;
+  font-weight: 800 !important;
+  font-size: 14px !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  width: 100% !important;
+  padding: 14px 20px !important;
+}
+
+/* Product recommendations */
+.product-recommendations {
+  background: var(--lov-bg) !important;
+}
+
+/* ── PDP: Related products heading ALL CAPS ── */
+.product-recommendations h2,
+.product-recommendations h3,
+.product-recommendations [class*="text-block"] {
+  text-transform: uppercase !important;
+  letter-spacing: 0.15em !important;
+  font-family: var(--lov-font-display) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  color: var(--lov-muted-fg) !important;
+}
+
+/* ── Vehicle selector overrides ── */
+.vehicle-selector__dialog,
+.vehicle-selector__dialog *,
+[class*="vehicle-selector"] *,
+.vehicle-selector__select,
+.vehicle-selector__go,
+.vehicle-selector__close,
+.vehicle-selector__clear {
+  border-radius: 0 !important;
+}
+
+/* ── Drawer link overrides ── */
+.stehlen-drawer-link,
+a.stehlen-drawer-link,
+.stehlen-drawer-link.stehlen-drawer-toggle,
+[class*="stehlen-drawer"] {
+  border-radius: 0 !important;
+}
+
+/* ── HERO TWO-COLUMN LAYOUT ── */
+.hero__two-col {
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: 55% 45% !important;
+  grid-template-rows: 1fr !important;
+  align-items: center !important;
+}
+
+/* Media wrapper stays as absolute background — span full area */
+.hero__two-col .hero__media-wrapper {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 0 !important;
+  grid-column: 1 / -1 !important;
+  grid-row: 1 / -1 !important;
+}
+
+/* Content wrapper — left column, above background */
+.hero__two-col .hero__content-wrapper {
+  position: relative !important;
+  z-index: 1 !important;
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  padding: 64px 48px 64px 64px !important;
+}
+
+/* Hero CTA button — override Horizon's button-primary component */
+.hero__content-wrapper a[class*="button-primary"],
+.hero__content-wrapper .button-primary,
+.hero a[class*="button-primary"],
+.hero__content-wrapper a[class*="button"] {
+  background: #F5A623 !important;
+  color: #111 !important;
+  border-radius: 0 !important;
+  font-family: 'Barlow Condensed', sans-serif !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  border: none !important;
+}
+
+/* Fitment card — right column, above background */
+.hero__col-right {
+  position: relative !important;
+  z-index: 1 !important;
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  padding: 64px 64px 64px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── HERO FITMENT CARD ── */
+.hero-fitment {
+  background: hsl(220 12% 12%);
+  border: 1px solid hsl(220 8% 25%);
+  border-radius: 0;
+  padding: 28px;
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+}
+
+.hero-fitment__label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: hsl(220 8% 55%);
+}
+
+.hero-fitment__sub {
+  font-size: 13px;
+  color: hsl(220 8% 55%);
+  line-height: 1.5;
+}
+
+.hero-fitment__btn {
+  width: 100%;
+  background: #F5A623;
+  color: #111;
+  border: none;
+  border-radius: 0;
+  padding: 12px 20px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 150ms;
+}
+
+.hero-fitment__btn:hover {
+  background: #FFB93A;
+}
+
+.hero-fitment__guarantee {
+  font-size: 11px;
+  color: hsl(142 72% 40%);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+/* ── HERO MOBILE ── */
+@media (max-width: 768px) {
+  .hero__two-col {
+    grid-template-columns: 1fr !important;
+  }
+  .hero__content-wrapper {
+    padding: 48px 24px 32px !important;
+  }
+  .hero__col-right {
+    padding: 0 24px 48px;
+  }
+  .hero-fitment {
+    max-width: 100%;
+  }
+}
+
+.hero__gold { color: #F5A623 !important; }
+
+/* ── Footer column headings — orange per SKILL.md ── */
+.stehlen-footer__heading,
+footer h3,
+.footer h3 {
+  color: var(--lov-primary) !important;
+  font-family: var(--lov-font-display) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+}
+
+/* ── Sidebar SHOW MORE button — ghost style per SKILL.md ── */
+.show-more__button,
+.facets .show-more__button {
+  background: transparent !important;
+  border: 1px solid #2A2A2A !important;
+  color: #888888 !important;
+  border-radius: 0 !important;
+  font-family: var(--lov-font-display) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  padding: 8px 16px !important;
+  transition: color 150ms, border-color 150ms !important;
+}
+
+.show-more__button:hover {
+  color: var(--lov-primary) !important;
+  border-color: var(--lov-primary) !important;
+}
+
+/* ── Hide "Shop by Popular Models" (not in Lovable design) ── */
+#stehlen-popular-models { display: none !important; }
+
+/* ── Hide footer trust badges (not in Lovable design) ── */
+.stehlen-footer-trust,
+#stehlen-footer-trust {
+  display: none !important;
+}
+
+/* ── Footer border-radius fixes ── */
+.stehlen-footer__social a,
+.stehlen-footer a[class*="social"],
+footer a[class*="social"] {
+  border-radius: 0 !important;
+}
+.stehlen-footer__input,
+.stehlen-footer input,
+footer input[type="email"] {
+  border-radius: 0 !important;
+}
+.stehlen-footer__signup-btn,
+.stehlen-footer button,
+footer button[type="submit"] {
+  border-radius: 0 !important;
+}
+
+/* ── Hide account icon in nav (not in Lovable design) ── */
+.account-popover,
+.account-button {
+  display: none !important;
+}
+
+/* ── Hide Horizon value-props section (duplicate — JS version is styled) ── */
+.value-props-bar {
+  display: none !important;
+}
+
+/* Style the JS-injected trust bar */
+#stehlen-value-props {
+  background: var(--lov-card) !important;
+  border-top: 1px solid var(--lov-border) !important;
+  border-bottom: 1px solid var(--lov-border) !important;
+  padding: 20px 32px !important;
+}
+
+#stehlen-value-props .vp-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 24px !important;
+  max-width: 1280px !important;
+  margin: 0 auto !important;
+}
+
+#stehlen-value-props .vp-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+#stehlen-value-props .vp-title {
+  font-family: var(--lov-font-display) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  color: var(--lov-fg) !important;
+}
+
+#stehlen-value-props .vp-sub {
+  font-size: 10px !important;
+  color: var(--lov-muted-fg) !important;
+}
+
+/* Hide the second/duplicate value props injection */
+#stehlen-value-props ~ #stehlen-value-props,
+#stehlen-value-props + #stehlen-value-props {
+  display: none !important;
+}
+
+/* ── SECTION 11: Nav Bar Fixes (Lovable match) ── */
+
+/* ===================================================================
+   MASTER LAYOUT FIX — Lovable LEFT-LOGO single-row header
+   Target: [hamburger] [logo] [search] [SELECT YOUR VEHICLE] [cart]
+
+   Horizon theme uses a 2-column grid:
+     .header__column--left  (1fr) = hamburger, search(mobile), logo, menu
+     .header__column--right (1fr) = search(desktop), vehicle-sel, account, cart
+
+   Problem: equal 1fr columns push logo toward center.
+   Fix: make left column shrink-to-fit, right column gets the space.
+   =================================================================== */
+
+/* A) Override the header grid to left-logo layout (desktop) */
+@media screen and (min-width: 750px) {
+  /* Left column: shrink to content (logo + hamburger) */
+  header-component .header__columns.spacing-style {
+    --header-left: max-content !important;
+    --header-right: 1fr !important;
+    grid-gap: 16px !important;
+  }
+
+  /* Left column: left-align, no stretching */
+  .header__column.header__column--left {
+    justify-content: flex-start !important;
+    gap: 12px !important;
+  }
+
+  /* Right column: spread items across available space */
+  .header__column.header__column--right {
+    justify-content: flex-end !important;
+    gap: 12px !important;
+    align-items: center !important;
+  }
+
+  /* Show hamburger on desktop — Lovable has it visible always.
+     The theme uses .desktop\:hidden { display:none!important } at >=750px.
+     Override with higher specificity. */
+  .header__column--left .header__drawer.desktop\:hidden,
+  header-component .header__drawer.desktop\:hidden {
+    display: block !important;
+  }
+}
+
+/* B) Hide nav menu links (Home, Catalog, Contact) — not in Lovable */
+header-component header-menu,
+header-component [header-menu],
+header-component nav[header-menu],
+.header__column header-menu {
+  display: none !important;
+}
+
+/* C) Darken header background to match Lovable */
+.header__row,
+.header__row--top {
+  background-color: var(--lov-bg) !important;
+}
+
+header-component.header {
+  background-color: var(--lov-bg) !important;
+}
+
+/* D) Announcement bar gold bottom border */
+.stehlen-announcements {
+  background: #1A1200 !important;
+  border-bottom: 1px solid hsl(38 91% 55% / 0.25) !important;
+}
+
+/* E) Logo size */
+.header-logo img,
+.header-logo svg,
+header-component .header-logo img {
+  width: 200px !important;
+  max-width: 200px !important;
+  height: auto !important;
+}
+
+/* F) Compact nav bar height */
+header-component .header__columns {
+  --padding-block-start: 6px !important;
+  --padding-block-end: 6px !important;
+}
+
+body:has(> #header-group > header) {
+  --header-height: 52px !important;
+}
+
+/* G) Search icon — compact, no stretching */
+/* The compiled theme sets .header__column--right .search-action { flex-grow:1 }
+   which stretches the search button across the header. Kill it.
+   IMPORTANT: Do NOT target .header__column--left .search-action here —
+   the left column search has desktop:hidden and must stay hidden on desktop.
+   Only the right column search (mobile:hidden) should show on desktop. */
+.header__column--right .search-action {
+  flex-grow: 0 !important;
+  flex-shrink: 0 !important;
+  flex-basis: auto !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: fit-content !important;
+  margin-inline: 0 !important;
+}
+
+@media screen and (min-width: 750px) {
+  .header__column--right .search-action {
+    flex-grow: 0 !important;
+    width: auto !important;
+    max-width: fit-content !important;
+    margin-inline: 0 !important;
+  }
+}
+
+/* H) Vehicle selector trigger — orange-bordered button with visible text
+   The compiled theme sets .vehicle-selector__trigger-text{display:none}.
+   Override to show the full "SELECT YOUR VEHICLE" text.
+   SPECIFICITY: Must beat custom-hero.css ".header-actions button" (0,1,1).
+   Using "button.vehicle-selector__trigger" (0,1,1) + later load order wins. */
+button.vehicle-selector__trigger,
+.vehicle-selector button.vehicle-selector__trigger,
+header-actions button.vehicle-selector__trigger {
+  background: transparent !important;
+  color: var(--lov-primary) !important;
+  padding: 8px 16px !important;
+  border: 2px solid var(--lov-primary) !important;
+  border-color: var(--lov-primary) !important;
+  border-radius: 0 !important;
+  font-family: var(--lov-font-display) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  transition: all 150ms !important;
+}
+
+button.vehicle-selector__trigger:hover,
+header-actions button.vehicle-selector__trigger:hover {
+  background: var(--lov-primary) !important;
+  color: #111 !important;
+}
+
+button.vehicle-selector__trigger:hover svg {
+  color: #111 !important;
+  stroke: #111 !important;
+}
+
+button.vehicle-selector__trigger svg,
+header-actions button.vehicle-selector__trigger svg {
+  color: var(--lov-primary) !important;
+  stroke: var(--lov-primary) !important;
+  width: 16px !important;
+  height: 16px !important;
+}
+
+/* Force the trigger text visible — overrides compiled theme display:none */
+.vehicle-selector__trigger-text,
+.vehicle-selector .vehicle-selector__trigger-text,
+span.vehicle-selector__trigger-text {
+  display: inline !important;
+  color: inherit !important;
+}
+
+/* On mobile, hide the text and show only the icon */
+@media screen and (max-width: 749px) {
+  .vehicle-selector__trigger-text,
+  .vehicle-selector .vehicle-selector__trigger-text,
+  span.vehicle-selector__trigger-text {
+    display: none !important;
+  }
+  button.vehicle-selector__trigger,
+  header-actions button.vehicle-selector__trigger {
+    padding: 6px !important;
+    border-width: 1px !important;
+  }
+}
+
+/* I) Right-side spacing */
+.header__column--right {
+  gap: 12px !important;
+}
+
+header-actions {
+  gap: 8px !important;
+}
+
+.header__column--right header-actions {
+  margin-inline-start: 0 !important;
+}
+
+/* J) Search modal: dark theme to match Lovable */
+.search-modal__content.dialog-modal {
+  background: var(--lov-bg) !important;
+  border: none !important;
+  border-bottom: 1px solid var(--lov-border) !important;
+}
+
+.predictive-search {
+  --color-background: var(--lov-bg) !important;
+  --color-background-primary: var(--lov-bg) !important;
+  --color-foreground: var(--lov-fg) !important;
+  --color-border: var(--lov-border) !important;
+  background: var(--lov-bg) !important;
+}
+
+.predictive-search-form__header,
+.predictive-search-form__header-inner {
+  background: var(--lov-bg) !important;
+  border-color: var(--lov-border) !important;
+}
+
+.predictive-search-form__header-inner {
+  border: 1px solid var(--lov-border) !important;
+  border-radius: 0 !important;
+}
+
+.search-input,
+.predictive-search .search-input,
+input.search-input,
+.predictive-search-form__header-inner .search-input,
+dialog .search-input,
+.search-modal input.search-input {
+  background: var(--lov-input) !important;
+  color: var(--lov-fg) !important;
+  border: 1px solid var(--lov-border) !important;
+  border-radius: 0 !important;
+  font-family: var(--lov-font-body) !important;
+}
+.search-modal__content.dialog-modal,
+dialog.search-modal__content {
+  border-radius: 0 !important;
+}
+
+.search-input::placeholder {
+  color: var(--lov-muted-fg) !important;
+}
+
+.predictive-search__icon svg {
+  color: var(--lov-muted-fg) !important;
+  stroke: var(--lov-muted-fg) !important;
+}
+
+.predictive-search-form__content,
+.predictive-search-form__content-wrapper,
+.predictive-search-dropdown {
+  background: var(--lov-bg) !important;
+  border-color: var(--lov-border) !important;
+}
+
+.predictive-search__search-button,
+.predictive-search-form__footer .button-primary {
+  background: var(--lov-primary) !important;
+  color: var(--lov-primary-fg) !important;
+  border-radius: 0 !important;
+  font-family: var(--lov-font-display) !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+}
+
+.predictive-search__close-modal-button {
+  color: var(--lov-fg) !important;
+  background: transparent !important;
+}
+
+/* K) Force white color on header icons/SVGs */
+.header-actions__action svg,
+.header-actions__action .svg-wrapper,
+header-actions svg,
+.search-action svg,
+header-component .header__column svg {
+  color: #fff !important;
+  fill: none !important;
+  stroke: #fff !important;
+}
+
+/* Exclude vehicle selector trigger icons from white override */
+button.vehicle-selector__trigger svg,
+.vehicle-selector__trigger svg {
+  color: var(--lov-primary) !important;
+  stroke: var(--lov-primary) !important;
+}
+
+/* Hero eyebrow */
+.hero__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #F5A623;
+  margin-bottom: 8px;
+}
+.hero__eyebrow::before {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 2px;
+  background: #F5A623;
+  flex-shrink: 0;
+}
+
+/* Hero heading — match Lovable typography */
+.hero .hero__content-wrapper h1,
+.hero__two-col .hero__content-wrapper h1,
+.hero .hero__content-wrapper .text-block h1,
+#MainContent .hero h1 {
+  font-family: 'Barlow Condensed', sans-serif !important;
+  font-size: 72px !important;
+  font-weight: 800 !important;
+  font-style: normal !important;
+  text-transform: uppercase !important;
+  line-height: 1 !important;
+  letter-spacing: -0.01em !important;
+  color: #fff !important;
+}
+
+/* Hero "LONG HAUL" orange text — JS injects span with inline color */
+.hero .hero__content-wrapper h1 span,
+.hero__content-wrapper .text-block h1 span {
+  color: #F5A623 !important;
+  font-style: normal !important;
+  text-transform: uppercase !important;
+}
