@@ -17,7 +17,15 @@
 {%- enddoc -%}
 
 {% liquid
-  assign widths = widths | default: '240, 352, 832, 1200, 1600, 1920, 2560, 3840'
+  assign widths = widths | default: '240, 352, 480, 640, 832, 1200, 1600, 1920, 2560, 3840'
+  # 2026-11-13: main product image loads eagerly (LCP), the rest lazily unless the caller says otherwise
+  if loading == blank
+    if is_main_product_media
+      assign loading = 'eager'
+    else
+      assign loading = 'lazy'
+    endif
+  endif
 %}
 
 <div

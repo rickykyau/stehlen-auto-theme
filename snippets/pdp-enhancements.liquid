@@ -351,6 +351,40 @@
 </script>
 
 <script id="stehlen-eta-data" type="application/json">{"available": {{ product.selected_or_first_available_variant.available | json }}}</script>
+<!-- Fit box data (2026-11-13): year|make|model rows from custom.fitment_applications, for the fit verdict in stehlen-mobile-fixes -->
+{%- liquid
+  assign sx_apps = product.metafields.custom.fitment_applications.value
+  assign sx_prev = ''
+  assign sx_cat = product.metafields.custom.category.value | default: ''
+  assign sx_title_dc = product.title | downcase
+  assign sx_full_led = false
+  if sx_title_dc contains 'full led' and sx_cat == 'Headlights'
+    assign sx_full_led = true
+  endif
+-%}
+<script id="stehlen-fit-data" type="application/json">{"title":{{ product.title | json }},"category":{{ sx_cat | json }},"fullLed":{{ sx_full_led }},"apps":[
+  {%- assign sx_first = true -%}
+  {%- for a in sx_apps -%}
+    {%- assign sx_row = a.year | append: '|' | append: a.make | append: '|' | append: a.model -%}
+    {%- if sx_row != sx_prev -%}{%- unless sx_first -%},{%- endunless -%}{{ sx_row | json }}{%- assign sx_first = false -%}{%- assign sx_prev = sx_row -%}{%- endif -%}
+  {%- endfor -%}]}</script>
+{%- comment -%} Judge.me: hide the empty "Be the first to write a review" block until the product has a review {%- endcomment -%}
+{%- assign sx_rc = product.metafields.reviews.rating_count.value | default: 0 | plus: 0 -%}
+{%- if sx_rc < 1 -%}
+<style id="sx-hide-empty-reviews">.shopify-section:has(.jdgm-review-widget) { display: none !important; }</style>
+<script>
+  // Safety net: if Judge.me shows a review the metafield hasn't synced yet, show the section again.
+  (function () {
+    var n = 0, t = setInterval(function () {
+      var w = document.querySelector('.jdgm-review-widget');
+      if (w && w.querySelector('.jm-star-rating, .jdgm-review-content__body-content, .jdgm-rev')) {
+        var st = document.getElementById('sx-hide-empty-reviews'); if (st) st.remove(); clearInterval(t);
+      }
+      if (++n > 20) clearInterval(t);
+    }, 1000);
+  })();
+</script>
+{%- endif -%}
 <!-- Product tags data for fitment check -->
 <script id="stehlen-product-tags-data" type="application/json">{{ product.tags | json }}</script>
 <!-- Product description for tabs -->

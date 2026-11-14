@@ -137,7 +137,7 @@
                   "type": "price",
                   "settings": {
                     "show_sale_price_first": true,
-                    "show_installments": false,
+                    "show_installments": true,
                     "show_tax_info": false,
                     "type_preset": "paragraph",
                     "width": "100%",
@@ -298,7 +298,7 @@
     "product_trust_badges": {
       "type": "custom-liquid",
       "settings": {
-        "custom_liquid": "<div class=\"product-trust-badges\">\n  <div class=\"product-trust-badge\">\n    <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#F39C12\" stroke-width=\"2\"><path d=\"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z\"/></svg>\n    <span>Lifetime Warranty</span>\n  </div>\n  <div class=\"product-trust-badge\">\n    <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#F39C12\" stroke-width=\"2\"><rect x=\"1\" y=\"3\" width=\"15\" height=\"13\" rx=\"2\"/><polygon points=\"16 8 20 8 23 11 23 16 16 16 16 8\"/><circle cx=\"5.5\" cy=\"18.5\" r=\"2.5\"/><circle cx=\"18.5\" cy=\"18.5\" r=\"2.5\"/></svg>\n    <span>Free Shipping</span>\n  </div>\n  <div class=\"product-trust-badge\">\n    <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#F39C12\" stroke-width=\"2\"><polyline points=\"1 4 1 10 7 10\"/><path d=\"M3.51 15a9 9 0 1 0 2.13-9.36L1 10\"/></svg>\n    <span>Easy Returns</span>\n  </div>\n  <div class=\"product-trust-badge\">\n    <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#F39C12\" stroke-width=\"2\"><path d=\"M22 11.08V12a10 10 0 1 1-5.93-9.14\"/><polyline points=\"22 4 12 14.01 9 11.01\"/></svg>\n    <span>Guaranteed Fit</span>\n  </div>\n</div>",
+        "custom_liquid": "<div class=\"product-trust-badges\">\n  {%- comment -%} 2026-11-13: lifetime warranty is real for Stehlen-brand parts whose listing states it (not CURT/other brands) {%- endcomment -%}\n  {%- assign sx_desc_dc = product.description | downcase -%}\n  {%- if product.vendor == 'Stehlen Auto' and sx_desc_dc contains 'lifetime' -%}\n  <div class=\"product-trust-badge\">\n    <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#F39C12\" stroke-width=\"2\"><path d=\"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z\"/></svg>\n    <span>Lifetime Warranty</span>\n  </div>\n  {%- endif -%}\n  <div class=\"product-trust-badge\">\n    <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#F39C12\" stroke-width=\"2\"><rect x=\"1\" y=\"3\" width=\"15\" height=\"13\" rx=\"2\"/><polygon points=\"16 8 20 8 23 11 23 16 16 16 16 8\"/><circle cx=\"5.5\" cy=\"18.5\" r=\"2.5\"/><circle cx=\"18.5\" cy=\"18.5\" r=\"2.5\"/></svg>\n    <span>Free Shipping</span>\n  </div>\n  <div class=\"product-trust-badge\">\n    <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#F39C12\" stroke-width=\"2\"><polyline points=\"1 4 1 10 7 10\"/><path d=\"M3.51 15a9 9 0 1 0 2.13-9.36L1 10\"/></svg>\n    <span>Easy Returns</span>\n  </div>\n  <div class=\"product-trust-badge\">\n    <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#F39C12\" stroke-width=\"2\"><path d=\"M22 11.08V12a10 10 0 1 1-5.93-9.14\"/><polyline points=\"22 4 12 14.01 9 11.01\"/></svg>\n    <span>Guaranteed Fit</span>\n  </div>\n</div>",
         "color_scheme": "scheme-1",
         "section_width": "page-width",
         "padding-block-start": 0,

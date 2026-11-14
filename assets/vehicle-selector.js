@@ -29,6 +29,7 @@ class VehicleSelector extends HTMLElement {
     // Open/close dialog
     trigger.addEventListener('click', () => this._openDialog());
     close.addEventListener('click', () => this._closeDialog());
+    dialog.addEventListener('close', () => { dialog.classList.remove('vs-sheet'); document.documentElement.classList.remove('vs-sheet-open'); });
     dialog.addEventListener('click', (e) => {
       if (e.target === dialog) this._closeDialog();
     });
@@ -302,8 +303,27 @@ class VehicleSelector extends HTMLElement {
   _openDialog() {
     const dialog = this._refs.dialog;
     const trigger = this._refs.trigger;
-    // Position below trigger button
+    if (dialog.open) return;
     const rect = trigger.getBoundingClientRect();
+    const phone = window.matchMedia('(max-width: 749px)').matches;
+    const triggerOnScreen = rect.bottom > 0 && rect.top < window.innerHeight && rect.width > 0;
+    if (phone || !triggerOnScreen) {
+      // Phones, or opened from further down the page (e.g. "Check fit for my vehicle"):
+      // a modal sheet in the viewport (top layer, so header/scroll position can't push it
+      // off-screen). Bottom sheet on phones, centred box on wider screens. Page doesn't scroll.
+      dialog.classList.add('vs-sheet');
+      dialog.style.top = dialog.style.right = dialog.style.left = dialog.style.margin = '';
+      dialog.style.position = '';
+      this._scrollY = window.scrollY;
+      if (typeof dialog.showModal === 'function') dialog.showModal(); else dialog.show();
+      if (window.scrollY !== this._scrollY) window.scrollTo(0, this._scrollY);
+      document.documentElement.classList.add('vs-sheet-open');
+      try { window.dispatchEvent(new CustomEvent('stehlen:vehicle-picker-open', { detail: { source: this._openSource || 'header' } })); } catch (e) {}
+      this._openSource = '';
+      return;
+    }
+    // Desktop header button on screen: dropdown under the button (unchanged)
+    dialog.classList.remove('vs-sheet');
     dialog.style.position = 'fixed';
     dialog.style.top = (rect.bottom + 4) + 'px';
     dialog.style.right = (window.innerWidth - rect.right) + 'px';
@@ -312,8 +332,16 @@ class VehicleSelector extends HTMLElement {
     dialog.show();
   }
 
+  // Lets other page scripts (product-page fit box) open the picker without scrolling.
+  openPicker(source) {
+    this._openSource = source || '';
+    this._openDialog();
+  }
+
   _closeDialog() {
     this._refs.dialog.close();
+    this._refs.dialog.classList.remove('vs-sheet');
+    document.documentElement.classList.remove('vs-sheet-open');
   }
 }
 

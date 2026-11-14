@@ -199,6 +199,46 @@
   /* search has no facets column on desktop: let the results use the full width */
   .collection-wrapper:has(> .filter-bar-wrapper) > .main-collection-grid { grid-column: 1 / -1 !important; }
 }
+
+/* ===== Conversion fixes (2026-11-13) ===== */
+/* Vehicle picker as a sheet in the viewport (opened from the fit box / on phones) */
+html dialog.vehicle-selector__dialog.vs-sheet {
+  position: fixed !important; inset: auto 0 0 0 !important; top: auto !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
+  width: 100% !important; max-width: 100% !important; max-height: 88vh !important; overflow: auto !important;
+  margin: 0 !important; border-radius: 14px 14px 0 0 !important; padding-bottom: env(safe-area-inset-bottom) !important;
+  animation: vsSheetUp .2s ease-out; z-index: 10000 !important;
+}
+html dialog.vehicle-selector__dialog.vs-sheet::backdrop { background: rgba(0,0,0,.6); }
+@keyframes vsSheetUp { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
+@media screen and (min-width: 750px) {
+  html dialog.vehicle-selector__dialog.vs-sheet { inset: 50% auto auto 50% !important; top: 50% !important; left: 50% !important; right: auto !important; bottom: auto !important;
+    transform: translate(-50%, -50%); width: 560px !important; max-width: calc(100vw - 40px) !important; border-radius: 12px !important; animation: none; }
+}
+@media screen and (max-width: 749px) {
+  html dialog.vehicle-selector__dialog.vs-sheet .vehicle-selector__content { padding: 20px 16px 20px !important; }
+  html dialog.vehicle-selector__dialog.vs-sheet .vehicle-selector__fields { display: grid !important; grid-template-columns: 1fr !important; gap: 10px !important; }
+  html dialog.vehicle-selector__dialog.vs-sheet .vehicle-selector__select, html dialog.vehicle-selector__dialog.vs-sheet .vehicle-selector__go { min-height: 48px !important; width: 100% !important; font-size: 16px !important; }
+}
+html.vs-sheet-open, html.vs-sheet-open body { overflow: hidden; }
+/* Fit box verdicts */
+.sx-fit__verdict { font-size: 15px; font-weight: 600; line-height: 1.4; margin: 0 0 8px; }
+.sx-fit__verdict .sx-fit__q { margin: 6px 0 0 !important; }
+.sx-fit__verdict .sx-fit__q li { padding-left: 16px !important; font-weight: 500; }
+.sx-fit__verdict .sx-fit__q li::before { content: '\2022' !important; color: inherit !important; }
+.sx-fit__hint { margin: 0 0 10px; color: #d4d4d4; font-size: 14px; line-height: 1.4; }
+.sx-fit__change { display: block; background: none; border: 0; padding: 0 0 12px; min-height: 32px; color: #f5a823; font-size: 14px; text-decoration: underline; text-align: left; cursor: pointer; }
+.sx-fit__link { display: inline-block; margin: 0 0 10px; color: #fff; font-weight: 600; font-size: 15px; text-decoration: underline; text-underline-offset: 3px; }
+.sx-fit__link--2 { display: block; font-weight: 500; font-size: 14px; color: #e5e5e5; }
+.sx-fit--nofit .sx-fit__verdict { color: #fca5a5; font-size: 16px; }
+.sx-fit--nofit .sx-fit__link:first-of-type { display: block; }
+/* Fitment question line */
+.sx-fit-help { margin: 8px 0 4px; color: #c9c9c9; font-size: 14px; line-height: 1.45; }
+.sx-fit-help a { color: #fff; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
+/* Full LED explainer */
+.sx-led { margin: 14px 0 0; padding: 12px 14px; border: 1px solid #2c3038; border-left: 3px solid #f5a823; border-radius: 4px; background: #17191c; }
+.sx-led p { margin: 0 0 6px; color: #d4d4d4; font-size: 14px; line-height: 1.45; }
+.sx-led p:last-child { margin-bottom: 0; }
+.sx-led .sx-led__title { color: #fff; font-weight: 700; font-size: 14px; letter-spacing: .02em; }
 </style>
 <script>
   // Phones: open the cart drawer after Add to Cart so Checkout is one tap away
@@ -231,12 +271,129 @@
 {% if template.name == 'product' %}
 <script>
 (function () {
-  // Product pages only. Builds a clear "Fits" card next to the buy button from the
-  // product's own fitment list (the FITMENT section of its description).
+  // Product pages only. Builds the fit box next to the buy button from the product's own
+  // fitment data (custom.fitment_applications + the FITMENT section of its description).
+  // 2026-11-13: verdict is data-driven — green "Fits" only when nothing (cab, bed, engine,
+  // headlight type, trim, body style) still decides it; red "Doesn't fit" for a vehicle that
+  // isn't in the list (Add to Cart stays available). Rules: sxFitVerdict below.
+  // ---- Fit verdict (pure; tested against the catalog in scripts) ----
+  // in: v {year, make, model}; d {apps:["y|Make|Model"], title, lis:[fitment list lines], noFit, tags}
+  // out: {state:'fits'|'check'|'nofit'|'nofit-year'|'unknown', quals:[...], cabNote, years}
+  function sxFitVerdict(v, d) {
+    var norm = function (s) { return String(s || '').toLowerCase().replace(/\bchevy\b/g, 'chevrolet').replace(/[^a-z0-9]+/g, ''); };
+    var mk = norm(v.make), md = norm(v.model), yr = String(v.year || '');
+    var apps = (d.apps || []).map(function (a) { var p = String(a).split('|'); return { y: p[0], mk: norm(p[1]), md: norm(p[2]) }; });
+    var modelHit, yearHit, years = [];
+    if (apps.length) {
+      var same = apps.filter(function (a) { return a.mk === mk && a.md === md; });
+      modelHit = same.length > 0;
+      years = same.map(function (a) { return +a.y; }).filter(Boolean);
+      yearHit = !yr || same.some(function (a) { return a.y === yr; });
+    } else {
+      // Older listings without fitment records: fall back to tags ("Chevrolet Silverado 1500", "2021")
+      var tags = (d.tags || []).map(function (t) { return String(t).toLowerCase(); });
+      var mm = (v.make + ' ' + v.model).toLowerCase();
+      modelHit = tags.some(function (t) { return t === mm || t.indexOf(mm + ' ') === 0 || t === 'model:' + v.model.toLowerCase(); });
+      if (!tags.length || (!modelHit && !tags.some(function (t) { return /^(make|model):/.test(t) || /^(19|20)\d\d\b.*\b[a-z]/.test(t); }))) return { state: 'unknown' };
+      yearHit = !yr || tags.indexOf(yr) !== -1 || tags.indexOf('year:' + yr) !== -1;
+    }
+    if (!modelHit) return { state: 'nofit' };
+    if (!yearHit) {
+      years.sort(function (a, b) { return a - b; });
+      return { state: 'nofit-year', years: years.length ? (years[0] === years[years.length - 1] ? String(years[0]) : years[0] + '–' + years[years.length - 1]) : '' };
+    }
+
+    // ---- It is listed for this vehicle. Does a sub-model still decide it? ----
+    var quals = [], rules = {};
+    var add = function (q, rule) {
+      q = String(q || '').replace(/\s+/g, ' ').replace(/^[\s,;:.–—-]+|[\s,;:.]+$/g, '').trim();
+      if (q && !/^(all|any) (trims|models|cabs)/i.test(q) && quals.every(function (x) { return x.toLowerCase() !== q.toLowerCase(); })) { quals.push(q); rules[rule || 'line'] = 1; }
+    };
+    // R1: the matching line(s) of the description's Fitment list ("2019-2026 Chevrolet Silverado 1500 — Double Cab only (…)")
+    var esc = function (x) { return String(x).toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/[-\s]+/g, '[-\\s]?'); };
+    var SUFFIX = '(?!\\s*(ltd|limited|ld|hd|classic|heritage|lightning|super ?duty|chassis|hybrid|ev)\\b)';
+    var modelRe = null, altRe = null, firstWord = '';
+    try {
+      modelRe = new RegExp('(^|[^a-z0-9])' + esc(v.model) + '(?![a-z0-9])' + SUFFIX, 'i');
+      // "2020-2026 Chevrolet Silverado 2500 HD & 3500 HD": let "3500 HD" match when "Silverado" is in the line
+      var mw = String(v.model).split(/\s+/);
+      if (mw.length > 1 && /\d/.test(mw.slice(1).join(' '))) { firstWord = mw[0].toLowerCase(); altRe = new RegExp('(^|[^a-z0-9])' + esc(mw.slice(1).join(' ')) + '(?![a-z0-9])' + SUFFIX, 'i'); }
+    } catch (e) {}
+    var lineHit = false, anyLineQual = false;
+    var groups = [];
+    (d.lis || []).forEach(function (li) {
+      // "2019 Silverado 1500 — Old Body Style; 2020-2021 Silverado 1500; …" = several entries in one line
+      String(li).split(/\s*;\s*/).forEach(function (seg) {
+        if (/\b(19|20)\d\d\b/.test(seg) || !groups.length) groups.push(seg); else groups[groups.length - 1] += '; ' + seg;
+      });
+    });
+    groups.forEach(function (li) {
+      var parts = li.split(/\s+[\u2014\u2013]\s+|\s+-\s+(?=[A-Za-z])/);
+      var head = parts[0], tail = parts.slice(1).join(' \u2014 ');
+      if (tail) anyLineQual = true;
+      var hit = modelRe && modelRe.test(head);
+      if (!hit && altRe && head.toLowerCase().indexOf(firstWord) !== -1) hit = altRe.test(head);
+      if (!hit) return;
+      var inRange = true, re = /\b((?:19|20)\d\d)\s*(?:[-\u2013]\s*((?:19|20)\d\d)|(\+))?/g, m, saw = false;
+      if (yr) {
+        inRange = false;
+        while ((m = re.exec(head))) { saw = true; var a = +m[1], b = m[2] ? +m[2] : (m[3] ? 9999 : a); if (+yr >= a && +yr <= b) inRange = true; }
+        if (!saw) inRange = true;
+      }
+      if (!inRange) return;
+      lineHit = true;
+      if (tail) add(tail, 'line');
+    });
+    // R2: the description's "Will not fit" note (engine, body style, trim…)
+    var noFit = String(d.noFit || '').trim();
+    // R3: a restriction in the product title: "(Gas Engines Only)", "… Factory LED DRL Models", "Crew Cab"
+    var t = String(d.title || '');
+    var paren = t.match(/\(([^)]*\b(only|models?|engines?|required)\b[^)]*)\)/i);
+    var lineQ = quals.length;
+    if (paren && !lineQ) add(paren[1], 'title');
+    var tq = t.match(/\b((?:for |w\/ |with )?(?:factory |oem )?(?:led drl|halogen|projector|non[- ]projector|composite|sealed beam)[a-z ]*models?(?: only)?)\b/i);
+    if (tq && !paren && !lineQ) add(tq[1], 'title');
+    var cabRe = /\b(regular|standard|single|extended|ext\.?|double|quad|access|king|club|super ?cab|crew ?max|super ?crew|crew|mega)\s*cab\b|\bsuper ?crew\b|\bcrewmax\b/i;
+    var qualCab = quals.some(function (q) { return /\bcab\b|super ?crew|crewmax/i.test(q); });
+    var tc = t.match(cabRe);
+    if (tc && !qualCab) { add(tc[0].replace(/\bext\.?\b/i, 'Extended') + ' only', 'titlecab'); qualCab = true; }
+    // Nothing matched a line but other lines carry restrictions: don't say a plain "fits".
+    if (!lineHit && anyLineQual && !quals.length) add('check the version listed below', 'unmatched');
+
+    // Cab "how to tell": name the cab that won't fit (the usual mix-up), make-aware names.
+    var cabNote = '';
+    var all = quals.join(' ; ').toLowerCase();
+    if (qualCab) {
+      var M = String(v.make).toLowerCase(), MD = String(v.model).toLowerCase();
+      var tacoma = M === 'toyota' && /tacoma/.test(MD), tundra = M === 'toyota' && /tundra/.test(MD);
+      var crewName = M === 'ford' ? 'SuperCrew' : tundra ? 'CrewMax' : tacoma ? 'Double Cab' : 'Crew Cab';
+      var extName = M === 'ford' ? 'SuperCab' : (M === 'ram' || M === 'dodge') ? 'Quad Cab' : tacoma ? 'Access Cab' : (M === 'nissan') ? 'King Cab' : (M === 'chevrolet' || M === 'gmc') && +yr >= 2014 ? 'Double Cab' : tundra ? 'Double Cab' : 'Extended Cab';
+      var isCrew = tacoma ? /double cab|crew/.test(all) : /crew ?cab|super ?crew|crewmax|mega/.test(all);
+      var isExt = tacoma ? /access|extended|ext\b/.test(all) : /extended|ext\.? cab|double cab|quad|access|king|club|super ?cab\b/.test(all.replace(/super ?crew/g, ''));
+      var isStd = /regular|standard|single/.test(all);
+      if (isExt && !isCrew) cabNote = crewName + ' (4 full-size doors) won’t fit.';
+      else if (isCrew && !isExt && !isStd) cabNote = extName + ' (smaller rear doors) and 2-door cabs won’t fit.';
+      else if (isStd && !isExt && !isCrew) cabNote = 'Cabs with rear doors won’t fit.';
+    }
+    if (noFit) rules.note = 1;
+    if (quals.length || noFit) return { state: 'check', quals: quals, cabNote: cabNote, noFit: !!noFit, rules: Object.keys(rules) };
+    return { state: 'fits' };
+  }
+
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var openPicker = function (src) {
+    var vs = [].slice.call(document.querySelectorAll('vehicle-selector')).filter(function (el) { return typeof el.openPicker === 'function'; });
+    var vis = vs.filter(function (el) { var t = el.querySelector('.vehicle-selector__trigger'); return t && t.offsetParent; });
+    var el = vis[0] || vs[0];
+    if (el) el.openPicker(src); else window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   function run() {
     var pd = document.querySelector('.product-details');
     var dataEl = document.getElementById('stehlen-product-desc-data');
     if (!pd || !dataEl || pd.querySelector('.sx-fit')) return;
+    var fd = {};
+    try { fd = JSON.parse((document.getElementById('stehlen-fit-data') || {}).textContent || '{}'); } catch (e) {}
     var html = '';
     try { html = JSON.parse(dataEl.textContent) || ''; } catch (e) { return; }
     var doc = new DOMParser().parseFromString('<div>' + html + '</div>', 'text/html');
@@ -258,46 +415,73 @@
         el = el.nextElementSibling;
       }
     }
-    if (!fits.length) return;
-
-    var esc = function (s) { return s.replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
-    // Verdict for a saved vehicle — positive only (tag naming varies, so never claim "won't fit")
-    var verdict = '', cls = '';
-    try {
-      var v = JSON.parse(localStorage.getItem('stehlen-vehicle') || localStorage.getItem('stehlen_vehicle') || 'null');
-      var tagsEl = document.getElementById('stehlen-product-tags-data');
-      var tags = tagsEl ? JSON.parse(tagsEl.textContent).map(function (t) { return String(t).toLowerCase(); }) : [];
-      if (v && v.make && v.model) {
-        var mm = (v.make + ' ' + v.model).toLowerCase();
-        var hasVeh = tags.some(function (t) { return t === mm || t.indexOf(mm + ' ') === 0; });
-        var hasYear = !v.year || tags.indexOf(String(v.year)) !== -1;
-        var name = [v.year, v.make, v.model].filter(Boolean).join(' ');
-        // A "Will not fit" note (engine, trim, bed…) means the year/model match alone isn't a yes.
-        if (hasVeh && hasYear && noFit) { verdict = '✓ Listed for your ' + esc(name) + ' — check the “Will not fit” note below'; cls = ' sx-fit--check'; }
-        else if (hasVeh && hasYear) { verdict = '✓ Fits your ' + esc(name); cls = ' sx-fit--fits'; }
-        else { verdict = 'Check the list below for your ' + esc(name); }
-      }
-    } catch (e) {}
-
-    var SHOW = 4;
-    var li = fits.map(function (f, k) { return '<li' + (k >= SHOW ? ' class="sx-fit__more"' : '') + '>' + esc(f) + '</li>'; }).join('');
-    // No vehicle saved yet: one tap opens the header vehicle picker (it reloads this page after).
-    var checkBtn = verdict ? '' : '<button type="button" class="sx-fit__check">Check fit for my vehicle</button>';
-    var card = '<div class="sx-fit' + cls + '">' +
-      (verdict ? '<p class="sx-fit__verdict">' + verdict + '</p>' : '') +
-      '<p class="sx-fit__title">Fits these vehicles</p><ul>' + li + '</ul>' +
-      (fits.length > SHOW ? '<button type="button" class="sx-fit__toggle">Show all ' + fits.length + ' vehicles</button>' : '') +
-      (noFit ? '<p class="sx-fit__no"><strong>Will not fit:</strong> ' + esc(noFit) + '</p>' : '') +
-      checkBtn + '</div>';
 
     var buy = pd.querySelector('.buy-buttons-block');
     var anchor = buy || pd.querySelector('.group-block-content > .group-block');
     if (!anchor) return;
+    // Fitment question line (also on parts without a fitment list)
+    var help = '<p class="sx-fit-help">Fitment question? Call <a href="tel:+19513327000">951-332-7000</a> (Mon–Fri 9–5 PT) or email <a href="mailto:info@stehlenauto.com">info@stehlenauto.com</a></p>';
+    if (!fits.length) { anchor.insertAdjacentHTML(buy ? 'beforebegin' : 'afterend', help); return; }
+
+    var verdict = '', cls = '', extra = '';
+    var v = null;
+    try { v = JSON.parse(localStorage.getItem('stehlen-vehicle') || localStorage.getItem('stehlen_vehicle') || 'null'); } catch (e) {}
+    if (v && v.make && v.model) {
+      var tags = [];
+      try { tags = JSON.parse((document.getElementById('stehlen-product-tags-data') || {}).textContent || '[]'); } catch (e) {}
+      var r = { state: 'unknown' };
+      try { r = sxFitVerdict(v, { apps: fd.apps || [], title: fd.title || '', lis: fits, noFit: noFit, tags: tags }); } catch (e) {}
+      var name = esc([v.year, v.make, v.model].filter(Boolean).join(' '));
+      var change = '<button type="button" class="sx-fit__change" data-sx-pick="change">Shopping for another vehicle? Change vehicle</button>';
+      if (r.state === 'fits') {
+        verdict = '✓ Fits your ' + name; cls = ' sx-fit--fits'; extra = change;
+      } else if (r.state === 'check') {
+        cls = ' sx-fit--check';
+        var q = (r.quals || []).filter(function (x) { return x !== 'check the version listed below'; });
+        if (q.length === 1) {
+          var one = q[0];
+          verdict = 'Fits your ' + name + ' — ' + esc(/\bonly\b|^(excludes?|without|not |non-|models? (with|without))/i.test(one) ? one : 'only with ' + one);
+        } else if (q.length > 1) {
+          verdict = 'Fits your ' + name + ' only in this version:<ul class="sx-fit__q">' + q.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>';
+        } else if (r.quals && r.quals.length) {
+          verdict = 'Listed for some ' + name + ' versions — check which line below matches yours';
+        } else {
+          verdict = 'Fits your ' + name + ', except the versions in the “Will not fit” note below';
+        }
+        var hints = [];
+        if (r.cabNote) hints.push(esc(r.cabNote));
+        var all = q.join(' ').toLowerCase();
+        if (/\bbed\b/.test(all)) hints.push('Not sure of your bed length? Measure along the bed floor from the front wall to the closed tailgate.');
+        if (/halogen|led|drl|projector|composite|sealed beam|headlight/.test(all)) hints.push('Check which headlights your vehicle has now before ordering.');
+        if (/ecoboost|diesel|gas engine|engine/.test(all + ' ' + noFit.toLowerCase())) hints.push('Your engine is listed on the vehicle registration and on the sticker under the hood.');
+        if (q.length && noFit) hints.push('Also see the “Will not fit” note below.');
+        extra = (hints.length ? '<p class="sx-fit__hint">' + hints.join(' ') + '</p>' : '') + change;
+      } else if (r.state === 'nofit' || r.state === 'nofit-year') {
+        cls = ' sx-fit--nofit';
+        verdict = '✕ Doesn’t fit your ' + name + (r.state === 'nofit-year' && r.years ? ' — it fits ' + esc(r.years) + ' models' : '');
+        var qs = 'filter.p.m.custom.make=' + encodeURIComponent(v.make) + '&filter.p.m.custom.model=' + encodeURIComponent(v.model) + (v.year ? '&filter.p.m.custom.year=' + encodeURIComponent(v.year) : '');
+        extra = '<p class="sx-fit__hint">It’s made for the vehicles listed below.</p>' +
+          '<a class="sx-fit__link" href="/collections/all?' + qs + '">See parts that fit your ' + name + ' →</a>' +
+          '<button type="button" class="sx-fit__change" data-sx-pick="change">Shopping for another vehicle? Change vehicle</button>';
+      } else {
+        verdict = 'Check the list below for your ' + name; extra = change;
+      }
+      try { window.dispatchEvent(new CustomEvent('stehlen:fit-verdict', { detail: { state: r.state } })); } catch (e) {}
+    }
+
+    var SHOW = 4;
+    var li = fits.map(function (f, k) { return '<li' + (k >= SHOW ? ' class="sx-fit__more"' : '') + '>' + esc(f) + '</li>'; }).join('');
+    var checkBtn = verdict ? '' : '<button type="button" class="sx-fit__check" data-sx-pick="check">Check fit for my vehicle</button>';
+    var card = '<div class="sx-fit' + cls + '">' +
+      (verdict ? '<div class="sx-fit__verdict">' + verdict + '</div>' + extra : '') +
+      '<p class="sx-fit__title">Fits these vehicles</p><ul>' + li + '</ul>' +
+      (fits.length > SHOW ? '<button type="button" class="sx-fit__toggle">Show all ' + fits.length + ' vehicles</button>' : '') +
+      (noFit ? '<p class="sx-fit__no"><strong>Will not fit:</strong> ' + esc(noFit) + '</p>' : '') +
+      checkBtn + '</div>' + help;
+
     anchor.insertAdjacentHTML(buy ? 'beforebegin' : 'afterend', card);
-    var ck = pd.querySelector('.sx-fit__check');
-    if (ck) ck.addEventListener('click', function () {
-      var t = [].slice.call(document.querySelectorAll('.vehicle-selector__trigger')).filter(function (b) { return b.offsetParent; })[0];
-      if (t) t.click(); else window.scrollTo({ top: 0, behavior: 'smooth' });
+    pd.querySelectorAll('[data-sx-pick]').forEach(function (b) {
+      b.addEventListener('click', function () { openPicker('pdp-' + b.getAttribute('data-sx-pick')); });
     });
     var tg = pd.querySelector('.sx-fit__toggle');
     if (tg) tg.addEventListener('click', function () {
@@ -316,8 +500,24 @@
       if (/enter your vehicle at the top of the page/i.test(p.textContent)) p.classList.add('sx-hide-m');
     });
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { setTimeout(run, 50); });
-  else setTimeout(run, 50);
+
+  // "Full LED" headlights: what the term means (the product's own title + spec say Full LED).
+  function fullLed() {
+    var fd = {};
+    try { fd = JSON.parse((document.getElementById('stehlen-fit-data') || {}).textContent || '{}'); } catch (e) {}
+    if (!fd.fullLed) return;
+    var pd = document.querySelector('.product-details');
+    if (!pd || pd.querySelector('.sx-led')) return;
+    var after = pd.querySelector('.stehlen-policy') || pd.querySelector('.buy-buttons-block');
+    if (!after) return;
+    after.insertAdjacentHTML('afterend', '<div class="sx-led"><p class="sx-led__title">What “Full LED” means</p>' +
+      '<p>Both the low beam and the high beam are LED, built into the headlight — no halogen bulbs to buy or replace.</p>' +
+      '<p>Many lower-priced “LED” headlights only add an LED strip (DRL or light bar) and still use halogen bulbs for the actual low and high beams.</p></div>');
+  }
+
+  function start() { setTimeout(function () { run(); fullLed(); }, 50); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+  else start();
 })();
 
 (function () {
