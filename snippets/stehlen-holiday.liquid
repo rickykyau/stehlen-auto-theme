@@ -3,17 +3,23 @@
   render 'stehlen-holiday', part: 'bar'     top strip on every page (layout/theme.liquid)
   render 'stehlen-holiday', part: 'drawer'  phone menu link (snippets/header-drawer.liquid)
   render 'stehlen-holiday', part: 'home'    home-page banner (templates/index.json custom-liquid)
+  Windows are Pacific time, written in UTC. 2026-11-13: sale moved up to Sat Nov 14 06:00 PT
+  ("Early Black Friday" until Thanksgiving, then "Black Friday & Cyber Week"); prices start 06:00 PT,
+  banners 06:30 PT so the black-friday-deals collection exists first.
   Windows are Pacific time, written in UTC. Prices + the black-friday-deals collection
   are switched by JL-SQL tasks "Holiday Sale START/END" (scripts/catalog/holiday-sale.py).
   To preview, pass force: 'bf' or 'gifts' in a copy of the theme (never on the live theme).
 {% endcomment %}
 {%- liquid
   assign now = 'now' | date: '%s' | plus: 0
-  assign bf_start = '2026-11-20 08:05:00 +0000' | date: '%s' | plus: 0
+  assign early_start = '2026-11-14 14:30:00 +0000' | date: '%s' | plus: 0
+  assign bf_start = '2026-11-27 08:00:00 +0000' | date: '%s' | plus: 0
   assign bf_end = '2026-12-02 08:05:00 +0000' | date: '%s' | plus: 0
   assign gifts_end = '2026-12-15 08:00:00 +0000' | date: '%s' | plus: 0
   assign mode = ''
-  if now >= bf_start and now < bf_end
+  if now >= early_start and now < bf_start
+    assign mode = 'early'
+  elsif now >= bf_start and now < bf_end
     assign mode = 'bf'
   elsif now >= bf_end and now < gifts_end
     assign mode = 'gifts'
@@ -32,14 +38,16 @@
         .sx-holiday-bar span { text-decoration: underline; white-space: nowrap; }
         @media screen and (min-width: 750px) { .sx-holiday-bar { font-size: 14px; padding: 10px 16px; } }
       </style>
-      {%- if mode == 'bf' -%}
-        <a class="sx-holiday-bar" href="/collections/black-friday-deals">Black Friday: up to 15% off truck parts · ends Dec 1 · <span>Shop deals</span></a>
+      {%- if mode == 'early' -%}
+        <a class="sx-holiday-bar" href="/collections/black-friday-deals">Early Black Friday: up to 15% off truck parts · ends Dec 1 · <span>Shop deals</span></a>
+      {%- elsif mode == 'bf' -%}
+        <a class="sx-holiday-bar" href="/collections/black-friday-deals">Black Friday &amp; Cyber Week: up to 15% off · ends Dec 1 · <span>Shop deals</span></a>
       {%- else -%}
         <a class="sx-holiday-bar" href="/collections/gifts-for-truck-owners">Order by Dec 14 for Christmas delivery · <span>Gifts that fit any truck</span></a>
       {%- endif -%}
     {%- when 'drawer' -%}
-      {%- if mode == 'bf' -%}
-        <li class="stehlen-drawer-item"><a href="/collections/black-friday-deals" class="stehlen-drawer-link" style="color:#f5a823 !important;font-weight:700"><span>Black Friday Deals · up to 15% off</span></a></li>
+      {%- if mode == 'early' or mode == 'bf' -%}
+        <li class="stehlen-drawer-item"><a href="/collections/black-friday-deals" class="stehlen-drawer-link" style="color:#f5a823 !important;font-weight:700"><span>{% if mode == 'early' %}Early {% endif %}Black Friday Deals · up to 15% off</span></a></li>
       {%- else -%}
         <li class="stehlen-drawer-item"><a href="/collections/gifts-for-truck-owners" class="stehlen-drawer-link" style="color:#f5a823 !important;font-weight:700"><span>Gifts for Truck Owners</span></a></li>
       {%- endif -%}
@@ -54,8 +62,8 @@
         @media screen and (max-width: 749px) { .sx-holiday-home { margin: 16px; } .sx-holiday-home h2 { font-size: 24px; } .sx-holiday-home a { width: 100%; justify-content: center; } }
       </style>
       <div class="sx-holiday-home">
-        {%- if mode == 'bf' -%}
-          <div><h2>Black Friday: up to 15% off</h2><p>Tonneau covers, bed mats, grilles, bull guards, headlights, running boards and more. Ends December 1.</p></div>
+        {%- if mode == 'early' or mode == 'bf' -%}
+          <div><h2>{% if mode == 'early' %}Early {% endif %}Black Friday: up to 15% off</h2><p>Tonneau covers, bed mats, grilles, bull guards, headlights, running boards and more. Ends December 1.</p></div>
           <a href="/collections/black-friday-deals">Shop the deals</a>
         {%- else -%}
           <div><h2>Gifts that fit any truck</h2><p>Hitch steps, cargo carriers and more that need no vehicle info. Order by December 14 for Christmas delivery (lower 48).</p></div>
